@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "noor-bee",
+    "slug": "noor-bee",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6C3FF5"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.noorbee.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#6C3FF5"
+      },
+      "package": "com.noorbee.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5ff0b27d-2ea8-4c81-acc0-c521781eb4e5"
+      }
+    },
+    "owner": "jannat-tech-academy"
+  }
+}
