@@ -27,6 +27,19 @@
         "projectId": "5ff0b27d-2ea8-4c81-acc0-c521781eb4e5"
       }
     },
-    "owner": "jannat-tech-academy"
+    "owner": "jannat-tech-academy",
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0",
+            "ndkVersion": "25.1.8937393"
+          }
+        }
+      ]
+    ]
   }
 }
