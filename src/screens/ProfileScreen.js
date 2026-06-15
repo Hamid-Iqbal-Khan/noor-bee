@@ -73,17 +73,6 @@ export default function ProfileScreen({ navigation }) {
           <Text style={{ color: '#fff', fontSize: 22, fontWeight: '900', marginTop: 8 }}>{profile?.name || 'Learner'}</Text>
           <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: 13, marginTop: 2 }}>Age Group: {profile?.age || '4-5'}</Text>
           <TouchableOpacity
-          style={{ margin: 16, marginBottom: 0, backgroundColor: '#E3F2FD', borderRadius: 16, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 10 }}
-          onPress={() => navigation.navigate('VoiceSettings')}
-        >
-          <Text style={{ fontSize: 20 }}>🎙️</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontWeight: '800', color: '#1565C0' }}>Voice Settings</Text>
-            <Text style={{ fontSize: 12, color: COLORS.muted }}>Indian English · Arabic pronunciation</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color="#1565C0" />
-        </TouchableOpacity>
-        <TouchableOpacity
             style={{ marginTop: 12, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 16, paddingHorizontal: 20, paddingVertical: 8, flexDirection: 'row', gap: 6, alignItems: 'center' }}
             onPress={openEdit}
           >
@@ -146,6 +135,7 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
 
+        {/* Voice Settings */}
         <TouchableOpacity
           style={{ margin: 16, marginBottom: 0, backgroundColor: '#E3F2FD', borderRadius: 16, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 10 }}
           onPress={() => navigation.navigate('VoiceSettings')}
@@ -157,6 +147,7 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <Ionicons name="chevron-forward" size={20} color="#1565C0" />
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{ margin: 16, backgroundColor: '#FFEBEE', borderRadius: 16, padding: 14, alignItems: 'center', marginTop: 20 }}
           onPress={() => Alert.alert('Reset Progress', 'Are you sure? This will delete all your progress!', [
@@ -185,17 +176,6 @@ export default function ProfileScreen({ navigation }) {
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
               {AVATARS.map(av => (
                 <TouchableOpacity
-          style={{ margin: 16, marginBottom: 0, backgroundColor: '#E3F2FD', borderRadius: 16, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 10 }}
-          onPress={() => navigation.navigate('VoiceSettings')}
-        >
-          <Text style={{ fontSize: 20 }}>🎙️</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontWeight: '800', color: '#1565C0' }}>Voice Settings</Text>
-            <Text style={{ fontSize: 12, color: COLORS.muted }}>Indian English · Arabic pronunciation</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color="#1565C0" />
-        </TouchableOpacity>
-        <TouchableOpacity
                   key={av}
                   style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: editAvatar === av ? COLORS.primary + '30' : '#F5F5F5', alignItems: 'center', justifyContent: 'center', borderWidth: editAvatar === av ? 2 : 0, borderColor: COLORS.primary }}
                   onPress={() => setEditAvatar(av)}

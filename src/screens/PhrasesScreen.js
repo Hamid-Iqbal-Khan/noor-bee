@@ -14,15 +14,12 @@ export default function PhrasesScreen({ route, navigation }) {
   const [activeCategory, setActiveCategory] = useState(0);
   const [speaking, setSpeaking] = useState(null);
 
-  const speak = (text, idx) => {
+  const speak = async (text, idx) => {
     setSpeaking(idx);
-    Speech.speak(text, {
-      language: isArabic ? 'ar' : 'en',
-      pitch: 1.1,
-      rate: 0.75,
-      onDone: () => setSpeaking(null),
-    });
-      };
+    if (isArabic) await speakArabic(text, 0.75);
+    else await speakEnglish(text, 0.75);
+    setSpeaking(null);
+  };
 
   const currentCat = data[activeCategory];
 

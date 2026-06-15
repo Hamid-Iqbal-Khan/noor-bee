@@ -20,10 +20,6 @@ export default function IslamicAlphabetScreen({ navigation }) {
   const scaleAnim = useRef(new Animated.Value(0.85)).current;
   const rhymeAnim = useRef(new Animated.Value(0)).current;
 
-  const speak = (text, lang = 'en') => {
-    Speech.speak(text, { language: lang, pitch: 1.2, rate: 0.75 });
-      };
-
   const openLetter = (item) => {
     setSelected(item);
     setModalVisible(true);
@@ -31,18 +27,13 @@ export default function IslamicAlphabetScreen({ navigation }) {
     Animated.spring(scaleAnim, {
       toValue: 1, useNativeDriver: true, tension: 100, friction: 8,
     }).start();
-    // Speak the word
-    speak(`${item.letter} for ${item.islamicWord}. ${item.meaning}.`);
+    speakEnglish(`${item.letter} for ${item.islamicWord}. ${item.meaning}.`);
   };
 
   const showRhyme = () => {
     setRhymeVisible(true);
     Animated.timing(rhymeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
-    if (selected) speak(selected.rhyme);
-  };
-
-  const speakArabic = (text) => {
-    speak(text, 'ar');
+    if (selected) speakRhyme(selected.rhyme);
   };
 
   const renderCard = ({ item }) => (
@@ -150,7 +141,7 @@ export default function IslamicAlphabetScreen({ navigation }) {
                     <Text style={styles.rhymeText}>{selected.rhyme}</Text>
                     <TouchableOpacity
                       style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center', gap: 6 }}
-                      onPress={() => speak(selected.rhyme)}
+                      onPress={() => speakRhyme(selected.rhyme)}
                     >
                       <Ionicons name="volume-high" size={16} color={selected.color} />
                       <Text style={[styles.repeatTxt, { color: selected.color }]}>Repeat rhyme</Text>
@@ -161,7 +152,7 @@ export default function IslamicAlphabetScreen({ navigation }) {
                 {/* Speak button */}
                 <TouchableOpacity
                   style={[styles.speakBtn, { backgroundColor: selected.color }]}
-                  onPress={() => speak(`${selected.letter} for ${selected.islamicWord}. ${selected.meaning}.`)}
+                  onPress={() => speakEnglish(`${selected.letter} for ${selected.islamicWord}. ${selected.meaning}.`)}
                 >
                   <Ionicons name="volume-high" size={22} color="#fff" />
                   <Text style={styles.speakBtnText}>Listen Again</Text>
