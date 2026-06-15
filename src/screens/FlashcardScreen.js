@@ -34,8 +34,8 @@ export default function FlashcardScreen({ route, navigation }) {
   const current = words[index];
 
   const speak = (item) => {
-    const text = isArabic ? item.word : item.word;
-    Speech.speak(text, { language: isArabic ? 'ar' : 'en', pitch: 1.2, rate: 0.7 });
+    if (isArabic) speakArabic(item.word, 0.7);
+    else speakEnglish(item.word, 0.7);
   };
 
   useEffect(() => {

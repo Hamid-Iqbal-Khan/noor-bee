@@ -24,9 +24,10 @@ export default function VocabScreen({ route, navigation }) {
   const words = currentCat?.words || [];
 
   const speak = (word) => {
-    const text = isArabic ? word.word : word.word;
-    Speech.speak(text, { language: isArabic ? 'ar' : 'en', pitch: 1.2, rate: 0.7 });
-      };
+    const text = word.word;
+    if (isArabic) speakArabic(text, 0.7);
+    else speakEnglish(text, 0.7);
+  };
 
   const openWord = (word) => {
     setSelectedWord(word);

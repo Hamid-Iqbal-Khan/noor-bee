@@ -28,7 +28,8 @@ export default function StoryScreen({ route, navigation }) {
   const speakPage = (p) => {
     if (!selectedStory) return;
     const text = selectedStory.pages[p]?.text || '';
-    Speech.speak(text, { language: selectedStory.language === 'arabic' ? 'ar' : 'en', pitch: 1.2, rate: 0.7 });
+    if (selectedStory.language === 'arabic') speakArabic(text, 0.7);
+    else speakEnglish(text, 0.7);
   };
 
   const turnPage = (dir) => {
@@ -51,7 +52,7 @@ export default function StoryScreen({ route, navigation }) {
     newAns[qIdx] = aIdx;
     setQuizAnswers(newAns);
     const correct = aIdx === selectedStory.comprehension[qIdx].answer;
-    if (correct)     else     if (newAns.filter(a => a !== undefined).length === selectedStory.comprehension.length) {
+    if (newAns.filter(a => a !== undefined).length === selectedStory.comprehension.length) {
       setTimeout(() => setQuizDone(true), 600);
     }
   };
