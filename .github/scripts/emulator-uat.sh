@@ -3,7 +3,7 @@
 set -u
 mkdir -p emu
 APK=$(ls out/*.apk | head -1); echo "APK=$APK" | tee emu/install.txt
-PKG=com.aistudio.noorbee.newwhiteboard
+PKG=com.aistudio.noorbee.newwhiteboard.test
 adb install -r "$APK" >> emu/install.txt 2>&1
 adb shell pm list packages | grep -q "$PKG" && echo "INSTALLED OK" >> emu/install.txt
 adb logcat -c

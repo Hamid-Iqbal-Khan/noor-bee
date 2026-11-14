@@ -14,8 +14,8 @@ android {
     applicationId = "com.aistudio.noorbee.newwhiteboard"
     minSdk = 24
     targetSdk = 36
-    versionCode = 2
-    versionName = "2.0"
+    versionCode = 4
+    versionName = "3.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -45,6 +45,9 @@ android {
     }
     debug {
       signingConfig = signingConfigs.getByName("debugConfig")
+      // Test builds install side by side with the Play Store app (different id, own label)
+      applicationIdSuffix = ".test"
+      versionNameSuffix = "-test"
     }
   }
   compileOptions {
