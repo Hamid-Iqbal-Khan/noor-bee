@@ -31,7 +31,7 @@ jobs:
       - id: meta
         run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: 17 }
+        with: { distribution: temurin, java-version: 21 }
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: 9.3.1 }
       - name: Debug keystore (not committed; standard Android debug key)
@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir -p out
           cp app/build/outputs/apk/debug/app-debug.apk "out/noor-bee-kotlin-${{ steps.meta.outputs.sha }}-debug.apk" || true
-          zip -qr out/reports.zip build.log test.log lint.log app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi 2>/dev/null || true
+          zip -qr out/reports.zip build.log test.log lint.log app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi app/build/outputs/roborazzi 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: build-out, path: out }
@@ -62,6 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with: { name: build-out, path: out }
       - name: Enable KVM
@@ -76,22 +77,7 @@ jobs:
           target: google_apis
           profile: pixel_6
           disable-animations: true
-          script: |
-            mkdir -p emu
-            APK=$(ls out/*.apk | head -1); echo "APK=$APK"
-            adb install -r "$APK" > emu/install.txt 2>&1 || true
-            PKG=com.aistudio.noorbee.newwhiteboard
-            adb logcat -c
-            adb shell am start -W -n $PKG/com.example.MainActivity > emu/start.txt 2>&1 || true
-            sleep 8; adb exec-out screencap -p > emu/01_launch.png
-            adb shell input tap 540 1900; sleep 4; adb exec-out screencap -p > emu/02_after_start_tap.png
-            adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; adb pull /sdcard/ui.xml emu/02_ui.xml >/dev/null 2>&1 || true
-            adb shell monkey -p $PKG --pct-syskeys 0 --throttle 120 -s 42 -v 1500 > emu/monkey.txt 2>&1 || true
-            sleep 3; adb exec-out screencap -p > emu/03_after_monkey.png
-            adb shell dumpsys meminfo $PKG > emu/meminfo.txt 2>&1 || true
-            adb logcat -d -b crash > emu/crash.txt 2>&1 || true
-            adb logcat -d '*:E' > emu/errors.txt 2>&1 || true
-            grep -c "CRASH\|FATAL EXCEPTION" emu/monkey.txt emu/crash.txt > emu/crash_count.txt 2>&1 || true
+          script: bash .github/scripts/emulator-uat.sh
       - name: Publish pre-release with APK + reports
         if: always()
         env:
