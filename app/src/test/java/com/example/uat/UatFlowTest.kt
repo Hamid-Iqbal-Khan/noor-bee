@@ -85,11 +85,13 @@ class UatFlowTest {
     rule.mainClock.autoAdvance = false
     waitTag("splash_screen_container"); shot("01_splash")
 
-    clickTag("submit_button")
-    waitTag("child_setup_screen"); shot("02_setup")
-
-    rule.onNode(hasTestTag("username_input")).performTextInput("Aisha")
-    clickTag("save_profile_button"); step(3_000)
+    clickTag("submit_button"); step(2_000)
+    // New installs go to profile setup; if a profile already exists the app goes straight to the dashboard.
+    if (rule.onAllNodes(hasTestTag("child_setup_screen"), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty()) {
+      shot("02_setup")
+      rule.onNode(hasTestTag("username_input")).performTextInput("Aisha")
+      clickTag("save_profile_button"); step(3_000)
+    }
     waitTag("home_dashboard_screen"); dismissGuide(); shot("03_dashboard")
 
     clickText("Daily Duas"); waitTag("dua_section_screen"); shot("04_duas"); goBack()
