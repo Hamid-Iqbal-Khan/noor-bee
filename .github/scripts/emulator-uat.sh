@@ -27,7 +27,7 @@ PY
   if [ -n "$b" ]; then adb shell input tap $b; echo "tap '$1' at $b" >> emu/steps.txt; sleep 3; else echo "NOT FOUND '$1'" >> emu/steps.txt; fi
 }
 shot 01_splash
-tap_text "Play & Learn"; shot 02_after_start
+tap_text "Learn!"; shot 02_after_start
 adb shell input text "Aisha"; adb shell input keyevent 111; sleep 1
 tap_text "Let's Go"; sleep 2; shot 03_dashboard
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
