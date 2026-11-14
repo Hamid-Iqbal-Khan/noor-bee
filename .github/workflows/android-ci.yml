@@ -1,0 +1,106 @@
+name: Android CI (build, test, emulator UAT)
+
+# Builds the Kotlin/Compose app, runs JVM + Robolectric/Roborazzi tests, then
+# installs the debug APK on an emulator for a smoke + monkey test.
+# Everything (APK, screenshots, reports, logs) is attached to a GitHub
+# pre-release so it can be fetched without the Actions API.
+on:
+  workflow_dispatch:
+  push:
+    branches: [kotlin-store-app]
+    paths-ignore: ['**.md']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      sha: ${{ steps.meta.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: meta
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: 9.3.1 }
+      - name: Debug keystore (not committed; standard Android debug key)
+        run: keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+      - name: .env for secrets plugin
+        run: cp .env.example .env
+      - name: Assemble debug APK
+        run: gradle :app:assembleDebug --stacktrace 2>&1 | tee build.log
+      - name: Unit + Robolectric/Roborazzi tests
+        if: always()
+        run: gradle :app:testDebugUnitTest -Proborazzi.test.record=true --continue 2>&1 | tee test.log
+      - name: Lint
+        if: always()
+        run: gradle :app:lintDebug --continue 2>&1 | tee lint.log || true
+      - name: Collect outputs
+        if: always()
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/debug/app-debug.apk "out/noor-bee-kotlin-${{ steps.meta.outputs.sha }}-debug.apk" || true
+          zip -qr out/reports.zip build.log test.log lint.log app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: build-out, path: out }
+
+  emulator:
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: build-out, path: out }
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Smoke + monkey test on emulator (API 34, Pixel)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            mkdir -p emu
+            APK=$(ls out/*.apk | head -1); echo "APK=$APK"
+            adb install -r "$APK" > emu/install.txt 2>&1 || true
+            PKG=com.aistudio.noorbee.newwhiteboard
+            adb logcat -c
+            adb shell am start -W -n $PKG/com.example.MainActivity > emu/start.txt 2>&1 || true
+            sleep 8; adb exec-out screencap -p > emu/01_launch.png
+            adb shell input tap 540 1900; sleep 4; adb exec-out screencap -p > emu/02_after_start_tap.png
+            adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; adb pull /sdcard/ui.xml emu/02_ui.xml >/dev/null 2>&1 || true
+            adb shell monkey -p $PKG --pct-syskeys 0 --throttle 120 -s 42 -v 1500 > emu/monkey.txt 2>&1 || true
+            sleep 3; adb exec-out screencap -p > emu/03_after_monkey.png
+            adb shell dumpsys meminfo $PKG > emu/meminfo.txt 2>&1 || true
+            adb logcat -d -b crash > emu/crash.txt 2>&1 || true
+            adb logcat -d '*:E' > emu/errors.txt 2>&1 || true
+            grep -c "CRASH\|FATAL EXCEPTION" emu/monkey.txt emu/crash.txt > emu/crash_count.txt 2>&1 || true
+      - name: Publish pre-release with APK + reports
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          SHA=${{ needs.build.outputs.sha }}
+          zip -qr out/emulator.zip emu 2>/dev/null || true
+          TAG="kotlin-ci-$SHA-${{ github.run_attempt }}"
+          gh release create "$TAG" out/* --target "${{ github.sha }}" --prerelease \
+            --title "Noor Bee Kotlin CI ($SHA)" \
+            --notes "Debug-signed test build + CI reports from branch ${{ github.ref_name }}. Not for Google Play."
