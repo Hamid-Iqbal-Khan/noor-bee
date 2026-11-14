@@ -1,0 +1,6 @@
+{
+  "name": "Noor Bee",
+  "description": "Learn English & Arabic Playfully - Educational app for kids with animated mascot, gamified learning paths, quizzes, character customization, progress logs, and parental dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
