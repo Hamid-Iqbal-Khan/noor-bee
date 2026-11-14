@@ -116,6 +116,7 @@ fun HomeDashboardScreen(
     onNavigateToParentPanel: () -> Unit,
     onNavigateToDua: () -> Unit,
     onNavigateToQuran: () -> Unit,
+    onNavigateToQaida: () -> Unit = {},
     onLevelChanged: (Int) -> Unit = {}
 ) {
     var showParentGate by remember { mutableStateOf(false) }
@@ -561,6 +562,18 @@ fun HomeDashboardScreen(
                                 onClick = onNavigateToDua
                             )
                         }
+                    }
+
+                    // Noorani Qaida (Urdu-medium Arabic course)
+                    Box(modifier = Modifier.fillMaxWidth().testTag("dashboard_qaida_card")) {
+                        DashboardHoneycomb(
+                            title = "نورانی قاعدہ (اردو) 📖",
+                            subtitle = "Arabic from Alif-Ba, taught in Urdu",
+                            color = Color(0xFFE8F5E9),
+                            borderStroke = Color(0xFF1B5E20),
+                            emoji = "📖",
+                            onClick = onNavigateToQaida
+                        )
                     }
 
                     // Row 3 (Quran Explorer)

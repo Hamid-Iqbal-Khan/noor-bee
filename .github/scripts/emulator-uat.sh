@@ -30,6 +30,14 @@ shot 01_splash
 tap_text "Learn!"; shot 02_after_start
 tap_text "Child's Name"; adb shell input text "Aisha"; adb shell input keyevent 111; sleep 1
 tap_text "Let's Go"; sleep 2; tap_text "Got it!"; shot 03_dashboard
+# Noorani Qaida (Urdu-medium Arabic course)
+adb shell input swipe 540 1700 540 700 300; sleep 1
+tap_text "نورانی قاعدہ"; sleep 3; shot 11_qaida_home
+tap_text "حروفِ مفردات"; sleep 2; shot 12_qaida_letters
+tap_text "ثَا"; sleep 2; shot 13_qaida_letter_detail; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 1; tap_text "حرکات"; sleep 2; shot 14_qaida_harakat
+adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 2
+adb shell input swipe 540 700 540 1700 300; sleep 1
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
 tap_text "Quran Explorer"; sleep 3; shot 05_quran
 tap_text "Surat-ul-Fateha"; sleep 3; shot 06_surah_fatiha; adb shell input keyevent 4; sleep 2; adb shell input keyevent 4; sleep 2; shot 06b_back_to_dashboard

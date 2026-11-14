@@ -146,6 +146,9 @@ class MainActivity : ComponentActivity() {
                                     onNavigateToQuran = {
                                         navController.navigate("quran")
                                     },
+                                    onNavigateToQaida = {
+                                        navController.navigate("qaida")
+                                    },
                                     onLevelChanged = { newLevel ->
                                         viewModel.updateLevel(newLevel)
                                     }
@@ -215,6 +218,28 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     }
+                                )
+                            }
+
+                            // NOORANI QAIDA — Urdu-medium Arabic course (Stage 1)
+                            composable("qaida") {
+                                com.example.qaida.QaidaScreen(
+                                    profileId = activeProfile?.id ?: 0,
+                                    onBackPressed = { navController.popBackStack() },
+                                    onSpeakArabic = { text ->
+                                        // Temporary voice until the qari's recordings are bundled
+                                        tts?.let { t ->
+                                            if (ttsReady) {
+                                                val result = t.setLanguage(Locale("ar", "SA"))
+                                                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                                                    t.language = Locale("ar")
+                                                }
+                                                t.setSpeechRate(config.speechRate * 0.8f)
+                                                t.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+                                            }
+                                        }
+                                    },
+                                    onEarnRewards = { coins, stars, desc -> viewModel.earnCoinsAndStars(coins, stars, desc) }
                                 )
                             }
 
