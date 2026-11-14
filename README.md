@@ -1,4 +1,4 @@
-# KidsLingua — Bilingual Children's Learning App
+# Noor Bee — Bilingual Islamic Learning App for Children
 ### English & Arabic · Ages 1–7 · React Native (Expo)
 
 ---
@@ -7,14 +7,14 @@
 
 | Feature | Details |
 |---|---|
-| English Alphabet | A–Z with sounds, words, and animations |
-| Arabic Alphabet | 28 letters with all 4 positional forms |
-| Vocabulary | 10 English categories (80+ words) + 5 Arabic categories (40+ words) |
+| Islamic A–Z | A–Z with Islamic words, Arabic, meanings and rhymes |
+| Arabic Alphabet | 28 letters with isolated, initial, medial and final forms |
+| Vocabulary | 6 English categories (51 words) + 5 Arabic categories (37 words) |
 | Flashcards | Swipe-to-learn with flip animations (bilingual) |
 | Quiz | MCQ with animations, stars, XP rewards |
-| Stories | 3 illustrated stories with TTS + comprehension quiz |
+| Stories | 3 illustrated stories (2 English, 1 Arabic) with TTS + comprehension quiz |
 | Matching Game | Emoji-to-word with timer and scoring |
-| Phrases | Greetings, classroom, daily phrases with tap-to-speak |
+| Phrases | Greetings, classroom, daily phrases with tap-to-speak (Arabic phrases with English meanings) |
 | Profile | Avatars, XP, levels, streak, 8 badges |
 | Islamic Words | Bismillah, Alhamdulillah, Salam and more |
 
@@ -37,7 +37,17 @@ npx expo start
 # 3. Scan the QR code with:
 #    - Android: Expo Go app
 #    - iPhone: Camera app → tap the banner
+
+# Or run in a browser (used for automated UAT):
+npx expo start --web
 ```
+
+### Optional: better voices (Google Cloud TTS)
+By default the device's built-in voice is used. A parent/teacher can paste a Google Cloud
+Text-to-Speech API key in **Profile → Voice Settings** (Google requires a billing account;
+usage above the free quota is charged). For builds, `EXPO_PUBLIC_GOOGLE_TTS_API_KEY` can be set
+instead. Any key on a device can be extracted — for a public release, proxy TTS through your own
+backend or ship pre-recorded audio.
 
 ---
 
@@ -107,7 +117,7 @@ eas submit --platform ios
 ## 🏗️ Project Structure
 
 ```
-KidsLingua/
+noor-bee/
 ├── App.js                        ← Entry point
 ├── app.json                      ← Expo config (name, icons, bundle ID)
 ├── eas.json                      ← Build profiles (APK / AAB)
@@ -136,10 +146,14 @@ KidsLingua/
     │   ├── GamesScreen.js        ← Games hub
     │   ├── PhrasesScreen.js      ← Phrases + TTS
     │   ├── ProfileScreen.js      ← Profile + badges
-    │   └── AgeSelectScreen.js    ← Age group curriculum
+    │   ├── AgeSelectScreen.js    ← Age group curriculum
+    │   ├── VoiceSettingsScreen.js← Google TTS key + voice test
+    │   └── IslamicAlphabetScreen.js ← (unused duplicate of Islamic A–Z)
     └── utils/
         ├── theme.js              ← Colors, fonts, shadows
-        └── storage.js            ← AsyncStorage (progress, XP, streaks)
+        ├── storage.js            ← AsyncStorage (progress, XP, streaks, badges)
+        ├── progress.js           ← Activity/letter/word tracking, badge triggers
+        └── tts.js                ← Speech (device voice or Google Cloud TTS)
 ```
 
 ---
@@ -194,8 +208,8 @@ english_fruits: [
 
 | Library | Purpose |
 |---|---|
-| Expo ~51 | Build toolchain, OTA updates |
-| React Native 0.74 | Cross-platform UI |
+| Expo ~50 | Build toolchain, OTA updates |
+| React Native 0.73 | Cross-platform UI |
 | React Navigation 6 | Tabs + stack navigation |
 | expo-speech | Text-to-speech (English + Arabic) |
 | expo-haptics | Tactile feedback |

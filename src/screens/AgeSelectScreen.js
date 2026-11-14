@@ -6,6 +6,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS } from '../utils/theme';
+import { Storage } from '../utils/storage';
 
 const AGE_CURRICULUM = {
   'ag1': {
@@ -53,7 +54,7 @@ export default function AgeSelectScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={[ageGroup.color, ageGroup.color + 'BB']} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.emoji}>{ageGroup.emoji}</Text>
@@ -104,7 +105,13 @@ export default function AgeSelectScreen({ route, navigation }) {
 
         <TouchableOpacity
           style={[styles.startBtn, { backgroundColor: ageGroup.color }]}
-          onPress={() => navigation.navigate('English')}
+          accessibilityRole="button"
+          onPress={async () => {
+            // Remember the chosen age group so Profile reflects it.
+            const p = (await Storage.getProfile()) || { name: 'Learner', avatar: '🦁' };
+            await Storage.saveProfile({ ...p, age: ageGroup.range });
+            navigation.navigate('English');
+          }}
         >
           <Text style={styles.startBtnText}>🚀 Start Learning!</Text>
         </TouchableOpacity>

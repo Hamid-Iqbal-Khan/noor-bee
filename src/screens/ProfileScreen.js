@@ -1,25 +1,20 @@
 // src/screens/ProfileScreen.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, TextInput, Modal,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS } from '../utils/theme';
-import { Storage } from '../utils/storage';
+import { Storage, ALL_BADGES } from '../utils/storage';
+import { AGE_GROUPS } from '../data/curriculum';
+import { confirmAction } from '../utils/progress';
+import { setTTSApiKey } from '../utils/tts';
 
 const AVATARS = ['🦁', '🐯', '🐻', '🦊', '🐼', '🐨', '🦄', '🐬', '🦋', '🐸'];
 
-const ALL_BADGES = [
-  { id: 'first_login', emoji: '🌟', name: 'First Step', desc: 'Started the journey!', xp: 10 },
-  { id: 'streak_3', emoji: '🔥', name: '3-Day Streak', desc: '3 days in a row!', xp: 50 },
-  { id: 'streak_7', emoji: '🏆', name: '7-Day Streak', desc: 'A full week!', xp: 150 },
-  { id: 'alphabet_en', emoji: '🔤', name: 'Alphabet Ace', desc: 'Learned all 26 letters!', xp: 100 },
-  { id: 'alphabet_ar', emoji: '🌙', name: 'Arabic Star', desc: 'Learned all 28 letters!', xp: 150 },
-  { id: 'quiz_perfect', emoji: '💎', name: 'Perfect Quiz', desc: '100% on a quiz!', xp: 200 },
-  { id: 'story_1', emoji: '📖', name: 'Story Reader', desc: 'Read your first story!', xp: 75 },
-  { id: 'vocab_50', emoji: '📚', name: 'Word Explorer', desc: 'Learned 50 words!', xp: 250 },
-];
+const AGE_OPTIONS = AGE_GROUPS.map(a => a.range);
 
 export default function ProfileScreen({ navigation }) {
   const [profile, setProfile] = useState(null);
@@ -31,7 +26,8 @@ export default function ProfileScreen({ navigation }) {
   const [editAvatar, setEditAvatar] = useState('🦁');
   const [editAge, setEditAge] = useState('');
 
-  useEffect(() => { loadAll(); }, []);
+  // Reload on every focus so XP/badges earned in other tabs show immediately.
+  useFocusEffect(useCallback(() => { loadAll(); }, []));
 
   const loadAll = async () => {
     const p = await Storage.getProfile();
@@ -42,14 +38,15 @@ export default function ProfileScreen({ navigation }) {
     setXP(x);
     setStreak(s);
     setBadges(b);
-    if (!p) {
+    if (!b.includes('first_login')) {
       await Storage.awardBadge('first_login');
-      setBadges(['first_login']);
+      setBadges([...b, 'first_login']);
+      setXP(await Storage.getXP());
     }
   };
 
   const saveProfile = async () => {
-    const p = { name: editName || 'Learner', avatar: editAvatar, age: editAge || '4-5' };
+    const p = { name: editName.trim().slice(0, 20) || 'Learner', avatar: editAvatar, age: editAge || '4-5' };
     await Storage.saveProfile(p);
     setProfile(p);
     setShowEdit(false);
@@ -70,7 +67,7 @@ export default function ProfileScreen({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient colors={['#6C3FF5', '#FF6B9D']} style={{ paddingTop: 55, paddingBottom: 40, alignItems: 'center', paddingHorizontal: 16 }}>
           <Text style={{ fontSize: 64 }}>{profile?.avatar || '🦁'}</Text>
-          <Text style={{ color: '#fff', fontSize: 22, fontWeight: '900', marginTop: 8 }}>{profile?.name || 'Learner'}</Text>
+          <Text style={{ color: '#fff', fontSize: 22, fontWeight: '900', marginTop: 8, maxWidth: '90%' }} numberOfLines={1}>{profile?.name || 'Learner'}</Text>
           <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: 13, marginTop: 2 }}>Age Group: {profile?.age || '4-5'}</Text>
           <TouchableOpacity
             style={{ marginTop: 12, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 16, paddingHorizontal: 20, paddingVertical: 8, flexDirection: 'row', gap: 6, alignItems: 'center' }}
@@ -150,10 +147,9 @@ export default function ProfileScreen({ navigation }) {
 
         <TouchableOpacity
           style={{ margin: 16, backgroundColor: '#FFEBEE', borderRadius: 16, padding: 14, alignItems: 'center', marginTop: 20 }}
-          onPress={() => Alert.alert('Reset Progress', 'Are you sure? This will delete all your progress!', [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Reset', style: 'destructive', onPress: async () => { await Storage.clearAll(); loadAll(); } },
-          ])}
+          accessibilityRole="button"
+          onPress={() => confirmAction('Reset Progress', 'Are you sure? This will delete all progress, badges and the saved voice key.',
+            async () => { await Storage.clearAll(); setTTSApiKey(''); loadAll(); }, 'Reset')}
         >
           <Text style={{ color: COLORS.error, fontWeight: '700' }}>🗑️ Reset Progress</Text>
         </TouchableOpacity>
@@ -161,7 +157,7 @@ export default function ProfileScreen({ navigation }) {
       </ScrollView>
 
       {/* Edit Modal */}
-      <Modal visible={showEdit} transparent animationType="slide">
+      <Modal visible={showEdit} transparent animationType="slide" onRequestClose={() => setShowEdit(false)}>
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
           <View style={{ backgroundColor: '#fff', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 28 }}>
             <Text style={{ fontSize: 20, fontWeight: '900', color: COLORS.text, marginBottom: 20 }}>✏️ Edit Profile</Text>
@@ -171,7 +167,24 @@ export default function ProfileScreen({ navigation }) {
               onChangeText={setEditName}
               style={{ borderWidth: 2, borderColor: COLORS.primary, borderRadius: 12, padding: 12, fontSize: 16, marginBottom: 16 }}
               placeholder="Your name"
+              maxLength={20}
+              accessibilityLabel="Name"
             />
+            <Text style={{ fontWeight: '700', color: COLORS.muted, marginBottom: 8 }}>Age Group</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+              {AGE_OPTIONS.map(r => (
+                <TouchableOpacity
+                  key={r}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Age ${r}`}
+                  accessibilityState={{ selected: editAge === r }}
+                  style={{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: 14, backgroundColor: editAge === r ? COLORS.primary : '#F5F5F5' }}
+                  onPress={() => setEditAge(r)}
+                >
+                  <Text style={{ fontWeight: '700', color: editAge === r ? '#fff' : COLORS.text }}>{r}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
             <Text style={{ fontWeight: '700', color: COLORS.muted, marginBottom: 8 }}>Choose Avatar</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
               {AVATARS.map(av => (
@@ -179,6 +192,8 @@ export default function ProfileScreen({ navigation }) {
                   key={av}
                   style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: editAvatar === av ? COLORS.primary + '30' : '#F5F5F5', alignItems: 'center', justifyContent: 'center', borderWidth: editAvatar === av ? 2 : 0, borderColor: COLORS.primary }}
                   onPress={() => setEditAvatar(av)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Avatar ${av}`}
                 >
                   <Text style={{ fontSize: 24 }}>{av}</Text>
                 </TouchableOpacity>

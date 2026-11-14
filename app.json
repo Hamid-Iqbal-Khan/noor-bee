@@ -43,6 +43,9 @@
           }
         }
       ]
-    ]
+    ],
+    "web": {
+      "favicon": "./src/assets/favicon.png"
+    }
   }
 }

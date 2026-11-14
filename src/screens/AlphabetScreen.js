@@ -2,8 +2,9 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
-  Dimensions, Animated, Modal, ScrollView,
+  useWindowDimensions, Animated, Modal, ScrollView,
 } from 'react-native';
+import { markLetterSeen } from '../utils/progress';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -12,13 +13,16 @@ import { COLORS, SHADOWS } from '../utils/theme';
 import { speakEnglish, speakArabic, speakRhyme, speakIslamicLetter, speakArabicLetter, stopSpeech } from '../utils/tts';
 import { ENGLISH_ALPHABET, ARABIC_ALPHABET } from '../data/curriculum';
 
-const { width } = Dimensions.get('window');
-const CARD_SIZE = (width - 56) / 4;
 
 export default function AlphabetScreen({ route, navigation }) {
   const { language } = route.params || { language: 'english' };
   const isArabic = language === 'arabic';
   const alphabet = isArabic ? ARABIC_ALPHABET : ENGLISH_ALPHABET;
+  const { width } = useWindowDimensions();
+  // 4 columns on phones, more on tablets/desktop (cards ~148px incl. margins), max 10
+  const numCols = Math.max(4, Math.min(10, Math.floor((width - 24) / 148)));
+  // grid padding 12*2 + card margins 4*2 per card; cap so cards stay finger-sized, not poster-sized
+  const cardSize = Math.min((width - 24) / numCols - 8, 140);
 
   const [selected, setSelected] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -35,6 +39,7 @@ export default function AlphabetScreen({ route, navigation }) {
     setSelected(item);
     setModalVisible(true);
     setRhymeVisible(false);
+    markLetterSeen(language, item.letter);
     Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true, tension: 100, friction: 8 }).start();
     if (isArabic) {
       speakArabicLetter(item.name, item.word, item.wordEn);
@@ -47,8 +52,10 @@ export default function AlphabetScreen({ route, navigation }) {
   const renderEnglishCard = ({ item }) => (
     <TouchableOpacity
       onPress={() => openLetter(item)}
-      style={[styles.card, { backgroundColor: item.color }]}
+      style={[styles.card, { backgroundColor: item.color, width: cardSize, height: cardSize + 12 }]}
       activeOpacity={0.82}
+      accessibilityRole="button"
+      accessibilityLabel={`${item.letter} for ${item.islamicWord}`}
     >
       <Text style={styles.cardLetter}>{item.letter}</Text>
       <Text style={styles.cardEmoji}>{item.emoji}</Text>
@@ -60,8 +67,10 @@ export default function AlphabetScreen({ route, navigation }) {
   const renderArabicCard = ({ item }) => (
     <TouchableOpacity
       onPress={() => openLetter(item)}
-      style={[styles.card, { backgroundColor: item.color }]}
+      style={[styles.card, { backgroundColor: item.color, width: cardSize, height: cardSize + 12 }]}
       activeOpacity={0.82}
+      accessibilityRole="button"
+      accessibilityLabel={`${item.name}, ${item.wordEn}`}
     >
       <Text style={styles.arabicCardLetter}>{item.letter}</Text>
       <Text style={styles.arabicCardRoman}>{item.roman}</Text>
@@ -75,13 +84,13 @@ export default function AlphabetScreen({ route, navigation }) {
         colors={isArabic ? ['#1B3A6B', '#0F1F3D'] : ['#1B5E20', '#2E7D32']}
         style={styles.header}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
           {isArabic ? '✦ الحروف العربية ✦' : '🌙 Islamic A to Z'}
         </Text>
-        <Text style={styles.headerSub}>
+        <Text style={[styles.headerSub, !isArabic && { writingDirection: 'ltr' }]}>
           {isArabic
             ? 'الحروف العربية مع الكلمات الإسلامية'
             : 'A for Allah · B for Bismillah · C for Charity…'}
@@ -93,18 +102,22 @@ export default function AlphabetScreen({ route, navigation }) {
         data={alphabet}
         keyExtractor={(item) => item.letter}
         renderItem={isArabic ? renderArabicCard : renderEnglishCard}
-        numColumns={4}
+        key={`cols-${numCols}`}
+        numColumns={numCols}
+        columnWrapperStyle={{ justifyContent: 'center' }}
         contentContainerStyle={styles.grid}
         showsVerticalScrollIndicator={false}
       />
 
       {/* ── Detail Modal ── */}
-      <Modal visible={modalVisible} transparent animationType="fade">
+      <Modal visible={modalVisible} transparent animationType="fade" onRequestClose={() => { setModalVisible(false); stopSpeech(); }}>
         <View style={styles.overlay}>
           <Animated.View style={[styles.modal, { transform: [{ scale: scaleAnim }] }]}>
             <TouchableOpacity
               style={styles.closeBtn}
               onPress={() => { setModalVisible(false); stopSpeech(); }}
+              accessibilityRole="button"
+              accessibilityLabel="Close"
             >
               <Ionicons name="close-circle" size={34} color={COLORS.muted} />
             </TouchableOpacity>
@@ -155,6 +168,7 @@ export default function AlphabetScreen({ route, navigation }) {
                       <Text style={styles.formsTitle}>Letter Forms (أشكال الحرف)</Text>
                       <View style={styles.formsRow}>
                         {[
+                          { label: 'Isolated\nمنفصل', form: selected.letter },
                           { label: 'Initial\nأول', form: selected.forms?.initial },
                           { label: 'Medial\nوسط', form: selected.forms?.medial },
                           { label: 'Final\nآخر', form: selected.forms?.final },
@@ -225,7 +239,7 @@ export default function AlphabetScreen({ route, navigation }) {
                 <TouchableOpacity
                   style={[styles.speakBtn, { backgroundColor: selected.color }]}
                   onPress={() => {
-                    if (isArabic) speakArabicLetter(selected.roman, selected.word, selected.wordEn);
+                    if (isArabic) speakArabicLetter(selected.name, selected.word, selected.wordEn);
                     else speakIslamicLetter(selected.letter, selected.islamicWord, selected.meaning);
                   }}
                 >
@@ -253,7 +267,7 @@ const styles = StyleSheet.create({
 
   // ── Cards ──
   card: {
-    width: CARD_SIZE, height: CARD_SIZE + 12, margin: 4,
+    margin: 4,
     borderRadius: 14, alignItems: 'center', justifyContent: 'center', ...SHADOWS.small,
   },
   cardLetter: { fontSize: 22, fontWeight: '900', color: '#fff' },
@@ -286,7 +300,7 @@ const styles = StyleSheet.create({
   formsContainer: { marginHorizontal: 16, marginBottom: 10 },
   formsTitle: { fontSize: 12, fontWeight: '700', color: COLORS.muted, textAlign: 'center', marginBottom: 8 },
   formsRow: { flexDirection: 'row', justifyContent: 'space-around' },
-  formCard: { alignItems: 'center', padding: 10, borderRadius: 12, flex: 1, marginHorizontal: 4 },
+  formCard: { alignItems: 'center', padding: 8, borderRadius: 12, flex: 1, marginHorizontal: 3 },
   formLetter: { fontSize: 26, fontWeight: '900', writingDirection: 'rtl' },
   formLabel: { fontSize: 9, color: COLORS.muted, textAlign: 'center', marginTop: 4 },
 

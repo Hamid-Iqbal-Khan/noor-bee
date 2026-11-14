@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { speakEnglish, speakArabic, speakRhyme, stopSpeech } from '../utils/tts';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { STORIES } from '../data/curriculum';
+import { Storage } from '../utils/storage';
+import { markActivity } from '../utils/progress';
 
 const { width, height } = Dimensions.get('window');
 const PAGE_WIDTH = width;
@@ -53,6 +55,10 @@ export default function StoryScreen({ route, navigation }) {
     setQuizAnswers(newAns);
     const correct = aIdx === selectedStory.comprehension[qIdx].answer;
     if (newAns.filter(a => a !== undefined).length === selectedStory.comprehension.length) {
+      const right = newAns.filter((a, i) => a === selectedStory.comprehension[i].answer).length;
+      Storage.addXP(10 + right * 5); // finishing a story + 5 XP per correct answer
+      Storage.awardBadge('story_1');
+      markActivity(`story_${selectedStory.id}`);
       setTimeout(() => setQuizDone(true), 600);
     }
   };
@@ -62,7 +68,7 @@ export default function StoryScreen({ route, navigation }) {
     return (
       <View style={styles.container}>
         <LinearGradient colors={['#880E4F', '#C2185B']} style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>📖 Stories</Text>
@@ -102,7 +108,7 @@ export default function StoryScreen({ route, navigation }) {
     return (
       <View style={styles.container}>
         <LinearGradient colors={['#880E4F', '#C2185B']} style={styles.header}>
-          <TouchableOpacity onPress={() => setShowQuiz(false)} style={styles.backBtn}>
+          <TouchableOpacity onPress={() => setShowQuiz(false)} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Back to story">
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>🧠 Story Questions</Text>
@@ -112,7 +118,7 @@ export default function StoryScreen({ route, navigation }) {
             <LinearGradient colors={['#6C3FF5', '#FF6B9D']} style={styles.resultCard}>
               <Text style={{ fontSize: 48 }}>{'⭐'.repeat(Math.min(correctCount + 1, 3))}</Text>
               <Text style={styles.resultTitle}>{correctCount === selectedStory.comprehension.length ? '🎉 Perfect!' : '👏 Good try!'}</Text>
-              <Text style={styles.resultSub}>{correctCount}/{selectedStory.comprehension.length} correct</Text>
+              <Text style={styles.resultSub}>{correctCount}/{selectedStory.comprehension.length} correct · +{10 + correctCount * 5} XP</Text>
               <TouchableOpacity style={styles.resultBtn} onPress={() => { setSelectedStory(null); setShowQuiz(false); setPage(0); setQuizAnswers([]); setQuizDone(false); }}>
                 <Text style={styles.resultBtnTxt}>📚 More Stories</Text>
               </TouchableOpacity>
@@ -121,6 +127,9 @@ export default function StoryScreen({ route, navigation }) {
           {selectedStory.comprehension.map((q, qi) => (
             <View key={qi} style={styles.qCard}>
               <Text style={styles.qText}>{q.question || q.questionEn}</Text>
+              {!!q.question && !!q.questionEn && (
+                <Text style={[styles.qText, { fontSize: 13, opacity: 0.7, marginTop: -6 }]}>{q.questionEn}</Text>
+              )}
               {q.options.map((opt, oi) => {
                 const answered = quizAnswers[qi] !== undefined;
                 const isCorrect = oi === q.answer;
@@ -156,7 +165,7 @@ export default function StoryScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#880E4F', '#C2185B']} style={styles.header}>
-        <TouchableOpacity onPress={() => setSelectedStory(null)} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => setSelectedStory(null)} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="All stories">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -176,7 +185,7 @@ export default function StoryScreen({ route, navigation }) {
         {isArabic && currentPage.textEn && (
           <Text style={styles.pageTextEn}>{currentPage.textEn}</Text>
         )}
-        <TouchableOpacity style={styles.speakPageBtn} onPress={() => speakPage(page)}>
+        <TouchableOpacity style={styles.speakPageBtn} onPress={() => speakPage(page)} accessibilityRole="button" accessibilityLabel="Read this page aloud">
           <Ionicons name="volume-high" size={22} color="#fff" />
           <Text style={styles.speakPageTxt}>Read Aloud</Text>
         </TouchableOpacity>

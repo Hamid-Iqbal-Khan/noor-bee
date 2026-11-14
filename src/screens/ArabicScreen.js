@@ -1,17 +1,16 @@
 // src/screens/ArabicScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { VOCAB_CATEGORIES } from '../data/curriculum';
 
-const { width } = Dimensions.get('window');
 
 const MODULES = [
   { title: 'Arabic Alphabet', subtitle: '28 letters · Islamic words', emoji: '✦', color: '#1B3A6B', screen: 'Alphabet', params: { language: 'arabic' } },
   { title: 'Islamic Words', subtitle: 'Daily Islamic phrases', emoji: '🌙', color: '#1B5E20', screen: 'Vocab', params: { category: 'ar_islamic', language: 'arabic' } },
-  { title: 'Vocabulary', subtitle: '5 categories · 40+ words', emoji: '📚', color: '#4E342E', screen: 'Vocab', params: { language: 'arabic' } },
+  { title: 'Vocabulary', subtitle: `${VOCAB_CATEGORIES.arabic.length} categories · ${VOCAB_CATEGORIES.arabic.reduce((n, c) => n + c.words.length, 0)} words`, emoji: '📚', color: '#4E342E', screen: 'Vocab', params: { language: 'arabic' } },
   { title: 'Flashcards', subtitle: 'Swipe to learn', emoji: '🃏', color: '#4A148C', screen: 'Flashcard', params: { category: 'ar_animals', language: 'arabic' } },
   { title: 'Arabic Quiz', subtitle: 'Test your knowledge', emoji: '❓', color: '#880E4F', screen: 'Quiz', params: { category: 'arabic_animals', language: 'arabic' } },
   { title: 'Phrases', subtitle: 'Greetings & daily use', emoji: '💬', color: '#311B92', screen: 'Phrases', params: { language: 'arabic' } },
@@ -20,6 +19,9 @@ const MODULES = [
 ];
 
 export default function ArabicScreen({ navigation }) {
+  const { width } = useWindowDimensions();
+  const cols = width >= 900 ? 4 : width >= 600 ? 3 : 2;
+  const cardWidth = (width - 32 - 10 * (cols - 1)) / cols;
   const categories = VOCAB_CATEGORIES.arabic;
   return (
     <View style={styles.container}>
@@ -44,7 +46,9 @@ export default function ArabicScreen({ navigation }) {
             {MODULES.map((mod, i) => (
               <TouchableOpacity
                 key={i}
-                style={[styles.moduleCard, { backgroundColor: mod.color }]}
+                style={[styles.moduleCard, { backgroundColor: mod.color, width: cardWidth }]}
+                accessibilityRole="button"
+                accessibilityLabel={`${mod.title}. ${mod.subtitle}`}
                 onPress={() => navigation.navigate(mod.screen, mod.params)}
                 activeOpacity={0.85}
               >
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: 16, marginVertical: 8 },
   sectionTitle: { fontSize: 15, fontWeight: '800', color: COLORS.text, marginBottom: 12 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  moduleCard: { width: (width - 52) / 2, borderRadius: 18, padding: 16, ...SHADOWS.small },
+  moduleCard: { borderRadius: 18, padding: 16, ...SHADOWS.small },
   moduleEmoji: { fontSize: 28, marginBottom: 8 },
   moduleTitle: { color: '#fff', fontSize: 14, fontWeight: '800' },
   moduleSub: { color: 'rgba(255,255,255,0.8)', fontSize: 10, marginTop: 2 },

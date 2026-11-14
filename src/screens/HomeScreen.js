@@ -1,16 +1,16 @@
 // src/screens/HomeScreen.js
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  Animated, Dimensions, StatusBar, Alert,
+  Animated, StatusBar, useWindowDimensions,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { Storage } from '../utils/storage';
 import { AGE_GROUPS } from '../data/curriculum';
-
-const { width } = Dimensions.get('window');
+import { getTodayActivities } from '../utils/progress';
 
 const DAILY_TIPS = [
   "🌟 Practice 5 minutes every day!",
@@ -25,12 +25,18 @@ export default function HomeScreen({ navigation }) {
   const [profile, setProfile] = useState(null);
   const [xp, setXP] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [doneToday, setDoneToday] = useState([]);
+  const { width } = useWindowDimensions();
+  const cols = width >= 900 ? 6 : width >= 600 ? 4 : 3;
+  const quickWidth = (width - 32 - 10 * (cols - 1)) / cols;
   const [tip] = useState(DAILY_TIPS[Math.floor(Math.random() * DAILY_TIPS.length)]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
 
+  // Reload whenever the tab gains focus so XP/streak/name are never stale.
+  useFocusEffect(useCallback(() => { loadData(); }, []));
+
   useEffect(() => {
-    loadData();
     Animated.parallel([
       Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
       Animated.timing(slideAnim, { toValue: 0, duration: 500, useNativeDriver: true }),
@@ -41,6 +47,8 @@ export default function HomeScreen({ navigation }) {
     const p = await Storage.getProfile();
     const x = await Storage.getXP();
     const s = await Storage.updateStreak();
+    const d = await getTodayActivities();
+    setDoneToday(d);
     setProfile(p);
     setXP(x);
     setStreak(s);
@@ -67,13 +75,15 @@ export default function HomeScreen({ navigation }) {
         <LinearGradient colors={['#6C3FF5', '#FF6B9D']} style={styles.header}>
           <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
             <View style={styles.headerTop}>
-              <View>
-                <Text style={styles.greeting}>Hello, {profile?.name || 'Learner'} 👋</Text>
+              <View style={{ flex: 1, marginRight: 12 }}>
+                <Text style={styles.greeting} numberOfLines={1}>Hello, {profile?.name || 'Learner'} 👋</Text>
                 <Text style={styles.subGreeting}>Ready to learn today?</Text>
               </View>
               <TouchableOpacity
                 style={styles.streakBadge}
                 onPress={() => navigation.navigate('Profile')}
+                accessibilityRole="button"
+                accessibilityLabel={`${streak} day streak. Open profile`}
               >
                 <Text style={styles.streakText}>🔥 {streak}</Text>
                 <Text style={styles.streakLabel}>streak</Text>
@@ -105,7 +115,9 @@ export default function HomeScreen({ navigation }) {
             {QUICK_ACTIONS.map((action, i) => (
               <TouchableOpacity
                 key={i}
-                style={[styles.quickCard, { backgroundColor: action.color }]}
+                style={[styles.quickCard, { backgroundColor: action.color, width: quickWidth }]}
+                accessibilityRole="button"
+                accessibilityLabel={action.label.replace('\n', ' ')}
                 onPress={() => {
                   if (action.subScreen) {
                     navigation.navigate(action.screen, {
@@ -148,11 +160,11 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>📅 Today's Learning Plan</Text>
           {[
-            { icon: '🔤', title: 'English Alphabet', sub: 'Learn 3 new letters', done: true, tab: 'English', screen: 'Alphabet', params: { language: 'english' } },
-            { icon: '🐾', title: 'Animal Vocabulary', sub: '10 words to practice', done: false, tab: 'English', screen: 'Vocab', params: { category: 'animals', language: 'english' } },
-            { icon: '🌙', title: 'Arabic Letters', sub: 'Ba, Ta, Tha today', done: false, tab: 'Arabic', screen: 'Alphabet', params: { language: 'arabic' } },
-            { icon: '🎮', title: 'Quiz Time', sub: '5 questions', done: false, tab: 'English', screen: 'Quiz', params: { category: 'english_animals', language: 'english' } },
-          ].map((item, i) => (
+            { icon: '🔤', title: 'English Alphabet', sub: 'Learn 3 new letters', activity: 'alphabet_en', tab: 'English', screen: 'Alphabet', params: { language: 'english' } },
+            { icon: '🐾', title: 'Animal Vocabulary', sub: '10 words to practice', activity: 'vocab_animals', tab: 'English', screen: 'Vocab', params: { category: 'animals', language: 'english' } },
+            { icon: '🌙', title: 'Arabic Letters', sub: 'Ba, Ta, Tha today', activity: 'alphabet_ar', tab: 'Arabic', screen: 'Alphabet', params: { language: 'arabic' } },
+            { icon: '🎮', title: 'Quiz Time', sub: '5 questions', activity: 'quiz', tab: 'English', screen: 'Quiz', params: { category: 'english_animals', language: 'english' } },
+          ].map((it) => ({ ...it, done: doneToday.includes(it.activity) })).map((item, i) => (
             <TouchableOpacity
               key={i}
               style={[styles.planItem, item.done && styles.planDone]}
@@ -205,7 +217,7 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: 16, marginBottom: 8 },
   sectionTitle: { fontSize: 17, fontWeight: '800', color: COLORS.text, marginBottom: 12 },
   quickGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  quickCard: { width: (width - 52) / 3, borderRadius: 16, padding: 14, alignItems: 'center', ...SHADOWS.small },
+  quickCard: { borderRadius: 16, padding: 14, alignItems: 'center', ...SHADOWS.small },
   quickEmoji: { fontSize: 28, marginBottom: 6 },
   quickLabel: { color: '#fff', fontSize: 11, fontWeight: '700', textAlign: 'center' },
   ageCard: { borderRadius: 20, padding: 16, marginRight: 12, alignItems: 'center', width: 120, ...SHADOWS.small },

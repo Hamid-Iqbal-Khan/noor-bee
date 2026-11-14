@@ -52,7 +52,7 @@ export default function IslamicAlphabetScreen({ navigation }) {
     <View style={styles.container}>
       {/* Header */}
       <LinearGradient colors={['#1B5E20', '#2E7D32', '#388E3C']} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <View style={styles.headerContent}>
@@ -121,10 +121,12 @@ export default function IslamicAlphabetScreen({ navigation }) {
                 </View>
 
                 {/* Picture prompt */}
+                {!!selected.picturePrompt && (
                 <View style={styles.pictureBox}>
                   <Text style={styles.pictureLabel}>🖼️ Picture to imagine</Text>
                   <Text style={styles.pictureText}>{selected.picturePrompt}</Text>
                 </View>
+                )}
 
                 {/* Rhyme button / display */}
                 {!rhymeVisible ? (

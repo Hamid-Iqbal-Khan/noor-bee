@@ -10,6 +10,7 @@ import { speakEnglish, speakArabic, speakRhyme, stopSpeech } from '../utils/tts'
 import { COLORS, SHADOWS } from '../utils/theme';
 import { VOCAB_CATEGORIES } from '../data/curriculum';
 import { Storage } from '../utils/storage';
+import { markActivity } from '../utils/progress';
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,6 +27,7 @@ export default function FlashcardScreen({ route, navigation }) {
   const [known, setKnown] = useState(0);
   const [unknown, setUnknown] = useState(0);
   const [done, setDone] = useState(false);
+  const busy = useRef(false); // blocks repeat taps/swipes while a card animates out
 
   const flipAnim = useRef(new Animated.Value(0)).current;
   const swipeX = useRef(new Animated.Value(0)).current;
@@ -49,6 +51,8 @@ export default function FlashcardScreen({ route, navigation }) {
       };
 
   const swipeTo = (direction) => {
+    if (busy.current) return;
+    busy.current = true;
     const toX = direction === 'right' ? width : -width;
         if (direction === 'right') setKnown(k => k + 1);
     else setUnknown(u => u + 1);
@@ -58,8 +62,12 @@ export default function FlashcardScreen({ route, navigation }) {
       swipeY.setValue(0);
       setFlipped(false);
       flipAnim.setValue(0);
+      busy.current = false;
       if (index + 1 >= words.length) {
         setDone(true);
+        // 1 XP per card reviewed, +5 for finishing the deck
+        Storage.addXP(words.length + 5);
+        markActivity('flashcards');
       } else {
         setIndex(i => i + 1);
       }
@@ -97,7 +105,7 @@ export default function FlashcardScreen({ route, navigation }) {
         <LinearGradient colors={['#6C3FF5', '#FF6B9D']} style={styles.doneBg}>
           <Text style={styles.doneEmoji}>🎉</Text>
           <Text style={styles.doneTitle}>Great Job!</Text>
-          <Text style={styles.doneSub}>You finished the flashcards!</Text>
+          <Text style={styles.doneSub}>You finished the flashcards! +{words.length + 5} XP</Text>
           <View style={styles.doneStats}>
             <View style={styles.statCard}>
               <Text style={styles.statNum}>{known}</Text>
@@ -128,11 +136,11 @@ export default function FlashcardScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={isArabic ? ['#E65100', '#BF360C'] : ['#7B1FA2', '#9C27B0']} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
-          {isArabic ? `${cat?.title} Flashcards` : `${cat?.title} Flashcards`}
+          {isArabic ? `${cat?.titleEn || cat?.title} Flashcards` : `${cat?.title} Flashcards`}
         </Text>
         <Text style={styles.progress}>{index + 1} / {words.length}</Text>
       </LinearGradient>
@@ -194,14 +202,14 @@ export default function FlashcardScreen({ route, navigation }) {
 
       {/* Action buttons */}
       <View style={styles.actions}>
-        <TouchableOpacity style={[styles.actionBtn, { backgroundColor: COLORS.error }]} onPress={() => swipeTo('left')}>
+        <TouchableOpacity style={[styles.actionBtn, { backgroundColor: COLORS.error }]} onPress={() => swipeTo('left')} accessibilityRole="button" accessibilityLabel="Review this word again">
           <Ionicons name="refresh" size={24} color="#fff" />
           <Text style={styles.actionLabel}>Review</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.speakBtn} onPress={() => speak(current)}>
+        <TouchableOpacity style={styles.speakBtn} onPress={() => speak(current)} accessibilityRole="button" accessibilityLabel="Listen">
           <Ionicons name="volume-high" size={28} color={cat?.color} />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.actionBtn, { backgroundColor: COLORS.success }]} onPress={() => swipeTo('right')}>
+        <TouchableOpacity style={[styles.actionBtn, { backgroundColor: COLORS.success }]} onPress={() => swipeTo('right')} accessibilityRole="button" accessibilityLabel="I know this word">
           <Ionicons name="checkmark" size={24} color="#fff" />
           <Text style={styles.actionLabel}>I Know!</Text>
         </TouchableOpacity>

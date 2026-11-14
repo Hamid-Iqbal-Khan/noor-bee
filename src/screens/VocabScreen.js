@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { speakEnglish, speakArabic, speakRhyme, stopSpeech } from '../utils/tts';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { VOCAB_CATEGORIES } from '../data/curriculum';
+import { markWordSeen } from '../utils/progress';
 
 const { width } = Dimensions.get('window');
 
@@ -17,7 +18,10 @@ export default function VocabScreen({ route, navigation }) {
   const isArabic = language === 'arabic';
 
   const categories = isArabic ? VOCAB_CATEGORIES.arabic : VOCAB_CATEGORIES.english;
-  const [activeCategory, setActiveCategory] = useState(category);
+  // Fall back to the first category so a tab is always highlighted.
+  const [activeCategory, setActiveCategory] = useState(
+    categories.some(c => c.id === category) ? category : categories[0].id
+  );
   const [selectedWord, setSelectedWord] = useState(null);
 
   const currentCat = categories.find(c => c.id === activeCategory) || categories[0];
@@ -32,6 +36,7 @@ export default function VocabScreen({ route, navigation }) {
   const openWord = (word) => {
     setSelectedWord(word);
     speak(word);
+    markWordSeen(currentCat.id, word.word);
   };
 
   return (
@@ -41,7 +46,7 @@ export default function VocabScreen({ route, navigation }) {
         colors={isArabic ? ['#E65100', '#BF360C'] : ['#7B1FA2', '#9C27B0']}
         style={styles.header}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
@@ -78,6 +83,8 @@ export default function VocabScreen({ route, navigation }) {
             style={[styles.wordCard, { borderTopColor: currentCat.color }]}
             onPress={() => openWord(item)}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel={isArabic ? `${item.transliteration}, ${item.english}` : item.word}
           >
             <Text style={styles.wordEmoji}>{item.emoji}</Text>
             <Text style={isArabic ? styles.arabicWord : styles.wordText}>
@@ -88,6 +95,8 @@ export default function VocabScreen({ route, navigation }) {
             <TouchableOpacity
               style={[styles.speakSmall, { backgroundColor: currentCat.color }]}
               onPress={() => speak(item)}
+              accessibilityRole="button"
+              accessibilityLabel={`Listen to ${isArabic ? item.transliteration : item.word}`}
             >
               <Ionicons name="volume-high" size={14} color="#fff" />
             </TouchableOpacity>
@@ -96,10 +105,10 @@ export default function VocabScreen({ route, navigation }) {
       />
 
       {/* Word detail modal */}
-      <Modal visible={!!selectedWord} transparent animationType="slide">
+      <Modal visible={!!selectedWord} transparent animationType="slide" onRequestClose={() => setSelectedWord(null)}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
-            <TouchableOpacity style={styles.modalClose} onPress={() => setSelectedWord(null)}>
+            <TouchableOpacity style={styles.modalClose} onPress={() => setSelectedWord(null)} accessibilityRole="button" accessibilityLabel="Close">
               <Ionicons name="close-circle" size={36} color={COLORS.muted} />
             </TouchableOpacity>
 

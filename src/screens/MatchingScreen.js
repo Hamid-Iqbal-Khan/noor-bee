@@ -2,17 +2,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, Animated,
-  Dimensions, ScrollView,
+  ScrollView, Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { VOCAB_CATEGORIES } from '../data/curriculum';
+import { Storage } from '../utils/storage';
+import { markActivity } from '../utils/progress';
 
-const { width } = Dimensions.get('window');
 
-const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+// Fisher–Yates (sort(() => Math.random() - 0.5) is biased)
+const shuffle = (arr) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
 
 export default function MatchingScreen({ route, navigation }) {
   const { language } = route.params || { language: 'english' };
@@ -21,8 +30,10 @@ export default function MatchingScreen({ route, navigation }) {
   const cat = cats[0];
   const allWords = cat.words.slice(0, 6);
 
-  const [leftItems] = useState(shuffle(allWords.map((w, i) => ({ id: i, emoji: w.emoji, type: 'emoji' }))));
-  const [rightItems] = useState(shuffle(allWords.map((w, i) => ({ id: i, text: isArabic ? w.word : w.word, type: 'word' }))));
+  const makeLeft = () => shuffle(allWords.map((w, i) => ({ id: i, emoji: w.emoji, type: 'emoji' })));
+  const makeRight = () => shuffle(allWords.map((w, i) => ({ id: i, text: w.word, type: 'word' })));
+  const [leftItems, setLeftItems] = useState(makeLeft);
+  const [rightItems, setRightItems] = useState(makeRight);
   const [selectedLeft, setSelectedLeft] = useState(null);
   const [selectedRight, setSelectedRight] = useState(null);
   const [matched, setMatched] = useState([]);
@@ -30,50 +41,72 @@ export default function MatchingScreen({ route, navigation }) {
   const [done, setDone] = useState(false);
   const [time, setTime] = useState(0);
   const timerRef = useRef(null);
+  const locked = useRef(false); // ignore taps while a wrong pair is being shown
 
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
+  const haptic = (type) => {
+    if (Platform.OS === 'web') return;
+    Haptics.notificationAsync(type).catch(() => {});
+  };
+
+  const startTimer = () => {
+    clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setTime(t => t + 1), 1000);
+  };
+
+  useEffect(() => {
+    startTimer();
     return () => clearInterval(timerRef.current);
   }, []);
 
   useEffect(() => {
-    if (matched.length === allWords.length) {
+    if (matched.length === allWords.length && !done) {
       clearInterval(timerRef.current);
       setDone(true);
+      Storage.addXP(errors === 0 ? 15 : 10);
+      markActivity('matching');
     }
   }, [matched]);
 
-  useEffect(() => {
-    if (selectedLeft !== null && selectedRight !== null) {
-      if (selectedLeft === selectedRight) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        setMatched(m => [...m, selectedLeft]);
-        setSelectedLeft(null);
-        setSelectedRight(null);
-      } else {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        setErrors(e => e + 1);
-        Animated.sequence([
-          Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
-          Animated.timing(shakeAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
-          Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
-          Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
-        ]).start();
-        setTimeout(() => { setSelectedLeft(null); setSelectedRight(null); }, 800);
-      }
+  // Resolve a pair synchronously in the tap handler (no effect race on fast taps).
+  const pick = (side, id) => {
+    if (locked.current || matched.includes(id)) return;
+    const left = side === 'left' ? id : selectedLeft;
+    const right = side === 'right' ? id : selectedRight;
+    setSelectedLeft(left);
+    setSelectedRight(right);
+    if (left === null || right === null) return;
+    if (left === right) {
+      haptic(Haptics.NotificationFeedbackType.Success);
+      setMatched(m => [...m, left]);
+      setSelectedLeft(null);
+      setSelectedRight(null);
+      return;
     }
-  }, [selectedLeft, selectedRight]);
+    locked.current = true;
+    haptic(Haptics.NotificationFeedbackType.Error);
+    setErrors(e => e + 1);
+    Animated.sequence([
+      Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
+    ]).start();
+    setTimeout(() => { setSelectedLeft(null); setSelectedRight(null); locked.current = false; }, 800);
+  };
 
   const restart = () => {
+    locked.current = false;
+    setLeftItems(makeLeft());
+    setRightItems(makeRight());
     setSelectedLeft(null);
     setSelectedRight(null);
     setMatched([]);
     setErrors(0);
     setDone(false);
     setTime(0);
-    timerRef.current = setInterval(() => setTime(t => t + 1), 1000);
+    startTimer();
   };
 
   const fmt = (s) => `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
@@ -83,7 +116,7 @@ export default function MatchingScreen({ route, navigation }) {
     return (
       <LinearGradient colors={['#6C3FF5', '#FF6B9D']} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 }}>
         <Text style={{ fontSize: 80 }}>{'⭐'.repeat(stars)}</Text>
-        <Text style={{ color: '#fff', fontSize: 28, fontWeight: '900', marginTop: 8 }}>All Matched!</Text>
+        <Text style={{ color: '#fff', fontSize: 28, fontWeight: '900', marginTop: 8 }}>All Matched! +{errors === 0 ? 15 : 10} XP</Text>
         <Text style={{ color: 'rgba(255,255,255,0.85)', fontSize: 15, marginTop: 4, textAlign: 'center' }}>
           {errors === 0 ? '🏆 Perfect Match! No mistakes!' : `You made ${errors} mistake${errors !== 1 ? 's' : ''}`}
         </Text>
@@ -112,7 +145,7 @@ export default function MatchingScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#BF360C', '#E64A19']} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <View style={styles.headerRow}>
@@ -139,7 +172,9 @@ export default function MatchingScreen({ route, navigation }) {
                   isSelected && styles.cardSelected,
                   isMatched && styles.cardMatched,
                 ]}
-                onPress={() => { if (!isMatched) setSelectedLeft(item.id); }}
+                onPress={() => pick('left', item.id)}
+                accessibilityRole="button"
+                accessibilityLabel={`Picture ${item.emoji}`}
                 disabled={isMatched}
               >
                 <Text style={styles.cardEmoji}>{item.emoji}</Text>
@@ -168,7 +203,9 @@ export default function MatchingScreen({ route, navigation }) {
                   isSelected && styles.cardSelected,
                   isMatched && styles.cardMatched,
                 ]}
-                onPress={() => { if (!isMatched) setSelectedRight(item.id); }}
+                onPress={() => pick('right', item.id)}
+                accessibilityRole="button"
+                accessibilityLabel={`Word ${item.text}`}
                 disabled={isMatched}
               >
                 <Text style={isArabic ? styles.arabicText : styles.wordText} numberOfLines={1}>{item.text}</Text>

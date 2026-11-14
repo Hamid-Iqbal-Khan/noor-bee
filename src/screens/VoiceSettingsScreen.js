@@ -8,7 +8,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, SHADOWS } from '../utils/theme';
-import { speakEnglish, speakArabic, speakRhyme } from '../utils/tts';
+import { speakEnglish, speakArabic, speakRhyme, setTTSApiKey } from '../utils/tts';
+import { notify } from '../utils/progress';
 
 const VOICES = [
   {
@@ -16,10 +17,10 @@ const VOICES = [
     name: 'Google Cloud TTS',
     tag: 'BEST QUALITY',
     tagColor: '#1B5E20',
-    description: 'Indian English male + native Arabic\nRequires free API key',
+    description: 'Indian English male + native Arabic\nRequires a Google Cloud API key (billing account needed)',
     englishVoice: 'en-IN-Wavenet-C (Indian Male)',
     arabicVoice: 'ar-XA-Wavenet-B (Native Arabic)',
-    free: '1 million characters/month free',
+    free: 'Monthly free character quota, then paid — see Google pricing',
     icon: '🎙️',
   },
   {
@@ -51,19 +52,21 @@ export default function VoiceSettingsScreen({ navigation }) {
 
   const saveKey = async () => {
     if (!apiKey.trim()) {
-      Alert.alert('Empty Key', 'Please enter your Google Cloud TTS API key.');
+      notify('Empty Key', 'Please enter your Google Cloud TTS API key.');
       return;
     }
     await AsyncStorage.setItem('google_tts_key', apiKey.trim());
+    setTTSApiKey(apiKey.trim());
     setSaved(true);
-    Alert.alert('✅ Saved!', 'Google TTS API key saved. Restart the app to apply the Indian English male voice and proper Arabic pronunciation.');
+    notify('✅ Saved!', 'Google TTS API key saved and applied. Use "Test Voices" below to check it. If the key is invalid, the device voice is used instead.');
   };
 
   const removeKey = async () => {
     await AsyncStorage.removeItem('google_tts_key');
+    setTTSApiKey('');
     setApiKey('');
     setSaved(false);
-    Alert.alert('Removed', 'API key removed. Device voice will be used.');
+    notify('Removed', 'API key removed. Device voice will be used.');
   };
 
   const testEnglish = async () => {
@@ -87,7 +90,7 @@ export default function VoiceSettingsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1B3A6B', '#0F1F3D']} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>🎙️ Voice Settings</Text>
@@ -121,13 +124,13 @@ export default function VoiceSettingsScreen({ navigation }) {
         <View style={styles.apiCard}>
           <Text style={styles.apiTitle}>🔑 Google Cloud TTS API Key</Text>
           <Text style={styles.apiDesc}>
-            Get a FREE API key in 3 minutes — gives you the Indian English male voice and native Arabic pronunciation.
+            For parents/teachers: a Google Cloud API key gives the Indian English male voice and native Arabic pronunciation. Google requires a billing account; usage beyond the monthly free quota is charged. Restrict the key to the Text-to-Speech API.
           </Text>
 
           {/* Steps */}
           {[
             { n: '1', text: 'Go to Google Cloud Console (link below)' },
-            { n: '2', text: 'Create a free account (no credit card needed for free tier)' },
+            { n: '2', text: 'Create a project and link a billing account (required by Google)' },
             { n: '3', text: 'Enable "Cloud Text-to-Speech API"' },
             { n: '4', text: 'Go to Credentials → Create API Key' },
             { n: '5', text: 'Paste the key below and tap Save' },
@@ -151,12 +154,12 @@ export default function VoiceSettingsScreen({ navigation }) {
           <TextInput
             style={styles.input}
             value={apiKey}
-            onChangeText={setApiKey}
+            onChangeText={(t) => { setApiKey(t); setSaved(false); }}
             placeholder="Paste your API key here (AIza...)"
             placeholderTextColor={COLORS.muted}
             autoCapitalize="none"
             autoCorrect={false}
-            secureTextEntry={false}
+            secureTextEntry={saved}
           />
 
           <View style={styles.btnRow}>

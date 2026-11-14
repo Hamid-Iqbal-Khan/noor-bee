@@ -10,6 +10,7 @@ import { speakEnglish, speakArabic, speakRhyme, stopSpeech } from '../utils/tts'
 import { COLORS, SHADOWS } from '../utils/theme';
 import { QUIZ_BANK } from '../data/curriculum';
 import { Storage } from '../utils/storage';
+import { markActivity } from '../utils/progress';
 
 const { width } = Dimensions.get('window');
 
@@ -71,8 +72,11 @@ export default function QuizScreen({ route, navigation }) {
     setTimeout(() => {
       setSelected(null);
       if (qIndex + 1 >= questions.length) {
+        const finalScore = score + (correct ? 10 : 0);
         setDone(true);
-        Storage.addXP(score + (correct ? 10 : 0));
+        Storage.addXP(finalScore);
+        markActivity('quiz');
+        if (finalScore === questions.length * 10) Storage.awardBadge('quiz_perfect');
       } else {
         setQIndex(i => i + 1);
       }
@@ -134,7 +138,7 @@ export default function QuizScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={isArabic ? ['#E65100', '#BF360C'] : ['#1B5E20', '#388E3C']} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <View style={styles.headerRow}>
@@ -164,7 +168,7 @@ export default function QuizScreen({ route, navigation }) {
         {/* Options */}
         <View style={styles.options}>
           {current.options.map((opt, i) => (
-            <TouchableOpacity key={i} style={getOptionStyle(i)} onPress={() => answer(i)} activeOpacity={0.8}>
+            <TouchableOpacity key={i} style={getOptionStyle(i)} onPress={() => answer(i)} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel={`Answer ${['A', 'B', 'C', 'D'][i]}: ${opt}`}>
               <View style={[styles.optionLetter, {
                 backgroundColor: selected !== null
                   ? i === current.answer ? COLORS.success : i === selected ? COLORS.error : '#E0E0E0'

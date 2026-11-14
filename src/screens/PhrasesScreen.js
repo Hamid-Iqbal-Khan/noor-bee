@@ -26,7 +26,7 @@ export default function PhrasesScreen({ route, navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <LinearGradient colors={isArabic ? ['#E65100', '#BF360C'] : ['#1A237E', '#283593']} style={{ paddingTop: 55, paddingBottom: 20, paddingHorizontal: 16 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 10 }} accessibilityRole="button" accessibilityLabel="Go back">
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={{ color: '#fff', fontSize: 20, fontWeight: '900' }}>
@@ -42,7 +42,7 @@ export default function PhrasesScreen({ route, navigation }) {
             onPress={() => setActiveCategory(i)}
           >
             <Text style={{ fontWeight: '700', color: i === activeCategory ? '#fff' : COLORS.text, fontSize: 13 }}>
-              {isArabic ? cat.category : cat.category}
+              {isArabic && cat.categoryEn ? `${cat.category} · ${cat.categoryEn}` : cat.category}
             </Text>
           </TouchableOpacity>
         ))}
@@ -57,16 +57,24 @@ export default function PhrasesScreen({ route, navigation }) {
             style={{ backgroundColor: '#fff', borderRadius: 18, padding: 18, marginBottom: 10, flexDirection: 'row', alignItems: 'center', ...SHADOWS.small }}
             onPress={() => speak(item.text, index)}
             activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel={`Listen: ${isArabic ? item.transliteration : item.text}`}
           >
             <Text style={{ fontSize: 28, marginRight: 12 }}>{item.emoji}</Text>
             <View style={{ flex: 1 }}>
               <Text style={isArabic ? { fontSize: 20, fontWeight: '900', color: COLORS.arabic, textAlign: 'right', writingDirection: 'rtl' } : { fontSize: 16, fontWeight: '800', color: COLORS.text }}>
                 {item.text}
               </Text>
-              {isArabic && item.transliteration && (
+              {isArabic && !!item.transliteration && (
                 <Text style={{ fontSize: 12, color: COLORS.muted, fontStyle: 'italic' }}>{item.transliteration}</Text>
               )}
-              <Text style={{ fontSize: 12, color: COLORS.muted, marginTop: 4 }}>💬 {item.response}</Text>
+              {isArabic && !!item.meaning && (
+                <Text style={{ fontSize: 13, color: COLORS.text, fontWeight: '700', marginTop: 2 }}>“{item.meaning}”</Text>
+              )}
+              <Text style={isArabic ? { fontSize: 13, color: COLORS.muted, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' } : { fontSize: 12, color: COLORS.muted, marginTop: 4 }}>💬 {item.response}</Text>
+              {isArabic && !!item.responseEn && (
+                <Text style={{ fontSize: 12, color: COLORS.muted }}>Reply: {item.responseEn}</Text>
+              )}
             </View>
             <Ionicons
               name={speaking === index ? 'volume-high' : 'volume-medium-outline'}

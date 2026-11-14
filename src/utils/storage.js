@@ -10,7 +10,26 @@ const KEYS = {
   COMPLETED_LESSONS: 'completed_lessons',
   BADGES: 'badges',
   SETTINGS: 'settings',
+  SEEN_LETTERS_EN: 'seen_letters_en',
+  SEEN_LETTERS_AR: 'seen_letters_ar',
+  SEEN_WORDS: 'seen_words',
+  TTS_KEY: 'google_tts_key',
 };
+
+export const STORAGE_KEYS = KEYS;
+
+// Single source of truth for badges (used by Profile and by awardBadge).
+export const ALL_BADGES = [
+  { id: 'first_login', emoji: '🌟', name: 'First Step', desc: 'Started the journey!', xp: 10 },
+  { id: 'streak_3', emoji: '🔥', name: '3-Day Streak', desc: '3 days in a row!', xp: 50 },
+  { id: 'streak_7', emoji: '🏆', name: '7-Day Streak', desc: 'A full week!', xp: 150 },
+  { id: 'alphabet_en', emoji: '🔤', name: 'Alphabet Ace', desc: 'Learned all 26 letters!', xp: 100 },
+  { id: 'alphabet_ar', emoji: '🌙', name: 'Arabic Star', desc: 'Learned all 28 letters!', xp: 150 },
+  { id: 'quiz_perfect', emoji: '💎', name: 'Perfect Quiz', desc: '100% on a quiz!', xp: 200 },
+  { id: 'story_1', emoji: '📖', name: 'Story Reader', desc: 'Read your first story!', xp: 75 },
+  { id: 'vocab_50', emoji: '📚', name: 'Word Explorer', desc: 'Learned 50 words!', xp: 250 },
+];
+const BADGE_XP = Object.fromEntries(ALL_BADGES.map(b => [b.id, b.xp]));
 
 export const Storage = {
   async getProfile() {
@@ -63,6 +82,8 @@ export const Storage = {
       }
       await AsyncStorage.setItem(KEYS.STREAK, streak.toString());
       await AsyncStorage.setItem(KEYS.LAST_ACTIVE, today);
+      if (streak >= 3) await this.awardBadge('streak_3');
+      if (streak >= 7) await this.awardBadge('streak_7');
       return streak;
     } catch { return 1; }
   },
@@ -85,6 +106,19 @@ export const Storage = {
     } catch { return []; }
   },
 
+  // Generic "seen set" used for alphabet / vocabulary progress tracking.
+  async addToSet(key, value) {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      const set = data ? JSON.parse(data) : [];
+      if (!set.includes(value)) {
+        set.push(value);
+        await AsyncStorage.setItem(key, JSON.stringify(set));
+      }
+      return set;
+    } catch { return []; }
+  },
+
   async getBadges() {
     try {
       const data = await AsyncStorage.getItem(KEYS.BADGES);
@@ -98,6 +132,8 @@ export const Storage = {
       if (!badges.includes(badgeId)) {
         badges.push(badgeId);
         await AsyncStorage.setItem(KEYS.BADGES, JSON.stringify(badges));
+        // Badge cards advertise "+N XP" — actually credit it.
+        if (BADGE_XP[badgeId]) await this.addXP(BADGE_XP[badgeId]);
         return true;
       }
       return false;

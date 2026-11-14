@@ -1,16 +1,15 @@
 // src/screens/EnglishScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { VOCAB_CATEGORIES } from '../data/curriculum';
 
-const { width } = Dimensions.get('window');
 
 const MODULES = [
   { title: '🌙 Islamic A–Z', subtitle: 'A for Allah · B for Bismillah…', emoji: '☪️', color: '#1B5E20', screen: 'Alphabet', params: { language: 'english' } },
-  { title: 'Vocabulary', subtitle: '6 categories · 60+ words', emoji: '📚', color: '#7B1FA2', screen: 'Vocab', params: { language: 'english' } },
+  { title: 'Vocabulary', subtitle: `${VOCAB_CATEGORIES.english.length} categories · ${VOCAB_CATEGORIES.english.reduce((n, c) => n + c.words.length, 0)} words`, emoji: '📚', color: '#7B1FA2', screen: 'Vocab', params: { language: 'english' } },
   { title: 'Flashcards', subtitle: 'Swipe to learn words', emoji: '🃏', color: '#00695C', screen: 'Flashcard', params: { category: 'animals', language: 'english' } },
   { title: 'Fun Quiz', subtitle: 'Test your knowledge', emoji: '❓', color: '#E65100', screen: 'Quiz', params: { category: 'english_animals', language: 'english' } },
   { title: 'Read Stories', subtitle: '2 stories with pictures', emoji: '📖', color: '#880E4F', screen: 'Story', params: { storyId: 's1' } },
@@ -20,6 +19,9 @@ const MODULES = [
 ];
 
 export default function EnglishScreen({ navigation }) {
+  const { width } = useWindowDimensions();
+  const cols = width >= 900 ? 4 : width >= 600 ? 3 : 2;
+  const cardWidth = (width - 32 - 10 * (cols - 1)) / cols;
   const categories = VOCAB_CATEGORIES.english;
   return (
     <View style={styles.container}>
@@ -36,7 +38,9 @@ export default function EnglishScreen({ navigation }) {
             {MODULES.map((mod, i) => (
               <TouchableOpacity
                 key={i}
-                style={[styles.moduleCard, { backgroundColor: mod.color }]}
+                style={[styles.moduleCard, { backgroundColor: mod.color, width: cardWidth }]}
+                accessibilityRole="button"
+                accessibilityLabel={`${mod.title}. ${mod.subtitle}`}
                 onPress={() => navigation.navigate(mod.screen, mod.params)}
                 activeOpacity={0.85}
               >
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: 16, marginVertical: 8 },
   sectionTitle: { fontSize: 17, fontWeight: '800', color: COLORS.text, marginBottom: 12 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  moduleCard: { width: (width - 52) / 2, borderRadius: 18, padding: 16, ...SHADOWS.small },
+  moduleCard: { borderRadius: 18, padding: 16, ...SHADOWS.small },
   moduleEmoji: { fontSize: 30, marginBottom: 8 },
   moduleTitle: { color: '#fff', fontSize: 14, fontWeight: '800' },
   moduleSub: { color: 'rgba(255,255,255,0.8)', fontSize: 11, marginTop: 2 },

@@ -1,11 +1,10 @@
 // src/screens/GamesScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS } from '../utils/theme';
 
-const { width } = Dimensions.get('window');
 
 const GAMES = [
   { name: 'Flashcards', emoji: '🃏', desc: 'Swipe to learn words', color: '#7B1FA2', tab: 'English', screen: 'Flashcard', params: { category: 'animals', language: 'english' } },
@@ -19,6 +18,9 @@ const GAMES = [
 ];
 
 export default function GamesScreen({ navigation }) {
+  const { width } = useWindowDimensions();
+  const cols = width >= 900 ? 4 : width >= 600 ? 3 : 2;
+  const cardWidth = (width - 32 - 10 * (cols - 1)) / cols;
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <LinearGradient colors={['#FF6B35', '#FF8A65']} style={{ paddingTop: 55, paddingBottom: 24, paddingHorizontal: 16 }}>
@@ -32,7 +34,9 @@ export default function GamesScreen({ navigation }) {
           {GAMES.map((g, i) => (
             <TouchableOpacity
               key={i}
-              style={{ width: (width - 52) / 2, backgroundColor: g.color, borderRadius: 20, padding: 18, ...SHADOWS.small }}
+              accessibilityRole="button"
+              accessibilityLabel={`${g.name}. ${g.desc}`}
+              style={{ width: cardWidth, backgroundColor: g.color, borderRadius: 20, padding: 18, ...SHADOWS.small }}
               onPress={() => navigation.navigate(g.tab, { screen: g.screen, params: g.params })}
               activeOpacity={0.85}
             >
