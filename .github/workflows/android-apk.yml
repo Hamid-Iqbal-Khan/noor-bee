@@ -1,0 +1,75 @@
+name: Build Android APK
+
+# Builds an installable (sideload) APK on GitHub's runners - no Expo account needed.
+# The APK is signed with the debug keystore from the Expo template: fine for
+# testing on phones, NOT for Google Play (use `eas build --profile production`).
+on:
+  workflow_dispatch:
+  push:
+    branches: [uat/audit-fixes]
+    paths-ignore: ['**.md']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Generate native Android project
+        run: npx expo prebuild --platform android --non-interactive --no-install
+        env:
+          CI: 1
+
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon
+        env:
+          CI: 1
+
+      - name: Name the APK
+        id: apk
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          NAME="noor-bee-${SHA}.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "$NAME"
+          ls -la "$NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: noor-bee-apk
+          path: ${{ steps.apk.outputs.name }}
+
+      - name: Publish as a pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="apk-${{ steps.apk.outputs.sha }}"
+          gh release create "$TAG" "${{ steps.apk.outputs.name }}" \
+            --target "${{ github.sha }}" --prerelease \
+            --title "Noor Bee test APK (${{ steps.apk.outputs.sha }})" \
+            --notes "Sideload test build from branch ${{ github.ref_name }}. Debug-signed - not for Google Play."
