@@ -74,7 +74,7 @@ class QaidaDataTest {
   @Test fun writeRecordingScript() {
     val rows = mutableListOf("audio_key,arabic,what_to_record_urdu")
     QaidaData.letters.forEach { rows += "${it.audioKey},${it.arabic},حرف کا نام: ${it.qaidaName}" }
-    QaidaData.soundGroups.forEach { g -> g.examples.values.forEach { rows += "${it.audioKey},${it.arabic},لفظ: ${it.urduMeaning}" } }
+    QaidaData.soundGroups.forEach { g -> g.examples.forEach { (id, ex) -> rows += "${QaidaData.exampleAudioKey(id)},${ex.arabic},لفظ: ${ex.urduMeaning}" } }
     QaidaData.harakatLetters().forEach { l ->
       QaidaData.Harakah.values().forEach { h -> rows += "${QaidaData.audioKey(l, h)},${QaidaData.withHarakah(l, h)},ہجے: ${QaidaData.hijje(l, h)}" }
     }

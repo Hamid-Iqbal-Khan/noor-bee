@@ -106,9 +106,10 @@ object QaidaData {
 
     // ---- Lesson 1.2: sounds Urdu speakers merge -----------------------------------
 
-    data class ExampleWord(val arabic: String, val urduMeaning: String) {
-        val audioKey get() = "word_" + arabic.filter { it.isLetter() }
-    }
+    data class ExampleWord(val arabic: String, val urduMeaning: String)
+
+    /** ASCII file name for an example word, e.g. word_qaf (one example per letter). */
+    fun exampleAudioKey(letterId: String) = "word_$letterId"
 
     data class SoundGroup(
         val id: String,

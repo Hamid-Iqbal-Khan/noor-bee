@@ -351,7 +351,7 @@ private fun SoundsLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
                                 UrduText(l.qaidaName + if (l.heavy) "  (پُر)" else "", size = 13.sp, weight = FontWeight.Bold)
                                 UrduText("مثال: ${ex.urduMeaning}", size = 12.sp, color = Quiet)
                             }
-                            Box(Modifier.clickable { play(ex.audioKey, ex.arabic) }.padding(horizontal = 8.dp)
+                            Box(Modifier.clickable { play(QaidaData.exampleAudioKey(id), ex.arabic) }.padding(horizontal = 8.dp)
                                 .semantics { contentDescription = "مثال سنیں: ${ex.urduMeaning}" }) {
                                 ArabicText(ex.arabic, size = 26.sp, color = Green)
                             }
