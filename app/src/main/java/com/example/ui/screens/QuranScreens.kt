@@ -2777,7 +2777,7 @@ fun CompleteQuranReaderLayout(
                                     .padding(horizontal = 8.dp)
                             ) {
                                 itemsIndexed(pages) { pageIndex, pageVerses ->
-                                    val s = activeSurah!!
+                                    val s = activeSurah ?: return@itemsIndexed // surah closed while list recomposes (crash fix)
                                     Card(
                                         modifier = Modifier
                                             .fillMaxWidth()

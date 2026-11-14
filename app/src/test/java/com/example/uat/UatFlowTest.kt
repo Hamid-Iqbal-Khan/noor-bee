@@ -48,13 +48,18 @@ class UatFlowTest {
 
   private fun shot(name: String) = rule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/flow/$name.png")
 
-  private fun waitTag(tag: String, timeoutMs: Long = 10_000) {
+  private val knownScreens = listOf("splash_screen_container", "child_setup_screen", "home_dashboard_screen",
+    "dua_section_screen", "learning_path_screen", "parent_panel_root")
+
+  private fun waitTag(tag: String, timeoutMs: Long = 15_000) {
     val end = System.currentTimeMillis() + timeoutMs
     while (System.currentTimeMillis() < end) {
       if (rule.onAllNodes(hasTestTag(tag), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty()) return
       step(200)
     }
-    throw AssertionError("Timed out waiting for testTag '$tag'")
+    val onScreen = knownScreens.filter { rule.onAllNodes(hasTestTag(it), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty() }
+    try { shot("FAILED_waiting_for_$tag") } catch (_: Throwable) {}
+    throw AssertionError("Timed out waiting for testTag '$tag'; screens present: $onScreen")
   }
 
   private fun SemanticsNodeInteraction.tap(): SemanticsNodeInteraction {

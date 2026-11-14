@@ -28,6 +28,9 @@ data class WordItem(
 )
 
 class NoorBeeViewModel(application: Application) : AndroidViewModel(application) {
+    // Declared first: init {} below launches coroutines on Main.immediate that may use them.
+    private val rewardMutex = kotlinx.coroutines.sync.Mutex()
+    private val configMutex = kotlinx.coroutines.sync.Mutex()
 
     private val database = NoorBeeDatabase.getDatabase(application)
     private val repository = NoorBeeRepository(database.dao)
@@ -270,8 +273,10 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
         }
         // Populate initial parent configurations only on first run; never overwrite saved settings
         viewModelScope.launch {
-            if (repository.getParentConfigOrNull() == null) {
-                repository.saveParentConfig(ParentConfig())
+            configMutex.withLock {
+                if (repository.getParentConfigOrNull() == null) {
+                    repository.saveParentConfig(ParentConfig())
+                }
             }
         }
     }
@@ -371,7 +376,15 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private val rewardMutex = kotlinx.coroutines.sync.Mutex()
+
+    /** Read-modify-write of parent settings, serialised so quick changes don't overwrite each other. */
+    private fun updateConfig(change: (ParentConfig) -> ParentConfig) {
+        viewModelScope.launch {
+            configMutex.withLock {
+                repository.saveParentConfig(change(repository.getParentConfigInstant()))
+            }
+        }
+    }
 
     // Wardrobe clothing customization
     fun unlockAndEquipOutfit(outfitId: String, cost: Int) {
@@ -399,24 +412,15 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
 
     // App Preferences Parent parameters
     fun updateSpeechRate(rate: Float) {
-        viewModelScope.launch {
-            val cur = repository.getParentConfigInstant()
-            repository.saveParentConfig(cur.copy(speechRate = rate))
-        }
+        updateConfig { it.copy(speechRate = rate) }
     }
 
     fun toggleRTLMirror(enabled: Boolean) {
-        viewModelScope.launch {
-            val cur = repository.getParentConfigInstant()
-            repository.saveParentConfig(cur.copy(arabicRTLMirror = enabled))
-        }
+        updateConfig { it.copy(arabicRTLMirror = enabled) }
     }
 
     fun purchasePremiumTier() {
-        viewModelScope.launch {
-            val cur = repository.getParentConfigInstant()
-            repository.saveParentConfig(cur.copy(isPremium = true))
-        }
+        updateConfig { it.copy(isPremium = true) }
     }
 
     fun addStickerToPlayground(emoji: String, x: Float, y: Float) {
