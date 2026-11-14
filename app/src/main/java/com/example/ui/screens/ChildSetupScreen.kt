@@ -43,6 +43,7 @@ fun ChildSetupScreen(
     onSaveProfile: (String, String, Int, Int, String) -> Unit
 ) {
     var name by remember { mutableStateOf(currentName) }
+    var saving by remember { mutableStateOf(false) }
     var gender by remember { mutableStateOf(currentGender) }
     var age by remember { mutableStateOf(currentAge) }
     var level by remember { mutableStateOf(currentLevel) }
@@ -127,7 +128,7 @@ fun ChildSetupScreen(
 
                     OutlinedTextField(
                         value = name,
-                        onValueChange = { name = it },
+                        onValueChange = { name = it.take(20) },
                         label = { Text("Child's Name") },
                         placeholder = { Text("e.g. Aly, Adam, Leyla") },
                         singleLine = true,
@@ -295,9 +296,12 @@ fun ChildSetupScreen(
             // CTA Submit button
             Button(
                 onClick = {
-                    val finalName = name.ifBlank { "Smart Kid" }
+                    if (saving) return@Button // ignore double taps: one profile per Save
+                    saving = true
+                    val finalName = name.trim().ifBlank { "Smart Kid" }
                     onSaveProfile(finalName, gender, age, level, selectedAvatar)
                 },
+                enabled = !saving,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)

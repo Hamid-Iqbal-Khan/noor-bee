@@ -28,11 +28,11 @@ PY
 }
 shot 01_splash
 tap_text "Learn!"; shot 02_after_start
-adb shell input text "Aisha"; adb shell input keyevent 111; sleep 1
-tap_text "Let's Go"; sleep 2; shot 03_dashboard
+tap_text "Child's Name"; adb shell input text "Aisha"; adb shell input keyevent 111; sleep 1
+tap_text "Let's Go"; sleep 2; tap_text "Got it!"; shot 03_dashboard
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
 tap_text "Quran Explorer"; sleep 3; shot 05_quran
-tap_text "Al-Falaq"; sleep 3; shot 06_surah_falaq; adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 2
+tap_text "Surat-ul-Fateha"; sleep 3; shot 06_surah_fatiha; adb shell input keyevent 4; sleep 2; adb shell input keyevent 4; sleep 2; shot 06b_back_to_dashboard
 tap_text "Phonics Whiteboard"; sleep 2; shot 07_whiteboard; adb shell input keyevent 4; sleep 2
 # Rotation
 adb shell settings put system accelerometer_rotation 0; adb shell settings put system user_rotation 1; sleep 3; shot 08_landscape

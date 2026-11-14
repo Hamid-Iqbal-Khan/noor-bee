@@ -3597,7 +3597,7 @@ fun getOfflineSurah(surahNumber: Int): List<SurahVerse>? {
             SurahVerse(4, "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ", "", "Nor is there to Him any equivalent.\"")
         )
         113 -> listOf(
-            SurahVerse(1, "قُلْ أَعُوذُ بِرَ**بِّ الْفَلَقِ**", "", "Say, \"I seek refuge in the Lord of daybreak"),
+            SurahVerse(1, "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ", "", "Say, \"I seek refuge in the Lord of daybreak"),
             SurahVerse(2, "مِن شَرِّ مَا خَلَقَ", "", "From the evil of that which He created"),
             SurahVerse(3, "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ", "", "And from the evil of darkness when it settles"),
             SurahVerse(4, "وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ", "", "And from the evil of the blowers in knots"),

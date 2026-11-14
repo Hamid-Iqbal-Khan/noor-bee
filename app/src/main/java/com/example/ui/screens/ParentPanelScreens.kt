@@ -120,16 +120,20 @@ fun ParentPanelScreens(
                     onClick = { activeSubTab = "tutorials" },
                     text = { Text("App Tutorials", fontWeight = FontWeight.Bold) }
                 )
-                Tab(
-                    selected = activeSubTab == "billing",
-                    onClick = { activeSubTab = "billing" },
-                    text = { Text("Premium Tier", fontWeight = FontWeight.Bold) }
-                )
-                Tab(
-                    selected = activeSubTab == "admin",
-                    onClick = { activeSubTab = "admin" },
-                    text = { Text("Admin Console ⚙️", fontWeight = FontWeight.Bold) }
-                )
+                if (com.example.FeatureFlags.PREMIUM_ENABLED) {
+                    Tab(
+                        selected = activeSubTab == "billing",
+                        onClick = { activeSubTab = "billing" },
+                        text = { Text("Premium Tier", fontWeight = FontWeight.Bold) }
+                    )
+                }
+                if (com.example.FeatureFlags.ADMIN_CONSOLE_ENABLED) {
+                    Tab(
+                        selected = activeSubTab == "admin",
+                        onClick = { activeSubTab = "admin" },
+                        text = { Text("Admin Console ⚙️", fontWeight = FontWeight.Bold) }
+                    )
+                }
             }
  
             Box(
@@ -237,8 +241,8 @@ fun DashboardSubTab(
                 }
             }
         }
-        // Upgrade Notice notice
-        item {
+        // Upgrade Notice notice (hidden until real Play Billing exists)
+        if (com.example.FeatureFlags.PREMIUM_ENABLED) item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(

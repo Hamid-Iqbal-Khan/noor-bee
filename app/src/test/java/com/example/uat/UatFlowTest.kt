@@ -2,6 +2,7 @@ package com.example.uat
 
 import android.app.Application
 import android.os.Looper
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -56,9 +57,21 @@ class UatFlowTest {
     throw AssertionError("Timed out waiting for testTag '$tag'")
   }
 
+  private fun SemanticsNodeInteraction.tap(): SemanticsNodeInteraction {
+    try { performScrollTo() } catch (_: AssertionError) { /* not inside a scrolling container */ }
+    performClick(); return this
+  }
+
+  private fun clickTag(tag: String) { rule.onNode(hasTestTag(tag)).tap(); step() }
+
   private fun clickText(text: String) {
-    rule.onAllNodes(hasText(text, substring = true), useUnmergedTree = false)[0].performScrollTo().performClick()
+    rule.onAllNodes(hasText(text, substring = true), useUnmergedTree = false)[0].tap()
     step()
+  }
+
+  /** The dashboard opens an "App Guide" dialog on first visit; close it if shown. */
+  private fun dismissGuide() {
+    if (rule.onAllNodes(hasText("Got it!")).fetchSemanticsNodes().isNotEmpty()) clickText("Got it!")
   }
 
   private fun goBack() { rule.runOnUiThread { rule.activity.onBackPressedDispatcher.onBackPressed() }; step() }
@@ -67,28 +80,30 @@ class UatFlowTest {
     rule.mainClock.autoAdvance = false
     waitTag("splash_screen_container"); shot("01_splash")
 
-    rule.onNode(hasTestTag("submit_button")).performScrollTo().performClick(); step()
+    clickTag("submit_button")
     waitTag("child_setup_screen"); shot("02_setup")
 
     rule.onNode(hasTestTag("username_input")).performTextInput("Aisha")
-    rule.onNode(hasTestTag("save_profile_button")).performScrollTo().performClick(); step(3_000)
-    waitTag("home_dashboard_screen"); shot("03_dashboard")
+    clickTag("save_profile_button"); step(3_000)
+    waitTag("home_dashboard_screen"); dismissGuide(); shot("03_dashboard")
 
     clickText("Daily Duas"); waitTag("dua_section_screen"); shot("04_duas"); goBack()
-    waitTag("home_dashboard_screen")
+    waitTag("home_dashboard_screen"); dismissGuide()
     clickText("Quran Explorer"); step(2_000); shot("05_quran"); goBack()
     waitTag("home_dashboard_screen")
-    rule.onNode(hasTestTag("lang_ar_button")).performScrollTo().performClick(); step(); shot("06_after_arabic_toggle")
+    waitTag("home_dashboard_screen"); dismissGuide()
+    clickTag("lang_ar_button"); shot("06_after_arabic_toggle")
     clickText("Phonics Whiteboard"); step(2_000); shot("07_whiteboard"); goBack()
   }
 
   @Test fun saveProfile_doubleTap_createsOnlyOneProfile() {
     rule.mainClock.autoAdvance = false
     waitTag("splash_screen_container")
-    rule.onNode(hasTestTag("submit_button")).performScrollTo().performClick(); step()
+    clickTag("submit_button")
     waitTag("child_setup_screen")
     rule.onNode(hasTestTag("username_input")).performTextInput("Adam")
-    val save = rule.onNode(hasTestTag("save_profile_button")).performScrollTo()
+    val save = rule.onNode(hasTestTag("save_profile_button"))
+    try { save.performScrollTo() } catch (_: AssertionError) {}
     save.performClick(); save.performClick() // impatient double tap
     step(3_000)
     val dao = NoorBeeDatabase.getDatabase(ApplicationProvider.getApplicationContext()).dao

@@ -1,5 +1,7 @@
 package com.example.ui
 
+import kotlinx.coroutines.sync.withLock
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -266,9 +268,11 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
                 }
             }
         }
-        // Populate initial parent configurations
+        // Populate initial parent configurations only on first run; never overwrite saved settings
         viewModelScope.launch {
-            repository.saveParentConfig(ParentConfig())
+            if (repository.getParentConfigOrNull() == null) {
+                repository.saveParentConfig(ParentConfig())
+            }
         }
     }
 
@@ -339,8 +343,11 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun earnCoinsAndStars(coinsGained: Int, starsGained: Int, actionText: String = "Lesson Complete") {
-        val current = _currentProfile.value ?: return
+        if (_currentProfile.value == null) return
         viewModelScope.launch {
+          rewardMutex.withLock {
+            // Read the latest profile inside the lock so rapid rewards are never lost
+            val current = _currentProfile.value ?: return@withLock
             val updated = current.copy(
                 coins = current.coins + coinsGained,
                 stars = current.stars + starsGained,
@@ -357,11 +364,14 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
                     topic = _selectedWord.value.category,
                     activityType = actionText,
                     score = starsGained,
-                    durationMinutes = (2..5).random()
+                    durationMinutes = 0 // real duration not measured; do not show invented minutes
                 )
             )
+          }
         }
     }
+
+    private val rewardMutex = kotlinx.coroutines.sync.Mutex()
 
     // Wardrobe clothing customization
     fun unlockAndEquipOutfit(outfitId: String, cost: Int) {

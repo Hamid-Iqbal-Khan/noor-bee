@@ -44,6 +44,8 @@ class NoorBeeRepository(private val dao: NoorBeeDao) {
     
     suspend fun getParentConfigInstant(): ParentConfig = dao.getParentConfig() ?: ParentConfig()
 
+    suspend fun getParentConfigOrNull(): ParentConfig? = dao.getParentConfig()
+
     // User Session Operations
     val activeUser: Flow<User?> = dao.getActiveUserFlow()
     val allUsers: Flow<List<User>> = dao.getAllUsersFlow()
