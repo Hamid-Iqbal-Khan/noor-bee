@@ -11,7 +11,7 @@ adb logcat -c
 adb shell am start -W -n "$PKG/com.example.MainActivity" > emu/start.txt 2>&1
 sleep 6
 shot() { adb exec-out screencap -p > "emu/$1.png"; adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; adb pull /sdcard/ui.xml "emu/$1.xml" >/dev/null 2>&1; }
-tap_text() { # tap the centre of the first node whose text/content-desc contains $1
+find_text() { # print the centre of the first node whose text/content-desc contains $1
   adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; adb pull /sdcard/ui.xml /tmp/ui.xml >/dev/null 2>&1
   local b; b=$(python3 - "$1" <<'PY'
 import re,sys
@@ -24,6 +24,14 @@ for m in re.finditer(r'<node [^>]*>', x):
             x1,y1,x2,y2=map(int,b.groups()); print((x1+x2)//2,(y1+y2)//2); break
 PY
 )
+  echo "$b"
+}
+tap_text() { # tap $1; if it is not on screen, scroll down a little and look again (up to 3 times)
+  local b; local tries=0
+  b=$(find_text "$1")
+  while [ -z "$b" ] && [ $tries -lt 3 ] && [ "$1" != "Wait" ]; do
+    adb shell input swipe 540 1600 540 1000 300; sleep 1; tries=$((tries+1)); b=$(find_text "$1")
+  done
   if [ -n "$b" ]; then adb shell input tap $b; echo "tap '$1' at $b" >> emu/steps.txt; sleep 3; else echo "NOT FOUND '$1'" >> emu/steps.txt; fi
 }
 shot 01_splash
