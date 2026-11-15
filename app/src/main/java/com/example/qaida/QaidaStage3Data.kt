@@ -21,6 +21,9 @@ object QaidaStage3 {
     /** اَبَّ  اِبِّ  اُبُّ — tashdeed is taught after a vowelled alif, as in the Qaida. */
     fun tashdeed(letter: QaidaLetter, v: Vowel) = v.alif + letter.arabic + SHADDA + v.mark
 
+    /** اَبَّ = اَبْ + بَ : the first half is the letter with jazm after the vowelled alif, the second half the letter with the vowel. */
+    fun tashdeedParts(letter: QaidaLetter, v: Vowel) = Pair(v.alif + letter.arabic + "\u0652", letter.arabic + v.mark)
+
     fun tashdeedHijje(letter: QaidaLetter, v: Vowel) =
         "اَلِف ${v.urduName}، ${letter.qaidaName} ${v.urduName} تشدید: ${tashdeed(letter, v)}"
 

@@ -146,6 +146,8 @@ class QaidaDataTest {
       val after = w.written.removePrefix("اَلْ").first().toString()
       assertTrue(w.written, QaidaStage3.qamariIds.any { QaidaData.letter(it).arabic == after })
     }
+    val (p1, p2) = QaidaStage3.tashdeedParts(QaidaData.letter("ta"), QaidaStage3.Vowel.ZABAR)
+    assertEquals("اَت\u0652", p1); assertEquals("ت\u064E", p2)
     assertEquals(7, QaidaStage3.fatiha.size); assertEquals(4, QaidaStage3.ikhlas.size)
   }
 

@@ -152,6 +152,13 @@ class QaidaScreensTest {
     rule.onNodeWithTag("lesson_s3_tashdeed").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s3_cell_ba_z").performClick(); rule.waitForIdle()
     assertTrue("tashdeed fallback spoken", spoken.contains("اَب\u0651\u064E"))
+    rule.onNodeWithTag("qaida_s3_breakdown_ba").assertExists()      // default: open under با
+    rule.onNodeWithTag("qaida_s3_cell_ta_z").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_s3_breakdown_ta").assertExists()      // moves under تا
+    rule.onNodeWithTag("qaida_s3_breakdown_ba").assertDoesNotExist()
+    shot("phone_s3_tashdeed_breakdown_ta")
+    rule.onNodeWithTag("qaida_s3_part1").performClick(); rule.waitForIdle()
+    assertTrue("first half اَتْ spoken", spoken.contains("اَت\u0652"))
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_s3_fatiha").performScrollToSafe(); rule.onNodeWithTag("lesson_s3_fatiha").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_ayah_1_1").performClick(); rule.waitForIdle()
