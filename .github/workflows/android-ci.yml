@@ -19,6 +19,7 @@ concurrency:
 
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false
+  NORBY_BUILD: ${{ github.run_number }}
 
 jobs:
   build:
@@ -26,16 +27,17 @@ jobs:
     timeout-minutes: 45
     outputs:
       sha: ${{ steps.meta.outputs.sha }}
+      version: ${{ steps.meta.outputs.version }}
     steps:
       - uses: actions/checkout@v4
       - id: meta
-        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "version=3.${{ github.run_number }}" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 21 }
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: 9.3.1 }
-      - name: Debug keystore (not committed; standard Android debug key)
-        run: keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
       - name: .env for secrets plugin
         run: cp .env.example .env
       - name: Assemble debug APK
@@ -50,7 +52,7 @@ jobs:
         if: always()
         run: |
           mkdir -p out
-          cp app/build/outputs/apk/debug/app-debug.apk "out/noor-bee-kotlin-${{ steps.meta.outputs.sha }}-debug.apk" || true
+          cp app/build/outputs/apk/debug/app-debug.apk "out/Norby-${{ steps.meta.outputs.version }}.apk" || true
           zip -qr out/reports.zip build.log test.log lint.log app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi app/build/outputs/roborazzi 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: always()
@@ -86,7 +88,8 @@ jobs:
         run: |
           SHA=${{ needs.build.outputs.sha }}
           zip -qr out/emulator.zip emu 2>/dev/null || true
-          TAG="kotlin-ci-$SHA-${{ github.run_attempt }}"
+          VER=${{ needs.build.outputs.version }}
+          TAG="norby-$VER"
           gh release create "$TAG" out/* --target "${{ github.sha }}" --prerelease \
-            --title "Noor Bee Kotlin CI ($SHA)" \
-            --notes "Debug-signed test build + CI reports from branch ${{ github.ref_name }}. Not for Google Play."
+            --title "Norby $VER (test build, $SHA)" \
+            --notes "Norby $VER test APK (installs as 'Noor Bee (Test)'), plus CI reports. Signed with the fixed test key; not for Google Play. Download Norby-$VER.apk on the phone and open it."

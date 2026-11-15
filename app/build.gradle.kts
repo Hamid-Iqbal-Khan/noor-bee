@@ -14,8 +14,11 @@ android {
     applicationId = "com.aistudio.noorbee.newwhiteboard"
     minSdk = 24
     targetSdk = 36
-    versionCode = 4
-    versionName = "3.1"
+    // Norby build numbering: 3.<build>. CI passes NORBY_BUILD (the GitHub run number).
+    // versionCode stays above the Play Store's current 3 and always increases.
+    val norbyBuild = (System.getenv("NORBY_BUILD") ?: "0").toInt()
+    versionCode = 300 + norbyBuild
+    versionName = "3.$norbyBuild"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -29,10 +32,12 @@ android {
       keyPassword = System.getenv("KEY_PASSWORD")
     }
     create("debugConfig") {
-      storeFile = file("${rootDir}/debug.keystore")
-      storePassword = "android"
-      keyAlias = "androiddebugkey"
-      keyPassword = "android"
+      // Fixed TEST key committed to the repo so every test APK is signed the same way and can
+      // update the previous one. Never use it for Google Play (release uses the upload key).
+      storeFile = file("${rootDir}/norby-test.keystore")
+      storePassword = "norbytest"
+      keyAlias = "norbytest"
+      keyPassword = "norbytest"
     }
   }
 
@@ -47,7 +52,6 @@ android {
       signingConfig = signingConfigs.getByName("debugConfig")
       // Test builds install side by side with the Play Store app (different id, own label)
       applicationIdSuffix = ".test"
-      versionNameSuffix = "-test"
     }
   }
   compileOptions {
