@@ -605,6 +605,60 @@ fun HomeDashboardScreen(
                                 onClick = { onNavigateToQaida(7) }
                             )
                         }
+                        androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage8")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۸: عمّ ۱ 🌅",
+                                    subtitle = "Al-Humazah to Ad-Duha",
+                                    color = Color(0xFFFFF3E0),
+                                    borderStroke = Color(0xFFE65100),
+                                    emoji = "🌅",
+                                    onClick = { onNavigateToQaida(8) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage9")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۹: عمّ ۲ 🌙",
+                                    subtitle = "Al-Layl to Al-Buruj",
+                                    color = Color(0xFFEDE7F6),
+                                    borderStroke = Color(0xFF4527A0),
+                                    emoji = "🌙",
+                                    onClick = { onNavigateToQaida(9) }
+                                )
+                            }
+                        }
+                        }
+                        androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage10")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۱۰: عمّ ۳ ⭐",
+                                    subtitle = "Al-Inshiqaq to An-Naba",
+                                    color = Color(0xFFE8F5E9),
+                                    borderStroke = Color(0xFF2E7D32),
+                                    emoji = "⭐",
+                                    onClick = { onNavigateToQaida(10) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage11")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۱۱: گرامر 🌱",
+                                    subtitle = "Roots, patterns, verbs",
+                                    color = Color(0xFFE0F2F1),
+                                    borderStroke = Color(0xFF00695C),
+                                    emoji = "🌱",
+                                    onClick = { onNavigateToQaida(11) }
+                                )
+                            }
+                        }
+                        }
                     } else {
                     // Row 1
                         Row(

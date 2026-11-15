@@ -109,6 +109,11 @@ class QaidaDataTest {
     // Stage 7
     QaidaStage7.examples.forEach { rows += "${it.audioKey},${it.phrase},${it.rule.urdu} — ${it.note}" }
     QaidaStage7.meemExamples.forEach { rows += "${it.audioKey},${it.phrase},${it.rule.urdu} — ${it.note}" }
+    // Stages 8–10 (Juz 'Amma) and 11
+    juzAmma().values.forEach { s -> s.ayat.forEach { a ->
+      rows += "${a.ayah.audioKey},${a.ayah.text},آیت ${a.ayah.surah}:${a.ayah.number} — ترتیل سے"
+      a.words.forEachIndexed { i, w -> rows += "${a.wordKey(i)},$w,اکیلا لفظ (${a.meanings[i].replace(',', '،')})" }
+    } }
     val keys = rows.drop(1).map { it.substringBefore(',') }
     assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
@@ -271,6 +276,56 @@ class QaidaDataTest {
   @Test fun stage7_quiz() {
     repeat(50) { seed ->
       val qs = QaidaStage7Quiz.generate(Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size) }
+    }
+  }
+
+  private fun juzAmma() = QaidaJuzAmma.parse(File("src/main/assets/${QaidaJuzAmma.ASSET}").readLines(Charsets.UTF_8).asSequence())
+
+  @Test fun juzAmma_dataComplete() {
+    val juz = juzAmma()
+    val expected = mapOf(78 to 40, 79 to 46, 80 to 42, 81 to 29, 82 to 19, 83 to 36, 84 to 25, 85 to 22, 86 to 17, 87 to 19,
+      88 to 26, 89 to 30, 90 to 20, 91 to 15, 92 to 21, 93 to 11, 94 to 8, 95 to 8, 96 to 19, 97 to 5, 98 to 8, 99 to 8,
+      100 to 11, 101 to 11, 102 to 8, 104 to 9)
+    assertEquals(expected, juz.mapValues { it.value.ayat.size })
+    assertEquals(513, juz.values.sumOf { it.ayat.size })
+    juz.values.forEach { s -> s.ayat.forEachIndexed { i, a ->
+      assertEquals("numbering ${s.number}", i + 1, a.ayah.number)
+      assertEquals("meanings for ${s.number}:${a.ayah.number}", a.words.size, a.meanings.size)
+      a.meanings.forEach { assertTrue("${s.number}:${a.ayah.number}", it.isNotBlank()) }
+      assertTrue("Arabic only in ${s.number}:${a.ayah.number}", a.ayah.text.none { it in 'A'..'z' || it in '0'..'9' })
+    } }
+    assertEquals(juz.keys, QaidaJuzAmma.groups.flatMap { it.surahs }.toSet())
+    juz.keys.forEach { assertTrue(QaidaJuzAmma.urduNames.containsKey(it)) }
+  }
+
+  @Test fun juzAmma_quiz() {
+    val juz = juzAmma()
+    QaidaJuzAmma.groups.forEach { g ->
+      repeat(30) { seed ->
+        val qs = QaidaJuzAmmaQuiz.generate(Random(seed), g.surahs.map { juz.getValue(it) })
+        assertEquals(10, qs.size)
+        qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(4, q.options.toSet().size) }
+      }
+    }
+  }
+
+  @Test fun stage11_content() {
+    assertTrue(QaidaStage11.roots.size >= 7)
+    // every word under a root really contains that root's three letters, in order
+    fun bare(t: String) = t.filter { it in '\u0621'..'\u064A' && it !in "اأإآى" }
+    QaidaStage11.roots.forEach { r ->
+      val letters = r.letters.split(' ')
+      (r.words.map { it.arabic } + QaidaStage11.detective.filter { it.rootId == r.id }.map { it.word }).forEach { w ->
+        val b = bare(w)
+        var at = -1
+        letters.forEach { l -> at = b.indexOf(l, at + 1); assertTrue("$w should contain ${r.letters}", at >= 0) }
+      }
+    }
+    assertEquals(6, QaidaStage11.past.size); assertEquals(6, QaidaStage11.present.size)
+    repeat(50) { seed ->
+      val qs = QaidaStage11Quiz.generate(Random(seed))
       assertEquals(10, qs.size)
       qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size) }
     }

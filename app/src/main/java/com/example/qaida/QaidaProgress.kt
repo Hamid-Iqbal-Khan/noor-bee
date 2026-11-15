@@ -20,7 +20,7 @@ class QaidaProgress(context: Context, profileId: Int) {
     fun bestQuizScore(stage: Int = 1): Int = prefs.getInt(if (stage == 1) KEY_BEST else "${KEY_BEST}_s$stage", 0)
     fun recordQuizScore(score: Int, stage: Int = 1) {
         if (score > bestQuizScore(stage)) prefs.edit().putInt(if (stage == 1) KEY_BEST else "${KEY_BEST}_s$stage", score).apply()
-        if (score >= PASS_MARK) markLessonDone(when (stage) { 1 -> LESSON_QUIZ; 2 -> S2_QUIZ; 3 -> S3_QUIZ; 4 -> S4_QUIZ; 5 -> S5_QUIZ; 6 -> S6_QUIZ; else -> S7_QUIZ })
+        if (score >= PASS_MARK) markLessonDone(when (stage) { 1 -> LESSON_QUIZ; 2 -> S2_QUIZ; 3 -> S3_QUIZ; 4 -> S4_QUIZ; 5 -> S5_QUIZ; 6 -> S6_QUIZ; 7 -> S7_QUIZ; 11 -> S11_QUIZ; else -> "$stage.q" })
     }
 
     companion object {
@@ -72,6 +72,13 @@ class QaidaProgress(context: Context, profileId: Int) {
         const val S7_MEEM = "7.5"
         const val S7_SPOT = "7.6"
         const val S7_QUIZ = "7.7"
+        const val S11_ROOTS = "11.1"
+        const val S11_PATTERNS = "11.2"
+        const val S11_PAST = "11.3"
+        const val S11_PRESENT = "11.4"
+        const val S11_COMMANDS = "11.5"
+        const val S11_DETECTIVE = "11.6"
+        const val S11_QUIZ = "11.7"
     }
 }
 
@@ -108,6 +115,12 @@ class QaidaAudio(private val context: Context) {
 object QaidaCourse {
     data class Stage(val number: Int, val english: String, val urdu: String, val lessons: List<Pair<String, String>>, val quiz: String)
 
+    private val ENGLISH = mapOf(78 to "An-Naba", 79 to "An-Nazi'at", 80 to "'Abasa", 81 to "At-Takwir", 82 to "Al-Infitar",
+        83 to "Al-Mutaffifin", 84 to "Al-Inshiqaq", 85 to "Al-Buruj", 86 to "At-Tariq", 87 to "Al-A'la", 88 to "Al-Ghashiyah",
+        89 to "Al-Fajr", 90 to "Al-Balad", 91 to "Ash-Shams", 92 to "Al-Layl", 93 to "Ad-Duha", 94 to "Ash-Sharh", 95 to "At-Tin",
+        96 to "Al-'Alaq", 97 to "Al-Qadr", 98 to "Al-Bayyinah", 99 to "Az-Zalzalah", 100 to "Al-'Adiyat", 101 to "Al-Qari'ah",
+        102 to "At-Takathur", 104 to "Al-Humazah")
+
     val stages = listOf(
         Stage(1, "Letters & harakat", "حروف", listOf("1.1" to "29 letters", "1.2" to "Similar sounds", "1.3" to "Zabar, zer, pesh"), "1.4"),
         Stage(2, "Joining & marks", "جوڑ", listOf("2.1" to "Joining letters", "2.2" to "Muqatta'at", "2.3" to "Tanween",
@@ -122,7 +135,13 @@ object QaidaCourse {
             "6.4" to "Al-Masad", "6.5" to "Flashcards"), "6.6"),
         Stage(7, "Noon & meem sakin", "تجوید", listOf("7.1" to "Izhar", "7.2" to "Idgham", "7.3" to "Iqlab", "7.4" to "Ikhfa",
             "7.5" to "Meem sakin", "7.6" to "Spot the rule"), "7.7"),
-    )
+    ) + QaidaJuzAmma.groups.map { g ->
+        Stage(g.stage, "Juz 'Amma: ${ENGLISH[g.surahs.first()]} to ${ENGLISH[g.surahs.last()]}", g.tab.substringAfter(": "),
+            g.surahs.map { QaidaJuzAmma.lessonKey(it) to (ENGLISH[it] ?: "Surah $it") }, QaidaJuzAmma.quizKey(g.stage))
+    } + Stage(11, "Quranic grammar basics", "گرامر", listOf("11.1" to "Roots", "11.2" to "Patterns", "11.3" to "Past tense",
+        "11.4" to "Present tense", "11.5" to "Commands & 'not'", "11.6" to "Root detective"), "11.7")
+
+
 
     data class StageStatus(val stage: Stage, val lessonsDone: Int, val bestQuiz: Int, val passed: Boolean) {
         val started get() = lessonsDone > 0 || bestQuiz > 0

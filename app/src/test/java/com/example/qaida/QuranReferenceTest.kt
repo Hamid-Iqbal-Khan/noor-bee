@@ -26,7 +26,9 @@ class QuranReferenceTest {
     val course: Map<Int, List<QaidaStage3.Ayah>> =
       (listOf(1 to QaidaStage3.fatiha, 112 to QaidaStage3.ikhlas) +
         QaidaStage4.surahs.map { it.number to it.ayat } +
-        QaidaStage6.surahs.map { s -> s.number to s.ayat.map { it.ayah } }).toMap()
+        QaidaStage6.surahs.map { s -> s.number to s.ayat.map { it.ayah } } +
+        QaidaJuzAmma.parse(java.io.File("src/main/assets/${QaidaJuzAmma.ASSET}").readLines(Charsets.UTF_8).asSequence())
+          .map { (n, s) -> n to s.ayat.map { it.ayah } }).toMap()
     val bismillah = QuranSkeleton.of("بسم الله الرحمن الرحيم")
     var checked = 0
     for ((n, ayat) in course) {

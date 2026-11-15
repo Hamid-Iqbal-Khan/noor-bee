@@ -257,4 +257,36 @@ class QaidaScreensTest {
     org.junit.Assert.assertTrue(QaidaCourse.status(QaidaProgress(ctx, 7))[0].passed)
     shot("phone_parent_progress")
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_juzAmmaStages() {
+    launch(stage = 8); shot("phone_s8_01_home")
+    rule.onNodeWithTag("lesson_juz_104").performClick(); rule.waitForIdle(); shot("phone_s8_02_humazah")
+    rule.onNodeWithTag("qaida_wbw_104_1_1").performClick(); rule.waitForIdle()
+    assertTrue("first word spoken", spoken.isNotEmpty())
+    rule.onNodeWithTag("qaida_juz_104_list").performScrollToNode(hasTestTag("qaida_juz_done"))
+    rule.onNodeWithTag("qaida_juz_done").performClick(); rule.waitForIdle()
+    assertTrue("surah rewarded", rewards == 1)
+    rule.onNodeWithTag("qaida_stage_tab_10").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_10").performClick(); rule.waitForIdle()
+    shot("phone_s10_01_home")
+    rule.onNodeWithTag("lesson_juz_78").performScrollToSafe(); rule.onNodeWithTag("lesson_juz_78").performClick(); rule.waitForIdle()
+    shot("phone_s10_02_naba")
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_juz_quiz_10").performScrollToSafe(); rule.onNodeWithTag("lesson_juz_quiz_10").performClick(); rule.waitForIdle()
+    shot("phone_s10_03_quiz")
+  }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage11_grammar() {
+    launch(stage = 11); shot("phone_s11_01_home")
+    listOf("roots", "patterns", "past", "present", "commands", "detective").forEachIndexed { i, b ->
+      rule.onNodeWithTag("lesson_s11_$b").performScrollToSafe(); rule.onNodeWithTag("lesson_s11_$b").performClick(); rule.waitForIdle()
+      shot("phone_s11_0${i + 2}_$b")
+      rule.onNodeWithTag("qaida_s11_${b}_list").performScrollToNode(hasTestTag("qaida_s11_done"))
+      rule.onNodeWithTag("qaida_s11_done").performClick(); rule.waitForIdle()
+    }
+    assertTrue("six grammar lessons rewarded", rewards == 6)
+    rule.onNodeWithTag("lesson_s11_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s11_quiz").performClick(); rule.waitForIdle()
+    shot("phone_s11_08_quiz")
+  }
 }

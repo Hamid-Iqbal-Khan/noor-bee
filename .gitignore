@@ -17,3 +17,4 @@ local.properties
 .env
 debug.keystore
 !norby-test.keystore
+__pycache__/

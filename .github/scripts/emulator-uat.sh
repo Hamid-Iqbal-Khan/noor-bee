@@ -64,6 +64,14 @@ adb shell input keyevent 4; sleep 2
 tap_text "مرحلہ ۷: تجوید"; sleep 3; shot 30_qaida_stage7_home
 tap_text "حلق کے ۶ حروف"; sleep 2; shot 31_qaida_izhar; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
+adb shell input swipe 540 1700 540 1000 300; sleep 1
+tap_text "مرحلہ ۸: عمّ ۱"; sleep 3; shot 32_qaida_stage8_home
+tap_text "سورۃ الہمزہ"; sleep 3; shot 33_qaida_humazah; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
+tap_text "مرحلہ ۱۱: گرامر"; sleep 3; shot 34_qaida_stage11_home
+tap_text "تین حرفی جڑ"; sleep 2; shot 35_qaida_roots; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
+adb shell input swipe 540 1000 540 1700 300; sleep 1
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
 adb shell input swipe 540 700 540 1700 300; sleep 1
 tap_text "English"; sleep 2
