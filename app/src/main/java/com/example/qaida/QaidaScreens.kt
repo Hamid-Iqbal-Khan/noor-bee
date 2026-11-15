@@ -296,8 +296,13 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        // Keep the open stage's tab in view (later tabs sit off-screen on narrow phones).
+        val tabScroll = rememberScrollState()
+        androidx.compose.runtime.LaunchedEffect(stage, tabScroll.maxValue) {
+            tabScroll.animateScrollTo(if (stage >= 5) tabScroll.maxValue else 0)
+        }
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
-            .horizontalScroll(rememberScrollState()).padding(4.dp),
+            .horizontalScroll(tabScroll).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی", 6 to "۶: سورتیں").forEach { (n, label) ->
                 val on = stage == n
