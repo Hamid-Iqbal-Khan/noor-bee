@@ -134,7 +134,7 @@ class QaidaDataTest {
     assertEquals(14, QaidaStage3.shamsiIds.size); assertEquals(14, QaidaStage3.qamariIds.size)
     assertEquals(28, (QaidaStage3.shamsiIds + QaidaStage3.qamariIds).toSet().size)
     (QaidaStage3.shamsiIds + QaidaStage3.qamariIds).forEach { QaidaData.letter(it) }
-    assertEquals("اَبَّ", QaidaStage3.tashdeed(QaidaData.letter("ba"), QaidaStage3.Vowel.ZABAR))
+    assertEquals("اَب\u0651\u064E", QaidaStage3.tashdeed(QaidaData.letter("ba"), QaidaStage3.Vowel.ZABAR))
     // every sun-letter example really has tashdeed on the letter after the lam, moon examples have jazm on the lam
     QaidaStage3.shamsiWords.forEach { w ->
       val after = w.written.removePrefix("اَل").first().toString()

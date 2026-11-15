@@ -151,7 +151,7 @@ class QaidaScreensTest {
     launch(stage = 3)
     rule.onNodeWithTag("lesson_s3_tashdeed").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s3_cell_ba_z").performClick(); rule.waitForIdle()
-    assertTrue("tashdeed fallback spoken", spoken.contains("اَبَّ"))
+    assertTrue("tashdeed fallback spoken", spoken.contains("اَب\u0651\u064E"))
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_s3_fatiha").performScrollToSafe(); rule.onNodeWithTag("lesson_s3_fatiha").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_ayah_1_1").performClick(); rule.waitForIdle()
