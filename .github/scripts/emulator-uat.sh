@@ -27,6 +27,10 @@ PY
   if [ -n "$b" ]; then adb shell input tap $b; echo "tap '$1' at $b" >> emu/steps.txt; sleep 3; else echo "NOT FOUND '$1'" >> emu/steps.txt; fi
 }
 shot 01_splash
+# a slow CI emulator sometimes shows "Pixel Launcher isn't responding" over the app: close it, then bring the app back
+adb shell am force-stop com.google.android.apps.nexuslauncher || true
+adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS >/dev/null 2>&1 || true
+adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 3
 tap_text "Wait"; sleep 1  # dismiss a system "isn't responding" dialog on slow CI emulators, if any
 tap_text "Learn!"; shot 02_after_start
 tap_text "Child's Name"; adb shell input text "Aisha"; adb shell input keyevent 111; sleep 1
