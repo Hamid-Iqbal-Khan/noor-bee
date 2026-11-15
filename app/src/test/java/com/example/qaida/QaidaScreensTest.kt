@@ -164,4 +164,21 @@ class QaidaScreensTest {
     rule.onNodeWithTag("qaida_ayah_1_1").performClick(); rule.waitForIdle()
     assertTrue("ayah fallback spoken", spoken.any { it.startsWith("بِسْمِ") })
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage4_allLessons() {
+    launch(stage = 4); shot("phone_s4_01_home")
+    listOf("stop", "signs", "qalqalah", "kawthar", "falaq", "nas").forEachIndexed { i, b ->
+      rule.onNodeWithTag("lesson_s4_$b").performScrollToSafe(); rule.onNodeWithTag("lesson_s4_$b").performClick(); rule.waitForIdle()
+      shot("phone_s4_0${i + 2}_$b")
+      rule.onNodeWithTag("qaida_s4_${b}_list").performScrollToNode(hasTestTag("qaida_s4_done"))
+      rule.onNodeWithTag("qaida_s4_done").performClick(); rule.waitForIdle()
+    }
+    assertTrue("six stage-4 lessons rewarded", rewards == 6)
+    rule.onNodeWithTag("lesson_s4_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s4_quiz").performClick(); rule.waitForIdle()
+    shot("phone_s4_08_quiz")
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_stage_tab_1").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_letters").assertExists()
+  }
 }

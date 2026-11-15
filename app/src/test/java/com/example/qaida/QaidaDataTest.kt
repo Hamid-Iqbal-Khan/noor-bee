@@ -93,6 +93,10 @@ class QaidaDataTest {
     (QaidaStage3.ghunnaWords + QaidaStage3.tashdeedWords + QaidaStage3.maddSignWords + QaidaStage3.shamsiWords + QaidaStage3.qamariWords)
       .forEach { rows += "${it.audioKey},${it.written},لفظ: ${it.urdu.replace(',', '،')}" }
     (QaidaStage3.fatiha + QaidaStage3.ikhlas).forEach { rows += "${it.audioKey},${it.text},آیت ${it.surah}:${it.number} — ترتیل سے" }
+    // Stage 4
+    QaidaStage4.stopExamples.forEach { rows += "${it.audioKey},${it.word},لفظ (پورا)"; rows += "${it.audioKey}_stop,${it.stopped},وقف کے ساتھ" }
+    QaidaStage4.qalqalahWords.forEach { rows += "${it.audioKey},${it.written},قلقلہ: ${it.urdu.replace(',', '،')}" }
+    QaidaStage4.surahs.forEach { s -> s.ayat.forEach { rows += "${it.audioKey},${it.text},آیت ${it.surah}:${it.number} — آخر میں وقف" } }
     val keys = rows.drop(1).map { it.substringBefore(',') }
     assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
@@ -157,13 +161,15 @@ class QaidaDataTest {
       .replace(Regex("[\\u064B-\\u065F\\u0670\\u06D6-\\u06ED\\u0640]"), "")
       .replace(Regex("[اأإآٱ]"), "").replace('ى', 'ي').replace('ة', 'ه').replace(Regex("\\s"), "")
     var checked = 0
-    for ((n, ayat) in listOf(1 to QaidaStage3.fatiha, 112 to QaidaStage3.ikhlas)) {
+    for ((n, ayat) in listOf(1 to QaidaStage3.fatiha, 112 to QaidaStage3.ikhlas) + QaidaStage4.surahs.map { it.number to it.ayat }) {
       val bundled = com.example.ui.screens.getOfflineSurah(n) ?: continue
       ayat.forEach { a ->
         assertEquals("$n:${a.number}", skeleton(bundled[a.number - 1].textAr), skeleton(a.text)); checked++
       }
     }
     assertTrue("Al-Fatiha must be checked", checked >= 7)
+    // Ayah counts of the Stage 4 surahs
+    assertEquals(listOf(3, 3, 5, 6), QaidaStage4.surahs.map { it.ayat.size })
   }
 
   @Test fun stage3_quiz() {
@@ -171,6 +177,25 @@ class QaidaDataTest {
       val qs = QaidaStage3Quiz.generate(Random(seed))
       assertEquals(10, qs.size)
       qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size) }
+    }
+  }
+
+  @Test fun stage4_stopForms() {
+    val expected = mapOf(
+      "اَحَدٌ" to "اَحَدْ", "الصَّمَدُ" to "الصَّمَدْ", "الرَّحِيْمِ" to "الرَّحِيْمْ",
+      "عَلِيْمًا" to "عَلِيْمَا", "جَنَّةٌ" to "جَنَّهْ", "رَحْمَةً" to "رَحْمَهْ", "وَانْحَرْ" to "وَانْحَرْ",
+    )
+    expected.forEach { (w, s) -> assertEquals(w, s, QaidaStage4.stopForm(w)) }
+    assertEquals("الْفَلَقْ", QaidaStage4.stopOnLastWord(QaidaStage4.falaq.ayat[0].text))
+    assertEquals(5, QaidaStage4.qalqalahIds.size)
+    QaidaStage4.qalqalahIds.forEach { QaidaData.letter(it) }
+  }
+
+  @Test fun stage4_quiz() {
+    repeat(50) { seed ->
+      val qs = QaidaStage4Quiz.generate(Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size); assertTrue(q.options.size >= 2) }
     }
   }
 }

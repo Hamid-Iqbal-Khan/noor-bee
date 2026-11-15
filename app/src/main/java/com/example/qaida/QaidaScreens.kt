@@ -111,7 +111,7 @@ fun QaidaScreen(
     val audio = remember { QaidaAudio(context) }
     DisposableEffect(Unit) { onDispose { audio.stop() } }
     var page by rememberSaveable { mutableStateOf("home") }
-    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 3)) }
+    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 4)) }
     var refresh by remember { mutableIntStateOf(0) } // bump to re-read progress
 
     val play: (String, String) -> Unit = { key, fallbackText -> if (!audio.play(key)) onSpeakArabic(fallbackText) }
@@ -140,6 +140,13 @@ fun QaidaScreen(
                 "s3_fatiha" -> "سبق ۵: سورۃ الفاتحہ"
                 "s3_ikhlas" -> "سبق ۶: سورۃ الاخلاص"
                 "s3_quiz" -> "مرحلہ ۳ کی مشق"
+                "s4_stop" -> "سبق ۱: وقف کا طریقہ"
+                "s4_signs" -> "سبق ۲: رموزِ اوقاف"
+                "s4_qalqalah" -> "سبق ۳: قلقلہ"
+                "s4_kawthar" -> "سبق ۴: الکوثر اور العصر"
+                "s4_falaq" -> "سبق ۵: سورۃ الفلق"
+                "s4_nas" -> "سبق ۶: سورۃ الناس"
+                "s4_quiz" -> "مرحلہ ۴ کی مشق"
                 else -> "نورانی قاعدہ"
             }
             QaidaHeader(title, onBack = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } })
@@ -172,6 +179,21 @@ fun QaidaScreen(
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 3 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
+                    "s4_quiz" -> QaidaQuizScreen(play, stageNo = 4, generate = { QaidaStage4Quiz.generate(it) }, onFinished = { score ->
+                        progress.recordQuizScore(score, stage = 4)
+                        if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 4 quiz passed")
+                        refresh++
+                    }, onDone = { page = "home"; refresh++ })
+                    "s4_stop", "s4_signs", "s4_qalqalah", "s4_kawthar", "s4_falaq", "s4_nas" -> {
+                        val lesson = mapOf("s4_stop" to QaidaProgress.S4_STOP, "s4_signs" to QaidaProgress.S4_SIGNS,
+                            "s4_qalqalah" to QaidaProgress.S4_QALQALAH, "s4_kawthar" to QaidaProgress.S4_KAWTHAR,
+                            "s4_falaq" to QaidaProgress.S4_FALAQ, "s4_nas" to QaidaProgress.S4_NAS).getValue(page)
+                        val done4: () -> Unit = {
+                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 4: $lesson")
+                            page = "home"; refresh++
+                        }
+                        Stage4Lesson(page, play, done4)
+                    }
                     "s3_tashdeed", "s3_ghunna", "s3_madd", "s3_shamsi", "s3_fatiha", "s3_ikhlas" -> {
                         val lesson = mapOf("s3_tashdeed" to QaidaProgress.S3_TASHDEED, "s3_ghunna" to QaidaProgress.S3_GHUNNA,
                             "s3_madd" to QaidaProgress.S3_MADD, "s3_shamsi" to QaidaProgress.S3_SHAMSI,
@@ -233,11 +255,11 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
     ) {
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp)).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت").forEach { (n, label) ->
+            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف").forEach { (n, label) ->
                 val on = stage == n
                 Box(Modifier.weight(1f).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
                     .clickable { onStage(n) }.testTag("qaida_stage_tab_$n"), contentAlignment = Alignment.Center) {
-                    UrduText(label, size = 14.sp, color = if (on) Color.White else Green, weight = FontWeight.Bold, align = TextAlign.Center)
+                    UrduText(label, size = 13.sp, color = if (on) Color.White else Green, weight = FontWeight.Bold, align = TextAlign.Center)
                 }
             }
         }
@@ -284,7 +306,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
                     UrduText("ماشاء اللہ! مرحلہ ۲ مکمل۔ اب مرحلہ ۳ (تشدید اور تلاوت) شروع کریں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
-        } else {
+        } else if (stage == 3) {
             val best = progress.bestQuizScore(3)
             HeroCard("اَبَّ  اَلشَّمْسُ", "مرحلہ ۳: تشدید اور پہلی تلاوت", "تشدید، غنّہ، مدّ کا نشان، لامِ شمسی و قمری — پھر سورۃ الفاتحہ اور سورۃ الاخلاص")
             if (!done(QaidaProgress.S2_QUIZ)) {
@@ -307,8 +329,35 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
             LessonCard("lesson_s3_quiz", "۷", "مرحلہ ۳ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۳ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۳ مکمل",
                 done(QaidaProgress.S3_QUIZ)) { open("s3_quiz") }
             if (done(QaidaProgress.S3_QUIZ)) {
+                Card(Modifier.clickable { onStage(4) }.testTag("qaida_go_stage4"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
+                    UrduText("ماشاء اللہ! مرحلہ ۳ مکمل۔ اب مرحلہ ۴ (وقف اور مختصر سورتیں) شروع کریں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                }
+            }
+        } else {
+            val best = progress.bestQuizScore(4)
+            HeroCard("۝  م  ط  ج", "مرحلہ ۴: وقف اور مختصر سورتیں", "رکنے کا طریقہ، رموزِ اوقاف، قلقلہ — پھر الکوثر، العصر، الفلق اور الناس")
+            if (!done(QaidaProgress.S3_QUIZ)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("qaida_s4_hint")) {
+                    UrduText("مشورہ: پہلے مرحلہ ۳ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
+                }
+            }
+            LessonCard("lesson_s4_stop", "۱", "وقف کا طریقہ", "رکتے وقت آخری حرف ساکن: اَحَدٌ ← اَحَدْ، عَلِيْمًا ← عَلِيْمَا",
+                done(QaidaProgress.S4_STOP)) { open("s4_stop") }
+            LessonCard("lesson_s4_signs", "۲", "رموزِ اوقاف", "۝ م ط ج ز ص لا — کہاں رکنا ہے اور کہاں ملانا ہے",
+                done(QaidaProgress.S4_SIGNS)) { open("s4_signs") }
+            LessonCard("lesson_s4_qalqalah", "۳", "قلقلہ", "ق ط ب ج د پر جزم ہو تو اچھلتی آواز",
+                done(QaidaProgress.S4_QALQALAH)) { open("s4_qalqalah") }
+            LessonCard("lesson_s4_kawthar", "۴", "تلاوت: الکوثر اور العصر", "دو چھوٹی سورتیں، ہر آیت پر وقف کے ساتھ",
+                done(QaidaProgress.S4_KAWTHAR)) { open("s4_kawthar") }
+            LessonCard("lesson_s4_falaq", "۵", "تلاوت: سورۃ الفلق", "پانچ آیتیں — ہر آیت کے آخر میں قلقلہ",
+                done(QaidaProgress.S4_FALAQ)) { open("s4_falaq") }
+            LessonCard("lesson_s4_nas", "۶", "تلاوت: سورۃ الناس", "چھ آیتیں — غنّہ اور لامِ شمسی",
+                done(QaidaProgress.S4_NAS)) { open("s4_nas") }
+            LessonCard("lesson_s4_quiz", "۷", "مرحلہ ۴ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۴ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۴ مکمل",
+                done(QaidaProgress.S4_QUIZ)) { open("s4_quiz") }
+            if (done(QaidaProgress.S4_QUIZ)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
-                    UrduText("ماشاء اللہ! مرحلہ ۳ مکمل۔ اگلا مرحلہ (وقف کے اصول اور مختصر سورتیں) جلد آ رہا ہے۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                    UrduText("ماشاء اللہ! نورانی قاعدہ کے چاروں مرحلے مکمل۔ اب استاد کے ساتھ ناظرہ قرآن شروع کریں۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
         }

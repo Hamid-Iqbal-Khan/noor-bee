@@ -541,15 +541,32 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
-                        Box(modifier = Modifier.fillMaxWidth().padding(top = 10.dp).testTag("dashboard_qaida_stage3")) {
-                            DashboardHoneycomb(
-                                title = "مرحلہ ۳: تشدید اور تلاوت 📖",
-                                subtitle = "Tashdeed, sun & moon letters, Al-Fatiha",
-                                color = Color(0xFFE8EAF6),
-                                borderStroke = Color(0xFF283593),
-                                emoji = "🌙",
-                                onClick = { onNavigateToQaida(3) }
-                            )
+                        androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage3")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۳: تلاوت 📖",
+                                    subtitle = "Tashdeed, Al-Fatiha",
+                                    color = Color(0xFFE8EAF6),
+                                    borderStroke = Color(0xFF283593),
+                                    emoji = "🌙",
+                                    onClick = { onNavigateToQaida(3) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage4")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۴: وقف ✋",
+                                    subtitle = "Stopping, short surahs",
+                                    color = Color(0xFFE0F2F1),
+                                    borderStroke = Color(0xFF00695C),
+                                    emoji = "🕋",
+                                    onClick = { onNavigateToQaida(4) }
+                                )
+                            }
+                        }
                         }
                     } else {
                     // Row 1
