@@ -33,9 +33,10 @@ tap_text "Let's Go"; sleep 2; tap_text "Got it!"; shot 03_dashboard
 # Noorani Qaida (Urdu-medium Arabic course): English | Urdu selector, Urdu row = Stage 1 / Stage 2
 tap_text "اردو"; sleep 2; shot 10_dashboard_urdu
 tap_text "مرحلہ ۲: جوڑ"; sleep 3; shot 15_qaida_stage2_home
-tap_text "تنوین"; sleep 2; shot 16_qaida_tanween; adb shell input keyevent 4; sleep 1
-tap_text "کھڑا زبر"; sleep 2; shot 17_qaida_khara; adb shell input keyevent 4; sleep 1
 tap_text "حروفِ مقطعات"; sleep 2; shot 18_qaida_muqattaat; adb shell input keyevent 4; sleep 1
+tap_text "تنوین: دو زبر"; sleep 2; shot 16_qaida_tanween; adb shell input keyevent 4; sleep 1
+adb shell input swipe 540 1700 540 900 300; sleep 1
+tap_text "کھڑا زبر، کھڑی زیر"; sleep 2; shot 17_qaida_khara; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
 tap_text "مرحلہ ۱: حروف"; sleep 3; shot 11_qaida_home
 tap_text "حروفِ مفردات"; sleep 2; shot 12_qaida_letters
