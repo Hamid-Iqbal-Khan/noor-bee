@@ -75,6 +75,7 @@ adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 1000 540 1700 300; sleep 1
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
 adb shell input swipe 540 700 540 1700 300; sleep 1
+adb shell input swipe 540 600 540 2000 200; sleep 1; adb shell input swipe 540 600 540 2000 200; sleep 1; adb shell input swipe 540 600 540 2000 200; sleep 1
 tap_text "English"; sleep 2
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
 tap_text "Quran Explorer"; sleep 3; shot 05_quran
