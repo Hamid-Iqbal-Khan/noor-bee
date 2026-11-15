@@ -12,6 +12,7 @@ object QuranSkeleton {
     .replace("\u0621\u0657", "\u0621و")                      // الْمَوْءٗدَةُ: the small waw is a written waw
     .replace(Regex("\u0670و(?=ة)"), "\u0670")                  // الصَّلٰوةَ / الزَّكٰوةَ / الْحَيٰوةَ are spelled with alif in simple text
     .replace(marks, "")
+    .replace("اليل", "الليل")                                  // Uthmani الَّيْل has one lam, simple text writes الليل
     .replace(Regex("ى(?=[\\u0622-\\u064A])"), "")   // Uthmani writes some long-a sounds as a mid-word ى (اَدْرٰىكَ)
     .replace(Regex("[اأإآٱءئؤ]"), "").replace('ى', 'ي').replace('ة', 'ه').replace(Regex("\\s"), "")
 }
