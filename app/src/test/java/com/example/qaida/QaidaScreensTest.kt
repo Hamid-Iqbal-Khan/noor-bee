@@ -213,7 +213,7 @@ class QaidaScreensTest {
     rule.onNodeWithTag("lesson_s6_cards").performScrollToSafe(); rule.onNodeWithTag("lesson_s6_cards").performClick(); rule.waitForIdle()
     shot("phone_s6_06_card_front")
     rule.onNodeWithTag("qaida_card").performClick(); rule.waitForIdle()
-    rule.onNodeWithTag("qaida_card_meaning").assertExists(); shot("phone_s6_07_card_back")
+    rule.onNodeWithTag("qaida_card_meaning", useUnmergedTree = true).assertExists(); shot("phone_s6_07_card_back")
     repeat(15) {
       rule.onNodeWithTag("qaida_card").performClick(); rule.waitForIdle()
       rule.onNodeWithTag(if (it % 2 == 0) "qaida_card_knew" else "qaida_card_notyet").performClick(); rule.waitForIdle()
