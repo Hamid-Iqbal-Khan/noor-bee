@@ -38,6 +38,19 @@ class UatFlowTest {
   @get:Rule(order = 0) val freshDb = FreshDatabaseRule()
   @get:Rule(order = 1) val rule = createAndroidComposeRule<MainActivity>()
 
+  // Watchdog: if a flow test stalls, print every thread's stack once so CI shows where.
+  private val watchdog = Thread {
+    try { Thread.sleep(180_000) } catch (_: InterruptedException) { return@Thread }
+    System.err.println("=== UatFlowTest watchdog: stalled for 3 minutes, thread dump ===")
+    Thread.getAllStackTraces().forEach { (t, st) ->
+      System.err.println("--- ${t.name}"); st.take(40).forEach { System.err.println("    at $it") }
+    }
+  }.apply { isDaemon = true; start() }
+
+  @org.junit.After fun stopWatchdog() = watchdog.interrupt()
+
+  private fun log(msg: String) = System.err.println("[flow ${System.currentTimeMillis() % 100000}] $msg")
+
   private fun step(ms: Long = 1_500) {
     repeat((ms / 100).toInt()) {
       rule.mainClock.advanceTimeBy(100)
@@ -100,7 +113,8 @@ class UatFlowTest {
     waitTag("home_dashboard_screen")
     waitTag("home_dashboard_screen"); dismissGuide()
     clickTag("lang_ur_button"); shot("06_after_urdu_toggle")
-    clickTag("dashboard_qaida_stage2"); step(1_500); shot("06b_qaida_stage2"); goBack()
+    log("tap stage 2 card"); clickTag("dashboard_qaida_stage2"); log("tapped"); step(1_500); log("stepped")
+    shot("06b_qaida_stage2"); log("shot"); goBack(); log("back")
     waitTag("home_dashboard_screen"); dismissGuide()
     clickText("Phonics Whiteboard"); step(2_000); shot("07_whiteboard"); goBack()
   }
