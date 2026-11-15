@@ -116,6 +116,8 @@ class UatFlowTest {
     log("tap stage 2 card"); clickTag("dashboard_qaida_stage2"); log("tapped"); step(1_500); log("stepped")
     shot("06b_qaida_stage2"); log("shot"); goBack(); log("back")
     waitTag("home_dashboard_screen"); dismissGuide()
+    // Urdu mode adds the Qaida stage cards and pushes the English games further down: switch back first.
+    clickText("English"); step(1_000); dismissGuide()
     clickText("Phonics Whiteboard"); step(2_000); shot("07_whiteboard"); goBack()
   }
 
