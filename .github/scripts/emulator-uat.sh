@@ -55,6 +55,9 @@ tap_text "رموزِ اوقاف"; sleep 2; shot 24_qaida_waqf_signs; adb shell i
 adb shell input swipe 540 1700 540 800 300; sleep 1
 tap_text "تلاوت: سورۃ الفلق"; sleep 2; shot 25_qaida_falaq; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
+tap_text "مرحلہ ۵: قرآن سمجھیں"; sleep 3; shot 26_qaida_stage5_home
+tap_text "الفاتحہ لفظ بہ لفظ"; sleep 2; shot 27_qaida_fatiha_wbw; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
 adb shell input swipe 540 700 540 1700 300; sleep 1
 tap_text "English"; sleep 2

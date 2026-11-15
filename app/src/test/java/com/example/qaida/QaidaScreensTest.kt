@@ -181,4 +181,22 @@ class QaidaScreensTest {
     rule.onNodeWithTag("qaida_stage_tab_1").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_letters").assertExists()
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage5_allLessons() {
+    launch(stage = 5); shot("phone_s5_01_home")
+    listOf("words", "endings", "fatiha", "short", "falaq").forEachIndexed { i, b ->
+      rule.onNodeWithTag("lesson_s5_$b").performScrollToSafe(); rule.onNodeWithTag("lesson_s5_$b").performClick(); rule.waitForIdle()
+      shot("phone_s5_0${i + 2}_$b")
+      rule.onNodeWithTag("qaida_s5_${b}_list").performScrollToNode(hasTestTag("qaida_s5_done"))
+      rule.onNodeWithTag("qaida_s5_done").performClick(); rule.waitForIdle()
+    }
+    assertTrue("five stage-5 lessons rewarded", rewards == 5)
+    rule.onNodeWithTag("lesson_s5_fatiha").performScrollToSafe(); rule.onNodeWithTag("lesson_s5_fatiha").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_wbw_1_2_3").performClick(); rule.waitForIdle()
+    assertTrue("word رَبِّ spoken", spoken.contains(QaidaStage5.fatiha.ayat[1].words[2]))
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_s5_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s5_quiz").performClick(); rule.waitForIdle()
+    shot("phone_s5_07_quiz")
+  }
 }

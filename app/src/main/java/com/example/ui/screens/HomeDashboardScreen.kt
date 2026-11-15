@@ -568,6 +568,16 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
+                        Box(modifier = Modifier.fillMaxWidth().padding(top = 10.dp).testTag("dashboard_qaida_stage5")) {
+                            DashboardHoneycomb(
+                                title = "مرحلہ ۵: قرآن سمجھیں 💡",
+                                subtitle = "Word-by-word meanings in Urdu",
+                                color = Color(0xFFF3E5F5),
+                                borderStroke = Color(0xFF4A148C),
+                                emoji = "💡",
+                                onClick = { onNavigateToQaida(5) }
+                            )
+                        }
                     } else {
                     // Row 1
                         Row(

@@ -97,6 +97,10 @@ class QaidaDataTest {
     QaidaStage4.stopExamples.forEach { rows += "${it.audioKey},${it.word},لفظ (پورا)"; rows += "${it.audioKey}_stop,${it.stopped},وقف کے ساتھ" }
     QaidaStage4.qalqalahWords.forEach { rows += "${it.audioKey},${it.written},قلقلہ: ${it.urdu.replace(',', '،')}" }
     QaidaStage4.surahs.forEach { s -> s.ayat.forEach { rows += "${it.audioKey},${it.text},آیت ${it.surah}:${it.number} — آخر میں وقف" } }
+    // Stage 5
+    QaidaStage5.allWords.forEach { rows += "${it.audioKey},${it.arabic},لفظ: ${it.urdu.replace(',', '،')}" }
+    QaidaStage5.endings.forEach { rows += "${it.audioKey},${it.example},${it.exampleUrdu}" }
+    QaidaStage5.wbwSurahs.forEach { s -> s.ayat.forEach { a -> a.words.forEachIndexed { i, w -> rows += "${a.wordKey(i)},$w,اکیلا لفظ (${a.meanings[i].replace(',', '،')})" } } }
     val keys = rows.drop(1).map { it.substringBefore(',') }
     assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
@@ -196,6 +200,26 @@ class QaidaDataTest {
       val qs = QaidaStage4Quiz.generate(Random(seed))
       assertEquals(10, qs.size)
       qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size); assertTrue(q.options.size >= 2) }
+    }
+  }
+
+  @Test fun stage5_content() {
+    QaidaStage5.wbwSurahs.forEach { s -> s.ayat.forEach { a ->
+      assertEquals("meanings for ${a.ayah.surah}:${a.ayah.number}", a.words.size, a.meanings.size)
+      a.meanings.forEach { assertTrue(it.isNotBlank()) }
+    } }
+    assertEquals(listOf(7, 4, 3, 3, 5, 6), QaidaStage5.wbwSurahs.map { it.ayat.size })
+    val arabic = QaidaStage5.allWords.map { it.arabic }
+    assertEquals("frequent words unique", arabic.size, arabic.toSet().size)
+    assertTrue(QaidaStage5.allWords.size >= 35)
+    QaidaStage5.endings.forEach { assertTrue(it.example.startsWith("رَبّ") || it.example.startsWith("رَبِّ")) }
+  }
+
+  @Test fun stage5_quiz() {
+    repeat(50) { seed ->
+      val qs = QaidaStage5Quiz.generate(Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(4, q.options.toSet().size) }
     }
   }
 }
