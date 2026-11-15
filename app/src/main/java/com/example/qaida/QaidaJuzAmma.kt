@@ -1,7 +1,9 @@
 package com.example.qaida
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -108,4 +110,34 @@ internal fun JuzAmmaLesson(surah: QaidaStage5.WbwSurah, play: (String, String) -
             }
         }
     }
+}
+
+/** Easy whole-ayah Urdu meaning for every ayah in the course (assets/qaida/mafhoom.tsv). */
+object QaidaMafhoom {
+    const val ASSET = "qaida/mafhoom.tsv"
+    @Volatile private var map: Map<Pair<Int, Int>, String> = emptyMap()
+
+    fun parse(lines: Sequence<String>): Map<Pair<Int, Int>, String> =
+        lines.filter { it.isNotBlank() && !it.startsWith("#") }.associate { l ->
+            val (s, n, t) = l.split('\t'); (s.toInt() to n.toInt()) to t
+        }
+
+    fun load(context: Context): Map<Pair<Int, Int>, String> {
+        if (map.isEmpty()) map = context.applicationContext.assets.open(ASSET).bufferedReader(Charsets.UTF_8).useLines { parse(it) }
+        return map
+    }
+
+    fun of(surah: Int, ayah: Int): String? = map[surah to ayah]
+}
+
+/** "آسان مفہوم" line shown under an ayah. */
+@Composable
+internal fun MafhoomLine(surah: Int, ayah: Int) {
+    val m = QaidaMafhoom.of(surah, ayah) ?: return
+    androidx.compose.foundation.layout.Column(Modifier.fillMaxWidth().padding(top = 4.dp)
+        .background(Color(0xFFF1F8E9), androidx.compose.foundation.shape.RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 4.dp)
+        .testTag("qaida_mafhoom_${surah}_$ayah")) {
+        UrduText("آسان مفہوم: $m", size = 14.sp, color = Ink, weight = FontWeight.Bold)
+    }
+    ParentNote(surah, ayah)
 }

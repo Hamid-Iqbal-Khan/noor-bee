@@ -118,6 +118,7 @@ fun QaidaScreen(
 
     val recordingsPresent = remember { audio.hasRecording(QaidaData.letters.first().audioKey) }
     val juz = remember { QaidaJuzAmma.load(context) }
+    remember { QaidaMafhoom.load(context) }
     val wordIndex = remember(juz) { QuranAudio.buildIndex(emptyList(), QuranAudio.courseAyat(juz)) }
     val play: (String, String) -> Unit = { key, text ->
         audio.play(key, QuranAudio.urlForKey(key) ?: wordIndex.urlsFor(text), QuranAudio.speechFor(key, text), onSpeakArabic)
@@ -683,6 +684,7 @@ private fun LettersLesson(progress: QaidaProgress, play: (String, String) -> Uni
             modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp).testTag("qaida_letters_grid"),
             horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) { MakhrajMap() }
             items(QaidaData.letters, key = { it.id }) { l ->
                 val isSeen = l.id in seen
                 Card(

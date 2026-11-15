@@ -97,7 +97,7 @@ private fun LazyListScope.stopping(play: (String, String) -> Unit) {
 
 // ---- 4.2 Waqf signs -----------------------------------------------------------------------------------
 private fun LazyListScope.signs() {
-    note4("انڈو پاک قرآن میں آیت کے بیچ چھوٹے نشان بتاتے ہیں کہ کہاں رکنا ہے اور کہاں ملا کر پڑھنا ہے۔ رکیں تو اوپر والا وقف کا طریقہ استعمال کریں۔")
+    note4("قرآن میں آیت کے بیچ چھوٹے نشان بتاتے ہیں کہ کہاں رکنا ہے اور کہاں ملا کر پڑھنا ہے۔ پہلے انڈو پاک مصحف کے نشان ہیں، پھر مدنی مصحف کے — اس ایپ کی آیتوں میں مدنی مصحف والے نشان (ۚ ۖ ۗ) چھپے ہیں۔ رکیں تو وقف کا طریقہ استعمال کریں۔")
     items(QaidaStage4.waqfSigns, key = { it.id }) { w ->
         Card(Modifier.fillMaxWidth().testTag("qaida_s4_sign_${w.id}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line4)) {
@@ -172,6 +172,7 @@ private fun LazyListScope.surah(play: (String, String) -> Unit, s: QaidaStage4.S
                     Spacer(Modifier.width(6.dp))
                     ArabicText(QaidaStage4.stopOnLastWord(a.text), size = 22.sp, color = StopRed)
                 }
+                MafhoomLine(a.surah, a.number)
                 UrduText("💡 " + a.rules, size = 12.sp, color = Quiet)
             }
         }

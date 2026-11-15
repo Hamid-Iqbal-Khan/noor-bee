@@ -220,6 +220,7 @@ private fun LazyListScope.recitation(play: (String, String) -> Unit, ayat: List<
                     Spacer(Modifier.width(8.dp))
                     ArabicText(a.text, Modifier.weight(1f), size = 30.sp, align = TextAlign.Start)
                 }
+                MafhoomLine(a.surah, a.number)
                 UrduText("💡 " + a.rules, size = 12.sp, color = Quiet)
             }
         }

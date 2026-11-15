@@ -43,5 +43,26 @@ def main():
         f.write('\n'.join(rows) + '\n')
     print(f'wrote {len(rows)} ayat from surahs {done} to {OUT}')
 
+MAFHOOM_OUT = os.path.join(ROOT, 'app', 'src', 'main', 'assets', 'qaida', 'mafhoom.tsv')
+
+def mafhoom():
+    """Easy whole-ayah Urdu meaning (mafhoom/<surah>.txt, one line per ayah) for every surah in the course."""
+    rows, errors = [], []
+    for fn in sorted(os.listdir(os.path.join(HERE, 'mafhoom')), key=lambda f: int(f.split('.')[0])):
+        n = int(fn.split('.')[0])
+        src = json.load(open(os.path.join(HERE, 'source', f'surah_{n}.json'), encoding='utf-8'))
+        count = len([k for k in src['verse'] if k != 'verse_0']) if n != 1 else len(src['verse'])
+        lines = [l.strip() for l in open(os.path.join(HERE, 'mafhoom', fn), encoding='utf-8') if l.strip()]
+        if len(lines) != count:
+            errors.append(f'mafhoom {n}: {count} ayat but {len(lines)} lines')
+        rows += [f'{n}\t{i}\t{t}' for i, t in enumerate(lines, 1) if '\t' not in t]
+    if errors:
+        print('\n'.join(errors)); sys.exit(1)
+    with open(MAFHOOM_OUT, 'w', encoding='utf-8') as f:
+        f.write('# surah\tayah\teasy Urdu meaning of the whole ayah (written for this course; to be reviewed by a scholar)\n')
+        f.write('\n'.join(rows) + '\n')
+    print(f'wrote {len(rows)} easy meanings to {MAFHOOM_OUT}')
+
 if __name__ == '__main__':
     main()
+    mafhoom()

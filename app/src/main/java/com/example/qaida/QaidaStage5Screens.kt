@@ -149,8 +149,8 @@ internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaSt
                         }
                     }
                 }
-                Spacer(Modifier.width(4.dp))
-                UrduText("لفظی معنی: " + a.meanings.joinToString(" "), size = 13.sp, color = Ink)
+                MafhoomLine(a.ayah.surah, a.ayah.number)
+                UrduText("لفظی معنی: " + a.meanings.joinToString(" "), size = 11.sp, color = Quiet)
                 if (a.sajdah) SajdahNote()
             }
         }
@@ -166,6 +166,7 @@ internal fun RecitationOpening(surah: Int, play: (String, String) -> Unit) {
         if (surah != 1 && surah != 9)
             ArabicText(QuranAudio.BASMALAH, Modifier.clickable { play(QuranAudio.KEY_BASMALAH, QuranAudio.BASMALAH) }, size = 26.sp, color = Green)
         UrduText("تلاوت سے پہلے پڑھیں" + if (surah != 1 && surah != 9) " — بسم اللہ آیت میں شمار نہیں" else "", size = 10.sp, color = Quiet)
+        SurahBackground(surah)
     }
 }
 

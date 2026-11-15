@@ -303,4 +303,20 @@ class QaidaScreensTest {
     rule.onNodeWithTag("qaida_stage_tab_3").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_3").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_adab").assertExists(); shot("phone_review_adab")
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_finalFixes_meaningNotesMap() {
+    launch(stage = 6)
+    rule.onNodeWithTag("lesson_s6_fil").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_background_105", useUnmergedTree = true).assertExists()
+    rule.onNodeWithTag("qaida_mafhoom_105_1", useUnmergedTree = true).assertExists(); shot("phone_final_fil_mafhoom")
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_stage_tab_10").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_10").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_juz_80").performScrollToSafe(); rule.onNodeWithTag("lesson_juz_80").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_parent_note_80_1", useUnmergedTree = true).assertExists(); shot("phone_final_abasa_note")
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_stage_tab_1").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_1").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_letters").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_makhraj_map").performClick(); rule.waitForIdle(); shot("phone_final_makhraj_map")
+  }
 }

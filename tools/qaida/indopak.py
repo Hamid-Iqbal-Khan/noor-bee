@@ -3,7 +3,8 @@ Only presentation marks change; the letters stay the same, so the text still mat
 import re
 FATHA, DAMMA, KASRA, SUKUN, SHADDA, KHARA, MADDA = 'َ', 'ُ', 'ِ', 'ْ', 'ّ', 'ٰ', 'ٓ'
 MARKS = set('ًٌٍَُِّْٰٖۭٓٔٗۢۜ')
-DROP = '۟۠ۖۗۘۙۚۛ۩۞۝'
+DROP = '\u06DF\u06E0\u06E9\u06DE\u06DD'      # silent-letter zeros, sajdah sign (kept as a flag), hizb, ayah-end
+WAQF = '\u06D6\u06D7\u06D8\u06D9\u06DA\u06DB'   # Madinah-mushaf stop signs: kept, written over the word before them
 LETTERS = set(chr(c) for c in range(0x0621, 0x064B)) - {'ـ'}
 
 def is_letter(c): return c in LETTERS
@@ -63,7 +64,7 @@ def convert(ayah):
     ws = []
     for x in ayah.split():
         if not x.strip(DROP): continue
-        if ws and all(c == '\u06DC' for c in x):   # a lone sakta sign belongs to the word before it
+        if ws and all(c == '\u06DC' or c in WAQF for c in x):   # a lone sakta sign belongs to the word before it
             ws[-1] += x; continue
         ws.append(x)
     out = []

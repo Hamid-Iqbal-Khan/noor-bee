@@ -366,4 +366,30 @@ class QaidaDataTest {
     val found = examples.count { index.urlsFor(it.written) != null }
     println("Stage 3 example words with recitation audio: $found / ${examples.size}")
   }
+
+  @Test fun easyMeanings_everyAyah() {
+    val m = QaidaMafhoom.parse(File("src/main/assets/${QaidaMafhoom.ASSET}").readLines(Charsets.UTF_8).asSequence())
+    val course = QuranAudio.courseAyat(juzAmma())
+    assertEquals(571, course.size)
+    course.forEach { a -> assertTrue("easy meaning for ${a.surah}:${a.number}", !m[a.surah to a.number].isNullOrBlank()) }
+    assertEquals(course.size, m.size)
+    // the corrected renderings are used in the easy meanings too
+    assertTrue(m.getValue(90 to 1).startsWith("سنو!")); assertTrue(m.getValue(86 to 16).contains("تدبیر"))
+    assertTrue(m.values.none { it.contains("نامۂ اعمال") || it.contains("پرہیزگاری") })
+  }
+
+  @Test fun waqfSigns_inside_ayat() {
+    val juz = juzAmma()
+    val signs = juz.values.flatMap { s -> s.ayat.map { it.ayah.text } }.joinToString("").count { it in '\u06D6'..'\u06DB' }
+    assertEquals(17, signs)
+    assertTrue(QaidaStage6.nasr.ayat[2].ayah.text.contains("\u06DA"))
+    // a stop sign never becomes a word of its own
+    juz.values.forEach { s -> s.ayat.forEach { a -> a.words.forEach { w -> assertTrue(w.any { it in '\u0621'..'\u064A' }) } } }
+  }
+
+  @Test fun notes_point_at_real_ayat() {
+    val course = QuranAudio.courseAyat(juzAmma()).map { it.surah to it.number }.toSet()
+    QaidaNotes.parentNotes.keys.forEach { assertTrue("$it", it in course) }
+    QaidaNotes.background.keys.forEach { s -> assertTrue("$s", course.any { it.first == s }) }
+  }
 }

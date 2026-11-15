@@ -65,6 +65,13 @@ object QaidaStage4 {
         WaqfSign("la", "لا", "لا — نہ رکیں", "آیت کے بیچ میں ہو تو نہ رکیں؛ آیت کے نشان پر ہو تو رکنا جائز ہے۔", Stop.DONT),
         WaqfSign("muanaqa", "∴ ∴", "معانقہ", "دو جگہ تین نقطے ہوں تو ان میں سے صرف ایک جگہ رکیں۔", Stop.EITHER),
         WaqfSign("sakta", "س", "سکتہ", "سانس توڑے بغیر ذرا سی دیر رکیں، پھر آگے پڑھیں۔", Stop.EITHER),
+        // The same ideas as printed in the Madinah mushaf — these are the signs shown inside the ayat in this app.
+        WaqfSign("m_lazim", "ـۘـ", "چھوٹا م (مدنی مصحف)", "وقفِ لازم: ضرور رکیں۔", Stop.MUST),
+        WaqfSign("m_qila", "ـۗـ", "قلے (مدنی مصحف)", "رکنا بہتر ہے۔", Stop.BETTER_STOP),
+        WaqfSign("m_jaiz", "ـۚـ", "ج (مدنی مصحف)", "رکنا اور ملانا دونوں ٹھیک۔", Stop.EITHER),
+        WaqfSign("m_sila", "ـۖـ", "صلے (مدنی مصحف)", "ملا کر پڑھنا بہتر ہے۔", Stop.BETTER_JOIN),
+        WaqfSign("m_la", "ـۙـ", "لا (مدنی مصحف)", "یہاں نہ رکیں۔", Stop.DONT),
+        WaqfSign("m_muanaqa", "ـۛـ ـۛـ", "معانقہ (مدنی مصحف)", "دو جگہوں میں سے صرف ایک پر رکیں۔", Stop.EITHER),
     )
 
     // ---- Qalqalah ------------------------------------------------------------------------------------
@@ -135,7 +142,7 @@ object QaidaStage4Quiz {
                     QaidaQuestion(w, true, "اس لفظ پر رکیں تو کیسے پڑھیں گے؟", opts, true, opts.indexOf(correct), key)
                 }
                 1 -> {
-                    val s = QaidaStage4.waqfSigns.filter { it.id != "muanaqa" }.random(random)
+                    val s = QaidaStage4.waqfSigns.filter { "muanaqa" !in it.id && !it.id.startsWith("m_") }.random(random)
                     val opts = QaidaStage4.Stop.values().map { it.urdu }.shuffled(random).take(4).let {
                         if (s.stop.urdu in it) it else it.dropLast(1) + s.stop.urdu
                     }.shuffled(random)
