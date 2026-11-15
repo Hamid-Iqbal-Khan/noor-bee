@@ -375,7 +375,9 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
             .horizontalScroll(tabScroll).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی", 6 to "۶: سورتیں", 7 to "۷: تجوید") + QaidaJuzAmma.groups.map { it.stage to it.tab } + listOf(11 to "۱۱: گرامر").forEach { (n, label) ->
+            val tabs = listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی", 6 to "۶: سورتیں", 7 to "۷: تجوید") +
+                QaidaJuzAmma.groups.map { it.stage to it.tab } + listOf(11 to "۱۱: گرامر")
+            tabs.forEach { (n, label) ->
                 val on = stage == n
                 Box(Modifier.widthIn(min = 72.dp).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
                     .clickable { onStage(n) }.testTag("qaida_stage_tab_$n"), contentAlignment = Alignment.Center) {
