@@ -568,15 +568,32 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
-                        Box(modifier = Modifier.fillMaxWidth().padding(top = 10.dp).testTag("dashboard_qaida_stage5")) {
-                            DashboardHoneycomb(
-                                title = "مرحلہ ۵: قرآن سمجھیں 💡",
-                                subtitle = "Word-by-word meanings in Urdu",
-                                color = Color(0xFFF3E5F5),
-                                borderStroke = Color(0xFF4A148C),
-                                emoji = "💡",
-                                onClick = { onNavigateToQaida(5) }
-                            )
+                        androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage5")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۵: معنی 💡",
+                                    subtitle = "Word meanings, Al-Fatiha",
+                                    color = Color(0xFFF3E5F5),
+                                    borderStroke = Color(0xFF4A148C),
+                                    emoji = "💡",
+                                    onClick = { onNavigateToQaida(5) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage6")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۶: سورتیں 📜",
+                                    subtitle = "Al-Fil to Al-Masad",
+                                    color = Color(0xFFFFF8E1),
+                                    borderStroke = Color(0xFFFF8F00),
+                                    emoji = "📜",
+                                    onClick = { onNavigateToQaida(6) }
+                                )
+                            }
+                        }
                         }
                     } else {
                     // Row 1

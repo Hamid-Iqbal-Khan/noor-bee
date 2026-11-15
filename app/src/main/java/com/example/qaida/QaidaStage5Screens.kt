@@ -123,7 +123,7 @@ private fun LazyListScope.endings(play: (String, String) -> Unit) {
 
 // ---- 5.3 – 5.5 Word by word ---------------------------------------------------------------------------
 @OptIn(ExperimentalLayoutApi::class)
-private fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaStage5.WbwSurah) {
+internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaStage5.WbwSurah) {
     item {
         Box(Modifier.fillMaxWidth().background(GreenSoft, RoundedCornerShape(14.dp)).padding(8.dp), contentAlignment = Alignment.Center) {
             UrduText(s.urduName + " — لفظ بہ لفظ", size = 17.sp, color = Green, weight = FontWeight.Bold)

@@ -20,7 +20,7 @@ class QaidaProgress(context: Context, profileId: Int) {
     fun bestQuizScore(stage: Int = 1): Int = prefs.getInt(if (stage == 1) KEY_BEST else "${KEY_BEST}_s$stage", 0)
     fun recordQuizScore(score: Int, stage: Int = 1) {
         if (score > bestQuizScore(stage)) prefs.edit().putInt(if (stage == 1) KEY_BEST else "${KEY_BEST}_s$stage", score).apply()
-        if (score >= PASS_MARK) markLessonDone(when (stage) { 1 -> LESSON_QUIZ; 2 -> S2_QUIZ; 3 -> S3_QUIZ; 4 -> S4_QUIZ; else -> S5_QUIZ })
+        if (score >= PASS_MARK) markLessonDone(when (stage) { 1 -> LESSON_QUIZ; 2 -> S2_QUIZ; 3 -> S3_QUIZ; 4 -> S4_QUIZ; 5 -> S5_QUIZ; else -> S6_QUIZ })
     }
 
     companion object {
@@ -59,6 +59,12 @@ class QaidaProgress(context: Context, profileId: Int) {
         const val S5_SHORT = "5.4"
         const val S5_FALAQ = "5.5"
         const val S5_QUIZ = "5.6"
+        const val S6_FIL = "6.1"
+        const val S6_MAUN = "6.2"
+        const val S6_KAFIRUN = "6.3"
+        const val S6_MASAD = "6.4"
+        const val S6_CARDS = "6.5"
+        const val S6_QUIZ = "6.6"
     }
 }
 

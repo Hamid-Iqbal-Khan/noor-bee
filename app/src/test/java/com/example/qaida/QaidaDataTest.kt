@@ -101,6 +101,11 @@ class QaidaDataTest {
     QaidaStage5.allWords.forEach { rows += "${it.audioKey},${it.arabic},لفظ: ${it.urdu.replace(',', '،')}" }
     QaidaStage5.endings.forEach { rows += "${it.audioKey},${it.example},${it.exampleUrdu}" }
     QaidaStage5.wbwSurahs.forEach { s -> s.ayat.forEach { a -> a.words.forEachIndexed { i, w -> rows += "${a.wordKey(i)},$w,اکیلا لفظ (${a.meanings[i].replace(',', '،')})" } } }
+    // Stage 6
+    QaidaStage6.surahs.forEach { s -> s.ayat.forEach { a ->
+      rows += "${a.ayah.audioKey},${a.ayah.text},آیت ${a.ayah.surah}:${a.ayah.number} — ترتیل سے"
+      a.words.forEachIndexed { i, w -> rows += "${a.wordKey(i)},$w,اکیلا لفظ (${a.meanings[i].replace(',', '،')})" }
+    } }
     val keys = rows.drop(1).map { it.substringBefore(',') }
     assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
@@ -161,9 +166,7 @@ class QaidaDataTest {
 
   /** Letters of the IndoPak ayat must match the app's bundled Quran text (diacritics, alif spelling and spaces ignored). */
   @Test fun stage3_ayatMatchBundledQuran() {
-    fun skeleton(t: String) = t
-      .replace(Regex("[\\u064B-\\u065F\\u0670\\u06D6-\\u06ED\\u0640]"), "")
-      .replace(Regex("[اأإآٱ]"), "").replace('ى', 'ي').replace('ة', 'ه').replace(Regex("\\s"), "")
+    fun skeleton(t: String) = QuranSkeleton.of(t)
     var checked = 0
     for ((n, ayat) in listOf(1 to QaidaStage3.fatiha, 112 to QaidaStage3.ikhlas) + QaidaStage4.surahs.map { it.number to it.ayat }) {
       val bundled = com.example.ui.screens.getOfflineSurah(n) ?: continue
@@ -218,6 +221,24 @@ class QaidaDataTest {
   @Test fun stage5_quiz() {
     repeat(50) { seed ->
       val qs = QaidaStage5Quiz.generate(Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(4, q.options.toSet().size) }
+    }
+  }
+
+  @Test fun stage6_content() {
+    assertEquals(listOf(105, 106, 107, 109, 110, 111), QaidaStage6.surahs.map { it.number })
+    assertEquals(listOf(5, 4, 7, 6, 3, 5), QaidaStage6.surahs.map { it.ayat.size })
+    QaidaStage6.surahs.forEach { s -> s.ayat.forEach { a ->
+      assertEquals("meanings for ${a.ayah.surah}:${a.ayah.number}", a.words.size, a.meanings.size)
+    } }
+    assertTrue("flashcards", QaidaStage6.flashcards.size > 100)
+    assertEquals(QaidaStage6.flashcards.size, QaidaStage6.flashcards.map { it.arabic }.toSet().size)
+  }
+
+  @Test fun stage6_quiz() {
+    repeat(50) { seed ->
+      val qs = QaidaStage6Quiz.generate(Random(seed))
       assertEquals(10, qs.size)
       qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(4, q.options.toSet().size) }
     }

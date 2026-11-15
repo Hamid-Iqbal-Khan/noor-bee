@@ -55,8 +55,11 @@ tap_text "کہاں رکنا ہے"; sleep 2; shot 24_qaida_waqf_signs; adb shell 
 adb shell input swipe 540 1700 540 800 300; sleep 1
 tap_text "پانچ آیتیں"; sleep 2; shot 25_qaida_falaq; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
-tap_text "مرحلہ ۵: قرآن سمجھیں"; sleep 3; shot 26_qaida_stage5_home
+tap_text "مرحلہ ۵: معنی"; sleep 3; shot 26_qaida_stage5_home
 tap_text "ہر لفظ کے نیچے"; sleep 2; shot 27_qaida_fatiha_wbw; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
+tap_text "مرحلہ ۶: سورتیں"; sleep 3; shot 28_qaida_stage6_home
+tap_text "تمہارا دین تمہارے لیے"; sleep 2; shot 29_qaida_kafirun; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
 adb shell input swipe 540 700 540 1700 300; sleep 1

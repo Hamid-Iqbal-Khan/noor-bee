@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -111,7 +112,7 @@ fun QaidaScreen(
     val audio = remember { QaidaAudio(context) }
     DisposableEffect(Unit) { onDispose { audio.stop() } }
     var page by rememberSaveable { mutableStateOf("home") }
-    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 5)) }
+    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 6)) }
     var refresh by remember { mutableIntStateOf(0) } // bump to re-read progress
 
     val play: (String, String) -> Unit = { key, fallbackText -> if (!audio.play(key)) onSpeakArabic(fallbackText) }
@@ -153,6 +154,12 @@ fun QaidaScreen(
                 "s5_short" -> "سبق ۴: الاخلاص، الکوثر، العصر"
                 "s5_falaq" -> "سبق ۵: الفلق اور الناس"
                 "s5_quiz" -> "مرحلہ ۵ کی مشق"
+                "s6_fil" -> "سبق ۱: الفیل اور قریش"
+                "s6_maun" -> "سبق ۲: سورۃ الماعون"
+                "s6_kafirun" -> "سبق ۳: الکافرون اور النصر"
+                "s6_masad" -> "سبق ۴: سورۃ المسد"
+                "s6_cards" -> "سبق ۵: مطلب بتائیں"
+                "s6_quiz" -> "مرحلہ ۶ کی مشق"
                 else -> "نورانی قاعدہ"
             }
             QaidaHeader(title, onBack = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } })
@@ -195,6 +202,21 @@ fun QaidaScreen(
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 5 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
+                    "s6_quiz" -> QaidaQuizScreen(play, stageNo = 6, generate = { QaidaStage6Quiz.generate(it) }, onFinished = { score ->
+                        progress.recordQuizScore(score, stage = 6)
+                        if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 6 quiz passed")
+                        refresh++
+                    }, onDone = { page = "home"; refresh++ })
+                    "s6_fil", "s6_maun", "s6_kafirun", "s6_masad", "s6_cards" -> {
+                        val lesson = mapOf("s6_fil" to QaidaProgress.S6_FIL, "s6_maun" to QaidaProgress.S6_MAUN,
+                            "s6_kafirun" to QaidaProgress.S6_KAFIRUN, "s6_masad" to QaidaProgress.S6_MASAD,
+                            "s6_cards" to QaidaProgress.S6_CARDS).getValue(page)
+                        val done6: () -> Unit = {
+                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 6: $lesson")
+                            page = "home"; refresh++
+                        }
+                        Stage6Lesson(page, play, done6)
+                    }
                     "s5_words", "s5_endings", "s5_fatiha", "s5_short", "s5_falaq" -> {
                         val lesson = mapOf("s5_words" to QaidaProgress.S5_WORDS, "s5_endings" to QaidaProgress.S5_ENDINGS,
                             "s5_fatiha" to QaidaProgress.S5_FATIHA, "s5_short" to QaidaProgress.S5_SHORT,
@@ -274,13 +296,14 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp)).padding(4.dp),
+        Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
+            .horizontalScroll(rememberScrollState()).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی").forEach { (n, label) ->
+            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی", 6 to "۶: سورتیں").forEach { (n, label) ->
                 val on = stage == n
-                Box(Modifier.weight(1f).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
+                Box(Modifier.widthIn(min = 72.dp).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
                     .clickable { onStage(n) }.testTag("qaida_stage_tab_$n"), contentAlignment = Alignment.Center) {
-                    UrduText(label, size = 12.sp, color = if (on) Color.White else Green, weight = FontWeight.Bold, align = TextAlign.Center)
+                    UrduText(label, Modifier.padding(horizontal = 8.dp), size = 13.sp, color = if (on) Color.White else Green, weight = FontWeight.Bold, align = TextAlign.Center)
                 }
             }
         }
@@ -381,7 +404,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
                     UrduText("ماشاء اللہ! قاعدہ مکمل۔ اب مرحلہ ۵ میں جو پڑھا اس کا مطلب سیکھیں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
-        } else {
+        } else if (stage == 5) {
             val best = progress.bestQuizScore(5)
             HeroCard("رَبُّنَا  ·  ہمارا رب", "مرحلہ ۵: قرآن سمجھیں", "عام قرآنی الفاظ، ضمیریں، پھر الفاتحہ اور مختصر سورتیں لفظ بہ لفظ")
             if (!done(QaidaProgress.S4_QUIZ)) {
@@ -402,8 +425,33 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
             LessonCard("lesson_s5_quiz", "۶", "مرحلہ ۵ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۵ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۵ مکمل",
                 done(QaidaProgress.S5_QUIZ)) { open("s5_quiz") }
             if (done(QaidaProgress.S5_QUIZ)) {
+                Card(Modifier.clickable { onStage(6) }.testTag("qaida_go_stage6"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
+                    UrduText("ماشاء اللہ! اب مرحلہ ۶ میں باقی چھوٹی سورتیں سمجھیں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                }
+            }
+        } else {
+            val best = progress.bestQuizScore(6)
+            HeroCard("الفیل ← المسد", "مرحلہ ۶: چھوٹی سورتیں سمجھیں", "پارہ عمّ کی باقی چھ سورتیں لفظ بہ لفظ، پھر مطلب بتانے کی مشق")
+            if (!done(QaidaProgress.S5_QUIZ)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("qaida_s6_hint")) {
+                    UrduText("مشورہ: پہلے مرحلہ ۵ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
+                }
+            }
+            LessonCard("lesson_s6_fil", "۱", "الفیل اور قریش", "ہاتھی والوں کا واقعہ، اور قریش پر اللہ کی نعمت",
+                done(QaidaProgress.S6_FIL)) { open("s6_fil") }
+            LessonCard("lesson_s6_maun", "۲", "سورۃ الماعون", "سات آیتیں — یتیم، مسکین اور نماز",
+                done(QaidaProgress.S6_MAUN)) { open("s6_maun") }
+            LessonCard("lesson_s6_kafirun", "۳", "الکافرون اور النصر", "تمہارا دین تمہارے لیے؛ اللہ کی مدد اور فتح",
+                done(QaidaProgress.S6_KAFIRUN)) { open("s6_kafirun") }
+            LessonCard("lesson_s6_masad", "۴", "سورۃ المسد", "پانچ آیتیں لفظ بہ لفظ",
+                done(QaidaProgress.S6_MASAD)) { open("s6_masad") }
+            LessonCard("lesson_s6_cards", "۵", "مطلب بتائیں (کارڈ)", "${QaidaStage6.flashcards.size} الفاظ میں سے ۱۵ کارڈ — لفظ دیکھیں، مطلب بولیں، پلٹ کر دیکھیں",
+                done(QaidaProgress.S6_CARDS)) { open("s6_cards") }
+            LessonCard("lesson_s6_quiz", "۶", "مرحلہ ۶ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۶ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۶ مکمل",
+                done(QaidaProgress.S6_QUIZ)) { open("s6_quiz") }
+            if (done(QaidaProgress.S6_QUIZ)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
-                    UrduText("ماشاء اللہ! آپ نے قرآن پڑھنا اور سمجھنا شروع کر دیا۔ اب استاد کے ساتھ ناظرہ اور ترجمہ جاری رکھیں۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                    UrduText("ماشاء اللہ! پارہ عمّ کی آخری گیارہ سورتیں پڑھ اور سمجھ لیں۔ اب استاد کے ساتھ ناظرہ اور ترجمہ جاری رکھیں۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
         }
@@ -666,7 +714,7 @@ private fun QaidaQuizScreen(
         Card(Modifier.padding(vertical = 12.dp).widthIn(min = 160.dp).clickable { q.audioKey?.let { play(it, q.prompt) } }
             .testTag("qaida_quiz_prompt"), colors = CardDefaults.cardColors(containerColor = GreenSoft)) {
             Box(Modifier.padding(horizontal = 32.dp, vertical = 12.dp), contentAlignment = Alignment.Center) {
-                if (q.promptIsArabic) ArabicText(q.prompt, size = 64.sp) else UrduText(q.prompt, size = 30.sp, weight = FontWeight.Bold)
+                if (q.promptIsArabic) ArabicText(q.prompt, size = if (q.prompt.length > 12) 30.sp else 64.sp) else UrduText(q.prompt, size = 30.sp, weight = FontWeight.Bold)
             }
         }
         q.options.forEachIndexed { i, opt ->
