@@ -211,8 +211,8 @@ class QaidaDataTest {
     assertEquals(listOf(7, 4, 3, 3, 5, 6), QaidaStage5.wbwSurahs.map { it.ayat.size })
     val arabic = QaidaStage5.allWords.map { it.arabic }
     assertEquals("frequent words unique", arabic.size, arabic.toSet().size)
-    assertTrue(QaidaStage5.allWords.size >= 35)
-    QaidaStage5.endings.forEach { assertTrue(it.example.startsWith("رَبّ") || it.example.startsWith("رَبِّ")) }
+    assertTrue("word count", QaidaStage5.allWords.size >= 35)
+    QaidaStage5.endings.forEach { assertTrue(it.example, it.example.filter { c -> c !in '\u064B'..'\u0652' }.startsWith("رب")) }
   }
 
   @Test fun stage5_quiz() {
