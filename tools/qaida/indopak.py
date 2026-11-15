@@ -24,7 +24,7 @@ def word(w, nxt_shadda=False, nxt_wasl=False, nxt_ba=False):
     w = re.sub(FATHA + '([وى])' + KHARA, KHARA + r'\1', w)                               # عَلَىٰ -> عَلٰى
     w = w.replace(FATHA + KHARA, KHARA)                                                  # ذَٰلِكَ -> ذٰلِكَ
     w = re.sub('(ل[\u064B-\u0652]*)ل(?:' + SHADDA + FATHA + '|' + FATHA + SHADDA + ')ه', r'\1ل' + SHADDA + KHARA + 'ه', w)  # Allah
-    w = re.sub('ى([َُِّ])', r'ي\1', w)                                 # هِىَ -> هِيَ
+    w = re.sub('ى([\u064E\u064F\u0650\u0651\u0652])', r'ي\1', w)                    # هِىَ -> هِيَ ، شَىْءٍ -> شَيْءٍ
     out, res = list(w), []
     for i, ch in enumerate(out):
         res.append(ch)
