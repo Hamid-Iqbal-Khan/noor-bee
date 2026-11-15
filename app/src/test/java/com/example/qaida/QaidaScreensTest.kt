@@ -214,7 +214,8 @@ class QaidaScreensTest {
     shot("phone_s6_06_card_front")
     rule.onNodeWithTag("qaida_card").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_card_meaning", useUnmergedTree = true).assertExists(); shot("phone_s6_07_card_back")
-    repeat(15) {
+    rule.onNodeWithTag("qaida_card_knew").performClick(); rule.waitForIdle()   // card 1 already flipped
+    repeat(14) {
       rule.onNodeWithTag("qaida_card").performClick(); rule.waitForIdle()
       rule.onNodeWithTag(if (it % 2 == 0) "qaida_card_knew" else "qaida_card_notyet").performClick(); rule.waitForIdle()
     }
