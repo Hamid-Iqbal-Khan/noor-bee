@@ -139,7 +139,7 @@ class QaidaDataTest {
     QaidaStage3.shamsiWords.forEach { w ->
       val after = w.written.removePrefix("اَل").first().toString()
       assertTrue(w.written, QaidaStage3.shamsiIds.any { QaidaData.letter(it).arabic == after })
-      assertTrue(w.written, w.written.contains(after + "\u0651"))
+      assertTrue(w.written, w.written.removePrefix("اَل").drop(1).takeWhile { it in '\u064B'..'\u0652' }.contains('\u0651'))
     }
     QaidaStage3.qamariWords.forEach { w ->
       assertTrue(w.written, w.written.startsWith("اَلْ"))
