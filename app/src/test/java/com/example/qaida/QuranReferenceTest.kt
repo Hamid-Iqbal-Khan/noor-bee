@@ -13,7 +13,16 @@ import java.net.URL
  */
 class QuranReferenceTest {
 
-  private fun fetch(n: Int): List<String>? = try {
+  /** Up to four tries with a growing pause: the public API rate-limits bursts of requests. */
+  private fun fetch(n: Int): List<String>? {
+    repeat(4) { attempt ->
+      fetchOnce(n)?.let { return it }
+      Thread.sleep(1_500L * (attempt + 1))
+    }
+    return null
+  }
+
+  private fun fetchOnce(n: Int): List<String>? = try {
     val c = URL("https://api.alquran.cloud/v1/surah/$n/quran-simple-clean").openConnection() as HttpURLConnection
     c.connectTimeout = 10_000; c.readTimeout = 15_000
     val body = c.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
@@ -32,6 +41,7 @@ class QuranReferenceTest {
     val bismillah = QuranSkeleton.of("بسم الله الرحمن الرحيم")
     var checked = 0
     for ((n, ayat) in course) {
+      Thread.sleep(250)
       val ref = fetch(n)
       assumeTrue("reference text reachable", ref != null)
       assertEquals("ayah count of surah $n", ayat.size, ref!!.size)

@@ -103,7 +103,7 @@ class QaidaScreensTest {
   @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
   fun phone_stage2_tabAndQuiz() {
     launch()
-    rule.onNodeWithTag("qaida_stage_tab_2").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_stage_tab_2").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_2").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s2_hint").assertExists()
     rule.onNodeWithTag("lesson_s2_tanween").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s2_cell_ba_do_zabar").performClick(); rule.waitForIdle()
@@ -178,7 +178,7 @@ class QaidaScreensTest {
     rule.onNodeWithTag("lesson_s4_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s4_quiz").performClick(); rule.waitForIdle()
     shot("phone_s4_08_quiz")
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
-    rule.onNodeWithTag("qaida_stage_tab_1").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_stage_tab_1").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_1").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_letters").assertExists()
   }
 
