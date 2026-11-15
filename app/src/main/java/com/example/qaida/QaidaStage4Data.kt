@@ -18,7 +18,8 @@ object QaidaStage4 {
      *  - gol ta (ة) is read as ہ with jazm: جَنَّةٌ → جَنَّهْ
      */
     fun stopForm(word: String): String {
-        if (word.endsWith("ًا")) return word.dropLast(2) + "َا"
+        // do zabar with its alif, whichever order it was typed in: مًا or ماً
+        if (word.endsWith("\u064Bا") || word.endsWith("ا\u064B")) return word.dropLast(2) + "\u064Eا"
         val core = word.trimEnd { it in shortVowels }
         if (core.endsWith('ة')) return core.dropLast(1) + "ه" + SUKUN
         if (core.endsWith(SUKUN) || core.endsWith('\u0651')) return core  // already still, or a doubled letter
