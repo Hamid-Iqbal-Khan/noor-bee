@@ -46,7 +46,7 @@ adb shell input keyevent 4; sleep 2
 tap_text "مرحلہ ۱: حروف"; sleep 3; shot 11_qaida_home
 tap_text "حروفِ مفردات"; sleep 2; shot 12_qaida_letters
 tap_text "ثَا"; sleep 2; shot 13_qaida_letter_detail; adb shell input keyevent 4; sleep 1
-adb shell input keyevent 4; sleep 1; tap_text "حرکات"; sleep 2; shot 14_qaida_harakat
+adb shell input keyevent 4; sleep 1; tap_text "حرکات: زبر، زیر، پیش"; sleep 2; shot 14_qaida_harakat
 adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 2
 tap_text "مرحلہ ۳: تلاوت"; sleep 3; shot 20_qaida_stage3_home
 adb shell input swipe 540 1700 540 800 300; sleep 1
