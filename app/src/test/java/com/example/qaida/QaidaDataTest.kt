@@ -87,6 +87,12 @@ class QaidaDataTest {
     }
     (QaidaStage2.kharaWords + QaidaStage2.madd + QaidaStage2.leen + QaidaStage2.jazmWords)
       .forEach { rows += "${it.audioKey},${it.written},${it.urdu.replace(',', '،')}" }
+    // Stage 3
+    QaidaStage3.tashdeedLetters().forEach { l -> QaidaStage3.Vowel.values().forEach { v ->
+      rows += "${QaidaStage3.tashdeedKey(l, v)},${QaidaStage3.tashdeed(l, v)},ہجے: ${QaidaStage3.tashdeedHijje(l, v).replace(',', '،')}" } }
+    (QaidaStage3.ghunnaWords + QaidaStage3.tashdeedWords + QaidaStage3.maddSignWords + QaidaStage3.shamsiWords + QaidaStage3.qamariWords)
+      .forEach { rows += "${it.audioKey},${it.written},لفظ: ${it.urdu.replace(',', '،')}" }
+    (QaidaStage3.fatiha + QaidaStage3.ikhlas).forEach { rows += "${it.audioKey},${it.text},آیت ${it.surah}:${it.number} — ترتیل سے" }
     val keys = rows.drop(1).map { it.substringBefore(',') }
     assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
@@ -121,6 +127,48 @@ class QaidaDataTest {
         assertEquals(q.options.size, q.options.toSet().size)
         assertTrue(q.options.size >= 2)
       }
+    }
+  }
+
+  @Test fun stage3_content() {
+    assertEquals(14, QaidaStage3.shamsiIds.size); assertEquals(14, QaidaStage3.qamariIds.size)
+    assertEquals(28, (QaidaStage3.shamsiIds + QaidaStage3.qamariIds).toSet().size)
+    (QaidaStage3.shamsiIds + QaidaStage3.qamariIds).forEach { QaidaData.letter(it) }
+    assertEquals("اَبَّ", QaidaStage3.tashdeed(QaidaData.letter("ba"), QaidaStage3.Vowel.ZABAR))
+    // every sun-letter example really has tashdeed on the letter after the lam, moon examples have jazm on the lam
+    QaidaStage3.shamsiWords.forEach { w ->
+      val after = w.written.removePrefix("اَل").first().toString()
+      assertTrue(w.written, QaidaStage3.shamsiIds.any { QaidaData.letter(it).arabic == after })
+      assertTrue(w.written, w.written.contains(after + "\u0651"))
+    }
+    QaidaStage3.qamariWords.forEach { w ->
+      assertTrue(w.written, w.written.startsWith("اَلْ"))
+      val after = w.written.removePrefix("اَلْ").first().toString()
+      assertTrue(w.written, QaidaStage3.qamariIds.any { QaidaData.letter(it).arabic == after })
+    }
+    assertEquals(7, QaidaStage3.fatiha.size); assertEquals(4, QaidaStage3.ikhlas.size)
+  }
+
+  /** Letters of the IndoPak ayat must match the app's bundled Quran text (diacritics, alif spelling and spaces ignored). */
+  @Test fun stage3_ayatMatchBundledQuran() {
+    fun skeleton(t: String) = t
+      .replace(Regex("[\\u064B-\\u065F\\u0670\\u06D6-\\u06ED\\u0640]"), "")
+      .replace(Regex("[اأإآٱ]"), "").replace('ى', 'ي').replace('ة', 'ه').replace(Regex("\\s"), "")
+    var checked = 0
+    for ((n, ayat) in listOf(1 to QaidaStage3.fatiha, 112 to QaidaStage3.ikhlas)) {
+      val bundled = com.example.ui.screens.getOfflineSurah(n) ?: continue
+      ayat.forEach { a ->
+        assertEquals("$n:${a.number}", skeleton(bundled[a.number - 1].textAr), skeleton(a.text)); checked++
+      }
+    }
+    assertTrue("Al-Fatiha must be checked", checked >= 7)
+  }
+
+  @Test fun stage3_quiz() {
+    repeat(50) { seed ->
+      val qs = QaidaStage3Quiz.generate(Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size) }
     }
   }
 }

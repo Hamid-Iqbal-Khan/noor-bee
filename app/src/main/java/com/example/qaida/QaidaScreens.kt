@@ -111,7 +111,7 @@ fun QaidaScreen(
     val audio = remember { QaidaAudio(context) }
     DisposableEffect(Unit) { onDispose { audio.stop() } }
     var page by rememberSaveable { mutableStateOf("home") }
-    var stage by rememberSaveable { mutableIntStateOf(if (startStage == 2) 2 else 1) }
+    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 3)) }
     var refresh by remember { mutableIntStateOf(0) } // bump to re-read progress
 
     val play: (String, String) -> Unit = { key, fallbackText -> if (!audio.play(key)) onSpeakArabic(fallbackText) }
@@ -133,6 +133,13 @@ fun QaidaScreen(
                 "s2_madd" -> "سبق ۵: حروفِ مدّہ و لین"
                 "s2_jazm" -> "سبق ۶: جزم"
                 "s2_quiz" -> "مرحلہ ۲ کی مشق"
+                "s3_tashdeed" -> "سبق ۱: تشدید"
+                "s3_ghunna" -> "سبق ۲: غنّہ اور تشدید والے الفاظ"
+                "s3_madd" -> "سبق ۳: مدّ کا نشان"
+                "s3_shamsi" -> "سبق ۴: حروفِ شمسی و قمری"
+                "s3_fatiha" -> "سبق ۵: سورۃ الفاتحہ"
+                "s3_ikhlas" -> "سبق ۶: سورۃ الاخلاص"
+                "s3_quiz" -> "مرحلہ ۳ کی مشق"
                 else -> "نورانی قاعدہ"
             }
             QaidaHeader(title, onBack = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } })
@@ -160,6 +167,21 @@ fun QaidaScreen(
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 2 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
+                    "s3_quiz" -> QaidaQuizScreen(play, stageNo = 3, generate = { QaidaStage3Quiz.generate(it) }, onFinished = { score ->
+                        progress.recordQuizScore(score, stage = 3)
+                        if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 3 quiz passed")
+                        refresh++
+                    }, onDone = { page = "home"; refresh++ })
+                    "s3_tashdeed", "s3_ghunna", "s3_madd", "s3_shamsi", "s3_fatiha", "s3_ikhlas" -> {
+                        val lesson = mapOf("s3_tashdeed" to QaidaProgress.S3_TASHDEED, "s3_ghunna" to QaidaProgress.S3_GHUNNA,
+                            "s3_madd" to QaidaProgress.S3_MADD, "s3_shamsi" to QaidaProgress.S3_SHAMSI,
+                            "s3_fatiha" to QaidaProgress.S3_FATIHA, "s3_ikhlas" to QaidaProgress.S3_IKHLAS).getValue(page)
+                        val done3: () -> Unit = {
+                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 3: $lesson")
+                            page = "home"; refresh++
+                        }
+                        Stage3Lesson(page, play, done3)
+                    }
                     "s2_joining", "s2_muqattaat", "s2_tanween", "s2_khara", "s2_madd", "s2_jazm" -> {
                         val lesson = mapOf("s2_joining" to QaidaProgress.S2_JOINING, "s2_muqattaat" to QaidaProgress.S2_MUQATTAAT,
                             "s2_tanween" to QaidaProgress.S2_TANWEEN, "s2_khara" to QaidaProgress.S2_KHARA,
@@ -211,7 +233,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
     ) {
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp)).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(1 to "مرحلہ ۱: حروف", 2 to "مرحلہ ۲: جوڑ").forEach { (n, label) ->
+            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت").forEach { (n, label) ->
                 val on = stage == n
                 Box(Modifier.weight(1f).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
                     .clickable { onStage(n) }.testTag("qaida_stage_tab_$n"), contentAlignment = Alignment.Center) {
@@ -235,7 +257,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
                     UrduText("ماشاء اللہ! مرحلہ ۱ مکمل۔ اب مرحلہ ۲ (حروف ملا کر پڑھنا) شروع کریں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
-        } else {
+        } else if (stage == 2) {
             val best = progress.bestQuizScore(2)
             HeroCard("بًا  بٰ  اَبْ", "مرحلہ ۲: حروف جوڑنا اور نشانات", "تختی ۲ تا ۹ — مرکبات، مقطعات، تنوین، کھڑی حرکات، مدّ و لین، جزم")
             if (!done(QaidaProgress.LESSON_QUIZ)) {
@@ -258,8 +280,35 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
             LessonCard("lesson_s2_quiz", "۷", "مرحلہ ۲ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۲ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۲ مکمل",
                 done(QaidaProgress.S2_QUIZ)) { open("s2_quiz") }
             if (done(QaidaProgress.S2_QUIZ)) {
+                Card(Modifier.clickable { onStage(3) }.testTag("qaida_go_stage3"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
+                    UrduText("ماشاء اللہ! مرحلہ ۲ مکمل۔ اب مرحلہ ۳ (تشدید اور تلاوت) شروع کریں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                }
+            }
+        } else {
+            val best = progress.bestQuizScore(3)
+            HeroCard("اَبَّ  اَلشَّمْسُ", "مرحلہ ۳: تشدید اور پہلی تلاوت", "تشدید، غنّہ، مدّ کا نشان، لامِ شمسی و قمری — پھر سورۃ الفاتحہ اور سورۃ الاخلاص")
+            if (!done(QaidaProgress.S2_QUIZ)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("qaida_s3_hint")) {
+                    UrduText("مشورہ: پہلے مرحلہ ۲ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
+                }
+            }
+            LessonCard("lesson_s3_tashdeed", "۱", "تشدید", "حرف دو بار — اَبَّ اِبِّ اُبُّ، ہر حرف پر ہجے کے ساتھ",
+                done(QaidaProgress.S3_TASHDEED)) { open("s3_tashdeed") }
+            LessonCard("lesson_s3_ghunna", "۲", "غنّہ اور تشدید والے الفاظ", "نّ مّ پر ناک کی آواز؛ رَبِّ، كُلُّ، عَلَّمَ",
+                done(QaidaProgress.S3_GHUNNA)) { open("s3_ghunna") }
+            LessonCard("lesson_s3_madd", "۳", "مدّ کا نشان (~)", "زیادہ لمبی آواز: جَآءَ، السَّمَآءُ",
+                done(QaidaProgress.S3_MADD)) { open("s3_madd") }
+            LessonCard("lesson_s3_shamsi", "۴", "حروفِ شمسی و قمری", "اَلشَّمْسُ میں لام خاموش، اَلْقَمَرُ میں لام پڑھا جاتا ہے",
+                done(QaidaProgress.S3_SHAMSI)) { open("s3_shamsi") }
+            LessonCard("lesson_s3_fatiha", "۵", "تلاوت: سورۃ الفاتحہ", "سات آیتیں، ہر آیت میں آنے والے اصول کے ساتھ",
+                done(QaidaProgress.S3_FATIHA)) { open("s3_fatiha") }
+            LessonCard("lesson_s3_ikhlas", "۶", "تلاوت: سورۃ الاخلاص", "چار آیتیں",
+                done(QaidaProgress.S3_IKHLAS)) { open("s3_ikhlas") }
+            LessonCard("lesson_s3_quiz", "۷", "مرحلہ ۳ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۳ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۳ مکمل",
+                done(QaidaProgress.S3_QUIZ)) { open("s3_quiz") }
+            if (done(QaidaProgress.S3_QUIZ)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
-                    UrduText("ماشاء اللہ! مرحلہ ۲ مکمل۔ مرحلہ ۳ (تشدید اور الفاظ پڑھنا) جلد آ رہا ہے۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                    UrduText("ماشاء اللہ! مرحلہ ۳ مکمل۔ اگلا مرحلہ (وقف کے اصول اور مختصر سورتیں) جلد آ رہا ہے۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
         }

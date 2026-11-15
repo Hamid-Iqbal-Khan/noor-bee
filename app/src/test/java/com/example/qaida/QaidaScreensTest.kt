@@ -131,4 +131,30 @@ class QaidaScreensTest {
   private fun androidx.compose.ui.test.SemanticsNodeInteraction.performScrollToNodeSafe(tag: String) {
     try { rule.onNodeWithTag(tag).performScrollTo() } catch (_: Throwable) { }
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage3_allLessons() {
+    launch(stage = 3); shot("phone_s3_01_home")
+    listOf("tashdeed", "ghunna", "madd", "shamsi", "fatiha", "ikhlas").forEachIndexed { i, b ->
+      rule.onNodeWithTag("lesson_s3_$b").performScrollToSafe(); rule.onNodeWithTag("lesson_s3_$b").performClick(); rule.waitForIdle()
+      shot("phone_s3_0${i + 2}_$b")
+      rule.onNodeWithTag("qaida_s3_${b}_list").performScrollToNode(hasTestTag("qaida_s3_done"))
+      rule.onNodeWithTag("qaida_s3_done").performClick(); rule.waitForIdle()
+    }
+    assertTrue("six stage-3 lessons rewarded", rewards == 6)
+    rule.onNodeWithTag("lesson_s3_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s3_quiz").performClick(); rule.waitForIdle()
+    shot("phone_s3_08_quiz")
+  }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage3_tapTashdeedAndAyah() {
+    launch(stage = 3)
+    rule.onNodeWithTag("lesson_s3_tashdeed").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_s3_cell_ba_z").performClick(); rule.waitForIdle()
+    assertTrue("tashdeed fallback spoken", spoken.contains("اَبَّ"))
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_s3_fatiha").performScrollToSafe(); rule.onNodeWithTag("lesson_s3_fatiha").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_ayah_1_1").performClick(); rule.waitForIdle()
+    assertTrue("ayah fallback spoken", spoken.any { it.startsWith("بِسْمِ") })
+  }
 }

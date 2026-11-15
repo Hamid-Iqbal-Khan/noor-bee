@@ -541,6 +541,16 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
+                        Box(modifier = Modifier.fillMaxWidth().padding(top = 10.dp).testTag("dashboard_qaida_stage3")) {
+                            DashboardHoneycomb(
+                                title = "مرحلہ ۳: تشدید اور تلاوت 📖",
+                                subtitle = "Tashdeed, sun & moon letters, Al-Fatiha",
+                                color = Color(0xFFE8EAF6),
+                                borderStroke = Color(0xFF283593),
+                                emoji = "🌙",
+                                onClick = { onNavigateToQaida(3) }
+                            )
+                        }
                     } else {
                     // Row 1
                         Row(

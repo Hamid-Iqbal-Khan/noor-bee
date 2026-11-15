@@ -44,6 +44,10 @@ tap_text "ثَا"; sleep 2; shot 13_qaida_letter_detail; adb shell input keyeven
 adb shell input keyevent 4; sleep 1; tap_text "حرکات"; sleep 2; shot 14_qaida_harakat
 adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
+tap_text "مرحلہ ۳: تشدید"; sleep 3; shot 20_qaida_stage3_home
+tap_text "تلاوت: سورۃ الفاتحہ"; sleep 2; shot 21_qaida_fatiha; adb shell input keyevent 4; sleep 1
+tap_text "حروفِ شمسی و قمری"; sleep 2; shot 22_qaida_shamsi; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 700 540 1700 300; sleep 1
 tap_text "English"; sleep 2
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
