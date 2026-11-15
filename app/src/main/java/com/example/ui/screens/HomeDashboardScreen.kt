@@ -513,6 +513,8 @@ fun HomeDashboardScreen(
                 ) {
                     // Row 1 — the active learning path
                     if (profile.currentLanguage == "Urdu") {
+                        // Right-to-left like the Qaida: first card on the right
+                        androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -537,6 +539,7 @@ fun HomeDashboardScreen(
                                     onClick = { onNavigateToQaida(2) }
                                 )
                             }
+                        }
                         }
                     } else {
                     // Row 1
@@ -603,6 +606,8 @@ fun HomeDashboardScreen(
                         color = DeepNavy,
                         modifier = Modifier.padding(top = 4.dp)
                     )
+                    // Right-to-left like the Qaida: first card on the right
+                    androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
                     Row(
                         modifier = Modifier.fillMaxWidth().testTag("dashboard_arabic_section"),
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -627,6 +632,7 @@ fun HomeDashboardScreen(
                                 onClick = { onOpenArabicTopic("Vocabulary") }
                             )
                         }
+                    }
                     }
 
                     // Row 3 (Quran Explorer)
