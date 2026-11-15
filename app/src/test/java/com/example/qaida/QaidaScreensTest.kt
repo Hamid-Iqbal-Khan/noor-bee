@@ -228,7 +228,7 @@ class QaidaScreensTest {
     listOf("izhar", "idgham", "iqlab", "ikhfa", "meem", "spot").forEachIndexed { i, b ->
       rule.onNodeWithTag("lesson_s7_$b").performScrollToSafe(); rule.onNodeWithTag("lesson_s7_$b").performClick(); rule.waitForIdle()
       if (b == "spot") {
-        rule.onNodeWithTag("qaida_s7_spot_s7_izhar_anamta").performScrollToSafe()
+        rule.onNodeWithTag("qaida_s7_spot_list").performScrollToNode(hasTestTag("qaida_s7_spot_s7_izhar_anamta"))
         rule.onNodeWithTag("qaida_s7_spot_s7_izhar_anamta").performClick(); rule.waitForIdle()
       }
       shot("phone_s7_0${i + 2}_$b")

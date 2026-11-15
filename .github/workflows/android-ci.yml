@@ -44,6 +44,7 @@ jobs:
         run: gradle :app:assembleDebug --stacktrace 2>&1 | tee build.log
       - name: Unit + Robolectric/Roborazzi tests
         if: always()
+        timeout-minutes: 20
         run: gradle :app:testDebugUnitTest -Proborazzi.test.record=true --continue 2>&1 | tee test.log
       - name: Lint
         if: always()

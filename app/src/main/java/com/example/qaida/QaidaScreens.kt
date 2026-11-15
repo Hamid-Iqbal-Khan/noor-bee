@@ -67,6 +67,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
 import kotlin.random.Random
+import kotlinx.coroutines.flow.first
 
 // ---------------------------------------------------------------------------------------
 // Typography: Urdu in Nastaliq (needs generous line height), Arabic in a Qaida-style Naskh.
@@ -320,8 +321,12 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
     ) {
         // Keep the open stage's tab in view (later tabs sit off-screen on narrow phones).
         val tabScroll = rememberScrollState()
-        androidx.compose.runtime.LaunchedEffect(stage, tabScroll.maxValue) {
-            tabScroll.animateScrollTo(if (stage >= 5) tabScroll.maxValue else 0)
+        androidx.compose.runtime.LaunchedEffect(stage) {
+            // Only later stages need it; wait for the first layout, then jump once (no animation, no re-trigger).
+            if (stage >= 5) {
+                androidx.compose.runtime.snapshotFlow { tabScroll.maxValue }.first { it > 0 }
+                tabScroll.scrollTo(tabScroll.maxValue)
+            } else if (tabScroll.value != 0) tabScroll.scrollTo(0)
         }
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
             .horizontalScroll(tabScroll).padding(4.dp),
