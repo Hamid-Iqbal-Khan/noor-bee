@@ -72,5 +72,6 @@ def convert(ayah):
 def skeleton(t):
     t = t.replace('﻿', '').replace('ٖ', 'ي').replace('ۦ', 'ي')
     t = re.sub('[ً-ٕٗ-ٰٟۖ-ۭـ]', '', t)
+    t = re.sub('\u0649(?=[\u0621-\u064A])', '', t)
     t = re.sub('[اأإآٱءئؤ]', '', t).replace('ى', 'ي').replace('ة', 'ه')
     return re.sub(r'\s', '', t)

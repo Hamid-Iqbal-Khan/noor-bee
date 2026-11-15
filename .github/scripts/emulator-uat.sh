@@ -68,6 +68,7 @@ adb shell input swipe 540 1700 540 1000 300; sleep 1
 tap_text "مرحلہ ۸: عمّ ۱"; sleep 3; shot 32_qaida_stage8_home
 tap_text "سورۃ الہمزہ"; sleep 3; shot 33_qaida_humazah; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
+adb shell input swipe 540 1700 540 1100 300; sleep 1
 tap_text "مرحلہ ۱۱: گرامر"; sleep 3; shot 34_qaida_stage11_home
 tap_text "تین حرفی جڑ"; sleep 2; shot 35_qaida_roots; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
