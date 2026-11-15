@@ -90,10 +90,11 @@ fun ParentPanelScreens(
                 selectedTabIndex = when (activeSubTab) {
                     "dashboard" -> 0
                     "reports" -> 1
-                    "settings" -> 2
-                    "tutorials" -> 3
-                    "billing" -> 4
-                    "admin" -> 5
+                    "qaida" -> 2
+                    "settings" -> 3
+                    "tutorials" -> 4
+                    "billing" -> 5
+                    "admin" -> if (com.example.FeatureFlags.PREMIUM_ENABLED) 6 else 5
                     else -> 0
                 },
                 containerColor = Color(0xFFFFFDE7),
@@ -109,6 +110,12 @@ fun ParentPanelScreens(
                     selected = activeSubTab == "reports",
                     onClick = { activeSubTab = "reports" },
                     text = { Text("Analytics Report", fontWeight = FontWeight.Bold) }
+                )
+                Tab(
+                    selected = activeSubTab == "qaida",
+                    onClick = { activeSubTab = "qaida" },
+                    text = { Text("Qaida Progress 📖", fontWeight = FontWeight.Bold) },
+                    modifier = Modifier.testTag("parent_tab_qaida")
                 )
                 Tab(
                     selected = activeSubTab == "settings",
@@ -156,6 +163,7 @@ fun ParentPanelScreens(
                         profile = activeProfile,
                         progressHistory = progressHistory
                     )
+                    "qaida" -> com.example.qaida.QaidaParentProgress(allProfiles)
                     "settings" -> SettingsSubTab(
                         config = config,
                         onSpeechRateChange = onSpeechRateChange,

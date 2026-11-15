@@ -239,4 +239,22 @@ class QaidaScreensTest {
     rule.onNodeWithTag("lesson_s7_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s7_quiz").performClick(); rule.waitForIdle()
     shot("phone_s7_08_quiz")
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_parentProgress() {
+    val ctx = androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+    QaidaProgress(ctx, 7).apply {
+      listOf("1.1", "1.2", "1.3", "2.1").forEach { markLessonDone(it) }
+      recordQuizScore(9, stage = 1); recordQuizScore(6, stage = 2)
+    }
+    val kids = listOf(com.example.data.ChildProfile(id = 7, name = "Ammar", age = 3), com.example.data.ChildProfile(id = 8, name = "Aisha"))
+    rule.setContent { MyApplicationTheme { QaidaParentProgress(kids) } }
+    rule.waitForIdle()
+    rule.onNodeWithTag("parent_qaida_child_7").assertExists()
+    rule.onNodeWithTag("parent_qaida_next_7", useUnmergedTree = true).assertExists()
+    val next = QaidaCourse.next(QaidaProgress(ctx, 7))!!
+    org.junit.Assert.assertEquals(2, next.first.number); org.junit.Assert.assertEquals("Muqatta'at", next.second)
+    org.junit.Assert.assertTrue(QaidaCourse.status(QaidaProgress(ctx, 7))[0].passed)
+    shot("phone_parent_progress")
+  }
 }

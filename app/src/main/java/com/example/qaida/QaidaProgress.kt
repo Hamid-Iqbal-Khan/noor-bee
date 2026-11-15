@@ -103,3 +103,41 @@ class QaidaAudio(private val context: Context) {
 
     fun stop() { player?.let { runCatching { it.stop(); it.release() } }; player = null }
 }
+
+/** The whole Urdu Qaida course at a glance, used by the parent progress view. */
+object QaidaCourse {
+    data class Stage(val number: Int, val english: String, val urdu: String, val lessons: List<Pair<String, String>>, val quiz: String)
+
+    val stages = listOf(
+        Stage(1, "Letters & harakat", "حروف", listOf("1.1" to "29 letters", "1.2" to "Similar sounds", "1.3" to "Zabar, zer, pesh"), "1.4"),
+        Stage(2, "Joining & marks", "جوڑ", listOf("2.1" to "Joining letters", "2.2" to "Muqatta'at", "2.3" to "Tanween",
+            "2.4" to "Khara zabar / zer, ulta pesh", "2.5" to "Madd & leen", "2.6" to "Jazm"), "2.7"),
+        Stage(3, "Tashdeed & first recitation", "تلاوت", listOf("3.1" to "Tashdeed", "3.2" to "Ghunna", "3.3" to "Madd sign",
+            "3.4" to "Sun & moon letters", "3.5" to "Al-Fatiha", "3.6" to "Al-Ikhlas"), "3.7"),
+        Stage(4, "Stopping & short surahs", "وقف", listOf("4.1" to "How to stop", "4.2" to "Stop signs", "4.3" to "Qalqalah",
+            "4.4" to "Al-Kawthar, Al-Asr", "4.5" to "Al-Falaq", "4.6" to "An-Nas"), "4.7"),
+        Stage(5, "Meanings", "معنی", listOf("5.1" to "Common words", "5.2" to "My / your / his", "5.3" to "Al-Fatiha word by word",
+            "5.4" to "Ikhlas, Kawthar, Asr", "5.5" to "Falaq, Nas"), "5.6"),
+        Stage(6, "Short surahs understood", "سورتیں", listOf("6.1" to "Al-Fil, Quraysh", "6.2" to "Al-Ma'un", "6.3" to "Al-Kafirun, An-Nasr",
+            "6.4" to "Al-Masad", "6.5" to "Flashcards"), "6.6"),
+        Stage(7, "Noon & meem sakin", "تجوید", listOf("7.1" to "Izhar", "7.2" to "Idgham", "7.3" to "Iqlab", "7.4" to "Ikhfa",
+            "7.5" to "Meem sakin", "7.6" to "Spot the rule"), "7.7"),
+    )
+
+    data class StageStatus(val stage: Stage, val lessonsDone: Int, val bestQuiz: Int, val passed: Boolean) {
+        val started get() = lessonsDone > 0 || bestQuiz > 0
+    }
+
+    fun status(p: QaidaProgress): List<StageStatus> = stages.map { s ->
+        StageStatus(s, s.lessons.count { p.isLessonDone(it.first) }, p.bestQuizScore(s.number), p.isLessonDone(s.quiz))
+    }
+
+    /** The first lesson (or quiz) not yet done, for "what's next". */
+    fun next(p: QaidaProgress): Pair<Stage, String>? {
+        for (s in stages) {
+            s.lessons.firstOrNull { !p.isLessonDone(it.first) }?.let { return s to it.second }
+            if (!p.isLessonDone(s.quiz)) return s to "Stage ${s.number} quiz"
+        }
+        return null
+    }
+}
