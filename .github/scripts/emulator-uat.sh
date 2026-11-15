@@ -27,6 +27,7 @@ PY
   if [ -n "$b" ]; then adb shell input tap $b; echo "tap '$1' at $b" >> emu/steps.txt; sleep 3; else echo "NOT FOUND '$1'" >> emu/steps.txt; fi
 }
 shot 01_splash
+tap_text "Wait"; sleep 1  # dismiss a system "isn't responding" dialog on slow CI emulators, if any
 tap_text "Learn!"; shot 02_after_start
 tap_text "Child's Name"; adb shell input text "Aisha"; adb shell input keyevent 111; sleep 1
 tap_text "Let's Go"; sleep 2; tap_text "Got it!"; shot 03_dashboard
