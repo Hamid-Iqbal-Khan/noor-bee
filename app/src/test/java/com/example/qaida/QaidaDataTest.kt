@@ -106,6 +106,9 @@ class QaidaDataTest {
       rows += "${a.ayah.audioKey},${a.ayah.text},آیت ${a.ayah.surah}:${a.ayah.number} — ترتیل سے"
       a.words.forEachIndexed { i, w -> rows += "${a.wordKey(i)},$w,اکیلا لفظ (${a.meanings[i].replace(',', '،')})" }
     } }
+    // Stage 7
+    QaidaStage7.examples.forEach { rows += "${it.audioKey},${it.phrase},${it.rule.urdu} — ${it.note}" }
+    QaidaStage7.meemExamples.forEach { rows += "${it.audioKey},${it.phrase},${it.rule.urdu} — ${it.note}" }
     val keys = rows.drop(1).map { it.substringBefore(',') }
     assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
@@ -241,6 +244,35 @@ class QaidaDataTest {
       val qs = QaidaStage6Quiz.generate(Random(seed))
       assertEquals(10, qs.size)
       qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(4, q.options.toSet().size) }
+    }
+  }
+
+  @Test fun stage7_letterGroups() {
+    val groups = listOf(QaidaStage7.izharIds, QaidaStage7.idghamGhunnaIds, QaidaStage7.idghamNoGhunnaIds, QaidaStage7.iqlabIds, QaidaStage7.ikhfaIds)
+    assertEquals(listOf(6, 4, 2, 1, 15), groups.map { it.size })
+    val all = groups.flatten()
+    assertEquals("groups do not overlap", all.size, all.toSet().size)
+    assertEquals("every letter except alif has a rule", QaidaData.letters.map { it.id }.filter { it != "alif" }.toSet(), all.toSet())
+  }
+
+  @Test fun stage7_examples() {
+    QaidaStage7.Rule.values().forEach { r -> assertTrue("examples for $r", QaidaStage7.examplesFor(r).isNotEmpty()) }
+    QaidaStage7.examples.forEach { e ->
+      val bare = e.phrase.filter { it !in '\u064B'..'\u065F' && it != '\u06E2' && it != '\u0670' }
+      // the phrase really has noon sakin or tanween followed (across a space or not) by the named letter
+      val next = QaidaData.letter(e.nextLetterId).arabic.let { if (it == "ء") "ا" else it }
+      val hasTanween = e.phrase.any { it in '\u064B'..'\u064D' }
+      assertTrue(e.phrase, bare.contains("ن" + next) || bare.contains("ن " + next) || (hasTanween && bare.contains(" " + next)))
+    }
+    assertEquals(3, QaidaStage7.MeemRule.values().size)
+    QaidaStage7.meemExamples.forEach { assertTrue(it.phrase, it.phrase.contains("م\u0652")) }
+  }
+
+  @Test fun stage7_quiz() {
+    repeat(50) { seed ->
+      val qs = QaidaStage7Quiz.generate(Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size) }
     }
   }
 }

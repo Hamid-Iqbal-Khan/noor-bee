@@ -595,6 +595,16 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
+                        Box(modifier = Modifier.fillMaxWidth().padding(top = 10.dp).testTag("dashboard_qaida_stage7")) {
+                            DashboardHoneycomb(
+                                title = "مرحلہ ۷: تجوید 🎙️",
+                                subtitle = "Noon & meem sakin rules",
+                                color = Color(0xFFE3F2FD),
+                                borderStroke = Color(0xFF1565C0),
+                                emoji = "🎙️",
+                                onClick = { onNavigateToQaida(7) }
+                            )
+                        }
                     } else {
                     // Row 1
                         Row(

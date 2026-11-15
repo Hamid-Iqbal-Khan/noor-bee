@@ -112,7 +112,7 @@ fun QaidaScreen(
     val audio = remember { QaidaAudio(context) }
     DisposableEffect(Unit) { onDispose { audio.stop() } }
     var page by rememberSaveable { mutableStateOf("home") }
-    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 6)) }
+    var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, 7)) }
     var refresh by remember { mutableIntStateOf(0) } // bump to re-read progress
 
     val play: (String, String) -> Unit = { key, fallbackText -> if (!audio.play(key)) onSpeakArabic(fallbackText) }
@@ -160,6 +160,13 @@ fun QaidaScreen(
                 "s6_masad" -> "سبق ۴: سورۃ المسد"
                 "s6_cards" -> "سبق ۵: مطلب بتائیں"
                 "s6_quiz" -> "مرحلہ ۶ کی مشق"
+                "s7_izhar" -> "سبق ۱: اظہار"
+                "s7_idgham" -> "سبق ۲: ادغام"
+                "s7_iqlab" -> "سبق ۳: اقلاب"
+                "s7_ikhfa" -> "سبق ۴: اخفاء"
+                "s7_meem" -> "سبق ۵: میم ساکن"
+                "s7_spot" -> "سبق ۶: قاعدہ پہچانیں"
+                "s7_quiz" -> "مرحلہ ۷ کی مشق"
                 else -> "نورانی قاعدہ"
             }
             QaidaHeader(title, onBack = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } })
@@ -207,6 +214,21 @@ fun QaidaScreen(
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 6 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
+                    "s7_quiz" -> QaidaQuizScreen(play, stageNo = 7, generate = { QaidaStage7Quiz.generate(it) }, onFinished = { score ->
+                        progress.recordQuizScore(score, stage = 7)
+                        if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 7 quiz passed")
+                        refresh++
+                    }, onDone = { page = "home"; refresh++ })
+                    "s7_izhar", "s7_idgham", "s7_iqlab", "s7_ikhfa", "s7_meem", "s7_spot" -> {
+                        val lesson = mapOf("s7_izhar" to QaidaProgress.S7_IZHAR, "s7_idgham" to QaidaProgress.S7_IDGHAM,
+                            "s7_iqlab" to QaidaProgress.S7_IQLAB, "s7_ikhfa" to QaidaProgress.S7_IKHFA,
+                            "s7_meem" to QaidaProgress.S7_MEEM, "s7_spot" to QaidaProgress.S7_SPOT).getValue(page)
+                        val done7: () -> Unit = {
+                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 7: $lesson")
+                            page = "home"; refresh++
+                        }
+                        Stage7Lesson(page, play, done7)
+                    }
                     "s6_fil", "s6_maun", "s6_kafirun", "s6_masad", "s6_cards" -> {
                         val lesson = mapOf("s6_fil" to QaidaProgress.S6_FIL, "s6_maun" to QaidaProgress.S6_MAUN,
                             "s6_kafirun" to QaidaProgress.S6_KAFIRUN, "s6_masad" to QaidaProgress.S6_MASAD,
@@ -304,7 +326,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
             .horizontalScroll(tabScroll).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی", 6 to "۶: سورتیں").forEach { (n, label) ->
+            listOf(1 to "۱: حروف", 2 to "۲: جوڑ", 3 to "۳: تلاوت", 4 to "۴: وقف", 5 to "۵: معنی", 6 to "۶: سورتیں", 7 to "۷: تجوید").forEach { (n, label) ->
                 val on = stage == n
                 Box(Modifier.widthIn(min = 72.dp).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
                     .clickable { onStage(n) }.testTag("qaida_stage_tab_$n"), contentAlignment = Alignment.Center) {
@@ -434,7 +456,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
                     UrduText("ماشاء اللہ! اب مرحلہ ۶ میں باقی چھوٹی سورتیں سمجھیں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
-        } else {
+        } else if (stage == 6) {
             val best = progress.bestQuizScore(6)
             HeroCard("الفیل ← المسد", "مرحلہ ۶: چھوٹی سورتیں سمجھیں", "پارہ عمّ کی باقی چھ سورتیں لفظ بہ لفظ، پھر مطلب بتانے کی مشق")
             if (!done(QaidaProgress.S5_QUIZ)) {
@@ -455,8 +477,35 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, onSt
             LessonCard("lesson_s6_quiz", "۶", "مرحلہ ۶ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۶ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۶ مکمل",
                 done(QaidaProgress.S6_QUIZ)) { open("s6_quiz") }
             if (done(QaidaProgress.S6_QUIZ)) {
+                Card(Modifier.clickable { onStage(7) }.testTag("qaida_go_stage7"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
+                    UrduText("ماشاء اللہ! اب مرحلہ ۷ میں نون اور میم ساکن کے قاعدے سیکھیں ←", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                }
+            }
+        } else {
+            val best = progress.bestQuizScore(7)
+            HeroCard("مِنْ شَرِّ  ·  مِنْ مَّسَدٍ", "مرحلہ ۷: نون اور میم ساکن", "اظہار، ادغام، اقلاب، اخفاء — اور میم ساکن کے تین قاعدے")
+            if (!done(QaidaProgress.S6_QUIZ)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("qaida_s7_hint")) {
+                    UrduText("مشورہ: پہلے مرحلہ ۶ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
+                }
+            }
+            LessonCard("lesson_s7_izhar", "۱", "اظہار", "حلق کے ۶ حروف سے پہلے نون صاف: اَنْعَمْتَ، مِنْ خَوْفٍ",
+                done(QaidaProgress.S7_IZHAR)) { open("s7_izhar") }
+            LessonCard("lesson_s7_idgham", "۲", "ادغام", "ی ن م و میں غنّہ کے ساتھ، ل ر میں بغیر غنّہ: مِنْ مَّسَدٍ، يَكُنْ لَّهٗ",
+                done(QaidaProgress.S7_IDGHAM)) { open("s7_idgham") }
+            LessonCard("lesson_s7_iqlab", "۳", "اقلاب", "ب سے پہلے نون میم بن جاتا ہے: مِنْۢ بَعْدِ",
+                done(QaidaProgress.S7_IQLAB)) { open("s7_iqlab") }
+            LessonCard("lesson_s7_ikhfa", "۴", "اخفاء", "باقی ۱۵ حروف سے پہلے نون چھپا کر: مِنْ شَرِّ، اَنْتُمْ",
+                done(QaidaProgress.S7_IKHFA)) { open("s7_ikhfa") }
+            LessonCard("lesson_s7_meem", "۵", "میم ساکن", "اخفائے شفوی، ادغامِ شفوی، اظہارِ شفوی",
+                done(QaidaProgress.S7_MEEM)) { open("s7_meem") }
+            LessonCard("lesson_s7_spot", "۶", "قاعدہ پہچانیں", "پڑھی ہوئی سورتوں کی مثالیں — خود بتائیں، پھر جواب دیکھیں",
+                done(QaidaProgress.S7_SPOT)) { open("s7_spot") }
+            LessonCard("lesson_s7_quiz", "۷", "مرحلہ ۷ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۷ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۷ مکمل",
+                done(QaidaProgress.S7_QUIZ)) { open("s7_quiz") }
+            if (done(QaidaProgress.S7_QUIZ)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
-                    UrduText("ماشاء اللہ! پارہ عمّ کی آخری گیارہ سورتیں پڑھ اور سمجھ لیں۔ اب استاد کے ساتھ ناظرہ اور ترجمہ جاری رکھیں۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
+                    UrduText("ماشاء اللہ! نورانی قاعدہ کے سب قاعدے مکمل۔ اب استاد کے ساتھ ناظرہ قرآن جاری رکھیں۔", Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
             }
         }

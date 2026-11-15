@@ -61,6 +61,9 @@ adb shell input keyevent 4; sleep 2
 tap_text "مرحلہ ۶: سورتیں"; sleep 3; shot 28_qaida_stage6_home
 tap_text "تمہارا دین تمہارے لیے"; sleep 2; shot 29_qaida_kafirun; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
+tap_text "مرحلہ ۷: تجوید"; sleep 3; shot 30_qaida_stage7_home
+tap_text "حلق کے ۶ حروف"; sleep 2; shot 31_qaida_izhar; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
 adb shell input swipe 540 700 540 1700 300; sleep 1
 tap_text "English"; sleep 2

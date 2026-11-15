@@ -221,4 +221,22 @@ class QaidaScreensTest {
     }
     rule.onNodeWithTag("qaida_cards_result").assertExists(); shot("phone_s6_08_cards_result")
   }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage7_allLessons() {
+    launch(stage = 7); shot("phone_s7_01_home")
+    listOf("izhar", "idgham", "iqlab", "ikhfa", "meem", "spot").forEachIndexed { i, b ->
+      rule.onNodeWithTag("lesson_s7_$b").performScrollToSafe(); rule.onNodeWithTag("lesson_s7_$b").performClick(); rule.waitForIdle()
+      if (b == "spot") {
+        rule.onNodeWithTag("qaida_s7_spot_s7_izhar_anamta").performScrollToSafe()
+        rule.onNodeWithTag("qaida_s7_spot_s7_izhar_anamta").performClick(); rule.waitForIdle()
+      }
+      shot("phone_s7_0${i + 2}_$b")
+      rule.onNodeWithTag("qaida_s7_${b}_list").performScrollToNode(hasTestTag("qaida_s7_done"))
+      rule.onNodeWithTag("qaida_s7_done").performClick(); rule.waitForIdle()
+    }
+    assertTrue("six stage-7 lessons rewarded", rewards == 6)
+    rule.onNodeWithTag("lesson_s7_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s7_quiz").performClick(); rule.waitForIdle()
+    shot("phone_s7_08_quiz")
+  }
 }
