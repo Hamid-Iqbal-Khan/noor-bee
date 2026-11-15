@@ -32,13 +32,14 @@ def main():
                 errors.append(f'{n}:{i} has {len(words)} words but {len(means)} meanings\n    {" | ".join(words)}\n    {line}')
             if any(not m or '\t' in m for m in means):
                 errors.append(f'{n}:{i} empty meaning')
-            rows.append(f'{n}\t{i}\t{text}\t{"|".join(means)}')
+            sajdah = '1' if '\u06E9' in a else '0'
+            rows.append(f'{n}\t{i}\t{text}\t{"|".join(means)}\t{sajdah}')
         done.append(n)
     if errors:
         print('\n'.join(errors)); sys.exit(1)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, 'w', encoding='utf-8') as f:
-        f.write('# surah\tayah\ttext (IndoPak style, from quranjson/Tanzil, MIT)\tUrdu word meanings separated by |\n')
+        f.write('# surah\tayah\ttext (IndoPak style, from quranjson/Tanzil, MIT)\tUrdu word meanings separated by |\tsajdah ayah (1/0)\n')
         f.write('\n'.join(rows) + '\n')
     print(f'wrote {len(rows)} ayat from surahs {done} to {OUT}')
 

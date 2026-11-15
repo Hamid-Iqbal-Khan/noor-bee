@@ -51,8 +51,9 @@ object QaidaJuzAmma {
     /** Parses the TSV: surah, ayah, text, meanings separated by |. */
     fun parse(lines: Sequence<String>): Map<Int, QaidaStage5.WbwSurah> {
         val ayat = lines.filter { it.isNotBlank() && !it.startsWith("#") }.map { line ->
-            val (s, n, text, means) = line.split('\t')
-            QaidaStage5.WbwAyah(QaidaStage3.Ayah(s.toInt(), n.toInt(), text, ""), means.split('|'))
+            val cols = line.split('\t')
+            val (s, n, text, means) = cols
+            QaidaStage5.WbwAyah(QaidaStage3.Ayah(s.toInt(), n.toInt(), text, ""), means.split('|'), sajdah = cols.getOrNull(4) == "1")
         }.toList()
         return ayat.groupBy { it.ayah.surah }.mapValues { (s, list) ->
             QaidaStage5.WbwSurah(s, urduNames[s] ?: "سورۃ $s", list.sortedBy { it.ayah.number })

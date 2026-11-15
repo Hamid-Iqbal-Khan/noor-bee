@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import com.example.ui.theme.MyApplicationTheme
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -44,7 +45,8 @@ class QaidaScreensTest {
     launch(); shot("phone_01_home")
     rule.onNodeWithTag("lesson_letters").performClick(); rule.waitForIdle(); shot("phone_02_letters")
     rule.onNodeWithTag("qaida_letter_tha").performClick(); rule.waitForIdle()
-    assertTrue("fallback voice used when no recording", spoken.contains("ث"))
+    val r1 = QaidaAudio.lastRequest!!
+    assertEquals("letter_tha", r1.key); assertEquals("letter read by its Arabic name", "ثَاءْ", r1.speak); assertTrue(r1.urls.isNullOrEmpty())
     shot("phone_03_letter_tha_detail")
     rule.onNodeWithTag("qaida_letter_detail").assertExists()
   }
@@ -107,7 +109,7 @@ class QaidaScreensTest {
     rule.onNodeWithTag("qaida_s2_hint").assertExists()
     rule.onNodeWithTag("lesson_s2_tanween").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s2_cell_ba_do_zabar").performClick(); rule.waitForIdle()
-    assertTrue("tanween fallback spoken", spoken.contains("بًا"))
+    assertEquals("بًا", QaidaAudio.lastRequest!!.speak)
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_s2_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s2_quiz").performClick(); rule.waitForIdle()
     shot("phone_s2_09_quiz")
@@ -151,18 +153,18 @@ class QaidaScreensTest {
     launch(stage = 3)
     rule.onNodeWithTag("lesson_s3_tashdeed").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s3_cell_ba_z").performClick(); rule.waitForIdle()
-    assertTrue("tashdeed fallback spoken", spoken.contains("اَب\u0651\u064E"))
+    assertEquals("اَب\u0651\u064E", QaidaAudio.lastRequest!!.speak)
     rule.onNodeWithTag("qaida_s3_breakdown_ba").assertExists()      // default: open under با
     rule.onNodeWithTag("qaida_s3_cell_ta_z").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s3_breakdown_ta").assertExists()      // moves under تا
     rule.onNodeWithTag("qaida_s3_breakdown_ba").assertDoesNotExist()
     shot("phone_s3_tashdeed_breakdown_ta")
     rule.onNodeWithTag("qaida_s3_part1").performClick(); rule.waitForIdle()
-    assertTrue("first half اَتْ spoken", spoken.contains("اَت\u0652"))
+    assertEquals("اَت\u0652", QaidaAudio.lastRequest!!.speak)
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_s3_fatiha").performScrollToSafe(); rule.onNodeWithTag("lesson_s3_fatiha").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_ayah_1_1").performClick(); rule.waitForIdle()
-    assertTrue("ayah fallback spoken", spoken.any { it.startsWith("بِسْمِ") })
+    assertEquals("ayah plays Alafasy recitation", listOf("https://everyayah.com/data/Alafasy_128kbps/001001.mp3"), QaidaAudio.lastRequest!!.urls)
   }
 
   @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
@@ -194,7 +196,7 @@ class QaidaScreensTest {
     assertTrue("five stage-5 lessons rewarded", rewards == 5)
     rule.onNodeWithTag("lesson_s5_fatiha").performScrollToSafe(); rule.onNodeWithTag("lesson_s5_fatiha").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_wbw_1_2_3").performClick(); rule.waitForIdle()
-    assertTrue("word رَبِّ spoken", spoken.contains(QaidaStage5.fatiha.ayat[1].words[2]))
+    assertEquals("word plays recited audio", listOf("https://audio.qurancdn.com/wbw/001_002_003.mp3"), QaidaAudio.lastRequest!!.urls)
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_s5_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s5_quiz").performClick(); rule.waitForIdle()
     shot("phone_s5_07_quiz")
@@ -263,7 +265,7 @@ class QaidaScreensTest {
     launch(stage = 8); shot("phone_s8_01_home")
     rule.onNodeWithTag("lesson_juz_104").performClick(); rule.waitForIdle(); shot("phone_s8_02_humazah")
     rule.onNodeWithTag("qaida_wbw_104_1_1").performClick(); rule.waitForIdle()
-    assertTrue("first word spoken", spoken.isNotEmpty())
+    assertEquals(listOf("https://audio.qurancdn.com/wbw/104_001_001.mp3"), QaidaAudio.lastRequest!!.urls)
     rule.onNodeWithTag("qaida_juz_104_list").performScrollToNode(hasTestTag("qaida_juz_done"))
     rule.onNodeWithTag("qaida_juz_done").performClick(); rule.waitForIdle()
     assertTrue("surah rewarded", rewards == 1)
@@ -288,5 +290,17 @@ class QaidaScreensTest {
     assertTrue("six grammar lessons rewarded", rewards == 6)
     rule.onNodeWithTag("lesson_s11_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s11_quiz").performClick(); rule.waitForIdle()
     shot("phone_s11_08_quiz")
+  }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_reviewFixes_openingAndSajdah() {
+    launch(stage = 8)
+    rule.onNodeWithTag("lesson_juz_96").performScrollToSafe(); rule.onNodeWithTag("lesson_juz_96").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_opening_96").assertExists()
+    rule.onNodeWithTag("qaida_juz_96_list").performScrollToNode(hasTestTag("qaida_wbw_96_19"))
+    rule.onNodeWithTag("qaida_sajdah", useUnmergedTree = true).assertExists(); shot("phone_review_sajdah_96_19")
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_stage_tab_3").performScrollToSafe(); rule.onNodeWithTag("qaida_stage_tab_3").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_adab").assertExists(); shot("phone_review_adab")
   }
 }

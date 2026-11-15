@@ -20,6 +20,7 @@ object QaidaStage4 {
     fun stopForm(word: String): String {
         // do zabar with its alif, whichever order it was typed in: مًا or ماً
         if (word.endsWith("\u064Bا") || word.endsWith("ا\u064B")) return word.dropLast(2) + "\u064Eا"
+        if (word.endsWith('\u0657') || word.endsWith('\u0656')) return word.dropLast(1) + SUKUN   // لَهٗ -> لَهْ ، بِهٖ -> بِهْ
         val core = word.trimEnd { it in shortVowels }
         if (core.endsWith('ة')) return core.dropLast(1) + "ه" + SUKUN
         if (core.endsWith(SUKUN) || core.endsWith('\u0651')) return core  // already still, or a doubled letter
@@ -41,6 +42,9 @@ object QaidaStage4 {
         StopExample("خَبِيْرًا", "دو زبر ← زبر اور الف", "s4_stop_khabira"),
         StopExample("جَنَّةٌ", "گول ة ← ہ ساکن", "s4_stop_jannah"),
         StopExample("رَحْمَةً", "گول ة ← ہ ساکن", "s4_stop_rahmah"),
+        StopExample("لَهٗ", "اُلٹا پیش ← جزم، لمبائی نہیں", "s4_stop_lahu"),
+        StopExample("بِهٖ", "کھڑی زیر ← جزم، لمبائی نہیں", "s4_stop_bihi"),
+        StopExample("الْحَقُّ", "تشدید والا حرف ← تشدید باقی، حرکت ہٹ جائے", "s4_stop_haqq"),
     )
 
     // ---- Waqf signs (رموزِ اوقاف) --------------------------------------------------------------
@@ -56,6 +60,8 @@ object QaidaStage4 {
         WaqfSign("mujawwaz", "ز", "وقفِ مجوّز", "رک سکتے ہیں، مگر ملا کر پڑھنا بہتر ہے۔", Stop.BETTER_JOIN),
         WaqfSign("murakhkhas", "ص", "وقفِ مرخّص", "سانس ٹوٹے تو رک سکتے ہیں، ورنہ ملائیں۔", Stop.BETTER_JOIN),
         WaqfSign("sala", "صلے", "صَلے", "ملا کر پڑھنا بہتر ہے۔", Stop.BETTER_JOIN),
+        WaqfSign("sal", "صل", "صَل", "کبھی رکا جاتا ہے، مگر ملا کر پڑھنا بہتر ہے۔", Stop.BETTER_JOIN),
+        WaqfSign("qeel", "ق", "قِیل", "بعض کے نزدیک رکنا ہے، مگر نہ رکنا بہتر ہے۔", Stop.BETTER_JOIN),
         WaqfSign("la", "لا", "لا — نہ رکیں", "آیت کے بیچ میں ہو تو نہ رکیں؛ آیت کے نشان پر ہو تو رکنا جائز ہے۔", Stop.DONT),
         WaqfSign("muanaqa", "∴ ∴", "معانقہ", "دو جگہ تین نقطے ہوں تو ان میں سے صرف ایک جگہ رکیں۔", Stop.EITHER),
         WaqfSign("sakta", "س", "سکتہ", "سانس توڑے بغیر ذرا سی دیر رکیں، پھر آگے پڑھیں۔", Stop.EITHER),

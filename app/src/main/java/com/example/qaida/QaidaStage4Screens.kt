@@ -78,7 +78,7 @@ private fun LazyListScope.note4(text: String) = item { UrduText(text, size = 14.
 
 // ---- 4.1 How to stop ---------------------------------------------------------------------------------
 private fun LazyListScope.stopping(play: (String, String) -> Unit) {
-    note4("آیت کے آخر میں یا سانس ٹوٹنے پر لفظ پر رکیں تو آخری حرف کی حرکت ہٹا کر اسے ساکن پڑھیں۔ دو زبر ہو تو زبر اور الف پڑھیں، اور گول ة ہو تو 'ہ' ساکن پڑھیں۔")
+    note4("آیت کے آخر میں یا سانس ٹوٹنے پر لفظ پر رکیں تو آخری حرف کی حرکت ہٹا کر اسے ساکن پڑھیں۔ دو زبر ہو تو زبر اور الف پڑھیں، گول ة ہو تو 'ہ' ساکن پڑھیں۔ آخری حرف سے پہلے مدّ ہو (الرَّحِيْمْ، الْعٰلَمِيْنْ) تو رکتے وقت اسے ۲، ۴ یا ۶ حرکت کھینچ سکتے ہیں — ایک تلاوت میں ایک ہی لمبائی رکھیں۔")
     items(QaidaStage4.stopExamples, key = { it.audioKey }) { e ->
         Card(Modifier.fillMaxWidth().testTag("qaida_s4_stop_${e.audioKey}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line4)) {
@@ -155,6 +155,7 @@ private fun LazyListScope.surah(play: (String, String) -> Unit, s: QaidaStage4.S
             UrduText(s.urduName, size = 18.sp, color = Green, weight = FontWeight.Bold)
         }
     }
+    item { RecitationOpening(s.number, play) }
     items(s.ayat, key = { it.audioKey }) { a ->
         Card(Modifier.fillMaxWidth().clickable { play(a.audioKey, a.text) }.testTag("qaida_ayah_${a.surah}_${a.number}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line4)) {

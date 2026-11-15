@@ -129,6 +129,7 @@ internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaSt
             UrduText(s.urduName + " — لفظ بہ لفظ", size = 17.sp, color = Green, weight = FontWeight.Bold)
         }
     }
+    item { RecitationOpening(s.number, play) }
     items(s.ayat, key = { "wbw_${it.ayah.surah}_${it.ayah.number}" }) { a ->
         Card(Modifier.fillMaxWidth().testTag("qaida_wbw_${a.ayah.surah}_${a.ayah.number}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line5)) {
@@ -150,7 +151,31 @@ internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaSt
                 }
                 Spacer(Modifier.width(4.dp))
                 UrduText("لفظی معنی: " + a.meanings.joinToString(" "), size = 13.sp, color = Ink)
+                if (a.sajdah) SajdahNote()
             }
         }
+    }
+}
+
+/** اَعُوْذُ بِاللّٰهِ, then بِسْمِ اللّٰهِ (not counted as an ayah; At-Tawbah has none; in Al-Fatiha it is ayah 1). */
+@Composable
+internal fun RecitationOpening(surah: Int, play: (String, String) -> Unit) {
+    Column(Modifier.fillMaxWidth().background(Color(0xFFFFFCF0), RoundedCornerShape(14.dp)).padding(10.dp)
+        .testTag("qaida_opening_$surah"), horizontalAlignment = Alignment.CenterHorizontally) {
+        ArabicText(QuranAudio.TAAWWUDH, Modifier.clickable { play(QuranAudio.KEY_TAAWWUDH, QuranAudio.TAAWWUDH) }, size = 22.sp, color = Quiet)
+        if (surah != 1 && surah != 9)
+            ArabicText(QuranAudio.BASMALAH, Modifier.clickable { play(QuranAudio.KEY_BASMALAH, QuranAudio.BASMALAH) }, size = 26.sp, color = Green)
+        UrduText("تلاوت سے پہلے پڑھیں" + if (surah != 1 && surah != 9) " — بسم اللہ آیت میں شمار نہیں" else "", size = 10.sp, color = Quiet)
+    }
+}
+
+@Composable
+internal fun SajdahNote() {
+    Row(Modifier.fillMaxWidth().padding(top = 4.dp).background(Color(0xFFFFF4D6), RoundedCornerShape(10.dp)).padding(8.dp)
+        .testTag("qaida_sajdah"), verticalAlignment = Alignment.CenterVertically) {
+        ArabicText("۩", size = 24.sp, color = Color(0xFFB23B1E))
+        Spacer(Modifier.width(6.dp))
+        UrduText("سجدۂ تلاوت: یہ آیت پڑھنے یا سننے پر بالغ پر سجدہ واجب ہے (حنفی)؛ دوسرے مذاہب میں سنت۔ بچے کو سجدہ کرنا سکھائیں۔",
+            size = 11.sp, color = Ink)
     }
 }

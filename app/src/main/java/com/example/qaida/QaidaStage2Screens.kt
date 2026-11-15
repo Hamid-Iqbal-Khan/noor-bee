@@ -107,7 +107,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.joining(play: (String
 
 // ---- 2.2 Muqatta'at -----------------------------------------------------------------------
 private fun androidx.compose.foundation.lazy.LazyListScope.muqattaat(play: (String, String) -> Unit) {
-    intro("قرآن کی ۲۹ سورتیں ایسے حروف سے شروع ہوتی ہیں جو ملا کر نہیں بلکہ ہر حرف کا نام لے کر پڑھے جاتے ہیں۔ ان کا اصل مطلب اللہ ہی بہتر جانتا ہے۔")
+    intro("قرآن کی ۲۹ سورتیں ایسے حروف سے شروع ہوتی ہیں جو ملا کر نہیں بلکہ ہر حرف کا نام لے کر پڑھے جاتے ہیں۔ ان کا اصل مطلب اللہ ہی بہتر جانتا ہے۔ جن حروف کے نام میں مدّ ہے (لَام، مِیْم، صَاد، سِیْن، قَاف، کَاف، نُوْن) انہیں ۶ حرکت کھینچیں؛ كٓهٰيٰعٓصٓ اور عٓسٓقٓ میں عَیْن کو ۴ یا ۶ حرکت۔")
     items(QaidaStage2.muqattaat, key = { it.id }) { m ->
         Card(Modifier.fillMaxWidth().clickable { play(m.audioKey, m.text) }.testTag("qaida_muqattaat_${m.id}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line)) {

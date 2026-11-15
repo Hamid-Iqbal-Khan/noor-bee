@@ -83,32 +83,112 @@ class QaidaProgress(context: Context, profileId: Int) {
 }
 
 /**
- * Plays the qari's recording from assets/audio/qaida/<key>.mp3 when it exists.
- * Returns false when there is no recording, so the caller can fall back to TTS.
+ * Plays a Qaida sound: bundled qari recording → cached or streamed recitation (QuranAudio) → phone voice.
+ * Recitation streamed once is saved to the app cache, so it also works offline afterwards.
  */
 class QaidaAudio(private val context: Context) {
     private var player: MediaPlayer? = null
+    private var queue: List<String> = emptyList()
+    private val cacheDir = java.io.File(context.cacheDir, "qaida_audio").apply { mkdirs() }
+    private var tts: android.speech.tts.TextToSpeech? = null
+    @Volatile private var ttsReady = false
+
+    init {
+        // Prefer Google's voice engine when it is installed: its Arabic voice is clearer than most defaults.
+        val listener = android.speech.tts.TextToSpeech.OnInitListener { status ->
+            if (status == android.speech.tts.TextToSpeech.SUCCESS) {
+                val t = tts ?: return@OnInitListener
+                val r = t.setLanguage(java.util.Locale("ar"))
+                ttsReady = r != android.speech.tts.TextToSpeech.LANG_MISSING_DATA && r != android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED
+                t.setSpeechRate(0.75f)
+            }
+        }
+        tts = try {
+            val google = "com.google.android.tts"
+            val hasGoogle = runCatching { context.packageManager.getPackageInfo(google, 0) }.isSuccess
+            if (hasGoogle) android.speech.tts.TextToSpeech(context, listener, google) else android.speech.tts.TextToSpeech(context, listener)
+        } catch (_: Exception) { null }
+    }
 
     fun hasRecording(key: String): Boolean = try {
         context.assets.openFd("audio/qaida/$key.mp3").close(); true
     } catch (_: Exception) { false }
 
-    fun play(key: String): Boolean {
-        if (!hasRecording(key)) return false
-        return try {
-            stop()
-            val afd = context.assets.openFd("audio/qaida/$key.mp3")
-            player = MediaPlayer().apply {
-                setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                afd.close()
-                setOnCompletionListener { it.release(); if (player === it) player = null }
-                prepare(); start()
-            }
-            true
-        } catch (_: Exception) { false }
+    /**
+     * Plays [key]. [urls] are recitation sources (from QuranAudio); [speak] is the fallback text for the phone voice.
+     * Returns true when real audio (recording or recitation) was started, false when it fell back to the voice.
+     */
+    fun play(key: String, urls: List<String>?, speak: String, fallback: (String) -> Unit): Boolean {
+        stop()
+        lastRequest = Request(key, urls, speak)
+        if (hasRecording(key)) return playAsset(key)
+        if (!urls.isNullOrEmpty()) {
+            queue = urls
+            playNext { say(speak, fallback) }
+            return true
+        }
+        say(speak, fallback)
+        return false
     }
 
-    fun stop() { player?.let { runCatching { it.stop(); it.release() } }; player = null }
+    private fun say(text: String, fallback: (String) -> Unit) {
+        val t = tts
+        if (t != null && ttsReady) t.speak(text, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, "qaida") else fallback(text)
+    }
+
+    private fun cacheFile(url: String) = java.io.File(cacheDir, url.substringAfter("://").replace('/', '_'))
+
+    private fun playNext(onFail: () -> Unit) {
+        val url = queue.firstOrNull() ?: return
+        queue = queue.drop(1)
+        val cached = cacheFile(url)
+        try {
+            player = MediaPlayer().apply {
+                if (cached.exists() && cached.length() > 0) setDataSource(cached.absolutePath)
+                else { setDataSource(url); download(url, cached) }
+                setOnPreparedListener { it.start() }
+                setOnCompletionListener { mp -> mp.release(); if (player === mp) player = null; playNext(onFail) }
+                setOnErrorListener { mp, _, _ -> mp.release(); if (player === mp) player = null; queue = emptyList(); onFail(); true }
+                prepareAsync()
+            }
+        } catch (_: Exception) { queue = emptyList(); onFail() }
+    }
+
+    /** Saves the recitation file in the background for offline use next time. */
+    private fun download(url: String, to: java.io.File) {
+        Thread {
+            runCatching {
+                val tmp = java.io.File(to.path + ".part")
+                java.net.URL(url).openStream().use { input -> tmp.outputStream().use { input.copyTo(it) } }
+                if (tmp.length() > 0) tmp.renameTo(to)
+            }
+        }.apply { isDaemon = true }.start()
+    }
+
+    private fun playAsset(key: String): Boolean = try {
+        val afd = context.assets.openFd("audio/qaida/$key.mp3")
+        player = MediaPlayer().apply {
+            setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            afd.close()
+            setOnCompletionListener { it.release(); if (player === it) player = null }
+            prepare(); start()
+        }
+        true
+    } catch (_: Exception) { false }
+
+    fun stop() {
+        queue = emptyList()
+        player?.let { runCatching { it.stop(); it.release() } }; player = null
+        tts?.stop()
+    }
+
+    fun release() { stop(); tts?.shutdown(); tts = null }
+
+    data class Request(val key: String, val urls: List<String>?, val speak: String)
+    companion object {
+        /** The last sound asked for — lets tests check which source a tap would use without playing it. */
+        @Volatile var lastRequest: Request? = null
+    }
 }
 
 /** The whole Urdu Qaida course at a glance, used by the parent progress view. */

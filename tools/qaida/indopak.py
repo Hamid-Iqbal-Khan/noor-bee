@@ -10,6 +10,7 @@ def is_letter(c): return c in LETTERS
 
 def word(w, nxt_shadda=False, nxt_wasl=False, nxt_ba=False):
     w = w.replace('ٱ', 'ا')
+    w = re.sub('([\u0648\u064A])\u06DF', '\\1\u200B', w)   # silent waw/ya (اُولٰٓئِكَ): mark so it gets no jazm
     for ch in DROP: w = w.replace(ch, '')
     w = w.replace('ۥ', 'ٗ').replace('ۦ', 'ٖ')                       # small waw / ya
     w = w.replace(DAMMA + 'ٗ', 'ٗ').replace(KASRA + 'ٖ', 'ٖ')         # هُۥ -> هٗ ، بِهِۦ -> بِهٖ
@@ -28,6 +29,8 @@ def word(w, nxt_shadda=False, nxt_wasl=False, nxt_ba=False):
     out, res = list(w), []
     for i, ch in enumerate(out):
         res.append(ch)
+        if ch in 'وي' and i + 1 < len(out) and out[i + 1] == '\u200B':
+            continue                                # silent letter: written bare, no jazm
         if not is_letter(ch) or ch in 'اآءة':
             continue
         nxt = out[i + 1] if i + 1 < len(out) else ''
@@ -50,7 +53,7 @@ def word(w, nxt_shadda=False, nxt_wasl=False, nxt_ba=False):
         if (at_end and nxt_shadda) or (not at_end and doubled_next):
             continue                                # idgham / sun letter: no jazm
         res.append(SUKUN)
-    return ''.join(res)
+    return ''.join(res).replace('\u200B', '')
 
 def first_has_shadda(w):
     w = w.lstrip('ٱا')

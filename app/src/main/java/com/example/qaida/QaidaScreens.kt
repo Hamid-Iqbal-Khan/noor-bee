@@ -111,14 +111,17 @@ fun QaidaScreen(
     val context = LocalContext.current
     val progress = remember(profileId) { QaidaProgress(context, profileId) }
     val audio = remember { QaidaAudio(context) }
-    DisposableEffect(Unit) { onDispose { audio.stop() } }
+    DisposableEffect(Unit) { onDispose { audio.release() } }
     var page by rememberSaveable { mutableStateOf("home") }
     var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, STAGE_COUNT)) }
     var refresh by remember { mutableIntStateOf(0) } // bump to re-read progress
 
-    val play: (String, String) -> Unit = { key, fallbackText -> if (!audio.play(key)) onSpeakArabic(fallbackText) }
     val recordingsPresent = remember { audio.hasRecording(QaidaData.letters.first().audioKey) }
     val juz = remember { QaidaJuzAmma.load(context) }
+    val wordIndex = remember(juz) { QuranAudio.buildIndex(emptyList(), QuranAudio.courseAyat(juz)) }
+    val play: (String, String) -> Unit = { key, text ->
+        audio.play(key, QuranAudio.urlForKey(key) ?: wordIndex.urlsFor(text), QuranAudio.speechFor(key, text), onSpeakArabic)
+    }
 
     BackHandler(enabled = page != "home") { page = "home"; refresh++ }
 
@@ -346,8 +349,8 @@ private fun QaidaHeader(title: String, onBack: () -> Unit) {
 
 @Composable
 private fun TemporaryAudioBanner() {
-    Row(Modifier.fillMaxWidth().background(Amber).padding(horizontal = 16.dp, vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
-        UrduText("🔈 عارضی آواز: قاری صاحب کی ریکارڈنگ جلد شامل ہوگی۔ ابھی فون کی آواز ہے جو درست مخرج نہیں بتاتی۔", size = 12.sp, color = Quiet)
+    Row(Modifier.fillMaxWidth().background(Amber).padding(horizontal = 16.dp, vertical = 2.dp).testTag("qaida_audio_banner"), verticalAlignment = Alignment.CenterVertically) {
+        UrduText("🔈 آیات اور قرآنی الفاظ: قاری مشاری العفاسی کی تلاوت (پہلی بار انٹرنیٹ چاہیے، پھر فون میں محفوظ)۔ اکیلے حروف اور حرکات ابھی فون کی آواز میں ہیں؛ قاری صاحب کی ریکارڈنگ جلد۔", size = 12.sp, color = Quiet)
     }
 }
 
@@ -431,6 +434,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
         } else if (stage == 3) {
             val best = progress.bestQuizScore(3)
             HeroCard("اَبَّ  اَلشَّمْسُ", "مرحلہ ۳: تشدید اور پہلی تلاوت", "تشدید، غنّہ، مدّ کا نشان، لامِ شمسی و قمری — پھر سورۃ الفاتحہ اور سورۃ الاخلاص")
+            AdabCard()
             if (!done(QaidaProgress.S2_QUIZ)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("qaida_s3_hint")) {
                     UrduText("مشورہ: پہلے مرحلہ ۲ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
@@ -618,6 +622,20 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
     }
 }
 
+/** Manners of reciting, shown where real Quran recitation begins (Stage 3). */
+@Composable
+private fun AdabCard() {
+    Card(Modifier.testTag("qaida_adab"), colors = CardDefaults.cardColors(containerColor = GreenSoft), border = BorderStroke(1.dp, Green)) {
+        Column(Modifier.padding(14.dp)) {
+            UrduText("🤲 تلاوت کے آداب", size = 15.sp, color = Green, weight = FontWeight.Bold)
+            UrduText("• ہو سکے تو وضو کر کے، پاک جگہ پر، توجہ سے پڑھیں (فون پر پڑھنے کے لیے وضو ضروری نہیں، مگر بہتر ہے)۔\n" +
+                "• شروع میں اَعُوْذُ بِاللّٰهِ اور سورت کے شروع میں بِسْمِ اللّٰهِ پڑھیں۔\n" +
+                "• آہستہ اور صاف پڑھیں؛ غلطی ہو تو دوبارہ ٹھیک پڑھیں۔\n" +
+                "• ۩ کا نشان سجدۂ تلاوت ہے: یہ آیت پڑھنے یا سننے پر بالغ پر سجدہ واجب ہے (حنفی)۔", size = 13.sp)
+        }
+    }
+}
+
 @Composable
 private fun HeroCard(arabic: String, title: String, sub: String) {
     Card(colors = CardDefaults.cardColors(containerColor = GreenSoft), shape = RoundedCornerShape(20.dp)) {
@@ -659,7 +677,7 @@ private fun LettersLesson(progress: QaidaProgress, play: (String, String) -> Uni
     var selected by remember { mutableStateOf<QaidaLetter?>(null) }
     var seen by remember { mutableStateOf(progress.seenLetters()) }
     Column(Modifier.fillMaxSize()) {
-        UrduText("حرف پر ٹیپ کریں، نام سنیں اور مخرج پڑھیں۔ موٹے (پُر) حروف سرخ ہیں۔", Modifier.padding(horizontal = 16.dp, vertical = 8.dp), size = 13.sp, color = Quiet)
+        UrduText("حرف پر ٹیپ کریں، نام سنیں اور مخرج پڑھیں۔ موٹے (پُر) حروف سرخ ہیں — یاد رکھنے کو: خُصَّ ضَغْطٍ قِظْ (خ ص ض غ ط ق ظ)۔ ض کو کبھی ز یا د کی طرح نہ پڑھیں۔", Modifier.padding(horizontal = 16.dp, vertical = 8.dp), size = 13.sp, color = Quiet)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(72.dp),
             modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp).testTag("qaida_letters_grid"),

@@ -19,7 +19,7 @@ object QaidaStage5 {
         Group("names", "اللہ کا نام اور صفات", listOf(
             w("اللّٰهُ", "اللہ", "allah"),
             w("رَبٌّ", "رب، پالنے والا", "rabb"),
-            w("رَحْمٰنٌ", "بہت مہربان", "rahman"),
+            w("الرَّحْمٰنُ", "بے حد مہربان (صرف اللہ کا نام)", "rahman"),
             w("رَحِيْمٌ", "نہایت رحم والا", "rahim"),
             w("عَلِيْمٌ", "سب کچھ جاننے والا", "alim"),
             w("حَكِيْمٌ", "حکمت والا", "hakim"),
@@ -47,7 +47,7 @@ object QaidaStage5 {
         Group("verbs", "کام (افعال)", listOf(
             w("قَالَ", "اس نے کہا", "qala"),
             w("قُلْ", "کہو، کہہ دیجیے", "qul"),
-            w("كَانَ", "تھا", "kana"),
+            w("كَانَ", "تھا (اللہ کے لیے: ہمیشہ سے ہے)", "kana"),
             w("خَلَقَ", "اس نے پیدا کیا", "khalaqa"),
             w("يَعْلَمُ", "وہ جانتا ہے", "yalamu"),
             w("اٰمَنُوْا", "وہ ایمان لائے", "amanu"),
@@ -82,7 +82,7 @@ object QaidaStage5 {
     )
 
     // ---- 5.3 – 5.5 Word by word ----------------------------------------------------------------------
-    data class WbwAyah(val ayah: QaidaStage3.Ayah, val meanings: List<String>) {
+    data class WbwAyah(val ayah: QaidaStage3.Ayah, val meanings: List<String>, val sajdah: Boolean = false) {
         val words get() = ayah.text.split(' ')
         fun wordKey(i: Int) = "s5_wbw_${ayah.surah}_${ayah.number}_${i + 1}"
     }
@@ -101,7 +101,7 @@ object QaidaStage5 {
     ))
     val ikhlas = WbwSurah(112, "سورۃ الاخلاص", wbw(QaidaStage3.ikhlas,
         listOf("کہہ دیجیے", "وہ", "اللہ", "ایک ہے"),
-        listOf("اللہ", "بے نیاز ہے"),
+        listOf("اللہ", "بے نیاز ہے (کسی کا محتاج نہیں)"),
         listOf("نہ", "اس کی کوئی اولاد", "اور نہ", "وہ کسی کی اولاد"),
         listOf("اور نہیں", "ہے", "اس کا", "برابر", "کوئی"),
     ))

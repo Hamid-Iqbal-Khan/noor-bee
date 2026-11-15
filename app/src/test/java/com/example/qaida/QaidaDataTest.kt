@@ -199,6 +199,7 @@ class QaidaDataTest {
     val expected = mapOf(
       "اَحَدٌ" to "اَحَدْ", "الصَّمَدُ" to "الصَّمَدْ", "الرَّحِيْمِ" to "الرَّحِيْمْ",
       "عَلِيْمًا" to "عَلِيْمَا", "جَنَّةٌ" to "جَنَّهْ", "رَحْمَةً" to "رَحْمَهْ", "وَانْحَرْ" to "وَانْحَرْ",
+      "لَهٗ" to "لَهْ", "بِهٖ" to "بِهْ",
     )
     expected.forEach { (w, s) -> assertEquals(w, s, QaidaStage4.stopForm(w)) }
     assertEquals("الْفَلَقْ", QaidaStage4.stopOnLastWord(QaidaStage4.falaq.ayat[0].text))
@@ -329,5 +330,40 @@ class QaidaDataTest {
       assertEquals(10, qs.size)
       qs.forEach { q -> assertTrue(q.correctIndex in q.options.indices); assertEquals(q.options.size, q.options.toSet().size) }
     }
+  }
+
+  @Test fun review_fixes() {
+    val juz = juzAmma()
+    // sajdah ayat flagged
+    assertEquals(setOf(84 to 21, 96 to 19), juz.values.flatMap { s -> s.ayat.filter { it.sajdah }.map { s.number to it.ayah.number } }.toSet())
+    // silent waw of اُولٰٓئِكَ carries no jazm anywhere
+    juz.values.forEach { s -> s.ayat.forEach { a -> assertTrue("${s.number}:${a.ayah.number}", !a.ayah.text.contains("اُوْلٰٓئِكَ")) } }
+    // الرَّحْمٰنُ is never taught as an ordinary indefinite word
+    assertTrue(QaidaStage5.allWords.none { it.arabic == "رَحْمٰنٌ" })
+    assertTrue(QaidaStage11.roots.flatMap { it.words }.none { it.arabic == "رَحْمٰنٌ" })
+    // madd lazim taught as 6
+    assertTrue(QaidaStage3.maddSignWords.first { it.audioKey == "s3_madd_daallin" }.urdu.contains("۶"))
+    // لَآ اُقْسِمُ not glossed as "نہیں"
+    listOf(90 to 1, 81 to 15, 84 to 16).forEach { (s, n) -> assertTrue(!juz.getValue(s).ayat[n - 1].meanings[0].contains("نہیں")) }
+    // Allah's planning is never "چال"
+    assertTrue(!juz.getValue(86).ayat[15].meanings.joinToString().contains("چال"))
+  }
+
+  @Test fun audio_sources() {
+    assertEquals(listOf("https://everyayah.com/data/Alafasy_128kbps/001001.mp3"), QuranAudio.urlForKey(QuranAudio.KEY_BASMALAH))
+    assertEquals(listOf("https://everyayah.com/data/Alafasy_128kbps/096019.mp3"), QuranAudio.urlForKey("s3_ayah_96_19"))
+    assertEquals(listOf("https://audio.qurancdn.com/wbw/112_001_003.mp3"), QuranAudio.urlForKey("s5_wbw_112_1_3"))
+    assertEquals(listOf("https://audio.qurancdn.com/wbw/036_001_001.mp3"), QuranAudio.urlForKey("s2_muqattaat_yasin"))
+    assertEquals("بَاءْ", QuranAudio.speechFor("letter_ba", "ب"))
+    val index = QuranAudio.buildIndex(emptyList(), QuranAudio.courseAyat(juzAmma()))
+    // words typed in other lessons find their recited form inside the course surahs
+    assertEquals(listOf("https://audio.qurancdn.com/wbw/112_001_001.mp3"), index.urlsFor("قُلْ"))
+    assertEquals(listOf("https://audio.qurancdn.com/wbw/001_007_008.mp3", "https://audio.qurancdn.com/wbw/001_007_009.mp3"),
+      index.urlsFor("وَلَا الضَّآلِّيْنَ"))
+    assertTrue("مِنْ شَرِّ found", index.urlsFor("مِنْ شَرِّ") != null)
+    // how many example words across the course now get real recitation
+    val examples = QaidaStage3.tashdeedWords + QaidaStage3.ghunnaWords + QaidaStage3.maddSignWords + QaidaStage3.shamsiWords + QaidaStage3.qamariWords
+    val found = examples.count { index.urlsFor(it.written) != null }
+    println("Stage 3 example words with recitation audio: $found / ${examples.size}")
   }
 }

@@ -54,7 +54,7 @@ internal fun Stage11Lesson(page: String, play: (String, String) -> Unit, onDone:
             "s11_roots" -> roots(play)
             "s11_patterns" -> patterns(play)
             "s11_past" -> forms(play, QaidaStage11.past,
-                "ماضی (گزرا ہوا کام): لفظ کا آخری حصہ بتاتا ہے کہ کس نے کیا۔ نمونہ فَعَلَ (اس نے کیا) ہے — ف، ع، ل کی جگہ کوئی بھی مادہ رکھ دیں۔")
+                "ماضی (گزرا ہوا کام): لفظ کا آخری حصہ بتاتا ہے کہ کس نے کیا — ـَ وہ، ـُوْا وہ سب، ـَتْ وہ (عورت)، ـْتَ تو، ـْتُ میں، ـْنَا ہم۔ نوٹ: خَلَقَ جیسے سادہ فعل کے علاوہ قَدَّمَ اور اَنْعَمَ جیسے دوسرے سانچے بھی ہیں؛ یہاں صرف آخری حصہ سیکھنا ہے۔")
             "s11_present" -> forms(play, QaidaStage11.present,
                 "مضارع (ہو رہا یا ہونے والا کام): شروع کا حرف بتاتا ہے کہ کون کر رہا ہے — يَـ وہ، تَـ تو، اَ میں، نَـ ہم۔ آخر میں ـُوْنَ ہو تو کئی لوگ۔")
             "s11_commands" -> commands(play)
@@ -140,7 +140,7 @@ private fun LazyListScope.forms(play: (String, String) -> Unit, list: List<Qaida
 
 // ---- 11.5 Commands and negatives --------------------------------------------------------------------------
 private fun LazyListScope.commands(play: (String, String) -> Unit) {
-    note11("حکم (امر): مضارع کا شروع والا حرف ہٹا کر آخر ساکن کر دیں — تَقُوْلُ (تو کہتا ہے) سے قُلْ (کہو)۔")
+    note11("حکم (امر): مضارع کا شروع والا حرف ہٹا کر آخر ساکن کر دیں۔ تَقْرَاُ (تو پڑھتا ہے) سے اِقْرَاْ (پڑھو) — شروع میں جزم آ جائے تو اس سے پہلے الف لگتا ہے۔ تَقُوْلُ (تو کہتا ہے) سے قُلْ (کہو) — بیچ کا و بھی گر جاتا ہے۔")
     item { Column(Modifier.fillMaxWidth().background(Teal11Soft, RoundedCornerShape(14.dp)).padding(12.dp)) { WordChips(QaidaStage11.commands, play) } }
     note11("'نہیں' کے چار طریقے:")
     items(QaidaStage11.negatives, key = { it.arabic }) { w ->

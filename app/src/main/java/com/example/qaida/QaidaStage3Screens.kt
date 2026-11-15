@@ -158,7 +158,7 @@ private fun LazyListScope.ghunna(play: (String, String) -> Unit) {
 
 // ---- 3.3 Madd sign ---------------------------------------------------------------------------------
 private fun LazyListScope.maddSign(play: (String, String) -> Unit) {
-    note("جہاں حرفِ مدّہ (ا و ی) پر مدّ کا نشان (~) ہو، وہاں آواز عام مدّ سے زیادہ لمبی کریں — تقریباً چار سے پانچ حرکت۔ قاری صاحب کی آواز سن کر لمبائی برابر رکھیں۔")
+    note("جہاں حرفِ مدّہ (ا و ی) پر مدّ کا نشان (~) ہو، وہاں آواز عام مدّ سے لمبی کریں۔ ایک ہی لفظ میں ہمزہ آئے (جَآءَ) تو مدِّ متصل، اگلے لفظ میں ہمزہ ہو (بِمَآ اُنْزِلَ) تو مدِّ منفصل — دونوں ۴ سے ۵ حرکت۔ مدّ کے بعد تشدید یا جزم ہو (الضَّآلِّيْنَ) تو مدِّ لازم — ہمیشہ پورے ۶ حرکت۔ ایک حرکت = انگلی بند کرنے کا وقت۔")
     item {
         Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
             Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically,
@@ -208,6 +208,7 @@ private fun LetterChips(title: String, ids: List<String>, bg: Color, ink: Color,
 // ---- 3.5 / 3.6 Recitation --------------------------------------------------------------------------
 private fun LazyListScope.recitation(play: (String, String) -> Unit, ayat: List<QaidaStage3.Ayah>, intro: String) {
     note(intro)
+    item { RecitationOpening(ayat.first().surah, play) }
     items(ayat, key = { it.audioKey }) { a ->
         Card(Modifier.fillMaxWidth().clickable { play(a.audioKey, a.text) }.testTag("qaida_ayah_${a.surah}_${a.number}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line3)) {
