@@ -78,8 +78,49 @@ class QaidaDataTest {
     QaidaData.harakatLetters().forEach { l ->
       QaidaData.Harakah.values().forEach { h -> rows += "${QaidaData.audioKey(l, h)},${QaidaData.withHarakah(l, h)},ہجے: ${QaidaData.hijje(l, h)}" }
     }
+    val s1 = rows.size
+    // Stage 2
+    QaidaStage2.joinedWords.forEach { rows += "${it.audioKey},${it.word},لفظ: ${it.urduMeaning}" }
+    QaidaStage2.muqattaat.forEach { rows += "${it.audioKey},${it.text},مقطعات: ${it.reading}" }
+    QaidaStage2.Mark.values().forEach { m ->
+      QaidaStage2.boardLetters(m).forEach { l -> rows += "${QaidaStage2.audioKey(l, m)},${QaidaStage2.write(l, m)},ہجے: ${QaidaStage2.hijje(l, m)}" }
+    }
+    (QaidaStage2.kharaWords + QaidaStage2.madd + QaidaStage2.leen + QaidaStage2.jazmWords)
+      .forEach { rows += "${it.audioKey},${it.written},${it.urdu.replace(',', '،')}" }
+    val keys = rows.drop(1).map { it.substringBefore(',') }
+    assertEquals("audio keys unique", keys.size, keys.toSet().size)
     val out = File("build/outputs/roborazzi/qaida-recording-script.csv")
     out.parentFile.mkdirs(); out.writeText(rows.joinToString("\n") + "\n")
-    assertEquals(1 + 29 + 15 + 84, rows.size)
+    assertEquals(1 + 29 + 15 + 84, s1)
+    println("Qaida recording script: ${rows.size - 1} clips")
+  }
+
+  @Test fun stage2_content() {
+    assertEquals(14, QaidaStage2.muqattaat.size)
+    assertEquals(setOf("alif", "dal", "dhal", "ra", "zay", "waw"), QaidaStage2.nonConnectorIds)
+    QaidaStage2.nonConnectorIds.forEach { assertTrue(QaidaData.letters.any { l -> l.id == it }) }
+    QaidaStage2.joinedWords.forEach { w ->
+      assertEquals(w.word, w.letterIds.joinToString("") { QaidaData.letter(it).arabic })
+    }
+    val b = QaidaData.letter("ba")
+    assertEquals("بًا", QaidaStage2.write(b, QaidaStage2.Mark.DO_ZABAR))
+    assertEquals("ب\u0670", QaidaStage2.write(b, QaidaStage2.Mark.KHARA_ZABAR))
+    assertEquals("ب\u0656", QaidaStage2.write(b, QaidaStage2.Mark.KHARI_ZER))
+    assertEquals("ب\u0657", QaidaStage2.write(b, QaidaStage2.Mark.ULTA_PESH))
+    assertEquals("اَبْ", QaidaStage2.write(b, QaidaStage2.Mark.JAZM))
+    assertEquals(28, QaidaStage2.boardLetters(QaidaStage2.Mark.DO_ZER).size)
+    assertEquals(27, QaidaStage2.boardLetters(QaidaStage2.Mark.JAZM).size)
+  }
+
+  @Test fun stage2_quiz() {
+    repeat(50) { seed ->
+      val qs = QaidaStage2Quiz.generate(kotlin.random.Random(seed))
+      assertEquals(10, qs.size)
+      qs.forEach { q ->
+        assertTrue(q.correctIndex in q.options.indices)
+        assertEquals(q.options.size, q.options.toSet().size)
+        assertTrue(q.options.size >= 2)
+      }
+    }
   }
 }

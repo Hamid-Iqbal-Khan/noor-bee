@@ -116,7 +116,8 @@ fun HomeDashboardScreen(
     onNavigateToParentPanel: () -> Unit,
     onNavigateToDua: () -> Unit,
     onNavigateToQuran: () -> Unit,
-    onNavigateToQaida: () -> Unit = {},
+    onNavigateToQaida: (Int) -> Unit = {},      // Urdu path: Qaida stage 1 or 2
+    onOpenArabicTopic: (String) -> Unit = {},   // Arabic section: "Alphabet" or "Vocabulary"
     onLevelChanged: (Int) -> Unit = {}
 ) {
     var showParentGate by remember { mutableStateOf(false) }
@@ -442,18 +443,18 @@ fun HomeDashboardScreen(
                                 }
                             }
                             
-                            // Right Option: Arabic
-                            val isArabic = profile.currentLanguage == "Arabic"
+                            // Right Option: Urdu (Urdu-medium Noorani Qaida path)
+                            val isArabic = profile.currentLanguage == "Urdu"
                             Card(
                                 modifier = Modifier
                                     .weight(1f)
                                     .height(55.dp)
                                     .clickable {
                                         if (!isArabic) {
-                                            onUpdateProfile(profile.copy(currentLanguage = "Arabic"))
+                                            onUpdateProfile(profile.copy(currentLanguage = "Urdu"))
                                         }
                                     }
-                                    .testTag("lang_ar_button"),
+                                    .testTag("lang_ur_button"),
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(
                                     containerColor = if (isArabic) Color.White else Color(0x1AFFFFFF)
@@ -468,18 +469,18 @@ fun HomeDashboardScreen(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.Center
                                 ) {
-                                    Text(text = "🇸🇦", fontSize = 18.sp)
+                                    Text(text = "🇵🇰", fontSize = 18.sp)
                                     Spacer(modifier = Modifier.width(6.dp))
                                     Column(horizontalAlignment = Alignment.Start) {
                                         Text(
-                                            text = "العربية",
+                                            text = "اردو",
                                             fontWeight = if (isArabic) FontWeight.ExtraBold else FontWeight.Normal,
                                             fontSize = 13.sp,
                                             color = if (isArabic) DeepNavy else SlateGrey
                                         )
                                         if (isArabic) {
                                             Text(
-                                                text = "نشط ✨",
+                                                text = "فعال ✨",
                                                 fontWeight = FontWeight.Bold,
                                                 fontSize = 9.sp,
                                                 color = MinimalBlue
@@ -510,31 +511,61 @@ fun HomeDashboardScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    // Row 1 — the active learning path
+                    if (profile.currentLanguage == "Urdu") {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage1")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۱: حروف 🔤",
+                                    subtitle = "Qaida letters & harakat",
+                                    color = Color(0xFFE8F5E9),
+                                    borderStroke = Color(0xFF1B5E20),
+                                    emoji = "📖",
+                                    onClick = { onNavigateToQaida(1) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f).testTag("dashboard_qaida_stage2")) {
+                                DashboardHoneycomb(
+                                    title = "مرحلہ ۲: جوڑ 🔗",
+                                    subtitle = "Joining, tanween, madd",
+                                    color = Color(0xFFFFF4D6),
+                                    borderStroke = Color(0xFFE0A800),
+                                    emoji = "📗",
+                                    onClick = { onNavigateToQaida(2) }
+                                )
+                            }
+                        }
+                    } else {
                     // Row 1
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        Box(modifier = Modifier.weight(1f)) {
-                            DashboardHoneycomb(
-                                title = letterPathsTitle,
-                                subtitle = letterPathsSubtitle,
-                                color = Color.White,
-                                borderStroke = BorderGrey,
-                                emoji = letterPathsEmoji,
-                                onClick = { onTopicSelected("Alphabet") }
-                            )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                DashboardHoneycomb(
+                                    title = letterPathsTitle,
+                                    subtitle = letterPathsSubtitle,
+                                    color = Color.White,
+                                    borderStroke = BorderGrey,
+                                    emoji = letterPathsEmoji,
+                                    onClick = { onTopicSelected("Alphabet") }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                DashboardHoneycomb(
+                                    title = wordLabTitle,
+                                    subtitle = wordLabSubtitle,
+                                    color = LightBlueGrey,
+                                    borderStroke = BorderGrey,
+                                    emoji = wordLabEmoji,
+                                    onClick = { onTopicSelected("Vocabulary") }
+                                )
+                            }
                         }
-                        Box(modifier = Modifier.weight(1f)) {
-                            DashboardHoneycomb(
-                                title = wordLabTitle,
-                                subtitle = wordLabSubtitle,
-                                color = LightBlueGrey,
-                                borderStroke = BorderGrey,
-                                emoji = wordLabEmoji,
-                                onClick = { onTopicSelected("Vocabulary") }
-                            )
-                        }
+    
                     }
 
                     // Row 2
@@ -564,16 +595,38 @@ fun HomeDashboardScreen(
                         }
                     }
 
-                    // Noorani Qaida (Urdu-medium Arabic course)
-                    Box(modifier = Modifier.fillMaxWidth().testTag("dashboard_qaida_card")) {
-                        DashboardHoneycomb(
-                            title = "نورانی قاعدہ (اردو) 📖",
-                            subtitle = "Arabic from Alif-Ba, taught in Urdu",
-                            color = Color(0xFFE8F5E9),
-                            borderStroke = Color(0xFF1B5E20),
-                            emoji = "📖",
-                            onClick = onNavigateToQaida
-                        )
+                    // Arabic section: Arabic letters, phonics and words (moved down from the top switch)
+                    Text(
+                        text = "العربية · Arabic Words & Phonics 🇸🇦",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = DeepNavy,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth().testTag("dashboard_arabic_section"),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Box(modifier = Modifier.weight(1f).testTag("dashboard_arabic_letters")) {
+                            DashboardHoneycomb(
+                                title = "الحروف والأصوات 🔤",
+                                subtitle = "Arabic letters & phonics",
+                                color = Color(0xFFE3F2FD),
+                                borderStroke = Color(0xFF1565C0),
+                                emoji = "🇸🇦",
+                                onClick = { onOpenArabicTopic("Alphabet") }
+                            )
+                        }
+                        Box(modifier = Modifier.weight(1f).testTag("dashboard_arabic_words")) {
+                            DashboardHoneycomb(
+                                title = "الكلمات 🍎",
+                                subtitle = "Arabic word games",
+                                color = Color(0xFFFCE4EC),
+                                borderStroke = Color(0xFFAD1457),
+                                emoji = "🍎",
+                                onClick = { onOpenArabicTopic("Vocabulary") }
+                            )
+                        }
                     }
 
                     // Row 3 (Quran Explorer)

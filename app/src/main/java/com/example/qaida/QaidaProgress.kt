@@ -3,7 +3,7 @@ package com.example.qaida
 import android.content.Context
 import android.media.MediaPlayer
 
-/** Stage 1 progress, kept per child profile in SharedPreferences (survives restarts). */
+/** Stage 1 and 2 progress, kept per child profile in SharedPreferences (survives restarts). */
 class QaidaProgress(context: Context, profileId: Int) {
     private val prefs = context.applicationContext.getSharedPreferences("qaida_progress_$profileId", Context.MODE_PRIVATE)
 
@@ -17,10 +17,10 @@ class QaidaProgress(context: Context, profileId: Int) {
     fun isLessonDone(lesson: String): Boolean = prefs.getBoolean("done_$lesson", false)
     fun markLessonDone(lesson: String) = prefs.edit().putBoolean("done_$lesson", true).apply()
 
-    fun bestQuizScore(): Int = prefs.getInt(KEY_BEST, 0)
-    fun recordQuizScore(score: Int) {
-        if (score > bestQuizScore()) prefs.edit().putInt(KEY_BEST, score).apply()
-        if (score >= PASS_MARK) markLessonDone(LESSON_QUIZ)
+    fun bestQuizScore(stage: Int = 1): Int = prefs.getInt(if (stage == 1) KEY_BEST else "${KEY_BEST}_s$stage", 0)
+    fun recordQuizScore(score: Int, stage: Int = 1) {
+        if (score > bestQuizScore(stage)) prefs.edit().putInt(if (stage == 1) KEY_BEST else "${KEY_BEST}_s$stage", score).apply()
+        if (score >= PASS_MARK) markLessonDone(if (stage == 1) LESSON_QUIZ else S2_QUIZ)
     }
 
     companion object {
@@ -32,6 +32,13 @@ class QaidaProgress(context: Context, profileId: Int) {
         const val LESSON_SOUNDS = "1.2"
         const val LESSON_HARAKAT = "1.3"
         const val LESSON_QUIZ = "1.4"
+        const val S2_JOINING = "2.1"
+        const val S2_MUQATTAAT = "2.2"
+        const val S2_TANWEEN = "2.3"
+        const val S2_KHARA = "2.4"
+        const val S2_MADD = "2.5"
+        const val S2_JAZM = "2.6"
+        const val S2_QUIZ = "2.7"
     }
 }
 

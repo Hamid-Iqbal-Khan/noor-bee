@@ -99,7 +99,9 @@ class UatFlowTest {
     clickText("Quran Explorer"); step(2_000); shot("05_quran"); goBack()
     waitTag("home_dashboard_screen")
     waitTag("home_dashboard_screen"); dismissGuide()
-    clickTag("lang_ar_button"); shot("06_after_arabic_toggle")
+    clickTag("lang_ur_button"); shot("06_after_urdu_toggle")
+    clickTag("dashboard_qaida_stage2"); step(1_500); shot("06b_qaida_stage2"); goBack()
+    waitTag("home_dashboard_screen"); dismissGuide()
     clickText("Phonics Whiteboard"); step(2_000); shot("07_whiteboard"); goBack()
   }
 

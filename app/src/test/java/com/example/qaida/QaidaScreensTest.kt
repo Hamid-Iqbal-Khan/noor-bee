@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performScrollTo
 import com.example.ui.theme.MyApplicationTheme
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
@@ -27,10 +28,10 @@ class QaidaScreensTest {
   private val spoken = mutableListOf<String>()
   private var rewards = 0
 
-  private fun launch() {
+  private fun launch(stage: Int = 1) {
     rule.setContent {
       MyApplicationTheme {
-        QaidaScreen(profileId = 42, onBackPressed = {}, onSpeakArabic = { spoken += it }, onEarnRewards = { _, _, _ -> rewards++ })
+        QaidaScreen(profileId = 42, onBackPressed = {}, onSpeakArabic = { spoken += it }, onEarnRewards = { _, _, _ -> rewards++ }, startStage = stage)
       }
     }
     rule.waitForIdle()
@@ -81,5 +82,53 @@ class QaidaScreensTest {
   fun tablet_homeAndHarakat() {
     launch(); shot("tablet_01_home")
     rule.onNodeWithTag("lesson_harakat").performClick(); rule.waitForIdle(); shot("tablet_02_harakat")
+  }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage2_allBoards() {
+    launch(stage = 2); shot("phone_s2_01_home")
+    rule.onNodeWithTag("lesson_s2_joining").assertExists()
+    val boards = listOf("joining", "muqattaat", "tanween", "khara", "madd", "jazm")
+    boards.forEachIndexed { i, b ->
+      rule.onNodeWithTag("qaida_root").performScrollToNodeSafe("lesson_s2_$b")
+      rule.onNodeWithTag("lesson_s2_$b").performClick(); rule.waitForIdle()
+      shot("phone_s2_0${i + 2}_$b")
+      rule.onNodeWithTag("qaida_s2_${b}_list").performScrollToNode(hasTestTag("qaida_s2_done"))
+      rule.onNodeWithTag("qaida_s2_done").performClick(); rule.waitForIdle()
+    }
+    assertTrue("six stage-2 boards rewarded", rewards == 6)
+    shot("phone_s2_08_home_done")
+  }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.Pixel8)
+  fun phone_stage2_tabAndQuiz() {
+    launch()
+    rule.onNodeWithTag("qaida_stage_tab_2").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_s2_hint").assertExists()
+    rule.onNodeWithTag("lesson_s2_tanween").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_s2_row_ba").performClick(); rule.waitForIdle()
+    assertTrue("tanween fallback spoken", spoken.contains("بًا"))
+    rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("lesson_s2_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s2_quiz").performClick(); rule.waitForIdle()
+    shot("phone_s2_09_quiz")
+    repeat(10) {
+      rule.onNodeWithTag("qaida_option_0").performClick(); rule.waitForIdle()
+      rule.onNodeWithTag("qaida_next").performScrollToSafe(); rule.onNodeWithTag("qaida_next").performClick(); rule.waitForIdle()
+    }
+    rule.onNodeWithTag("qaida_quiz_result").assertExists(); shot("phone_s2_10_quiz_result")
+  }
+
+  @Test @Config(qualifiers = RobolectricDeviceQualifiers.SmallPhone)
+  fun small_stage2_khara() {
+    launch(stage = 2)
+    rule.onNodeWithTag("lesson_s2_khara").performScrollToSafe(); rule.onNodeWithTag("lesson_s2_khara").performClick(); rule.waitForIdle()
+    shot("small_s2_khara")
+  }
+
+  private fun androidx.compose.ui.test.SemanticsNodeInteraction.performScrollToSafe() =
+    try { performScrollTo() } catch (_: Throwable) { this }
+
+  private fun androidx.compose.ui.test.SemanticsNodeInteraction.performScrollToNodeSafe(tag: String) {
+    try { rule.onNodeWithTag(tag).performScrollTo() } catch (_: Throwable) { }
   }
 }

@@ -146,8 +146,13 @@ class MainActivity : ComponentActivity() {
                                     onNavigateToQuran = {
                                         navController.navigate("quran")
                                     },
-                                    onNavigateToQaida = {
-                                        navController.navigate("qaida")
+                                    onNavigateToQaida = { stage ->
+                                        navController.navigate("qaida?stage=$stage")
+                                    },
+                                    onOpenArabicTopic = { topic ->
+                                        // Arabic content follows the profile's language; switch it, then open the path
+                                        viewModel.updateLanguage("Arabic")
+                                        navController.navigate("path/$topic")
                                     },
                                     onLevelChanged = { newLevel ->
                                         viewModel.updateLevel(newLevel)
@@ -222,9 +227,13 @@ class MainActivity : ComponentActivity() {
                             }
 
                             // NOORANI QAIDA — Urdu-medium Arabic course (Stage 1)
-                            composable("qaida") {
+                            composable(
+                                "qaida?stage={stage}",
+                                arguments = listOf(androidx.navigation.navArgument("stage") { type = androidx.navigation.NavType.IntType; defaultValue = 1 })
+                            ) { entry ->
                                 com.example.qaida.QaidaScreen(
                                     profileId = activeProfile?.id ?: 0,
+                                    startStage = entry.arguments?.getInt("stage") ?: 1,
                                     onBackPressed = { navController.popBackStack() },
                                     onSpeakArabic = { text ->
                                         // Temporary voice until the qari's recordings are bundled
