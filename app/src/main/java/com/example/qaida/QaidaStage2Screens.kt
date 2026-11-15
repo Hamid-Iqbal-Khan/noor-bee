@@ -156,6 +156,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.markBoard(
                 Box(Modifier.weight(1f).padding(horizontal = 4.dp).heightIn(min = 56.dp)
                     .background(if (l.heavy) Color(0xFFFBE9E7) else GreenSoft, RoundedCornerShape(10.dp))
                     .clickable { play(QaidaStage2.audioKey(l, m), form) }
+                    .testTag("qaida_s2_cell_${l.id}_${m.name.lowercase()}")
                     .semantics { contentDescription = QaidaStage2.hijje(l, m) },
                     contentAlignment = Alignment.Center) {
                     ArabicText(form, size = 30.sp, color = if (l.heavy) Heavy else Ink)

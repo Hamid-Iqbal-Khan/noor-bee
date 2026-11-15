@@ -106,7 +106,7 @@ class QaidaScreensTest {
     rule.onNodeWithTag("qaida_stage_tab_2").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("qaida_s2_hint").assertExists()
     rule.onNodeWithTag("lesson_s2_tanween").performClick(); rule.waitForIdle()
-    rule.onNodeWithTag("qaida_s2_row_ba").performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("qaida_s2_cell_ba_do_zabar").performClick(); rule.waitForIdle()
     assertTrue("tanween fallback spoken", spoken.contains("بًا"))
     rule.onNodeWithTag("qaida_back").performClick(); rule.waitForIdle()
     rule.onNodeWithTag("lesson_s2_quiz").performScrollToSafe(); rule.onNodeWithTag("lesson_s2_quiz").performClick(); rule.waitForIdle()

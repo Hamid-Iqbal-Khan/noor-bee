@@ -132,12 +132,12 @@ object QaidaStage2 {
 
     /** Jazm practice words (Takhti 9). */
     val jazmWords = listOf(
-        MaddExample("قُلْ", "کہو", "s2_jazm_qul"),
-        MaddExample("لَمْ", "نہیں", "s2_jazm_lam"),
-        MaddExample("مِنْ", "سے", "s2_jazm_min"),
-        MaddExample("كُنْ", "ہو جا", "s2_jazm_kun"),
-        MaddExample("اَنْتَ", "تُو", "s2_jazm_anta"),
-        MaddExample("اَلْحَمْدُ", "سب تعریف", "s2_jazm_alhamdu"),
+        MaddExample("قُلْ", "کہو", "s2_jazmword_qul"),
+        MaddExample("لَمْ", "نہیں", "s2_jazmword_lam"),
+        MaddExample("مِنْ", "سے", "s2_jazmword_min"),
+        MaddExample("كُنْ", "ہو جا", "s2_jazmword_kun"),
+        MaddExample("اَنْتَ", "تُو", "s2_jazmword_anta"),
+        MaddExample("اَلْحَمْدُ", "سب تعریف", "s2_jazmword_alhamdu"),
     )
 
     /** IndoPak words that use the long-vowel marks (Takhti 6). */
