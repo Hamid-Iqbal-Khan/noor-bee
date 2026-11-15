@@ -164,7 +164,7 @@ fun QaidaScreen(
                         val lesson = mapOf("s2_joining" to QaidaProgress.S2_JOINING, "s2_muqattaat" to QaidaProgress.S2_MUQATTAAT,
                             "s2_tanween" to QaidaProgress.S2_TANWEEN, "s2_khara" to QaidaProgress.S2_KHARA,
                             "s2_madd" to QaidaProgress.S2_MADD, "s2_jazm" to QaidaProgress.S2_JAZM).getValue(page)
-                        val done = {
+                        val done: () -> Unit = {
                             progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 2: $lesson")
                             page = "home"; refresh++
                         }
