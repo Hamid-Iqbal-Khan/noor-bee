@@ -9,7 +9,7 @@ package com.example.qaida
 object QaidaStage4 {
 
     private const val SUKUN = 'ْ'
-    private val shortVowels = setOf('َ', 'ُ', 'ِ', 'ٌ', 'ٍ')
+    private val shortVowels = setOf('\u064B', 'َ', 'ُ', 'ِ', 'ٌ', 'ٍ')
 
     /**
      * How a word is read when you stop on it:
