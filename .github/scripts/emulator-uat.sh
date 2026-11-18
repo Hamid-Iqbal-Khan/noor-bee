@@ -92,14 +92,17 @@ tap_text "English"; sleep 2
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
 tap_text "Quran Explorer"; sleep 3; shot 05_quran
 tap_text "Surat-ul-Fateha"; sleep 3; shot 06_surah_fatiha; adb shell input keyevent 4; sleep 2; adb shell input keyevent 4; sleep 2; shot 06b_back_to_dashboard
-adb shell input swipe 540 600 540 2000 200; sleep 1; adb shell input swipe 540 600 540 2000 200; sleep 1; adb shell input swipe 540 600 540 2000 200; sleep 1
+# make sure the app (not the launcher) is in front before scrolling: a swipe on the launcher opens the shade
+adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 3
+adb shell input swipe 540 900 540 2000 200; sleep 1; adb shell input swipe 540 900 540 2000 200; sleep 1; adb shell input swipe 540 900 540 2000 200; sleep 1
 tap_text "Stage 1: Letters"; sleep 3; shot 36_quran_english_stage1
 tap_text "The single letters"; sleep 3; shot 37_quran_english_letters
 tap_text "Thaa"; sleep 2; shot 38_quran_english_letter_detail; adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 1
 tap_text "Lesson 3: Vowel marks"; sleep 3; shot 39_quran_english_harakat; adb shell input keyevent 4; sleep 1
 tap_text "5: Meanings"; sleep 2; tap_text "Al-Fatihah word by word"; sleep 3; shot 40_quran_english_fatiha_wbw; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
-adb shell input swipe 540 600 540 2000 200; sleep 1; adb shell input swipe 540 600 540 2000 200; sleep 1; adb shell input swipe 540 600 540 2000 200; sleep 1
+adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 3
+adb shell input swipe 540 900 540 2000 200; sleep 1; adb shell input swipe 540 900 540 2000 200; sleep 1; adb shell input swipe 540 900 540 2000 200; sleep 1
 tap_text "Stage 1: Sounds"; sleep 3; shot 41_english_reading_stage1
 tap_text "The alphabet"; sleep 3; shot 42_english_alphabet; adb shell input keyevent 4; sleep 1
 tap_text "2: Blending"; sleep 2; tap_text "Short a"; sleep 3; shot 43_english_blending; adb shell input keyevent 4; sleep 1
