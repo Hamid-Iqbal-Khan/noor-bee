@@ -32,7 +32,7 @@
 592	You may stop, but joining is better.
 593	If your breath runs out you may stop; otherwise join.
 594	Sale
-595	Sale
+595	Salay
 596	Joining is better.
 597	Some stop here, but joining is better.
 598	Qeel

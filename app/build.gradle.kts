@@ -65,7 +65,7 @@ android {
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
-      all { it.testLogging { showStandardStreams = true; events("failed") } }
+      all { it.testLogging { showStandardStreams = true; events("failed"); exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL } }
     }
   }
 }

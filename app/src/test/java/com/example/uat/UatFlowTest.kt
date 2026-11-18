@@ -8,6 +8,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
@@ -75,9 +76,9 @@ class UatFlowTest {
     throw AssertionError("Timed out waiting for testTag '$tag'; screens present: $onScreen")
   }
 
+  // Click through the semantics action: no scrolling needed (scrolling the long dashboard under a paused clock stalled).
   private fun SemanticsNodeInteraction.tap(): SemanticsNodeInteraction {
-    try { performScrollTo() } catch (_: AssertionError) { /* not inside a scrolling container */ }
-    performClick(); return this
+    performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); return this
   }
 
   private fun clickTag(tag: String) { rule.onNode(hasTestTag(tag)).tap(); step() }

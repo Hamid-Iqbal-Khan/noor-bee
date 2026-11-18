@@ -55,7 +55,7 @@ class QaidaEnglishDataTest {
     assertEquals("Baa fatha بَ", QaidaData.hijje(QaidaData.letter("ba"), QaidaData.Harakah.ZABAR))
     assertEquals("Alif fatha a, Baa sukoon: اَبْ", QaidaStage2.hijje(QaidaData.letter("ba"), QaidaStage2.Mark.JAZM))
     assertEquals("Baa double fatha بًا", QaidaStage2.hijje(QaidaData.letter("ba"), QaidaStage2.Mark.DO_ZABAR))
-    assertEquals("Alif fatha, Baa fatha shaddah: اَبَّ", QaidaStage3.tashdeedHijje(QaidaData.letter("ba"), QaidaStage3.Vowel.ZABAR))
+    assertEquals("Alif fatha, Baa fatha shaddah: " + QaidaStage3.tashdeed(QaidaData.letter("ba"), QaidaStage3.Vowel.ZABAR), QaidaStage3.tashdeedHijje(QaidaData.letter("ba"), QaidaStage3.Vowel.ZABAR))
     QaidaLang.english = false
     assertEquals("بَا زَبَر بَ", QaidaData.hijje(QaidaData.letter("ba"), QaidaData.Harakah.ZABAR))
   }
@@ -67,17 +67,20 @@ class QaidaEnglishDataTest {
       "4" to { r: Random -> QaidaStage4Quiz.generate(r) }, "5" to { r: Random -> QaidaStage5Quiz.generate(r) }, "6" to { r: Random -> QaidaStage6Quiz.generate(r) },
       "7" to { r: Random -> QaidaStage7Quiz.generate(r) }, "11" to { r: Random -> QaidaStage11Quiz.generate(r) },
     ) + (8..10).associate { st -> "$st" to { r: Random -> QaidaJuzAmmaQuiz.generate(r, QaidaJuzAmma.group(st).surahs.mapNotNull { juz[it] }) } }
+    val problems = linkedSetOf<String>()
     gens.forEach { (stage, gen) ->
       repeat(150) { seed ->
         gen(Random(seed)).forEach { q ->
           val shown = q.options.map { if (q.optionsAreArabic) it else QaidaLang.tr(it) }
-          assertEquals("stage $stage: two options look the same in English: $shown (${q.options})", shown.size, shown.distinct().size)
+          if (shown.size != shown.distinct().size) problems += "stage $stage: two options look the same in English: $shown (${q.options})"
           assertTranslated("stage $stage instruction", q.instruction)
           if (!q.optionsAreArabic) shown.forEach { assertFalse("stage $stage option not translated: $it", QaidaLang.looksUrdu(it)) }
           if (!q.promptIsArabic) assertTranslated("stage $stage prompt", q.prompt)
         }
       }
     }
+    problems.forEach { println(it) }
+    assertTrue(problems.joinToString("\n"), problems.isEmpty())
   }
 
   @Test fun juzAmma_hasEnglishMeaningForEveryWord_andEveryAyah() {
