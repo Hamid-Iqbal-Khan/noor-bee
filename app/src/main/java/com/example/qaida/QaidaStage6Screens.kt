@@ -83,7 +83,7 @@ private fun Flashcards(play: (String, String) -> Unit, onDone: () -> Unit) {
             Spacer(Modifier.height(24.dp))
             UrduText(if (known >= deck.size * 2 / 3) "ماشاء اللہ! 🌟" else "شاباش! روز تھوڑی مشق کریں 💪", size = 24.sp,
                 weight = FontWeight.Bold, align = TextAlign.Center)
-            UrduText("$known / ${deck.size} معنی یاد تھے", size = 20.sp, color = Green, align = TextAlign.Center,
+            UrduText(tx("$known / ${deck.size} معنی یاد تھے", "$known / ${deck.size} meanings remembered"), size = 20.sp, color = Green, align = TextAlign.Center,
                 modifier = Modifier.testTag("qaida_cards_result"))
             Spacer(Modifier.height(16.dp))
             Button(onClick = { seed = System.currentTimeMillis() }, colors = ButtonDefaults.buttonColors(containerColor = Green),
@@ -96,7 +96,7 @@ private fun Flashcards(play: (String, String) -> Unit, onDone: () -> Unit) {
             return@Column
         }
         val c = deck[index]
-        UrduText("کارڈ ${index + 1} / ${deck.size}   ·   یاد تھے: $known", size = 13.sp, color = Quiet)
+        UrduText(tx("کارڈ ${index + 1} / ${deck.size}   ·   یاد تھے: $known", "Card ${index + 1} / ${deck.size}   ·   remembered: $known"), size = 13.sp, color = Quiet)
         UrduText("لفظ دیکھ کر اس کا مطلب زبان سے بولیں، پھر کارڈ پلٹیں۔", size = 13.sp, color = Quiet, align = TextAlign.Center)
         Spacer(Modifier.height(12.dp))
         Card(

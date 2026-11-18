@@ -159,7 +159,8 @@ object QaidaData {
     }
 
     /** Hijje — spelling aloud the Qaida way, e.g. "بَا زَبَر بَ". */
-    fun hijje(letter: QaidaLetter, h: Harakah): String = "${letter.qaidaName} ${h.urduName} ${withHarakah(letter, h)}"
+    fun hijje(letter: QaidaLetter, h: Harakah): String = tx("${letter.qaidaName} ${h.urduName} ${withHarakah(letter, h)}",
+        "${tr(letter.qaidaName)} ${QaidaLang.term(h.urduName)} ${withHarakah(letter, h)}")
 
     fun audioKey(letter: QaidaLetter, h: Harakah) = "harakah_${letter.id}_${h.name.lowercase()}"
 

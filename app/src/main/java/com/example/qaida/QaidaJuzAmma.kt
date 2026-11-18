@@ -55,7 +55,8 @@ object QaidaJuzAmma {
         val ayat = lines.filter { it.isNotBlank() && !it.startsWith("#") }.map { line ->
             val cols = line.split('\t')
             val (s, n, text, means) = cols
-            QaidaStage5.WbwAyah(QaidaStage3.Ayah(s.toInt(), n.toInt(), text, ""), means.split('|'), sajdah = cols.getOrNull(4) == "1")
+            QaidaStage5.WbwAyah(QaidaStage3.Ayah(s.toInt(), n.toInt(), text, ""), means.split('|'), sajdah = cols.getOrNull(4) == "1",
+                meaningsEn = cols.getOrNull(5)?.split('|') ?: emptyList())
         }.toList()
         return ayat.groupBy { it.ayah.surah }.mapValues { (s, list) ->
             QaidaStage5.WbwSurah(s, urduNames[s] ?: "سورۃ $s", list.sortedBy { it.ayah.number })
@@ -73,7 +74,7 @@ object QaidaJuzAmma {
 /** Quiz for a Juz 'Amma stage: word meanings from its surahs, and "which surah does this ayah open". */
 object QaidaJuzAmmaQuiz {
     fun generate(random: kotlin.random.Random, surahs: List<QaidaStage5.WbwSurah>, length: Int = QaidaProgress.QUIZ_LENGTH): List<QaidaQuestion> {
-        val cards = surahs.flatMap { s -> s.ayat.flatMap { a -> a.words.mapIndexed { i, w -> Triple(w, a.meanings[i], a.wordKey(i)) } } }
+        val cards = surahs.flatMap { s -> s.ayat.flatMap { a -> a.words.mapIndexed { i, w -> Triple(w, a.shown[i], a.wordKey(i)) } } }
             .filter { it.first.length >= 3 }.distinctBy { it.second }
         return List(length) { i ->
             if (i % 3 == 2 && surahs.size >= 4) {
@@ -115,7 +116,9 @@ internal fun JuzAmmaLesson(surah: QaidaStage5.WbwSurah, play: (String, String) -
 /** Easy whole-ayah Urdu meaning for every ayah in the course (assets/qaida/mafhoom.tsv). */
 object QaidaMafhoom {
     const val ASSET = "qaida/mafhoom.tsv"
+    const val ASSET_EN = "qaida/mafhoom_en.tsv"
     @Volatile private var map: Map<Pair<Int, Int>, String> = emptyMap()
+    @Volatile private var mapEn: Map<Pair<Int, Int>, String> = emptyMap()
 
     fun parse(lines: Sequence<String>): Map<Pair<Int, Int>, String> =
         lines.filter { it.isNotBlank() && !it.startsWith("#") }.associate { l ->
@@ -124,10 +127,11 @@ object QaidaMafhoom {
 
     fun load(context: Context): Map<Pair<Int, Int>, String> {
         if (map.isEmpty()) map = context.applicationContext.assets.open(ASSET).bufferedReader(Charsets.UTF_8).useLines { parse(it) }
+        if (mapEn.isEmpty()) mapEn = context.applicationContext.assets.open(ASSET_EN).bufferedReader(Charsets.UTF_8).useLines { parse(it) }
         return map
     }
 
-    fun of(surah: Int, ayah: Int): String? = map[surah to ayah]
+    fun of(surah: Int, ayah: Int): String? = (if (QaidaLang.english) mapEn else map)[surah to ayah]
 }
 
 /** "آسان مفہوم" line shown under an ayah. */
@@ -137,7 +141,7 @@ internal fun MafhoomLine(surah: Int, ayah: Int) {
     androidx.compose.foundation.layout.Column(Modifier.fillMaxWidth().padding(top = 4.dp)
         .background(Color(0xFFF1F8E9), androidx.compose.foundation.shape.RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 4.dp)
         .testTag("qaida_mafhoom_${surah}_$ayah")) {
-        UrduText("آسان مفہوم: $m", size = 14.sp, color = Ink, weight = FontWeight.Bold)
+        UrduText(tx("آسان مفہوم: $m", "Simple meaning: $m"), size = 14.sp, color = Ink, weight = FontWeight.Bold)
     }
     ParentNote(surah, ayah)
 }

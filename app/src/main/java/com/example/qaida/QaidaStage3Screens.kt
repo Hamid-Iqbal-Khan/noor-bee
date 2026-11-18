@@ -97,7 +97,7 @@ private fun LazyListScope.tashdeedBoard(
     onSelect: (Pair<String, QaidaStage3.Vowel>) -> Unit,
 ) {
     note("تشدید (ّ) کا مطلب ہے حرف دو بار: پہلی بار ساکن (پچھلے حرف کے ساتھ) اور دوسری بار حرکت کے ساتھ۔ کسی بھی خانے پر ٹیپ کریں — اس کے نیچے لفظ کا جوڑ دکھائی دے گا۔")
-    items(QaidaStage3.tashdeedLetters(), key = { "t_" + it.id }) { l ->
+    items(QaidaStage3.tashdeedLetters(), key = { "t_" + it.id }) { l -> ArabicFlow {
         Column(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(14.dp)).padding(8.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 UrduText(l.qaidaName, Modifier.width(64.dp), size = 13.sp, color = Quiet)
@@ -121,7 +121,7 @@ private fun LazyListScope.tashdeedBoard(
                 TashdeedBreakdown(l, v, play)
             }
         }
-    }
+    } }
 }
 
 /** Right-to-left sum, as it is read: اَبْ + بَ = اَبَّ (first part on the right, answer on the left). */
@@ -189,16 +189,16 @@ private fun LetterChips(title: String, ids: List<String>, bg: Color, ink: Color,
     Card(Modifier.fillMaxWidth().testTag(tag), colors = CardDefaults.cardColors(containerColor = bg)) {
         Column(Modifier.padding(10.dp)) {
             UrduText(title, size = 15.sp, color = ink, weight = FontWeight.Bold)
-            ids.chunked(7).forEach { row ->
+            ids.chunked(7).forEach { row -> ArabicFlow {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                     row.forEach { id ->
                         val l = QaidaData.letter(id)
                         Box(Modifier.size(40.dp).background(Color.White, CircleShape).clickable { play(l.audioKey, l.arabic) }
-                            .semantics { contentDescription = l.qaidaName }, contentAlignment = Alignment.Center) {
+                            .semantics { contentDescription = tr(l.qaidaName) }, contentAlignment = Alignment.Center) {
                             ArabicText(l.arabic, size = 22.sp, color = ink)
                         }
                     }
-                }
+                } }
                 Spacer(Modifier.heightIn(min = 6.dp))
             }
         }
@@ -213,13 +213,13 @@ private fun LazyListScope.recitation(play: (String, String) -> Unit, ayat: List<
         Card(Modifier.fillMaxWidth().clickable { play(a.audioKey, a.text) }.testTag("qaida_ayah_${a.surah}_${a.number}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line3)) {
             Column(Modifier.padding(12.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                ArabicFlow { Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(32.dp).background(GreenSoft, CircleShape), contentAlignment = Alignment.Center) {
-                        UrduText(a.number.toString().map { "۰۱۲۳۴۵۶۷۸۹"[it - '0'] }.joinToString(""), size = 13.sp, color = Green, weight = FontWeight.Bold)
+                        UrduText(urduDigit(a.number), size = 13.sp, color = Green, weight = FontWeight.Bold)
                     }
                     Spacer(Modifier.width(8.dp))
                     ArabicText(a.text, Modifier.weight(1f), size = 30.sp, align = TextAlign.Start)
-                }
+                } }
                 MafhoomLine(a.surah, a.number)
                 UrduText("💡 " + a.rules, size = 12.sp, color = Quiet)
             }

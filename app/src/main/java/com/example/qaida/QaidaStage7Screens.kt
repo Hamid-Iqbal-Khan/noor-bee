@@ -97,16 +97,16 @@ private fun LazyListScope.rule(play: (String, String) -> Unit, r: QaidaStage7.Ru
                 UrduText(r.short, Modifier.background(c, RoundedCornerShape(8.dp)).padding(horizontal = 6.dp), size = 11.sp, color = Color.White)
             }
             UrduText(r.how, size = 13.sp)
-            UrduText("حروف (${ids.size}):", size = 12.sp, color = Quiet)
-            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            UrduText(tx("حروف (${ids.size}):", "Letters (${ids.size}):"), size = 12.sp, color = Quiet)
+            ArabicFlow { FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 ids.forEach { id ->
                     val l = QaidaData.letter(id)
                     Box(Modifier.size(44.dp).background(Color.White, CircleShape).clickable { play(l.audioKey, l.arabic) }
-                        .semantics { contentDescription = l.qaidaName }, contentAlignment = Alignment.Center) {
+                        .semantics { contentDescription = tr(l.qaidaName) }, contentAlignment = Alignment.Center) {
                         ArabicText(l.arabic, size = 24.sp, color = c)
                     }
                 }
-            }
+            } }
         }
     }
     items(QaidaStage7.examplesFor(r), key = { it.audioKey }) { e -> ExampleCard(e.phrase, e.note, e.from, e.audioKey, c, play) }
@@ -120,7 +120,7 @@ private fun ExampleCard(phrase: String, note: String, from: String, key: String,
             ArabicText(phrase, Modifier.width(170.dp), size = 30.sp, color = c)
             Column(Modifier.weight(1f)) {
                 UrduText(note, size = 13.sp, weight = FontWeight.Bold)
-                if (from.isNotEmpty()) UrduText("📖 $from میں آیا", size = 11.sp, color = Quiet)
+                if (from.isNotEmpty()) UrduText(tx("📖 $from میں آیا", "📖 in ${tr(from)}"), size = 11.sp, color = Quiet)
             }
         }
     }
@@ -141,7 +141,7 @@ private fun LazyListScope.meem(play: (String, String) -> Unit) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     UrduText(m.urdu, size = 17.sp, color = c, weight = FontWeight.Bold)
                     Spacer(Modifier.width(8.dp))
-                    UrduText("مْ + ${m.letters}", Modifier.background(c, RoundedCornerShape(8.dp)).padding(horizontal = 6.dp), size = 11.sp, color = Color.White)
+                    UrduText(tx("مْ + ${m.letters}", "مْ + ${tr(m.letters)}"), Modifier.background(c, RoundedCornerShape(8.dp)).padding(horizontal = 6.dp), size = 11.sp, color = Color.White)
                 }
                 UrduText(m.how, size = 13.sp)
             }

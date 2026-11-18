@@ -79,9 +79,9 @@ private fun LazyListScope.frequentWords(play: (String, String) -> Unit) {
     items(QaidaStage5.groups, key = { it.id }) { g ->
         Column(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(14.dp)).padding(10.dp).testTag("qaida_s5_group_${g.id}")) {
             UrduText(g.title, size = 15.sp, color = Plum, weight = FontWeight.Bold)
-            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            ArabicFlow { FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 g.words.forEach { w -> WordChip(w.arabic, w.urdu, Modifier.testTag("qaida_s5_word_${w.slug}")) { play(w.audioKey, w.arabic) } }
-            }
+            } }
         }
     }
 }
@@ -89,7 +89,7 @@ private fun LazyListScope.frequentWords(play: (String, String) -> Unit) {
 @Composable
 private fun WordChip(arabic: String, urdu: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Column(modifier.widthIn(min = 72.dp).background(PlumSoft, RoundedCornerShape(12.dp)).clickable(onClick = onClick)
-        .padding(horizontal = 10.dp, vertical = 4.dp).semantics { contentDescription = urdu },
+        .padding(horizontal = 10.dp, vertical = 4.dp).semantics { contentDescription = tr(urdu) },
         horizontalAlignment = Alignment.CenterHorizontally) {
         ArabicText(arabic, size = 26.sp, color = Plum)
         UrduText(urdu, size = 12.sp, align = TextAlign.Center)
@@ -103,7 +103,7 @@ private fun LazyListScope.endings(play: (String, String) -> Unit) {
         Card(Modifier.fillMaxWidth().clickable { play(e.audioKey, e.example) }.testTag("qaida_s5_end_${e.slug}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line5)) {
             // Right to left: رَبّ + ending = word, then its meaning.
-            Row(Modifier.fillMaxWidth().padding(10.dp), verticalAlignment = Alignment.CenterVertically,
+            ArabicFlow { Row(Modifier.fillMaxWidth().padding(10.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly) {
                 ArabicText("رَبّ", size = 26.sp)
                 UrduText("+", size = 18.sp, color = Quiet)
@@ -116,7 +116,7 @@ private fun LazyListScope.endings(play: (String, String) -> Unit) {
                     ArabicText(e.example, size = 30.sp, color = Green)
                     UrduText(e.exampleUrdu, size = 12.sp, weight = FontWeight.Bold)
                 }
-            }
+            } }
         }
     }
 }
@@ -126,7 +126,7 @@ private fun LazyListScope.endings(play: (String, String) -> Unit) {
 internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaStage5.WbwSurah) {
     item {
         Box(Modifier.fillMaxWidth().background(GreenSoft, RoundedCornerShape(14.dp)).padding(8.dp), contentAlignment = Alignment.Center) {
-            UrduText(s.urduName + " — لفظ بہ لفظ", size = 17.sp, color = Green, weight = FontWeight.Bold)
+            UrduText(tr(s.urduName) + tr(" — لفظ بہ لفظ"), size = 17.sp, color = Green, weight = FontWeight.Bold)
         }
     }
     item { RecitationOpening(s.number, play) }
@@ -137,20 +137,20 @@ internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaSt
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(28.dp).background(GreenSoft, CircleShape).clickable { play(a.ayah.audioKey, a.ayah.text) },
                         contentAlignment = Alignment.Center) {
-                        UrduText(a.ayah.number.toString().map { "۰۱۲۳۴۵۶۷۸۹"[it - '0'] }.joinToString(""), size = 12.sp, color = Green, weight = FontWeight.Bold)
+                        UrduText(urduDigit(a.ayah.number), size = 12.sp, color = Green, weight = FontWeight.Bold)
                     }
                     Spacer(Modifier.width(6.dp))
                     UrduText("لفظ پر ٹیپ کریں · نمبر پر ٹیپ کر کے پوری آیت سنیں", size = 11.sp, color = Quiet)
                 }
-                FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                ArabicFlow { FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     a.words.forEachIndexed { i, word ->
-                        WordChip(word, a.meanings[i], Modifier.testTag("qaida_wbw_${a.ayah.surah}_${a.ayah.number}_${i + 1}")) {
+                        WordChip(word, a.shown[i], Modifier.testTag("qaida_wbw_${a.ayah.surah}_${a.ayah.number}_${i + 1}")) {
                             play(a.wordKey(i), word)
                         }
                     }
-                }
+                } }
                 MafhoomLine(a.ayah.surah, a.ayah.number)
-                UrduText("لفظی معنی: " + a.meanings.joinToString(" "), size = 11.sp, color = Quiet)
+                UrduText(tr("لفظی معنی: ") + a.shown.joinToString(" "), size = 11.sp, color = Quiet)
                 if (a.sajdah) SajdahNote()
             }
         }
@@ -165,7 +165,7 @@ internal fun RecitationOpening(surah: Int, play: (String, String) -> Unit) {
         ArabicText(QuranAudio.TAAWWUDH, Modifier.clickable { play(QuranAudio.KEY_TAAWWUDH, QuranAudio.TAAWWUDH) }, size = 22.sp, color = Quiet)
         if (surah != 1 && surah != 9)
             ArabicText(QuranAudio.BASMALAH, Modifier.clickable { play(QuranAudio.KEY_BASMALAH, QuranAudio.BASMALAH) }, size = 26.sp, color = Green)
-        UrduText("تلاوت سے پہلے پڑھیں" + if (surah != 1 && surah != 9) " — بسم اللہ آیت میں شمار نہیں" else "", size = 10.sp, color = Quiet)
+        UrduText(tr("تلاوت سے پہلے پڑھیں") + if (surah != 1 && surah != 9) tr(" — بسم اللہ آیت میں شمار نہیں") else "", size = 10.sp, color = Quiet)
         SurahBackground(surah)
     }
 }

@@ -1,0 +1,152 @@
+1	Lips
+2	Jawf (the open space of the mouth and throat)
+3	Alif itself is silent (saakin); it stretches the sound of the letter before it. An alif with a vowel mark is really a hamzah (ء).
+4	Press the moist inner parts of both lips together.
+5	Tongue tip on the root of the upper front teeth — a light sound.
+6	Keep it apart from ط: ت is light, ط is heavy.
+7	Tongue tip on the edge of the upper front teeth — a soft sound.
+8	Like 'th' in 'think'. Don't say 's' — put the tongue tip on the edge of the upper teeth.
+9	Jeem
+10	The middle of the tongue against the roof of the mouth.
+11	From the middle of the throat, like a clear breath, with no scratching.
+12	English has no ح. It is not a plain 'h': squeeze the middle of the throat, like breathing on cold glass — but smooth, with no scratch. ه is a light 'h' from the very bottom of the throat.
+13	From the top part of the throat (nearest the mouth).
+14	Tongue tip on the root of the upper front teeth.
+15	A soft 'd' with the tongue tip on the root of the upper teeth — don't curl the tongue back.
+16	Like 'th' in 'this'. Don't say 'z' — put the tongue tip on the edge of the upper teeth.
+17	The tip of the tongue and the part next to it against the roof of the mouth.
+18	Not the English 'r': tap the tongue tip lightly — don't curl it back.
+19	Tongue tip near the lower teeth — a whistling sound (safeer).
+20	Seen
+21	Tongue tip near the lower teeth — a thin whistling sound (safeer).
+22	Sheen
+23	The middle of the tongue against the roof of the mouth, spreading the sound.
+24	From the place of س, but with a full mouth — a heavy sound.
+25	Not a plain English 's': ص is heavy (full) — fill the mouth.
+26	The side of the tongue against the upper back teeth (molars) — a heavy sound.
+27	English has no ض. It is the hardest letter — never say it like 'z' or 'd'. Listen to a teacher and practise.
+28	From the place of ت, but with a full mouth — a heavy sound.
+29	English 't' is close to the light ت. ط is heavy (full) — fill the mouth.
+30	From the place of ذ (tongue tip on the edge of the teeth), but heavy.
+31	Not 'z': ظ sounds like 'th' in 'this', but heavy.
+32	'Ayn
+33	From the middle of the throat, squeezing the sound a little.
+34	English has no ع. Don't skip it or say it like a plain vowel — tighten the middle of the throat and let the sound come out clearly.
+35	Ghayn
+36	The inside of the lower lip against the edge of the upper teeth.
+37	The back of the tongue against the soft palate near the uvula — a heavy sound.
+38	Not the English 'k': ق comes from further back (near the uvula) and is heavy.
+39	Kaaf
+40	The tongue a little forward of its back, against the palate — a light sound.
+41	-
+42	The side of the tongue (near the tip) against the gums of the upper front teeth.
+43	Meem
+44	Press the dry outer parts of both lips together.
+45	Tongue tip against the upper gums.
+46	Round both lips without closing them fully.
+47	Like the English 'w': just round the lips — don't touch the teeth (not 'v').
+48	Haa
+49	From the very bottom of the throat (near the chest) — a light sound.
+50	A light 'h' as in 'hat'. In the Quran it is written ه.
+51	-
+52	Hamzah
+53	From the very bottom of the throat, with a light catch (like the break in 'uh-oh').
+54	Yaa
+55	Arabic ي has two dots below. It sounds like 'y' in 'yes'.
+56	-
+57	English has one 's', but Arabic has three letters here. س is a plain 's'. ث is 'th' as in 'think' (tongue tip on the edge of the upper teeth). ص is a heavy 's' — fill the mouth.
+58	All-Hearing
+59	then
+60	These four are easy to mix up. ز is 'z'. ذ is 'th' as in 'this' (tongue tip on the edge of the teeth, soft). ظ: the same place, but heavy. ض: the side of the tongue against the upper molars, heavy.
+61	olive
+62	remembrance
+63	shade
+64	morning (forenoon)
+65	ت is a light sound; ط comes from the same place but with a full mouth — a heavy sound.
+66	fig
+67	pure
+68	ه is a light sound from the bottom of the throat; ح is from the middle of the throat, like a clear breath.
+69	guidance
+70	praise
+71	ء (an alif with a vowel) is a light catch from the bottom of the throat; ع comes from the middle of the throat, squeezed.
+72	one
+73	ك is a light sound; ق comes from the back of the tongue, further back than ك, and is heavy.
+74	book
+75	A slanted line above the letter — a short 'a' sound
+76	Kasra (zer)
+77	A slanted line below the letter — a short 'i' sound
+78	Damma (pesh)
+79	A small waw above the letter — a short 'u' sound
+80	Stage 8: Al-Humazah to Ad-Duha
+81	Al-Humazah → Ad-Duha
+82	Stage 9: Al-Layl to Al-Buruj
+83	Al-Layl → Al-Buruj
+84	Stage 10: Al-Inshiqaq to An-Naba
+85	Surah At-Takwir
+86	Surah Al-Mutaffifin
+87	Surah Al-A'la
+88	Surah Al-Ghashiyah
+89	Surah Al-Layl
+90	Surah Ad-Duha
+91	Surah At-Tin
+92	Surah Al-Bayyinah
+93	Surah Al-'Adiyat
+94	Surah Al-Qari'ah
+95	Surah At-Takathur
+96	Surah Al-Humazah
+97	Which surah does this first ayah begin?
+98	What does this word mean?
+99	Quran text: the standard (Tanzil) text, with IndoPak-style marks. The meanings are in simple English for children; read them alongside a teacher and a trusted translation.
+100	I have read this surah ✓
+101	Simple meaning
+102	The first surah of the Quran, also called 'Umm al-Quran' (the Mother of the Quran). It is recited in every rak'ah of every prayer; it praises Allah and asks for the straight path.
+103	This surah tells of Allah's Oneness (tawheed). The Prophet ﷺ said this surah is equal to a third of the Quran.
+104	When enemies mocked that the Prophet ﷺ would have no one to carry on his name, Allah comforted him: he has been given a great deal of good.
+105	In three ayat, four keys to success: faith, good deeds, urging one another to the truth, and urging one another to patience.
+106	This and the next surah are called 'al-Mu'awwidhatayn' (the two surahs of seeking refuge). Before sleeping, the Prophet ﷺ would recite them, blow into his hands and wipe them over his body.
+107	The second surah of refuge: seeking Allah's protection from whispers inside us. Reciting it before sleep and in the morning and evening is sunnah.
+108	In the year the Prophet ﷺ was born, Abrahah, the ruler of Yemen, came with an army of elephants to destroy the Ka'bah. Allah sent birds that pelted them with stones and the whole army was destroyed.
+109	The Quraysh of Makkah were traders: in winter they travelled to Yemen and in summer to Syria. By the blessing of the Ka'bah their journeys were safe, so they are told to worship the Lord of the Ka'bah.
+110	Religion is not only prayer: caring for orphans and the poor, avoiding showing off, and giving small help are also part of faith.
+111	The chiefs of Makkah offered that the Prophet ﷺ worship their idols for a while and they would worship Allah for a while. This surah came down: there is no bargaining in worship.
+112	Good news of the conquest of Makkah and of people entering Islam in crowds. It is said to be the last complete surah revealed.
+113	Abu Lahab was the Prophet's ﷺ uncle but his bitter enemy; his wife would put thorns in the Prophet's path. Being a relative does not help without faith.
+114	The end of those who mock, backbite and are proud of their wealth.
+115	The race to gather more and more makes people forget Allah; every blessing will be asked about.
+116	On the Day of Judgement the earth will tell everything; even an atom's weight of good is never lost.
+117	The Quran came down on the Night of Power (Laylat al-Qadr). It is sought in the last ten nights of Ramadan, especially the odd nights.
+118	Its first five ayat are the very first revelation, which came to the Prophet ﷺ in the Cave of Hira. Its last ayah is an ayah of sajdah.
+119	Comfort for the Prophet ﷺ in hard times: with every hardship comes ease.
+120	When revelation paused for some days, enemies said his Lord had left him. This surah came down to comfort him.
+121	The story of the people of Thamud: they killed the she-camel, a sign from Allah, and were destroyed. Success is in keeping the heart pure.
+122	The end of mighty nations such as 'Aad, Thamud and Pharaoh, and good news for 'the soul at peace'.
+123	The Prophet ﷺ often recited this surah (and Al-Ghashiyah) in the Jumu'ah and Eid prayers.
+124	Long ago some believers were thrown into fiery trenches only because of their faith; Allah tells of the end of the wrongdoers.
+125	Scenes of the Day of Judgement. The Prophet ﷺ said: whoever wants to see the Day of Judgement as if with his own eyes, let him read At-Takwir, Al-Infitar and Al-Inshiqaq.
+126	The Prophet ﷺ was inviting the chiefs of Makkah to Islam when a blind Companion, 'Abdullah ibn Umm Maktum, came to learn the religion. Allah taught that a sincere learner deserves more attention. Later the Prophet ﷺ honoured him greatly.
+127	Juz 'Amma begins with this surah: the 'great news' of the Day of Judgement, Allah's blessings, and Paradise and Hell.
+128	Respect for the Prophet ﷺ is always required. Tell children that here Allah taught us to value every learner, even if poor or blind.
+129	In the time before Islam some people buried baby daughters alive. Islam called this a great sin and gave daughters honour. Tell young children briefly and gently.
+130	It mentions the blessings of Paradise. For young children it is enough to say that Paradise has every joy and every good thing.
+131	Do not imagine Allah like His creation; He comes in the way that befits His majesty.
+132	This surah does not teach us to call anyone names; it tells that enmity towards Allah's Messenger ﷺ ends badly.
+133	Throat: bottom, middle, top
+134	ء ه · ع ح · غ خ
+135	Tongue: from the back to the tip
+136	ق ك ج ش ي ض ل ن ر ط د ت ص ز س ظ ذ ث
+137	Both lips
+138	The open space of the mouth and throat
+139	Madd letters: ا و ي
+140	Khayshum
+141	The nose
+142	Ghunnah: نّ مّ
+143	📍 Map of the makharij ▲
+144	📍 Map of the makharij — where does each letter come from? (tap to see) ▼
+145	Sound starts in the throat and travels to the lips — the makharij follow the same order. Tap any letter to read its own makhraj.
+146	Joining
+147	Meanings
+148	Surahs
+149	Tajweed
+150	Grammar
+151	What is the name of this letter?
+152	Which vowel mark is on this letter?

@@ -149,6 +149,12 @@ class MainActivity : ComponentActivity() {
                                     onNavigateToQaida = { stage ->
                                         navController.navigate("qaida?stage=$stage")
                                     },
+                                    onNavigateToQuranEnglish = { stage ->
+                                        navController.navigate("qaida?stage=$stage&lang=en")
+                                    },
+                                    onNavigateToEnglishCourse = { stage ->
+                                        navController.navigate("english?stage=$stage")
+                                    },
                                     onOpenArabicTopic = { topic ->
                                         // Arabic content follows the profile's language; switch it, then open the path
                                         viewModel.updateLanguage("Arabic")
@@ -228,12 +234,16 @@ class MainActivity : ComponentActivity() {
 
                             // NOORANI QAIDA — Urdu-medium Arabic course (Stage 1)
                             composable(
-                                "qaida?stage={stage}",
-                                arguments = listOf(androidx.navigation.navArgument("stage") { type = androidx.navigation.NavType.IntType; defaultValue = 1 })
+                                "qaida?stage={stage}&lang={lang}",
+                                arguments = listOf(
+                                    androidx.navigation.navArgument("stage") { type = androidx.navigation.NavType.IntType; defaultValue = 1 },
+                                    androidx.navigation.navArgument("lang") { type = androidx.navigation.NavType.StringType; defaultValue = "ur" },
+                                )
                             ) { entry ->
                                 com.example.qaida.QaidaScreen(
                                     profileId = activeProfile?.id ?: 0,
                                     startStage = entry.arguments?.getInt("stage") ?: 1,
+                                    english = entry.arguments?.getString("lang") == "en",
                                     onBackPressed = { navController.popBackStack() },
                                     onSpeakArabic = { text ->
                                         // Temporary voice until the qari's recordings are bundled
@@ -245,6 +255,28 @@ class MainActivity : ComponentActivity() {
                                                 }
                                                 t.setSpeechRate(config.speechRate * 0.8f)
                                                 t.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+                                            }
+                                        }
+                                    },
+                                    onEarnRewards = { coins, stars, desc -> viewModel.earnCoinsAndStars(coins, stars, desc) }
+                                )
+                            }
+
+                            // ENGLISH READING COURSE — phonics to sentences, the English partner of the Quran course
+                            composable(
+                                "english?stage={stage}",
+                                arguments = listOf(androidx.navigation.navArgument("stage") { type = androidx.navigation.NavType.IntType; defaultValue = 1 })
+                            ) { entry ->
+                                com.example.english.EnglishScreen(
+                                    profileId = activeProfile?.id ?: 0,
+                                    startStage = entry.arguments?.getInt("stage") ?: 1,
+                                    onBackPressed = { navController.popBackStack() },
+                                    onSpeak = { text ->
+                                        tts?.let { t ->
+                                            if (ttsReady) {
+                                                t.language = Locale("en", "US")
+                                                t.setSpeechRate(config.speechRate * 0.85f)
+                                                t.speak(sanitizeSpeechText(text), TextToSpeech.QUEUE_FLUSH, null, null)
                                             }
                                         }
                                     },

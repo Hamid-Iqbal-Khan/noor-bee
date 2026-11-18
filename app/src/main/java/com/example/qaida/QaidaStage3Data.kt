@@ -25,7 +25,8 @@ object QaidaStage3 {
     fun tashdeedParts(letter: QaidaLetter, v: Vowel) = Pair(v.alif + letter.arabic + "\u0652", letter.arabic + v.mark)
 
     fun tashdeedHijje(letter: QaidaLetter, v: Vowel) =
-        "اَلِف ${v.urduName}، ${letter.qaidaName} ${v.urduName} تشدید: ${tashdeed(letter, v)}"
+        tx("اَلِف ${v.urduName}، ${letter.qaidaName} ${v.urduName} تشدید: ${tashdeed(letter, v)}",
+            "Alif ${QaidaLang.term(v.urduName)}, ${tr(letter.qaidaName)} ${QaidaLang.term(v.urduName)} shaddah: ${tashdeed(letter, v)}")
 
     fun tashdeedKey(letter: QaidaLetter, v: Vowel) = "s3_tashdeed_${letter.id}_${v.key}"
 
@@ -115,7 +116,7 @@ object QaidaStage3Quiz {
                 0 -> { // which vowel is on the doubled letter?
                     val l = QaidaStage3.tashdeedLetters().random(random)
                     val v = QaidaStage3.Vowel.values().random(random)
-                    val opts = QaidaStage3.Vowel.values().map { "تشدید کے ساتھ ${it.urduName}" }
+                    val opts = QaidaStage3.Vowel.values().map { tx("تشدید کے ساتھ ${it.urduName}", "shaddah with ${QaidaLang.term(it.urduName)}") }
                     QaidaQuestion(QaidaStage3.tashdeed(l, v), true, "دوسرے حرف پر کیا ہے؟", opts, false,
                         v.ordinal, QaidaStage3.tashdeedKey(l, v))
                 }

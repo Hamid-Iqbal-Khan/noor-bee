@@ -82,8 +82,17 @@ object QaidaStage5 {
     )
 
     // ---- 5.3 – 5.5 Word by word ----------------------------------------------------------------------
-    data class WbwAyah(val ayah: QaidaStage3.Ayah, val meanings: List<String>, val sajdah: Boolean = false) {
+    data class WbwAyah(
+        val ayah: QaidaStage3.Ayah, val meanings: List<String>, val sajdah: Boolean = false,
+        val meaningsEn: List<String> = emptyList(),   // Juz 'Amma surahs carry their own English column
+    ) {
         val words get() = ayah.text.split(' ')
+        /** Word meanings in the current teaching language. */
+        val shown: List<String> get() = when {
+            !QaidaLang.english -> meanings
+            meaningsEn.isNotEmpty() -> meaningsEn
+            else -> meanings.map { QaidaLang.tr(it) }
+        }
         fun wordKey(i: Int) = "s5_wbw_${ayah.surah}_${ayah.number}_${i + 1}"
     }
     data class WbwSurah(val number: Int, val urduName: String, val ayat: List<WbwAyah>)

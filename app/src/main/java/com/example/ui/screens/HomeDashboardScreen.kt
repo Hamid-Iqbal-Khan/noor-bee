@@ -117,6 +117,8 @@ fun HomeDashboardScreen(
     onNavigateToDua: () -> Unit,
     onNavigateToQuran: () -> Unit,
     onNavigateToQaida: (Int) -> Unit = {},      // Urdu path: Qaida stage 1 or 2
+    onNavigateToQuranEnglish: (Int) -> Unit = {},   // English path: the same Quran course, taught in English
+    onNavigateToEnglishCourse: (Int) -> Unit = {},  // English path: English reading course stage
     onOpenArabicTopic: (String) -> Unit = {},   // Arabic section: "Alphabet" or "Vocabulary"
     onLevelChanged: (Int) -> Unit = {}
 ) {
@@ -659,6 +661,15 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
+                    } else if (!isArabicPath) {
+                        // English path: the Quran course (same 11 stages as the Urdu course, taught in English),
+                        // then the English reading course. Both read left to right.
+                        Text("📖 Learn to read the Quran", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
+                            modifier = Modifier.testTag("dashboard_quran_en_title"))
+                        EnglishCourseCards(quranEnglishCards, "dashboard_quran_en_stage", onNavigateToQuranEnglish)
+                        Text("🔤 Learn to read English", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
+                            modifier = Modifier.padding(top = 4.dp).testTag("dashboard_english_title"))
+                        EnglishCourseCards(englishReadingCards, "dashboard_english_stage", onNavigateToEnglishCourse)
                     } else {
                     // Row 1
                         Row(
@@ -695,7 +706,14 @@ fun HomeDashboardScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         Box(modifier = Modifier.weight(1f)) {
-                            DashboardHoneycomb(
+                            if (profile.currentLanguage != "Urdu" && !isArabicPath) DashboardHoneycomb(
+                                title = "My Stickers 🏆",
+                                subtitle = "Rewards you have earned",
+                                color = Color.White,
+                                borderStroke = BorderGrey,
+                                emoji = "🏆",
+                                onClick = onNavigateToStickerRoom
+                            ) else DashboardHoneycomb(
                                 title = "Phonics Whiteboard 🎨",
                                 subtitle = "Trace letters & hear sounds",
                                 color = Color.White,
@@ -1529,6 +1547,50 @@ fun HomeDashboardScreen(
                         }
                     }
                 )
+            }
+        }
+    }
+}
+
+/** One card on the English dashboard: stage number, title, subtitle and colours. */
+private data class CourseCard(val stage: Int, val title: String, val subtitle: String, val emoji: String, val bg: Color, val line: Color)
+
+private val quranEnglishCards = listOf(
+    CourseCard(1, "Stage 1: Letters 🔤", "The 29 letters & vowels", "📖", Color(0xFFE8F5E9), Color(0xFF1B5E20)),
+    CourseCard(2, "Stage 2: Joining 🔗", "Joining, tanween, madd", "📗", Color(0xFFFFF4D6), Color(0xFFE0A800)),
+    CourseCard(3, "Stage 3: Recitation 📖", "Shaddah, Al-Fatihah", "🌙", Color(0xFFE8EAF6), Color(0xFF283593)),
+    CourseCard(4, "Stage 4: Stopping ✋", "Waqf, short surahs", "🕋", Color(0xFFE0F2F1), Color(0xFF00695C)),
+    CourseCard(5, "Stage 5: Meanings 💡", "Word meanings, Al-Fatihah", "💡", Color(0xFFF3E5F5), Color(0xFF4A148C)),
+    CourseCard(6, "Stage 6: Surahs 📜", "Al-Fil to Al-Masad", "📜", Color(0xFFFFF8E1), Color(0xFFFF8F00)),
+    CourseCard(7, "Stage 7: Tajweed 🎙️", "Noon & meem saakin rules", "🎙️", Color(0xFFE3F2FD), Color(0xFF1565C0)),
+    CourseCard(8, "Stage 8: 'Amma 1 🌅", "Al-Humazah to Ad-Duha", "🌅", Color(0xFFFFF3E0), Color(0xFFE65100)),
+    CourseCard(9, "Stage 9: 'Amma 2 🌙", "Al-Layl to Al-Buruj", "🌙", Color(0xFFEDE7F6), Color(0xFF4527A0)),
+    CourseCard(10, "Stage 10: 'Amma 3 ⭐", "Al-Inshiqaq to An-Naba", "⭐", Color(0xFFE8F5E9), Color(0xFF2E7D32)),
+    CourseCard(11, "Stage 11: Grammar 🌱", "Roots, patterns, verbs", "🌱", Color(0xFFE0F2F1), Color(0xFF00695C)),
+)
+
+private val englishReadingCards = com.example.english.EnglishCourse.stages.map {
+    CourseCard(it.number, "Stage ${it.number}: ${it.short} ${it.emoji}", it.subtitle, it.emoji, it.bg, it.line)
+}
+
+/** Cards two to a row, left to right; a stage on its own (Quran Stage 7) gets the full width, as on the Urdu dashboard. */
+@Composable
+private fun EnglishCourseCards(cards: List<CourseCard>, tagPrefix: String, onOpen: (Int) -> Unit) {
+    val rows = mutableListOf<List<CourseCard>>()
+    var i = 0
+    while (i < cards.size) {
+        if (cards[i].stage == 7 && tagPrefix.contains("quran")) { rows += listOf(cards[i]); i++ }
+        else { rows += cards.subList(i, minOf(i + 2, cards.size)); i += 2 }
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        rows.forEach { row ->
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                row.forEach { c ->
+                    Box(Modifier.weight(1f).testTag("$tagPrefix${c.stage}")) {
+                        DashboardHoneycomb(title = c.title, subtitle = c.subtitle, color = c.bg, borderStroke = c.line,
+                            emoji = c.emoji, onClick = { onOpen(c.stage) })
+                    }
+                }
             }
         }
     }

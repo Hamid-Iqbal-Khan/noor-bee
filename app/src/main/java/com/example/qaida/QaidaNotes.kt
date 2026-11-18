@@ -91,7 +91,7 @@ internal fun ParentNote(surah: Int, ayah: Int) {
     val text = QaidaNotes.parentNotes[surah to ayah] ?: return
     Row(Modifier.fillMaxWidth().padding(top = 4.dp).background(Color(0xFFE3F2FD), RoundedCornerShape(8.dp)).padding(8.dp)
         .testTag("qaida_parent_note_${surah}_$ayah")) {
-        UrduText("👪 والدین کے لیے: $text", size = 11.sp, color = Ink)
+        UrduText(tx("👪 والدین کے لیے: $text", "👪 For parents: ${tr(text)}"), size = 11.sp, color = Ink)
     }
 }
 
@@ -142,7 +142,7 @@ internal fun MakhrajMap() {
         listOf(jawf, khayshum).forEach { a ->
             Row(Modifier.fillMaxWidth().padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(10.dp).background(a.color, CircleShape))
-                UrduText("  ${a.name} (${a.note}): ", size = 12.sp, weight = FontWeight.Bold)
+                UrduText(tx("  ${a.name} (${a.note}): ", "  ${tr(a.name)} (${tr(a.note)}): "), size = 12.sp, weight = FontWeight.Bold)
                 ArabicText(a.letters, size = 16.sp, color = Ink, align = TextAlign.Start)
             }
         }

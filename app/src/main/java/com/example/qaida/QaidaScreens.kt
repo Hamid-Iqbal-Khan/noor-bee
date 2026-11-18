@@ -89,15 +89,27 @@ internal val Heavy = Color(0xFFB23B1E)
 fun UrduText(
     text: String, modifier: Modifier = Modifier, size: TextUnit = 16.sp, color: Color = Ink,
     weight: FontWeight = FontWeight.Normal, align: TextAlign = TextAlign.Start,
-) = Text(text, modifier, color = color, fontSize = size, fontFamily = UrduFont, fontWeight = weight,
-    textAlign = align, lineHeight = size * 2.1f)
+) = if (QaidaLang.english) Text(QaidaLang.tr(text), modifier, color = color, fontSize = size, fontWeight = weight,
+        textAlign = align, lineHeight = size * 1.45f)
+    else Text(text, modifier, color = color, fontSize = size, fontFamily = UrduFont, fontWeight = weight,
+        textAlign = align, lineHeight = size * 2.1f)
 
 @Composable
 fun ArabicText(
     text: String, modifier: Modifier = Modifier, size: TextUnit = 32.sp, color: Color = Ink,
     align: TextAlign = TextAlign.Center,
-) = Text(text, modifier, color = color, fontSize = size, fontFamily = QaidaArabicFont, fontWeight = FontWeight.Bold,
+) = Text(if (QaidaLang.looksUrdu(text)) QaidaLang.tr(text) else text, modifier, color = color, fontSize = size, fontFamily = QaidaArabicFont, fontWeight = FontWeight.Bold,
     textAlign = align, lineHeight = size * 1.7f)
+
+/** Arabic always runs right to left, whatever the medium: rows of letters, harakat boards, word chips. */
+@Composable
+internal fun ArabicFlow(content: @Composable () -> Unit) =
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl, content = content)
+
+/** The direction of the teaching language: right to left for Urdu, left to right for English. */
+@Composable
+internal fun MediumFlow(content: @Composable () -> Unit) =
+    CompositionLocalProvider(LocalLayoutDirection provides (if (QaidaLang.english) LayoutDirection.Ltr else LayoutDirection.Rtl), content = content)
 
 /** Entry point for the Urdu-medium Noorani Qaida (Stage 1). Whole section is right-to-left. */
 @Composable
@@ -107,8 +119,10 @@ fun QaidaScreen(
     onSpeakArabic: (String) -> Unit,              // TTS fallback until the qari's recordings are added
     onEarnRewards: (Int, Int, String) -> Unit,
     startStage: Int = 1,
+    english: Boolean = false,
 ) {
     val context = LocalContext.current
+    remember(english) { QaidaLang.load(context); QaidaLang.english = english }
     val progress = remember(profileId) { QaidaProgress(context, profileId) }
     val audio = remember { QaidaAudio(context) }
     DisposableEffect(Unit) { onDispose { audio.release() } }
@@ -126,10 +140,10 @@ fun QaidaScreen(
 
     BackHandler(enabled = page != "home") { page = "home"; refresh++ }
 
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+    CompositionLocalProvider(LocalLayoutDirection provides (if (english) LayoutDirection.Ltr else LayoutDirection.Rtl)) {
         Column(Modifier.fillMaxSize().background(Paper).testTag("qaida_root")) {
             val title = if (page.startsWith("j_")) juz[page.removePrefix("j_").toInt()]?.urduName ?: ""
-                else if (page.startsWith("jq_")) "مرحلہ ${urduDigit(page.removePrefix("jq_").toInt())} کی مشق"
+                else if (page.startsWith("jq_")) page.removePrefix("jq_").toInt().let { tx("مرحلہ ${urduDigit(it)} کی مشق", "Stage $it practice") }
                 else when (page) {
                 "letters" -> "سبق ۱: حروفِ مفردات"
                 "sounds" -> "سبق ۲: ملتی جلتی آوازیں"
@@ -342,7 +356,7 @@ private fun QaidaHeader(title: String, onBack: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onBack, modifier = Modifier.testTag("qaida_back")) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "واپس", tint = Color.White)
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = tr("واپس"), tint = Color.White)
         }
         UrduText(title, size = 18.sp, color = Color.White, weight = FontWeight.Bold)
     }
@@ -392,13 +406,13 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
         if (stage == 1) {
             val best = progress.bestQuizScore(1)
             HeroCard("ا ب ت", "مرحلہ ۱: حروف اور پہلی آوازیں", "روزانہ ۵ سے ۱۰ منٹ۔ ہر سبق کے بعد مشق کریں۔")
-            LessonCard("lesson_letters", "۱", "حروفِ مفردات", "قاعدے کے ۲۹ حروف، ان کے نام اور مخارج  ·  $seen/29 دیکھے",
+            LessonCard("lesson_letters", "۱", "حروفِ مفردات", tx("قاعدے کے ۲۹ حروف، ان کے نام اور مخارج  ·  $seen/29 دیکھے", "The 29 letters of the Qaida, their names and makharij  ·  $seen/29 seen"),
                 done(QaidaProgress.LESSON_LETTERS)) { open("letters") }
             LessonCard("lesson_sounds", "۲", "ملتی جلتی آوازیں", "وہ حروف جو اردو میں ایک جیسے بولے جاتے ہیں: س ث ص، ز ذ ظ ض، ت ط، ہ ح، ء ع، ک ق",
                 done(QaidaProgress.LESSON_SOUNDS)) { open("sounds") }
             LessonCard("lesson_harakat", "۳", "حرکات: زبر، زیر، پیش", "تختی ۴ — ہر حرف تین حرکتوں کے ساتھ، ہجے سمیت",
                 done(QaidaProgress.LESSON_HARAKAT)) { open("harakat") }
-            LessonCard("lesson_quiz", "۴", "مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۱ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۱ مکمل",
+            LessonCard("lesson_quiz", "۴", "مشق", quizLine(best, 1),
                 done(QaidaProgress.LESSON_QUIZ)) { open("quiz") }
             if (done(QaidaProgress.LESSON_QUIZ)) {
                 Card(Modifier.clickable { onStage(2) }.testTag("qaida_go_stage2"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -425,7 +439,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S2_MADD)) { open("s2_madd") }
             LessonCard("lesson_s2_jazm", "۶", "جزم (سکون)", "تختی ۹ — ساکن حرف کو پچھلے حرف سے ملانا: اَبْ، قُلْ",
                 done(QaidaProgress.S2_JAZM)) { open("s2_jazm") }
-            LessonCard("lesson_s2_quiz", "۷", "مرحلہ ۲ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۲ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۲ مکمل",
+            LessonCard("lesson_s2_quiz", "۷", "مرحلہ ۲ کی مشق", quizLine(best, 2),
                 done(QaidaProgress.S2_QUIZ)) { open("s2_quiz") }
             if (done(QaidaProgress.S2_QUIZ)) {
                 Card(Modifier.clickable { onStage(3) }.testTag("qaida_go_stage3"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -453,7 +467,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S3_FATIHA)) { open("s3_fatiha") }
             LessonCard("lesson_s3_ikhlas", "۶", "تلاوت: سورۃ الاخلاص", "چار آیتیں",
                 done(QaidaProgress.S3_IKHLAS)) { open("s3_ikhlas") }
-            LessonCard("lesson_s3_quiz", "۷", "مرحلہ ۳ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۳ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۳ مکمل",
+            LessonCard("lesson_s3_quiz", "۷", "مرحلہ ۳ کی مشق", quizLine(best, 3),
                 done(QaidaProgress.S3_QUIZ)) { open("s3_quiz") }
             if (done(QaidaProgress.S3_QUIZ)) {
                 Card(Modifier.clickable { onStage(4) }.testTag("qaida_go_stage4"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -480,7 +494,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S4_FALAQ)) { open("s4_falaq") }
             LessonCard("lesson_s4_nas", "۶", "تلاوت: سورۃ الناس", "چھ آیتیں — غنّہ اور لامِ شمسی",
                 done(QaidaProgress.S4_NAS)) { open("s4_nas") }
-            LessonCard("lesson_s4_quiz", "۷", "مرحلہ ۴ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۴ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۴ مکمل",
+            LessonCard("lesson_s4_quiz", "۷", "مرحلہ ۴ کی مشق", quizLine(best, 4),
                 done(QaidaProgress.S4_QUIZ)) { open("s4_quiz") }
             if (done(QaidaProgress.S4_QUIZ)) {
                 Card(Modifier.clickable { onStage(5) }.testTag("qaida_go_stage5"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -495,7 +509,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                     UrduText("مشورہ: پہلے مرحلہ ۴ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
                 }
             }
-            LessonCard("lesson_s5_words", "۱", "قرآن کے عام الفاظ", "${QaidaStage5.allWords.size} الفاظ: اللہ کی صفات، حروف، ضمیریں، کام، چیزیں",
+            LessonCard("lesson_s5_words", "۱", "قرآن کے عام الفاظ", tx("${QaidaStage5.allWords.size} الفاظ: اللہ کی صفات، حروف، ضمیریں، کام، چیزیں", "${QaidaStage5.allWords.size} words: Allah's attributes, particles, pronouns, actions, things"),
                 done(QaidaProgress.S5_WORDS)) { open("s5_words") }
             LessonCard("lesson_s5_endings", "۲", "میرا، تیرا، اس کا", "رَبُّنَا ہمارا رب، رَبُّكَ تیرا رب، رَبِّيْ میرا رب",
                 done(QaidaProgress.S5_ENDINGS)) { open("s5_endings") }
@@ -505,7 +519,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S5_SHORT)) { open("s5_short") }
             LessonCard("lesson_s5_falaq", "۵", "الفلق اور الناس", "پناہ مانگنے کی دو سورتیں لفظ بہ لفظ",
                 done(QaidaProgress.S5_FALAQ)) { open("s5_falaq") }
-            LessonCard("lesson_s5_quiz", "۶", "مرحلہ ۵ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۵ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۵ مکمل",
+            LessonCard("lesson_s5_quiz", "۶", "مرحلہ ۵ کی مشق", quizLine(best, 5),
                 done(QaidaProgress.S5_QUIZ)) { open("s5_quiz") }
             if (done(QaidaProgress.S5_QUIZ)) {
                 Card(Modifier.clickable { onStage(6) }.testTag("qaida_go_stage6"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -528,9 +542,9 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S6_KAFIRUN)) { open("s6_kafirun") }
             LessonCard("lesson_s6_masad", "۴", "سورۃ المسد", "پانچ آیتیں لفظ بہ لفظ",
                 done(QaidaProgress.S6_MASAD)) { open("s6_masad") }
-            LessonCard("lesson_s6_cards", "۵", "مطلب بتائیں (کارڈ)", "${QaidaStage6.flashcards.size} الفاظ میں سے ۱۵ کارڈ — لفظ دیکھیں، مطلب بولیں، پلٹ کر دیکھیں",
+            LessonCard("lesson_s6_cards", "۵", "مطلب بتائیں (کارڈ)", tx("${QaidaStage6.flashcards.size} الفاظ میں سے ۱۵ کارڈ — لفظ دیکھیں، مطلب بولیں، پلٹ کر دیکھیں", "15 cards from ${QaidaStage6.flashcards.size} words — see the word, say the meaning, flip to check"),
                 done(QaidaProgress.S6_CARDS)) { open("s6_cards") }
-            LessonCard("lesson_s6_quiz", "۶", "مرحلہ ۶ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۶ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۶ مکمل",
+            LessonCard("lesson_s6_quiz", "۶", "مرحلہ ۶ کی مشق", quizLine(best, 6),
                 done(QaidaProgress.S6_QUIZ)) { open("s6_quiz") }
             if (done(QaidaProgress.S6_QUIZ)) {
                 Card(Modifier.clickable { onStage(7) }.testTag("qaida_go_stage7"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -557,7 +571,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S7_MEEM)) { open("s7_meem") }
             LessonCard("lesson_s7_spot", "۶", "قاعدہ پہچانیں", "پڑھی ہوئی سورتوں کی مثالیں — خود بتائیں، پھر جواب دیکھیں",
                 done(QaidaProgress.S7_SPOT)) { open("s7_spot") }
-            LessonCard("lesson_s7_quiz", "۷", "مرحلہ ۷ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۷ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ ۷ مکمل",
+            LessonCard("lesson_s7_quiz", "۷", "مرحلہ ۷ کی مشق", quizLine(best, 7),
                 done(QaidaProgress.S7_QUIZ)) { open("s7_quiz") }
             if (done(QaidaProgress.S7_QUIZ)) {
                 Card(Modifier.clickable { onStage(8) }.testTag("qaida_go_stage8"), colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -568,26 +582,26 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
             val g = QaidaJuzAmma.group(stage)
             val best = progress.bestQuizScore(stage)
             val quizNo = urduDigit(g.surahs.size + 1)
-            HeroCard(g.hero, g.title, "${urduDigit(g.surahs.size)} سورتیں، ${urduDigit(QaidaJuzAmma.ayahCount(juz, stage))} آیتیں — ہر لفظ کے نیچے اس کا اردو مطلب")
+            HeroCard(g.hero, g.title, tx("${urduDigit(g.surahs.size)} سورتیں، ${urduDigit(QaidaJuzAmma.ayahCount(juz, stage))} آیتیں — ہر لفظ کے نیچے اس کا اردو مطلب", "${g.surahs.size} surahs, ${QaidaJuzAmma.ayahCount(juz, stage)} ayat — the English meaning under every word"))
             val prevQuiz = if (stage == 8) QaidaProgress.S7_QUIZ else QaidaJuzAmma.quizKey(stage - 1)
             if (!done(prevQuiz)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("qaida_s${stage}_hint")) {
-                    UrduText("مشورہ: پہلے مرحلہ ${urduDigit(stage - 1)} کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", Modifier.padding(12.dp), size = 13.sp)
+                    UrduText(tx("مشورہ: پہلے مرحلہ ${urduDigit(stage - 1)} کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔", "Tip: finish the Stage ${stage - 1} practice first. You can still start now if you like."), Modifier.padding(12.dp), size = 13.sp)
                 }
             }
             g.surahs.forEachIndexed { i, n ->
                 val s = juz[n]
-                LessonCard("lesson_juz_$n", urduDigit(i + 1), s?.urduName ?: "سورۃ $n",
-                    "${urduDigit(s?.ayat?.size ?: 0)} آیتیں لفظ بہ لفظ", done(QaidaJuzAmma.lessonKey(n))) { open("j_$n") }
+                LessonCard("lesson_juz_$n", urduDigit(i + 1), s?.urduName ?: tx("سورۃ $n", "Surah $n"),
+                    (s?.ayat?.size ?: 0).let { tx("${urduDigit(it)} آیتیں لفظ بہ لفظ", "$it ayat word by word") }, done(QaidaJuzAmma.lessonKey(n))) { open("j_$n") }
             }
-            LessonCard("lesson_juz_quiz_$stage", quizNo, "مرحلہ ${urduDigit(stage)} کی مشق",
-                if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ مکمل",
+            LessonCard("lesson_juz_quiz_$stage", quizNo, tx("مرحلہ ${urduDigit(stage)} کی مشق", "Stage $stage practice"),
+                quizLine(best, null),
                 done(QaidaJuzAmma.quizKey(stage))) { open("jq_$stage") }
             if (done(QaidaJuzAmma.quizKey(stage))) {
                 val next = QaidaJuzAmma.groups.firstOrNull { it.stage == stage + 1 }
                 Card(Modifier.clickable { onStage(next?.stage ?: 11) }.testTag("qaida_go_next_$stage"),
                     colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
-                    UrduText(if (next != null) "ماشاء اللہ! اب مرحلہ ${urduDigit(next.stage)} شروع کریں ←"
+                    UrduText(if (next != null) tx("ماشاء اللہ! اب مرحلہ ${urduDigit(next.stage)} شروع کریں ←", "Masha'Allah! Now start Stage ${next.stage} →")
                         else "ماشاء اللہ! پورا پارہ عمّ پڑھ اور سمجھ لیا۔ اب مرحلہ ۱۱ میں قرآنی گرامر سیکھیں ←",
                         Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
                 }
@@ -612,7 +626,7 @@ private fun QaidaHome(progress: QaidaProgress, refreshKey: Int, stage: Int, juz:
                 done(QaidaProgress.S11_COMMANDS)) { open("s11_commands") }
             LessonCard("lesson_s11_detective", "۶", "مادہ جاسوس 🔍", "لفظ میں سے تین اصل حروف ڈھونڈیں",
                 done(QaidaProgress.S11_DETECTIVE)) { open("s11_detective") }
-            LessonCard("lesson_s11_quiz", "۷", "مرحلہ ۱۱ کی مشق", if (best > 0) "بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ مکمل" else "۱۰ سوال  ·  ۸ درست پر مرحلہ مکمل",
+            LessonCard("lesson_s11_quiz", "۷", "مرحلہ ۱۱ کی مشق", quizLine(best, null),
                 done(QaidaProgress.S11_QUIZ)) { open("s11_quiz") }
             if (done(QaidaProgress.S11_QUIZ)) {
                 Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
@@ -679,12 +693,12 @@ private fun LettersLesson(progress: QaidaProgress, play: (String, String) -> Uni
     var seen by remember { mutableStateOf(progress.seenLetters()) }
     Column(Modifier.fillMaxSize()) {
         UrduText("حرف پر ٹیپ کریں، نام سنیں اور مخرج پڑھیں۔ موٹے (پُر) حروف سرخ ہیں — یاد رکھنے کو: خُصَّ ضَغْطٍ قِظْ (خ ص ض غ ط ق ظ)۔ ض کو کبھی ز یا د کی طرح نہ پڑھیں۔", Modifier.padding(horizontal = 16.dp, vertical = 8.dp), size = 13.sp, color = Quiet)
-        LazyVerticalGrid(
+        ArabicFlow { LazyVerticalGrid(
             columns = GridCells.Adaptive(72.dp),
             modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp).testTag("qaida_letters_grid"),
             horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) { MakhrajMap() }
+            item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) { MediumFlow { MakhrajMap() } }
             items(QaidaData.letters, key = { it.id }) { l ->
                 val isSeen = l.id in seen
                 Card(
@@ -703,7 +717,7 @@ private fun LettersLesson(progress: QaidaProgress, play: (String, String) -> Uni
                     }
                 }
             }
-        }
+        } }
     }
     selected?.let { l -> LetterDetailDialog(l, play) { selected = null } }
 }
@@ -716,17 +730,17 @@ private fun LetterDetailDialog(l: QaidaLetter, play: (String, String) -> Unit, o
         confirmButton = { TextButton(onClick = onDismiss) { UrduText("ٹھیک ہے", size = 15.sp, color = Green, weight = FontWeight.Bold) } },
         title = null,
         text = {
-            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            MediumFlow {
                 Column(Modifier.verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
                     ArabicText(l.arabic, size = 88.sp, color = if (l.heavy) Heavy else Ink)
-                    UrduText("${l.qaidaName}  ·  ${l.roman}", size = 18.sp, weight = FontWeight.Bold, align = TextAlign.Center)
+                    UrduText(tx("${l.qaidaName}  ·  ${l.roman}", tr(l.qaidaName)), size = 18.sp, weight = FontWeight.Bold, align = TextAlign.Center)
                     if (l.heavy) UrduText("پُر (موٹا) حرف", size = 12.sp, color = Heavy, align = TextAlign.Center)
                     Spacer(Modifier.height(4.dp))
                     PlayButton("نام سنیں") { play(l.audioKey, l.arabic) }
                     Spacer(Modifier.height(8.dp))
-                    InfoBox("${l.region.emoji} مخرج: ${l.region.urdu}", l.makhraj, GreenSoft, Green)
+                    InfoBox(tx("${l.region.emoji} مخرج: ${l.region.urdu}", "${l.region.emoji} Makhraj: ${tr(l.region.urdu)}"), l.makhraj, GreenSoft, Green)
                     l.urduNote?.let { Spacer(Modifier.height(8.dp)); InfoBox("⚠️ اردو بولنے والوں کے لیے", it, Amber, AmberLine) }
-                    l.urduShape?.let {
+                    l.urduShape?.takeIf { !QaidaLang.english }?.let {
                         Spacer(Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                             UrduText("قرآن میں:", size = 13.sp, color = Quiet); Spacer(Modifier.width(6.dp)); ArabicText(l.arabic, size = 28.sp)
@@ -775,7 +789,7 @@ private fun SoundsLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
             Card(colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Color(0xFFE2E5EA)),
                 modifier = Modifier.testTag("qaida_group_${g.id}")) {
                 Column(Modifier.padding(14.dp)) {
-                    UrduText("اردو میں سب '${g.urduSays}'", size = 16.sp, weight = FontWeight.Bold, color = Green)
+                    UrduText(tx("اردو میں سب '${g.urduSays}'", "Easy to mix up: " + g.letterIds.joinToString("  ") { QaidaData.letter(it).arabic }), size = 16.sp, weight = FontWeight.Bold, color = Green)
                     UrduText(g.tip, size = 13.sp)
                     Spacer(Modifier.height(6.dp))
                     g.letterIds.forEach { id ->
@@ -788,11 +802,11 @@ private fun SoundsLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
                             }
                             Spacer(Modifier.width(10.dp))
                             Column(Modifier.weight(1f)) {
-                                UrduText(l.qaidaName + if (l.heavy) "  (پُر)" else "", size = 13.sp, weight = FontWeight.Bold)
-                                UrduText("مثال: ${ex.urduMeaning}", size = 12.sp, color = Quiet)
+                                UrduText(tr(l.qaidaName) + if (l.heavy) tr("  (پُر)") else "", size = 13.sp, weight = FontWeight.Bold)
+                                UrduText(tx("مثال: ${ex.urduMeaning}", "Example: ${tr(ex.urduMeaning)}"), size = 12.sp, color = Quiet)
                             }
                             Box(Modifier.clickable { play(QaidaData.exampleAudioKey(id), ex.arabic) }.padding(horizontal = 8.dp)
-                                .semantics { contentDescription = "مثال سنیں: ${ex.urduMeaning}" }) {
+                                .semantics { contentDescription = tx("مثال سنیں: ${ex.urduMeaning}", "Hear the example: ${tr(ex.urduMeaning)}") }) {
                                 ArabicText(ex.arabic, size = 26.sp, color = Green)
                             }
                         }
@@ -817,7 +831,7 @@ private fun HarakatLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
     val letters = remember { QaidaData.harakatLetters() }
     LazyColumn(Modifier.fillMaxSize().testTag("qaida_harakat_list"), contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        item {
+        item { ArabicFlow {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 QaidaData.Harakah.values().forEach { h ->
                     Card(Modifier.weight(1f), colors = CardDefaults.cardColors(containerColor = GreenSoft)) {
@@ -829,9 +843,9 @@ private fun HarakatLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
                     }
                 }
             }
-        }
+        } }
         item { UrduText("ہر خانے پر ٹیپ کر کے ہجے سنیں، پھر پوری سطر خود پڑھیں: بَا زَبَر بَ، بَا زِیر بِ، بَا پیش بُ", size = 13.sp, color = Quiet) }
-        items(letters, key = { it.id }) { l ->
+        items(letters, key = { it.id }) { l -> ArabicFlow {
             Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(14.dp)).padding(8.dp).testTag("qaida_row_${l.id}"),
                 verticalAlignment = Alignment.CenterVertically) {
                 UrduText(l.qaidaName, Modifier.width(64.dp), size = 13.sp, color = Quiet)
@@ -846,7 +860,7 @@ private fun HarakatLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
                     }
                 }
             }
-        }
+        } }
         item {
             Button(onClick = onDone, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("qaida_harakat_done"),
                 colors = ButtonDefaults.buttonColors(containerColor = Green)) {
@@ -876,8 +890,9 @@ private fun QaidaQuizScreen(
         Column(Modifier.fillMaxSize().padding(24.dp).testTag("qaida_quiz_result"), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
             UrduText(if (passed) "ماشاء اللہ! 🌟" else "شاباش، دوبارہ کوشش کریں 💪", size = 24.sp, weight = FontWeight.Bold, align = TextAlign.Center)
-            UrduText("$score / ${questions.size} درست", size = 20.sp, color = Green, align = TextAlign.Center)
-            UrduText(if (passed) "مرحلہ ${urduDigit(stageNo)} مکمل ہو گیا۔" else "۸ درست جواب پر مرحلہ ${urduDigit(stageNo)} مکمل ہوگا۔", size = 14.sp, color = Quiet, align = TextAlign.Center)
+            UrduText(tx("$score / ${questions.size} درست", "$score / ${questions.size} correct"), size = 20.sp, color = Green, align = TextAlign.Center)
+            UrduText(if (passed) tx("مرحلہ ${urduDigit(stageNo)} مکمل ہو گیا۔", "Stage $stageNo is complete.")
+                else tx("۸ درست جواب پر مرحلہ ${urduDigit(stageNo)} مکمل ہوگا۔", "8 correct answers complete Stage $stageNo."), size = 14.sp, color = Quiet, align = TextAlign.Center)
             Spacer(Modifier.height(16.dp))
             Button(onClick = { seed = System.currentTimeMillis() }, colors = ButtonDefaults.buttonColors(containerColor = Green),
                 modifier = Modifier.testTag("qaida_quiz_retry")) { UrduText("دوبارہ مشق", size = 15.sp, color = Color.White) }
@@ -888,7 +903,7 @@ private fun QaidaQuizScreen(
 
     val q = questions[index]
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        UrduText("سوال ${index + 1} / ${questions.size}   ·   درست: $score", size = 13.sp, color = Quiet)
+        UrduText(tx("سوال ${index + 1} / ${questions.size}   ·   درست: $score", "Question ${index + 1} / ${questions.size}   ·   correct: $score"), size = 13.sp, color = Quiet)
         Spacer(Modifier.height(8.dp))
         UrduText(q.instruction, size = 17.sp, weight = FontWeight.Bold, align = TextAlign.Center)
         Card(Modifier.padding(vertical = 12.dp).widthIn(min = 160.dp).clickable { q.audioKey?.let { play(it, q.prompt) } }
@@ -930,4 +945,11 @@ private fun QaidaQuizScreen(
 
 internal const val STAGE_COUNT = 11
 
-internal fun urduDigit(n: Int) = n.toString().map { "۰۱۲۳۴۵۶۷۸۹"[it - '0'] }.joinToString("")
+internal fun urduDigit(n: Int) = QaidaLang.digits(n)
+
+/** "Best score" / "10 questions" line under a stage quiz card. */
+internal fun quizLine(best: Int, stage: Int?): String {
+    val st = stage?.let { " ${urduDigit(it)}" } ?: ""
+    return if (best > 0) tx("بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ$st مکمل", "Best score: $best/10  ·  8 correct completes the stage")
+    else tx("۱۰ سوال  ·  ۸ درست پر مرحلہ$st مکمل", "10 questions  ·  8 correct completes the stage")
+}

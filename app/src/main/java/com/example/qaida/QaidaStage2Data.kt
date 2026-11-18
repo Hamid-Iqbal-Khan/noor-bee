@@ -101,8 +101,9 @@ object QaidaStage2 {
     }
 
     fun hijje(letter: QaidaLetter, m: Mark): String =
-        if (m == Mark.JAZM) "اَلِف زَبَر اَ، ${letter.qaidaName} جَزْم: ${write(letter, m)}"
-        else "${letter.qaidaName} ${m.hijjeSuffix.substringBeforeLast(' ')} ${write(letter, m)}"
+        if (m == Mark.JAZM) tx("اَلِف زَبَر اَ، ${letter.qaidaName} جَزْم: ${write(letter, m)}", "Alif fatha a, ${tr(letter.qaidaName)} sukoon: ${write(letter, m)}")
+        else tx("${letter.qaidaName} ${m.hijjeSuffix.substringBeforeLast(' ')} ${write(letter, m)}",
+            "${tr(letter.qaidaName)} ${tr(m.hijjeSuffix).substringBeforeLast(' ')} ${write(letter, m)}")
 
     fun audioKey(letter: QaidaLetter, m: Mark) = "s2_${m.name.lowercase()}_${letter.id}"
 

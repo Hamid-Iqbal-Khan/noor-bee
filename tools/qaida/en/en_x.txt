@@ -1,0 +1,168 @@
+1	Throat
+2	Tongue
+4	Alif
+6	Baa
+8	Taa
+10	Thaa
+13	Ḥaa
+15	Khaa
+17	Daal
+19	Dhaal
+21	Raa
+23	Zaa
+27	Ṣaad
+29	Ḍaad
+31	Ṭaa
+33	Ẓaa
+37	Faa
+39	Qaaf
+42	Laam
+45	Noon
+47	Waaw
+54	patience
+65	knowledge
+68	pen
+70	Fatha (zabar)
+79	Baa fatha ba
+80	8: 'Amma 1
+81	9: 'Amma 2
+82	10: 'Amma 3
+83	Al-Inshiqaq → An-Naba
+84	Surah An-Naba
+85	Surah An-Nazi'at
+86	Surah 'Abasa
+87	Surah Al-Infitar
+88	Surah Al-Inshiqaq
+89	Surah Al-Buruj
+90	Surah At-Tariq
+91	Surah Al-Fajr
+92	Surah Al-Balad
+93	Surah Ash-Shams
+94	Surah Ash-Sharh
+95	Surah Al-'Alaq
+96	Surah Al-Qadr
+97	Surah Az-Zalzalah
+100	📜 Background
+103	Jawf
+104	Letters
+105	Recitation
+106	Stopping
+109	Lesson 1: The single letters
+110	Practice
+111	Lesson 2: The muqatta'at letters
+112	Lesson 6: Sukoon
+113	Lesson 6: Surah Al-Ikhlas
+114	Lesson 2: Stop signs
+115	Lesson 5: Surah Al-Falaq
+116	Lesson 6: Surah An-Nas
+117	Lesson 5: Al-Falaq and An-Nas
+118	Lesson 2: Surah Al-Ma'un
+119	Lesson 4: Surah Al-Masad
+120	Lesson 2: Idgham
+121	Lesson 3: Iqlab
+122	Lesson 4: Ikhfa
+123	Back
+124	1: Letters
+125	3: Recitation
+126	4: Stopping
+128	1
+129	The single letters
+131	2
+132	3
+133	4
+136	The muqatta'at letters
+137	5
+138	6
+139	7
+142	Recitation: Surah Al-Ikhlas
+145	Stop signs
+146	Recitation: Surah Al-Falaq
+147	Recitation: Surah An-Nas
+150	Al-Falaq and An-Nas
+152	Surah Al-Ma'un
+153	Surah Al-Masad
+157	Idgham
+158	Iqlab
+159	Ikhfa
+173	  (heavy)
+182	to know
+183	knowledge, knowing
+209	worship
+215	mercy
+230	Al-Qadr: مَطْلَعِ الْفَجْرِ
+233	Al-'Alaq
+236	Al-'Asr
+239	Ash-Shams
+244	Al-Fajr
+255	Al-Infitar
+259	Al-Ikhlas, Al-Falaq, An-Nas
+262	An-Nasr
+268	mosque
+280	knew / known
+281	light
+282	Lord
+283	religion
+286	Al-A'raf
+288	Alif Laam Raa
+290	Ar-Ra'd
+294	Ash-Shu'ara, Al-Qasas
+296	An-Naml
+303	Al-Qalam
+304	double fatha ban
+305	Double fatha
+307	double fatha ban
+313	Sukoon
+315	sukoon
+339	you
+345	Start
+346	End
+355	garden / Paradise
+360	Muhammad ﷺ
+362	truth / right
+370	the sun
+376	the moon
+392	Normal madd
+402	double fatha → fatha and alif
+407	Waqf laazim
+408	Waqf mutlaq
+409	Qif
+410	Qif
+411	Waqf jaa'iz
+412	Waqf mujawwaz
+413	Waqf murakhkhas
+414	Sil
+415	Sil
+416	Laa
+434	Surah Al-'Asr
+438	Surah Al-Falaq
+444	Surah An-Nas
+452	✋ When stopping:
+458	on
+462	and
+467	you
+475	day
+478	sky
+481	truth, right
+483	heart
+484	garden, Paradise
+497	on whom
+498	on them
+499	Surah Al-Ikhlas
+500	equal
+501	mankind
+502	loss
+503	when
+504	god (one worshipped)
+505	who
+516	this
+521	urge
+529	you (all)
+534	the help
+535	and the victory
+537	in crowds
+540	Abu
+542	and what
+550	Al-Ikhlas
+554	Al-Masad
+557	Az-Zalzalah
+566	Al-Falaq

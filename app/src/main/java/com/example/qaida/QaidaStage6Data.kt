@@ -74,7 +74,7 @@ object QaidaStage6 {
 /** Stage 6 quiz: meaning of a word from the six new surahs, and which surah an ayah opens. */
 object QaidaStage6Quiz {
     fun generate(random: kotlin.random.Random, length: Int = QaidaProgress.QUIZ_LENGTH): List<QaidaQuestion> {
-        val cards = QaidaStage6.surahs.flatMap { s -> s.ayat.flatMap { a -> a.words.mapIndexed { i, w -> Triple(w, a.meanings[i], a.wordKey(i)) } } }
+        val cards = QaidaStage6.surahs.flatMap { s -> s.ayat.flatMap { a -> a.words.mapIndexed { i, w -> Triple(w, a.shown[i], a.wordKey(i)) } } }
             .distinctBy { it.second }
         return List(length) { i ->
             if (i % 3 == 2) {

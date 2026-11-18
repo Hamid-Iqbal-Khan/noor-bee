@@ -49,7 +49,7 @@ fun QaidaParentProgress(profiles: List<ChildProfile>) {
     }
     LazyColumn(Modifier.fillMaxSize().testTag("parent_qaida_progress"), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         item {
-            Text("Urdu Qaida progress", fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, color = Brown)
+            Text("Quran course progress (Urdu and English medium)", fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, color = Brown)
             Text("Lessons done and best quiz score (out of 10, pass at 8) for each stage. Stages aren't locked; " +
                 "children are advised to pass each quiz before moving on.", fontSize = 12.sp, color = Muted)
         }

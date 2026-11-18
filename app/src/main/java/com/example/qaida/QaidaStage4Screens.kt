@@ -84,11 +84,11 @@ private fun LazyListScope.stopping(play: (String, String) -> Unit) {
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line4)) {
             Column(Modifier.padding(10.dp)) {
                 // Right to left: the written word, an arrow, then how it is read when stopping.
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
+                ArabicFlow { Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
                     ArabicText(e.word, Modifier.clickable { play(e.audioKey, e.word) }, size = 32.sp)
                     UrduText("←", size = 22.sp, color = Quiet)
                     ArabicText(e.stopped, Modifier.clickable { play(e.audioKey + "_stop", e.stopped) }, size = 32.sp, color = StopRed)
-                }
+                } }
                 UrduText(e.urdu, Modifier.fillMaxWidth(), size = 12.sp, color = Quiet, align = TextAlign.Center)
             }
         }
@@ -126,16 +126,16 @@ private fun LazyListScope.signs() {
 private fun LazyListScope.qalqalah(play: (String, String) -> Unit) {
     note4("قلقلہ کے پانچ حروف ہیں: ق ط ب ج د — یاد رکھنے کو 'قُطْبُ جَدٍ'۔ جب ان پر جزم ہو تو آواز ہلکی سی اچھال کے ساتھ ادا کریں۔ لفظ کے آخر میں رکنے پر قلقلہ زیادہ واضح ہوتا ہے۔")
     item {
-        Row(Modifier.fillMaxWidth().background(TealSoft, RoundedCornerShape(14.dp)).padding(10.dp).testTag("qaida_s4_qal_letters"),
+        ArabicFlow { Row(Modifier.fillMaxWidth().background(TealSoft, RoundedCornerShape(14.dp)).padding(10.dp).testTag("qaida_s4_qal_letters"),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             QaidaStage4.qalqalahIds.forEach { id ->
                 val l = QaidaData.letter(id)
                 Box(Modifier.size(52.dp).background(Color.White, CircleShape).clickable { play(l.audioKey, l.arabic) }
-                    .semantics { contentDescription = l.qaidaName }, contentAlignment = Alignment.Center) {
+                    .semantics { contentDescription = tr(l.qaidaName) }, contentAlignment = Alignment.Center) {
                     ArabicText(l.arabic, size = 28.sp, color = Teal)
                 }
             }
-        }
+        } }
     }
     items(QaidaStage4.qalqalahWords, key = { it.audioKey }) { w ->
         Card(Modifier.fillMaxWidth().clickable { play(w.audioKey, w.written) }.testTag("qaida_s4_word_${w.audioKey}"),
@@ -160,13 +160,13 @@ private fun LazyListScope.surah(play: (String, String) -> Unit, s: QaidaStage4.S
         Card(Modifier.fillMaxWidth().clickable { play(a.audioKey, a.text) }.testTag("qaida_ayah_${a.surah}_${a.number}"),
             colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line4)) {
             Column(Modifier.padding(12.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                ArabicFlow { Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(32.dp).background(GreenSoft, CircleShape), contentAlignment = Alignment.Center) {
-                        UrduText(a.number.toString().map { "۰۱۲۳۴۵۶۷۸۹"[it - '0'] }.joinToString(""), size = 13.sp, color = Green, weight = FontWeight.Bold)
+                        UrduText(urduDigit(a.number), size = 13.sp, color = Green, weight = FontWeight.Bold)
                     }
                     Spacer(Modifier.width(8.dp))
                     ArabicText(a.text, Modifier.weight(1f), size = 30.sp, align = TextAlign.Start)
-                }
+                } }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     UrduText("✋ وقف:", size = 12.sp, color = StopRed, weight = FontWeight.Bold)
                     Spacer(Modifier.width(6.dp))

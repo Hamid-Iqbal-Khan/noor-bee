@@ -71,25 +71,25 @@ private fun androidx.compose.foundation.lazy.LazyListScope.intro(text: String) =
 // ---- 2.1 Joining ----------------------------------------------------------------------------
 private fun androidx.compose.foundation.lazy.LazyListScope.joining(play: (String, String) -> Unit) {
     intro("عربی حروف آپس میں جڑ کر لکھے جاتے ہیں، جیسے اردو میں۔ ہر حرف کی چار شکلیں ہو سکتی ہیں: اکیلا، شروع، درمیان، آخر۔ ا د ذ ر ز و اپنے بعد والے حرف سے نہیں جڑتے۔")
-    item {
+    item { ArabicFlow {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
             listOf("اکیلا", "شروع", "درمیان", "آخر").forEach {
                 UrduText(it, Modifier.weight(1f), size = 12.sp, color = Quiet, align = TextAlign.Center)
             }
         }
-    }
-    items(QaidaData.letters, key = { "f_" + it.id }) { l ->
+    } }
+    items(QaidaData.letters, key = { "f_" + it.id }) { l -> ArabicFlow {
         val f = QaidaStage2.forms(l)
         val non = l.id in QaidaStage2.nonConnectorIds
         Row(Modifier.fillMaxWidth().background(if (non) Amber else Color.White, RoundedCornerShape(12.dp))
             .clickable { play(l.audioKey, l.arabic) }.padding(4.dp).testTag("qaida_forms_${l.id}")
-            .semantics { contentDescription = l.qaidaName + if (non) "، آگے نہیں جڑتا" else "" },
+            .semantics { contentDescription = tr(l.qaidaName) + if (non) tr("، آگے نہیں جڑتا") else "" },
             verticalAlignment = Alignment.CenterVertically) {
             listOf(f.isolated, f.initial, f.medial, f.final).forEach {
                 ArabicText(it, Modifier.weight(1f), size = 30.sp, color = if (l.heavy) Heavy else Ink)
             }
         }
-    }
+    } }
     item { UrduText("اب لفظ کو حروف میں توڑیں — ٹیپ کر کے سنیں:", size = 15.sp, weight = FontWeight.Bold) }
     items(QaidaStage2.joinedWords, key = { it.audioKey }) { w ->
         Card(Modifier.fillMaxWidth().clickable { play(w.audioKey, w.word) }.testTag("qaida_joined_${w.audioKey}"),
@@ -128,7 +128,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.markBoard(
     words: List<QaidaStage2.MaddExample>?,
 ) {
     intro(introText)
-    item {
+    item { ArabicFlow {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             marks.forEach { m ->
                 Card(Modifier.weight(1f), colors = CardDefaults.cardColors(containerColor = GreenSoft)) {
@@ -140,14 +140,14 @@ private fun androidx.compose.foundation.lazy.LazyListScope.markBoard(
                 }
             }
         }
-    }
+    } }
     if (words != null) {
         item { UrduText("قرآنی مثالیں:", size = 15.sp, weight = FontWeight.Bold) }
         items(words, key = { it.audioKey }) { w -> ExampleRow(w, play) }
         item { UrduText("اب ہر حرف پر مشق کریں:", size = 15.sp, weight = FontWeight.Bold) }
     }
     val letters = QaidaStage2.boardLetters(marks.first())
-    items(letters, key = { "m_" + marks.first().name + it.id }) { l ->
+    items(letters, key = { "m_" + marks.first().name + it.id }) { l -> ArabicFlow {
         Row(Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(14.dp)).padding(8.dp).testTag("qaida_s2_row_${l.id}"),
             verticalAlignment = Alignment.CenterVertically) {
             UrduText(l.qaidaName, Modifier.width(64.dp), size = 13.sp, color = Quiet)
@@ -163,7 +163,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.markBoard(
                 }
             }
         }
-    }
+    } }
 }
 
 // ---- 2.5 Madd and leen ----------------------------------------------------------------------

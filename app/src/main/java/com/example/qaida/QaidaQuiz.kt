@@ -34,7 +34,7 @@ object QaidaQuiz {
                     val others = letters.filter { it.id != answer.id && it !in sameGroup }.shuffled(random)
                     val wrong = (sameGroup + others).take(3)
                     val options = (wrong + answer).shuffled(random)
-                    QaidaQuestion(answer.qaidaName, false, "'${answer.qaidaName}' کون سا حرف ہے؟",
+                    QaidaQuestion(answer.qaidaName, false, tx("'${answer.qaidaName}' کون سا حرف ہے؟", "Which letter is '${tr(answer.qaidaName)}'?"),
                         options.map { it.arabic }, true, options.indexOf(answer), answer.audioKey)
                 }
                 else -> { // letter with harakah -> harakah name

@@ -76,7 +76,7 @@ private fun LazyListScope.note11(text: String) = item { UrduText(text, size = 14
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun WordChips(words: List<QaidaStage11.Word>, play: (String, String) -> Unit) {
+private fun WordChips(words: List<QaidaStage11.Word>, play: (String, String) -> Unit) = ArabicFlow {
     FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         words.forEach { w ->
             Column(Modifier.widthIn(min = 84.dp).background(Color.White, RoundedCornerShape(12.dp)).clickable { play("", w.arabic) }
@@ -171,7 +171,7 @@ private fun LazyListScope.detective(play: (String, String) -> Unit, revealed: Se
                 if (open) {
                     Column(Modifier.weight(1f)) {
                         ArabicText(root.letters, size = 22.sp, color = Teal11, align = TextAlign.Start)
-                        UrduText("${root.idea} · ${d.urdu}", size = 12.sp, color = Quiet)
+                        UrduText(tx("${root.idea} · ${d.urdu}", "${tr(root.idea)} · ${tr(d.urdu)}"), size = 12.sp, color = Quiet)
                     }
                 } else UrduText("❓ مادہ؟", Modifier.weight(1f), size = 14.sp, color = Quiet)
             }
