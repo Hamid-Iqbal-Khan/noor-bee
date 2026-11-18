@@ -78,7 +78,9 @@ class UatFlowTest {
 
   // Click through the semantics action: no scrolling needed (scrolling the long dashboard under a paused clock stalled).
   private fun SemanticsNodeInteraction.tap(): SemanticsNodeInteraction {
-    performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); return this
+    val clickable = fetchSemanticsNode().config.contains(androidx.compose.ui.semantics.SemanticsActions.OnClick)
+    if (clickable) performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick) else performClick()
+    return this
   }
 
   private fun clickTag(tag: String) { rule.onNode(hasTestTag(tag)).tap(); step() }

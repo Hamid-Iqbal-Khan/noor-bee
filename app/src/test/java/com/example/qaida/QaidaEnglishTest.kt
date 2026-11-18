@@ -105,7 +105,7 @@ class QaidaEnglishTest {
         // every letter's detail card, including the notes written for English speakers
         QaidaData.letters.forEach { l ->
           try { rule.onNodeWithTag("qaida_letter_${l.id}").performScrollTo() } catch (_: Throwable) { }
-          rule.onNodeWithTag("qaida_letter_${l.id}").performClick(); rule.waitForIdle()
+          rule.onNodeWithTag("qaida_letter_${l.id}").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
           if (l.id == "dad") shot("stage1_letter_dad")
           rule.onNodeWithTag("qaida_letter_detail").assertExists()
           rule.onNodeWithText("OK").performClick(); rule.waitForIdle()

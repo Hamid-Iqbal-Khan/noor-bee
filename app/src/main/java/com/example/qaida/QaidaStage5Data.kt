@@ -39,7 +39,7 @@ object QaidaStage5 {
             w("هُوَ", "وہ (ایک)", "huwa"),
             w("هُمْ", "وہ سب", "hum"),
             w("اَنْتَ", "تُو، آپ", "anta"),
-            w("اَنَا", "میں", "ana"),
+            w("اَنَا", "میں (خود)", "ana"),
             w("نَحْنُ", "ہم", "nahnu"),
             w("الَّذِيْ", "وہ جو", "alladhi"),
             w("الَّذِيْنَ", "وہ لوگ جو", "alladhina"),
@@ -152,7 +152,8 @@ object QaidaStage5Quiz {
             when (i % 3) {
                 0 -> {
                     val w = words.random(random)
-                    val opts = (words.filter { it.urdu != w.urdu }.shuffled(random).take(3).map { it.urdu } + w.urdu).shuffled(random)
+                    val opts = (words.filter { QaidaLang.tr(it.urdu) != QaidaLang.tr(w.urdu) }.distinctBy { QaidaLang.tr(it.urdu) }
+                        .shuffled(random).take(3).map { it.urdu } + w.urdu).shuffled(random)
                     QaidaQuestion(w.arabic, true, "اس لفظ کا مطلب کیا ہے؟", opts, false, opts.indexOf(w.urdu), w.audioKey)
                 }
                 1 -> {
