@@ -26,10 +26,10 @@ PY
 )
   echo "$b"
 }
-tap_text() { # tap $1; if it is not on screen, scroll down a little and look again (up to 3 times)
+tap_text() { # tap $1; if it is not on screen, scroll down a little and look again (up to 8 times)
   local b; local tries=0
   b=$(find_text "$1")
-  while [ -z "$b" ] && [ $tries -lt 3 ] && [ "$1" != "Wait" ]; do
+  while [ -z "$b" ] && [ $tries -lt 8 ] && [ "$1" != "Wait" ]; do
     adb shell input swipe 540 1600 540 1000 300; sleep 1; tries=$((tries+1)); b=$(find_text "$1")
   done
   if [ -n "$b" ]; then adb shell input tap $b; echo "tap '$1' at $b" >> emu/steps.txt; sleep 3; else echo "NOT FOUND '$1'" >> emu/steps.txt; fi

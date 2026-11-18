@@ -63,9 +63,9 @@ class QaidaEnglishDataTest {
   @Test fun everyQuiz_hasDistinctEnglishOptions() {
     val juz = QaidaJuzAmma.parse(File("src/main/assets/${QaidaJuzAmma.ASSET}").readLines(Charsets.UTF_8).asSequence())
     val gens: Map<String, (Random) -> List<QaidaQuestion>> = mapOf(
-      "1" to { r -> QaidaQuiz.generate(r) }, "2" to { r -> QaidaStage2Quiz.generate(r) }, "3" to { r -> QaidaStage3Quiz.generate(r) },
-      "4" to { r -> QaidaStage4Quiz.generate(r) }, "5" to { r -> QaidaStage5Quiz.generate(r) }, "6" to { r -> QaidaStage6Quiz.generate(r) },
-      "7" to { r -> QaidaStage7Quiz.generate(r) }, "11" to { r -> QaidaStage11Quiz.generate(r) },
+      "1" to { r: Random -> QaidaQuiz.generate(r) }, "2" to { r: Random -> QaidaStage2Quiz.generate(r) }, "3" to { r: Random -> QaidaStage3Quiz.generate(r) },
+      "4" to { r: Random -> QaidaStage4Quiz.generate(r) }, "5" to { r: Random -> QaidaStage5Quiz.generate(r) }, "6" to { r: Random -> QaidaStage6Quiz.generate(r) },
+      "7" to { r: Random -> QaidaStage7Quiz.generate(r) }, "11" to { r: Random -> QaidaStage11Quiz.generate(r) },
     ) + (8..10).associate { st -> "$st" to { r: Random -> QaidaJuzAmmaQuiz.generate(r, QaidaJuzAmma.group(st).surahs.mapNotNull { juz[it] }) } }
     gens.forEach { (stage, gen) ->
       repeat(150) { seed ->
