@@ -122,9 +122,9 @@ class UatFlowTest {
     // Urdu mode adds the Qaida stage cards and pushes the English games further down: switch back first.
     clickText("English"); step(1_000); dismissGuide()
     // English mode: the Quran course taught in English, then the English reading course (they replaced the old games).
-    clickTag("dashboard_quran_en_stage1"); step(1_500); waitTag("qaida_root"); shot("07_quran_english_stage1"); goBack()
+    clickText("Stage 1: Letters"); step(1_500); waitTag("qaida_root"); shot("07_quran_english_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
-    clickTag("dashboard_english_stage1"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
+    clickText("Stage 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
     clickText("My Stickers"); step(2_000); shot("07c_stickers"); goBack()
   }

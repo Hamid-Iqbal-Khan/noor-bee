@@ -103,8 +103,8 @@ class QaidaEnglishTest {
       if (t == "lesson_letters") {
         rule.onNodeWithTag("qaida_makhraj_map").performClick(); rule.waitForIdle(); shot("stage1_makhraj_map")
         // every letter's detail card, including the notes written for English speakers
-        QaidaData.letters.forEach { l ->
-          try { rule.onNodeWithTag("qaida_letter_${l.id}").performScrollTo() } catch (_: Throwable) { }
+        QaidaData.letters.forEachIndexed { i, l ->
+          rule.onNodeWithTag("qaida_letters_grid").performScrollToIndex(i + 1); rule.waitForIdle()   // item 0 is the makhraj map
           rule.onNodeWithTag("qaida_letter_${l.id}").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
           if (l.id == "dad") shot("stage1_letter_dad")
           rule.onNodeWithTag("qaida_letter_detail").assertExists()

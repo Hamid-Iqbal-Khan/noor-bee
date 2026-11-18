@@ -99,7 +99,7 @@ for k in 1 2 3 4 5 6; do adb shell input swipe 540 900 540 2000 200; sleep 1; do
 tap_text "Stage 1: Letters"; sleep 3; shot 36_quran_english_stage1
 tap_text "The single letters"; sleep 3; shot 37_quran_english_letters
 tap_text "Thaa"; sleep 2; shot 38_quran_english_letter_detail; adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 1
-tap_text "Lesson 3: Vowel marks"; sleep 3; shot 39_quran_english_harakat; adb shell input keyevent 4; sleep 1
+tap_text "Vowel marks:"; sleep 3; shot 39_quran_english_harakat; adb shell input keyevent 4; sleep 1
 tap_text "5: Meanings"; sleep 2; tap_text "Al-Fatihah word by word"; sleep 3; shot 40_quran_english_fatiha_wbw; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
 adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 4
