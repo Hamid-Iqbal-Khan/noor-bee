@@ -123,7 +123,7 @@
 463	Alif Laam Meem Saad
 464	Yunus, Hud, Yusuf, Ibrahim, Al-Hijr
 465	Alif Laam Meem Raa
-466	Kaaf Haa Yaa 'Ayn Saad
+466	Kaaf Haa Yaa ʿAyn Saad
 467	Maryam
 468	Taa Haa
 469	Ta-Ha
@@ -133,7 +133,7 @@
 473	Ya-Seen
 474	Haa Meem
 475	Ghafir to Al-Ahqaf (seven surahs)
-476	'Ayn Seen Qaaf
+476	ʿAyn Seen Qaaf
 477	Ash-Shura (after Haa Meem)
 478	Two slanted lines above — an 'n' sound at the end: ban
 479	Double kasra
@@ -181,7 +181,7 @@
 521	Middle
 522	, doesn't join forward
 523	Now break the word into letters — tap to hear:
-524	29 surahs of the Quran begin with letters that are not joined but read by saying each letter's name. Allah alone knows their true meaning. Letters whose names have a madd (Laam, Meem, Saad, Seen, Qaaf, Kaaf, Noon) are stretched 6 counts; in كٓهٰيٰعٓصٓ and عٓسٓقٓ, 'Ayn is stretched 4 or 6 counts.
+524	29 surahs of the Quran begin with letters that are not joined but read by saying each letter's name. Allah alone knows their true meaning. Letters whose names have a madd (Laam, Meem, Saad, Seen, Qaaf, Kaaf, Noon) are stretched 6 counts; in كٓهٰيٰعٓصٓ and عٓسٓقٓ, ʿAyn is stretched 4 or 6 counts.
 525	Examples from the Quran:
 526	Now practise on every letter:
 527	There are three madd letters: ا و ي. When an alif follows a fatha, a waw follows a damma, or a yaa follows a kasra, make the sound as long as one alif.

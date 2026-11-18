@@ -150,7 +150,7 @@ internal fun LazyListScope.wordByWord(play: (String, String) -> Unit, s: QaidaSt
                     }
                 } }
                 MafhoomLine(a.ayah.surah, a.ayah.number)
-                UrduText(tr("لفظی معنی: ") + a.shown.joinToString(" "), size = 11.sp, color = Quiet)
+                UrduText(tr("لفظی معنی: ").trimEnd() + " " + a.shown.joinToString(" "), size = 11.sp, color = Quiet)
                 if (a.sajdah) SajdahNote()
             }
         }

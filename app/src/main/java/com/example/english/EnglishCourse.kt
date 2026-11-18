@@ -54,7 +54,7 @@ object EnglishCourse {
         Sound("a", "apple", "🍎"), Sound("b", "ball", "⚽"), Sound("c", "cat", "🐱"), Sound("d", "dog", "🐶"),
         Sound("e", "egg", "🥚"), Sound("f", "fish", "🐟"), Sound("g", "goat", "🐐"), Sound("h", "hat", "🎩"),
         Sound("i", "insect", "🐞"), Sound("j", "jam", "🍯"), Sound("k", "kite", "🪁"), Sound("l", "lion", "🦁"),
-        Sound("m", "moon", "🌙"), Sound("n", "nest", "🪺"), Sound("o", "octopus", "🐙"), Sound("p", "pen", "🖊️"),
+        Sound("m", "moon", "🌙"), Sound("n", "nose", "👃"), Sound("o", "octopus", "🐙"), Sound("p", "pen", "🖊️"),
         Sound("q", "queen", "👑", "q nearly always comes with u: qu"), Sound("r", "rabbit", "🐰"), Sound("s", "sun", "☀️"),
         Sound("t", "tent", "⛺"), Sound("u", "umbrella", "☂️"), Sound("v", "van", "🚐"), Sound("w", "web", "🕸️"),
         Sound("x", "box", "📦", "x says 'ks', usually at the end of a word"), Sound("y", "yo-yo", "🪀"), Sound("z", "zebra", "🦓"),
