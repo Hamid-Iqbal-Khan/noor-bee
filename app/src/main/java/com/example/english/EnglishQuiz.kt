@@ -50,7 +50,7 @@ object EnglishQuiz {
         when (stage) {
             1 -> {
                 // "starts with" needs a keyword that really starts with the letter (x is taught with box)
-                val s = if (kind == 0) EnglishCourse.alphabet.filter { it.keyword.startsWith(it.grapheme) }.random(random)
+                val s = if (kind == 0) EnglishCourse.alphabet.filter { it.keyword.lowercase().startsWith(it.grapheme) }.random(random)
                     else EnglishCourse.alphabet.random(random)
                 val letters = EnglishCourse.alphabet.map { it.grapheme }
                 when (kind) {
@@ -65,7 +65,7 @@ object EnglishQuiz {
                 when (kind) {
                     0 -> q(wd.emoji, "Which word is this?", wd.word, all.map { it.word }, random, wd.word)
                     1 -> q(wd.parts.joinToString(" · "), "Blend the sounds. Which word do they make?", wd.word, all.map { it.word }, random, word = true)
-                    else -> q(wd.word, "Which sound is in the middle?", wd.parts[1], listOf("a", "e", "i", "o", "u"), random, wd.word, word = true)
+                    else -> q(wd.word, "Which vowel sound do you hear first?", wd.parts[1], listOf("a", "e", "i", "o", "u"), random, wd.word, word = true)
                 }
             }
             3 -> {
@@ -75,9 +75,9 @@ object EnglishQuiz {
                 when (kind) {
                     0 -> q(wd.emoji, "Which word is this?", wd.word, all.map { it.word }, random, wd.word)
                     1 -> {
-                        val team = wd.parts.first { it in teams }
+                        val team = wd.parts.map { it.lowercase() }.first { it in teams }
                         // wrong options must not also be in the word (e.g. "quack" has both qu and ck)
-                        q(wd.word, "Which sound team is in this word?", team, teams.filter { it !in wd.parts }, random, wd.word, word = true)
+                        q(wd.word, "Which sound team is in this word?", team, teams.filter { t -> wd.parts.none { it.equals(t, true) } }, random, wd.word, word = true)
                     }
                     else -> q("🔊", "Listen. Which word is it?", wd.word, all.map { it.word }, random, wd.word)
                 }

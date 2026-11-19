@@ -5,8 +5,11 @@ import androidx.compose.ui.graphics.Color
 /*
  * English reading course — the English-medium partner of the Quran course, built the same way:
  * stages of short lessons, each stage closed by a 10-question practice (8 correct completes it).
- * Order follows common synthetic-phonics teaching: letter sounds -> blending CVC words ->
+ * Order follows common synthetic-phonics teaching: letter sounds -> blending short words ->
  * digraphs -> long vowels -> tricky (sight) words -> reading sentences.
+ * Every keyword and practice word is an Islamic word or comes from a child's Muslim life
+ * (A for Allah, B for Bismillah, D for Dua...). Where an Islamic word does not show the
+ * letter's usual sound (Charity, Eid, Quran), the card says so.
  * Sound is the phone's English voice; keywords are given so a parent can model each sound.
  */
 
@@ -49,156 +52,178 @@ private fun w(word: String, emoji: String, vararg parts: String) =
 
 object EnglishCourse {
 
-    // ---- Stage 1: letters and their sounds ---------------------------------------------------------
+    // ---- Stage 1: letters and their sounds, each with an Islamic keyword ---------------------------------
     val alphabet = listOf(
-        Sound("a", "apple", "🍎"), Sound("b", "ball", "⚽"), Sound("c", "cat", "🐱"), Sound("d", "dog", "🐶"),
-        Sound("e", "egg", "🥚"), Sound("f", "fish", "🐟"), Sound("g", "goat", "🐐"), Sound("h", "hat", "🎩"),
-        Sound("i", "insect", "🐞"), Sound("j", "jam", "🍯"), Sound("k", "kite", "🪁"), Sound("l", "lion", "🦁"),
-        Sound("m", "moon", "🌙"), Sound("n", "nose", "👃"), Sound("o", "octopus", "🐙"), Sound("p", "pen", "🖊️"),
-        Sound("q", "queen", "👑", "q nearly always comes with u: qu"), Sound("r", "rabbit", "🐰"), Sound("s", "sun", "☀️"),
-        Sound("t", "tent", "⛺"), Sound("u", "umbrella", "☂️"), Sound("v", "van", "🚐"), Sound("w", "web", "🕸️"),
-        Sound("x", "box", "📦", "x says 'ks', usually at the end of a word"), Sound("y", "yo-yo", "🪀"), Sound("z", "zebra", "🦓"),
+        Sound("a", "Allah", "☝️"),
+        Sound("b", "Bismillah", "📖"),
+        Sound("c", "Charity", "💝", "In Charity, c and h together say 'ch'. On its own c says 'k', as in camel."),
+        Sound("d", "Dua", "🤲"),
+        Sound("e", "Eid", "🎉", "In Eid, e says its long sound 'ee'. Its short sound is 'e' as in egg."),
+        Sound("f", "Fajr", "🌅"),
+        Sound("g", "Good deeds", "🌟"),
+        Sound("h", "Hajj", "⛺"),
+        Sound("i", "Islam", "💚"),
+        Sound("j", "Jannah", "🌴"),
+        Sound("k", "Kaaba", "🕋"),
+        Sound("l", "Learn", "📚", "The first word of the Quran revealed was Iqra: Read!"),
+        Sound("m", "Masjid", "🕌"),
+        Sound("n", "Nur", "💡", "Nur means light. An-Nur is a name of Allah."),
+        Sound("o", "Olive", "🌿", "Allah swears by the fig and the olive in Surah At-Tin."),
+        Sound("p", "Peace", "🕊️", "As-Salamu alaikum means peace be upon you."),
+        Sound("q", "Quran", "📗", "In English q nearly always comes with u (quiet). Quran is an Arabic word."),
+        Sound("r", "Ramadan", "🌙"),
+        Sound("s", "Salah", "🙇"),
+        Sound("t", "Tasbih", "📿"),
+        Sound("u", "Ummah", "🌍", "The Ummah is all the Muslims of the world."),
+        Sound("v", "Virtue", "🏅"),
+        Sound("w", "Wudu", "💧"),
+        Sound("x", "six", "6️⃣", "x says 'ks', usually at the end of a word: six articles of faith."),
+        Sound("y", "Yaseen", "💖", "Surah Yaseen is called the heart of the Quran."),
+        Sound("z", "Zakat", "💰"),
     )
 
     private fun sounds(letters: String) = letters.split(' ').map { g -> alphabet.firstOrNull { it.grapheme == g } ?: extra.getValue(g) }
     private val extra = mapOf(
-        "ck" to Sound("ck", "duck", "🦆", "c and k together make one sound"),
-        "qu" to Sound("qu", "queen", "👑", "q and u together say 'kw'"),
+        "ck" to Sound("ck", "black stone", "⬛", "c and k together make one sound"),
+        "qu" to Sound("qu", "quiet", "🤫", "q and u together say 'kw'"),
     )
 
-    /** Teaching groups — the first six letters already make many words (sat, pin, tap, nap). */
+    /** Teaching groups — the first six letters already make words (Nas, sit, tap, pin). */
     val groups = listOf(
-        "s a t p i n" to "With just these six you can read: sat, pat, tin, pin, nap, tap",
-        "m d g o c k" to "Now: mat, dog, cot, kid, map, dig",
-        "ck e u r" to "Now: duck, sock, red, bed, sun, run",
-        "h b f l" to "Now: hat, bat, fan, leg, lip, fun",
-        "j v w x y z qu" to "Now: jam, van, web, box, yes, zip, quiz",
+        "s a t p i n" to "With just these six you can read: Nas (people), sit, tap, pin",
+        "m d g o c k" to "Now: Adam, dad, Mom, mat (prayer mat)",
+        "ck e u r" to "Now: Nur (light), Eid, sun, rest",
+        "h b f l" to "Now: Rab (Lord), Bilal, halal, help",
+        "j v w x y z qu" to "Now: Hajj, Wudu, Zakat, six, Yunus, quiet",
     )
 
-    // ---- Stage 2: blending three-sound words --------------------------------------------------------
-    val shortA = listOf(w("cat", "🐱"), w("bat", "🦇"), w("hat", "🎩"), w("map", "🗺️"), w("cap", "🧢"),
-        w("bag", "👜"), w("van", "🚐"), w("jam", "🍯"), w("man", "👨"), w("pan", "🍳"))
-    val shortE = listOf(w("bed", "🛏️"), w("hen", "🐔"), w("pen", "🖊️"), w("net", "🥅"), w("ten", "🔟"),
-        w("web", "🕸️"), w("leg", "🦵"), w("jet", "✈️"), w("red", "🟥"), w("wet", "💧"))
-    val shortI = listOf(w("pig", "🐷"), w("bin", "🗑️"), w("pin", "📌"), w("lip", "👄"), w("six", "6️⃣"),
-        w("zip", "🤐"), w("kid", "🧒"), w("dig", "⛏️"), w("hit", "🏏"), w("tin", "🥫"))
-    val shortO = listOf(w("dog", "🐶"), w("log", "🪵"), w("pot", "🍲"), w("box", "📦"), w("fox", "🦊"),
-        w("mop", "🧹"), w("top", "🔝"), w("hop", "🐇"), w("dot", "🔵"), w("cot", "🛌"))
-    val shortU = listOf(w("sun", "☀️"), w("bus", "🚌"), w("cup", "☕"), w("bug", "🐛"), w("hug", "🤗"),
-        w("hut", "🛖"), w("nut", "🥜"), w("rug", "🧶"), w("gum", "🍬"), w("run", "🏃"))
+    // ---- Stage 2: blending short Islamic words (the first vowel is a short sound) ------------------------
+    val shortA = listOf(w("Rab", "🌍"), w("Nas", "👥"), w("Hajj", "🕋", "H", "a", "jj"), w("cap", "🧢"), w("dad", "👨"),
+        w("halal", "🍗"), w("lamb", "🐑"))
+    val shortE = listOf(w("help", "🤝"), w("ten", "🔟"), w("bed", "🛏️"), w("web", "🕸️"), w("pen", "🖊️"),
+        w("Medina", "🏙️"))
+    val shortI = listOf(w("gift", "🎁"), w("milk", "🥛"), w("Bilal", "📢"), w("sit", "🪑"), w("misk", "🌸"))
+    val shortO = listOf(w("box", "📦"), w("Mom", "👩"), w("mosque", "🕌", "m", "o", "s", "qu", "e"), w("socks", "🧦", "s", "o", "ck", "s"))
+    val shortU = listOf(w("Nuh", "🚢"), w("Hud", "💨"), w("Yunus", "🐋"), w("sun", "☀️"), w("cup", "☕"), w("hug", "🤗"))
 
     // ---- Stage 3: two letters, one sound ------------------------------------------------------------
     val digraphsA = listOf(
-        Sound("sh", "ship", "🚢", "put a finger on your lips: shh!"),
-        Sound("ch", "chick", "🐥"),
-        Sound("th", "thumb", "👍", "tongue between the teeth — like the Arabic ث"),
+        Sound("sh", "Shukr", "🤍", "put a finger on your lips: shh! Shukr means thankfulness to Allah"),
+        Sound("ch", "Charity", "💝"),
+        Sound("th", "thanks", "🙏", "tongue between the teeth — like the Arabic ث"),
     )
-    val digraphWordsA = listOf(w("ship", "🚢", "sh", "i", "p"), w("fish", "🐟", "f", "i", "sh"), w("shop", "🏪", "sh", "o", "p"),
-        w("chip", "🍟", "ch", "i", "p"), w("chin", "🧔", "ch", "i", "n"), w("lunch", "🥪", "l", "u", "n", "ch"),
-        w("bath", "🛁", "b", "a", "th"), w("moth", "🦋", "m", "o", "th"), w("thin", "📏", "th", "i", "n"))
+    val digraphWordsA = listOf(w("Shukr", "🤍", "Sh", "u", "k", "r"), w("fish", "🐟", "f", "i", "sh"), w("wash", "🧼", "w", "a", "sh"),
+        w("charity", "💝", "ch", "a", "r", "i", "t", "y"), w("children", "🧒", "ch", "i", "l", "d", "r", "e", "n"),
+        w("chapter", "📖", "ch", "a", "p", "t", "er"),
+        w("thanks", "🙏", "th", "a", "n", "k", "s"), w("truth", "✔️", "t", "r", "u", "th"))
     val digraphsB = listOf(
-        Sound("ck", "duck", "🦆", "c and k together make one sound"),
-        Sound("ng", "ring", "💍", "the sound comes through the nose — like ghunnah!"),
-        Sound("ll", "bell", "🔔", "two l's, one sound"),
-        Sound("ss", "kiss", "💋", "two s's, one sound"),
+        Sound("ck", "black stone", "⬛", "c and k together make one sound"),
+        Sound("ng", "king", "👑", "the sound comes through the nose — like ghunnah! Al-Malik, the King, is a name of Allah"),
+        Sound("ll", "Allah", "☝️", "two l's, one sound"),
+        Sound("ss", "bless", "✨", "two s's, one sound"),
     )
-    val digraphWordsB = listOf(w("duck", "🦆", "d", "u", "ck"), w("sock", "🧦", "s", "o", "ck"), w("rock", "🪨", "r", "o", "ck"),
-        w("ring", "💍", "r", "i", "ng"), w("king", "🤴", "k", "i", "ng"), w("sing", "🎤", "s", "i", "ng"),
-        w("bell", "🔔", "b", "e", "ll"), w("doll", "🪆", "d", "o", "ll"), w("kiss", "💋", "k", "i", "ss"))
+    val digraphWordsB = listOf(w("black", "⬛", "b", "l", "a", "ck"), w("sick", "🤒", "s", "i", "ck"),
+        w("fasting", "🍽️", "f", "a", "s", "t", "i", "ng"), w("king", "👑", "k", "i", "ng"),
+        w("Allah", "☝️", "A", "ll", "a", "h"), w("well", "💧", "w", "e", "ll"),
+        w("kindness", "💗", "k", "i", "n", "d", "n", "e", "ss"), w("bless", "✨", "b", "l", "e", "ss"))
     val digraphsC = listOf(
-        Sound("wh", "whale", "🐳"),
-        Sound("ph", "dolphin", "🐬", "p and h together say 'f'"),
-        Sound("qu", "queen", "👑", "q and u together say 'kw'"),
+        Sound("wh", "white", "⚪", "pilgrims wear white for Hajj"),
+        Sound("ph", "Prophet", "🌹", "p and h together say 'f'"),
+        Sound("qu", "quiet", "🤫", "q and u together say 'kw'. Be quiet when the Quran is recited"),
     )
-    val digraphWordsC = listOf(w("when", "⏰", "wh", "e", "n"), w("which", "🤔", "wh", "i", "ch"), w("dolphin", "🐬", "d", "o", "l", "ph", "i", "n"),
-        w("graph", "📈", "g", "r", "a", "ph"), w("quiz", "❓", "qu", "i", "z"), w("queen", "👑", "qu", "ee", "n"))
+    val digraphWordsC = listOf(w("when", "⏰", "wh", "e", "n"), w("which", "🤔", "wh", "i", "ch"),
+        w("Prophet", "🌹", "P", "r", "o", "ph", "e", "t"), w("dolphin", "🐬", "d", "o", "l", "ph", "i", "n"),
+        w("quiet", "🤫", "qu", "i", "e", "t"), w("quick", "⚡", "qu", "i", "ck"))
 
     // ---- Stage 4: long vowels ---------------------------------------------------------------------------
     val magicE = listOf(
-        w("cap", "🧢") to w("cape", "🦸", "c", "a_e", "p"),
-        w("tap", "🚰") to w("tape", "📼", "t", "a_e", "p"),
-        w("kit", "🧰") to w("kite", "🪁", "k", "i_e", "t"),
+        w("hop", "🐇") to w("hope", "🤲", "h", "o_e", "p"),
+        w("mad", "😠") to w("made", "🌸", "m", "a_e", "d"),
+        w("cub", "🐻") to w("cube", "🕋", "c", "u_e", "b"),
+        w("plan", "🗺️") to w("plane", "✈️", "p", "l", "a_e", "n"),
+        w("rip", "👖") to w("ripe", "🌴", "r", "i_e", "p"),
+        w("glob", "💧") to w("globe", "🌍", "g", "l", "o_e", "b"),
         w("pin", "📌") to w("pine", "🌲", "p", "i_e", "n"),
-        w("hop", "🐇") to w("hope", "🤞", "h", "o_e", "p"),
-        w("not", "🚫") to w("note", "📝", "n", "o_e", "t"),
-        w("cub", "🐻") to w("cube", "🧊", "c", "u_e", "b"),
         w("cut", "✂️") to w("cute", "🥰", "c", "u_e", "t"),
     )
     val vowelTeams = listOf(
-        Sound("ai", "rain", "🌧️", "ai and ay both say the name of a"), Sound("ay", "day", "🌞"),
-        Sound("ee", "tree", "🌳", "ee and ea both say the name of e"), Sound("ea", "sea", "🌊"),
-        Sound("oa", "boat", "⛵", "oa and ow (as in snow) say the name of o"), Sound("ow", "snow", "❄️"),
-        Sound("igh", "night", "🌃", "three letters, one sound: the name of i"), Sound("oo", "moon", "🌙"),
+        Sound("ai", "rain", "🌧️", "ai and ay both say the name of a"), Sound("ay", "pray", "🙇"),
+        Sound("ee", "Deen", "📗", "ee and ea both say the name of e"), Sound("ea", "peace", "🕊️"),
+        Sound("oa", "boat", "🚢", "oa and ow (as in grow) say the name of o. Prophet Nuh built the ark"), Sound("ow", "grow", "🌱"),
+        Sound("igh", "night", "🌃", "three letters, one sound: the name of i. Laylat al-Qadr is a blessed night"), Sound("oo", "moon", "🌙"),
     )
-    val teamWords = listOf(w("rain", "🌧️", "r", "ai", "n"), w("train", "🚆", "t", "r", "ai", "n"), w("play", "🛝", "p", "l", "ay"),
-        w("tree", "🌳", "t", "r", "ee"), w("bee", "🐝", "b", "ee"), w("leaf", "🍃", "l", "ea", "f"),
-        w("boat", "⛵", "b", "oa", "t"), w("goat", "🐐", "g", "oa", "t"), w("snow", "❄️", "s", "n", "ow"),
-        w("light", "💡", "l", "igh", "t"), w("night", "🌃", "n", "igh", "t"), w("moon", "🌙", "m", "oo", "n"),
-        w("food", "🍲", "f", "oo", "d"), w("zoo", "🦒", "z", "oo"))
+    val teamWords = listOf(w("rain", "🌧️", "r", "ai", "n"), w("pray", "🙇", "p", "r", "ay"), w("praise", "✨", "p", "r", "ai", "s", "e"),
+        w("Deen", "📗", "D", "ee", "n"), w("sleep", "😴", "s", "l", "ee", "p"), w("tree", "🌳", "t", "r", "ee"),
+        w("eat", "🍽️", "ea", "t"), w("peace", "🕊️", "p", "ea", "c", "e"),
+        w("boat", "🚢", "b", "oa", "t"), w("grow", "🌱", "g", "r", "ow"),
+        w("night", "🌃", "n", "igh", "t"), w("light", "💡", "l", "igh", "t"), w("right", "✋", "r", "igh", "t"),
+        w("moon", "🌙", "m", "oo", "n"), w("food", "🍲", "f", "oo", "d"))
 
-    // ---- Stage 5: tricky words (they don't follow the sound rules — learn them by sight) --------------
+    // ---- Stage 5: tricky words — learn them by sight -------------------------------------------------
     val tricky1 = listOf("the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "was")
     val tricky2 = listOf("you", "they", "all", "are", "my", "her", "said", "have", "like", "so", "do", "some")
     val tricky3 = listOf("come", "were", "there", "little", "one", "when", "out", "what", "here", "their", "people", "could")
-    val allTricky = tricky1 + tricky2 + tricky3
+    val islamicWords = listOf("Allah", "Muhammad", "Islam", "Muslim", "Quran", "Salah", "Masjid", "Ramadan", "Eid", "Sunnah", "Hadith", "Jannah")
+    val allTricky = tricky1 + tricky2 + tricky3 + islamicWords
 
     // ---- Stage 6: reading sentences -------------------------------------------------------------------
     val sentences1 = listOf(
-        Sentence("The cat sat on the mat.", "🐱", "cat"), Sentence("I can see a red bus.", "🚌", "bus"),
-        Sentence("The dog is in the box.", "🐶", "dog"), Sentence("A big fish is in the pond.", "🐟", "fish"),
-        Sentence("The sun is hot.", "☀️", "sun"), Sentence("The rabbit can run and hop.", "🐇", "rabbit"),
+        Sentence("Allah made the sun and the moon.", "☀️", "sun"), Sentence("I read the Quran every day.", "📗", "Quran"),
+        Sentence("We go to the masjid to pray.", "🕌", "masjid"), Sentence("I give charity to the poor.", "💝", "charity"),
+        Sentence("We fast in the month of Ramadan.", "🌙", "Ramadan"), Sentence("I make wudu before I pray.", "💧", "wudu"),
     )
     val sentences2 = listOf(
         Sentence("I say Bismillah before I eat.", "🍽️", "eat"), Sentence("I say Assalamu alaikum to my friend.", "👋", "friend"),
-        Sentence("I help my mum and dad at home.", "🏠", "home"), Sentence("We go to the masjid to pray.", "🕌", "masjid"),
+        Sentence("I help my mum and dad at home.", "🏠", "home"), Sentence("I give a gift on Eid.", "🎁", "gift"),
         Sentence("I make dua with my hands.", "🤲", "hands"), Sentence("I share my toys with my sister.", "🧸", "toys"),
     )
     val story = listOf(
-        Sentence("Sam has a red kite.", "🪁"), Sentence("The wind is strong.", "🌬️"),
-        Sentence("The kite goes up and up.", "⬆️"), Sentence("Oh no! It is stuck in a tree.", "🌳"),
-        Sentence("Dad helps Sam get it down.", "👨‍👦"), Sentence("Sam says, \"Thank you, Dad!\"", "😊"),
+        Sentence("It is a very hot day.", "☀️"), Sentence("Ali sees a thirsty cat.", "🐱"),
+        Sentence("He fills a cup with water.", "💧"), Sentence("The cat drinks and drinks.", "😺"),
+        Sentence("Ali says, \"Alhamdulillah!\"", "🤲"), Sentence("Allah loves those who are kind.", "💗"),
     )
 
     val stages: List<EnStage> = listOf(
-        EnStage(1, "Sounds", "Stage 1: Letters and their sounds", "26 letters & first sounds", "a b c",
+        EnStage(1, "Sounds", "Stage 1: Letters and their sounds", "A for Allah, B for Bismillah", "a b c",
             "🔤", Color(0xFFE3F2FD), Color(0xFF1565C0), listOf(
-                EnLesson("e1.1", "The alphabet", "26 letters, big and small, with a sound picture", LessonKind.ALPHABET,
-                    "Tap a letter to hear it and its keyword. Say the sound, not just the name: 'a' as in apple.",
+                EnLesson("e1.1", "The alphabet", "A for Allah, B for Bismillah, D for Dua…", LessonKind.ALPHABET,
+                    "Tap a letter to hear it and its Islamic keyword. Say the sound, not just the name: 'a' as in Allah.",
                     sounds = alphabet),
                 EnLesson("e1.2", "First sounds", "s a t p i n — then m d g o c k", LessonKind.SOUNDS,
                     "Learn the sounds in small groups. After the first six you can already read real words!",
                     sounds = sounds("s a t p i n") + sounds("m d g o c k")),
                 EnLesson("e1.3", "More sounds", "ck e u r · h b f l · j v w x y z qu", LessonKind.SOUNDS,
-                    "Tap each picture and copy the sound. Watch out: ck is one sound, and q always brings u.",
+                    "Tap each picture and copy the sound. Watch out: ck is one sound, and in English q always brings u.",
                     sounds = sounds("ck e u r") + sounds("h b f l") + sounds("j v w x y z qu")),
             )),
-        EnStage(2, "Blending", "Stage 2: Blending three sounds", "c + a + t = cat", "c·a·t",
+        EnStage(2, "Blending", "Stage 2: Reading short Islamic words", "R + a + b = Rab", "R·a·b",
             "🧩", Color(0xFFFFF4D6), Color(0xFFE0A800), listOf(
-                EnLesson("e2.1", "Short a", "cat, map, bag, jam…", LessonKind.WORDS,
-                    "Say each sound, then push them together faster and faster: c… a… t… cat!", words = shortA),
-                EnLesson("e2.2", "Short e", "bed, hen, pen, web…", LessonKind.WORDS, "e as in egg. Blend each word.", words = shortE),
-                EnLesson("e2.3", "Short i", "pig, pin, six, zip…", LessonKind.WORDS, "i as in insect. Blend each word.", words = shortI),
-                EnLesson("e2.4", "Short o", "dog, box, fox, mop…", LessonKind.WORDS, "o as in octopus. Blend each word.", words = shortO),
-                EnLesson("e2.5", "Short u", "sun, bus, cup, bug…", LessonKind.WORDS, "u as in umbrella. Blend each word.", words = shortU),
+                EnLesson("e2.1", "Short a", "Rab, Nas, Hajj, halal…", LessonKind.WORDS,
+                    "Say each sound, then push them together faster and faster: R… a… b… Rab! (Rab means Lord.)", words = shortA),
+                EnLesson("e2.2", "Short e", "help, ten, pen, Medina…", LessonKind.WORDS, "e as in egg. Blend each word.", words = shortE),
+                EnLesson("e2.3", "Short i", "gift, milk, Bilal, misk…", LessonKind.WORDS, "i as in Islam. Blend each word.", words = shortI),
+                EnLesson("e2.4", "Short o", "box, Mom, mosque, socks…", LessonKind.WORDS, "o as in olive. Blend each word.", words = shortO),
+                EnLesson("e2.5", "Short u", "Nuh, Hud, Yunus, sun…", LessonKind.WORDS,
+                    "u as in Ummah. Nuh, Hud and Yunus are prophets of Allah, peace be upon them.", words = shortU),
             )),
-        EnStage(3, "Digraphs", "Stage 3: Two letters, one sound", "sh, ch, th, ck, ng…", "sh ch th",
+        EnStage(3, "Digraphs", "Stage 3: Two letters, one sound", "Shukr, Charity, thanks…", "sh ch th",
             "👯", Color(0xFFF3E5F5), Color(0xFF6A1B9A), listOf(
-                EnLesson("e3.1", "sh · ch · th", "ship, chip, bath", LessonKind.SOUNDS,
+                EnLesson("e3.1", "sh · ch · th", "Shukr, charity, thanks", LessonKind.SOUNDS,
                     "Some letters team up to make one new sound. Read the pair as one tile.",
                     sounds = digraphsA, words = digraphWordsA),
-                EnLesson("e3.2", "ck · ng · ll · ss", "duck, ring, bell, kiss", LessonKind.SOUNDS,
+                EnLesson("e3.2", "ck · ng · ll · ss", "black stone, fasting, Allah, bless", LessonKind.SOUNDS,
                     "These teams often come at the end of a word.", sounds = digraphsB, words = digraphWordsB),
-                EnLesson("e3.3", "wh · ph · qu", "when, dolphin, quiz, queen", LessonKind.SOUNDS,
+                EnLesson("e3.3", "wh · ph · qu", "white, Prophet, quiet", LessonKind.SOUNDS,
                     "ph sounds like f, and qu sounds like kw.", sounds = digraphsC, words = digraphWordsC),
             )),
-        EnStage(4, "Long vowels", "Stage 4: Long vowel sounds", "magic e, ai, ee, oa, igh…", "a_e  ee",
+        EnStage(4, "Long vowels", "Stage 4: Long vowel sounds", "pray, Deen, peace, night…", "a_e  ee",
             "🪄", Color(0xFFE0F2F1), Color(0xFF00695C), listOf(
-                EnLesson("e4.1", "Magic e", "cap → cape, kit → kite", LessonKind.PAIRS,
-                    "A silent e at the end jumps over one letter and makes the vowel say its name.", pairs = magicE),
-                EnLesson("e4.2", "Vowel teams", "rain, tree, boat, night, moon", LessonKind.SOUNDS,
+                EnLesson("e4.1", "Magic e", "hop → hope, cub → cube", LessonKind.PAIRS,
+                    "A silent e at the end jumps over one letter and makes the vowel say its name. The Kaaba is a cube!", pairs = magicE),
+                EnLesson("e4.2", "Vowel teams", "pray, Deen, peace, night, moon", LessonKind.SOUNDS,
                     "Two (or three) vowels together often say the name of the first one.", sounds = vowelTeams, words = teamWords),
             )),
-        EnStage(5, "Tricky words", "Stage 5: Tricky words", "the, said, was, you…", "the  said",
+        EnStage(5, "Tricky words", "Stage 5: Tricky words", "the, said, was… Allah, Quran", "the  said",
             "⭐", Color(0xFFFFF8E1), Color(0xFFFF8F00), listOf(
                 EnLesson("e5.1", "Tricky words 1", tricky1.joinToString(", "), LessonKind.TRICKY,
                     "Tricky words don't follow the sound rules. Look, say, and remember them by sight.", tricky = tricky1),
@@ -206,18 +231,22 @@ object EnglishCourse {
                     "Tap each word to hear it, then say it yourself.", tricky = tricky2),
                 EnLesson("e5.3", "Tricky words 3", tricky3.joinToString(", "), LessonKind.TRICKY,
                     "Tap each word to hear it, then say it yourself.", tricky = tricky3),
-                EnLesson("e5.4", "Flash cards", "15 cards — read the word, then check", LessonKind.CARDS,
+                EnLesson("e5.4", "Islamic words", islamicWords.joinToString(", "), LessonKind.TRICKY,
+                    "These words come from Arabic. Learn to read them by sight — you will meet them in every Islamic book.",
+                    tricky = islamicWords),
+                EnLesson("e5.5", "Flash cards", "15 cards — read the word, then check", LessonKind.CARDS,
                     "Read the word out loud, then tap to hear if you were right.", tricky = allTricky),
             )),
-        EnStage(6, "Reading", "Stage 6: Reading sentences", "sentences and a little story", "📚",
+        EnStage(6, "Reading", "Stage 6: Reading sentences", "sentences and a story about kindness", "📚",
             "📚", Color(0xFFE8F5E9), Color(0xFF2E7D32), listOf(
-                EnLesson("e6.1", "Little sentences", "The cat sat on the mat.", LessonKind.SENTENCES,
+                EnLesson("e6.1", "My deen", "I read the Quran every day.", LessonKind.SENTENCES,
                     "Point to each word as you read. Tap a word to hear it, or the speaker to hear the sentence.",
                     sentences = sentences1),
                 EnLesson("e6.2", "Good manners", "I say Bismillah before I eat.", LessonKind.SENTENCES,
                     "Read about good manners from our deen.", sentences = sentences2),
-                EnLesson("e6.3", "Story: Sam's kite", "Six sentences, then talk about it", LessonKind.STORY,
-                    "Read the story. Then tell someone: what happened to the kite? Who helped?", sentences = story),
+                EnLesson("e6.3", "Story: Ali and the thirsty cat", "Six sentences, then talk about it", LessonKind.STORY,
+                    "Read the story. The Prophet ﷺ told us there is reward in being kind to every living thing. Then tell someone: what did Ali do?",
+                    sentences = story),
             )),
     )
 

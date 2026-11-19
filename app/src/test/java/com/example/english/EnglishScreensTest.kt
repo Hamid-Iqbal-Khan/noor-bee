@@ -79,6 +79,6 @@ class EnglishScreensTest {
   @Test fun letterTap_speaksSoundAndKeyword() {
     launch(1); open("english_lesson_e1.1")
     rule.onNodeWithTag("english_letter_s").performScrollTo().performClick(); rule.waitForIdle()
-    assertTrue(spoken.last() == "s, as in sun")
+    assertTrue(spoken.last() == "s, as in Salah")
   }
 }

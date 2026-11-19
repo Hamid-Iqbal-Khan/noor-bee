@@ -286,9 +286,10 @@ private fun WordRow(wd: ReadWord, speak: (String) -> Unit) {
 /** What the voice says for a sound tile: the tile and its keyword word. */
 internal fun soundOf(part: String): String {
     val all = EnglishCourse.alphabet + EnglishCourse.digraphsA + EnglishCourse.digraphsB + EnglishCourse.digraphsC + EnglishCourse.vowelTeams
-    all.firstOrNull { it.grapheme == part }?.let { return it.spoken }
-    return when (part) {
-        "a_e" -> "a, as in cake"; "i_e" -> "i, as in kite"; "o_e" -> "o, as in bone"; "u_e" -> "u, as in cube"
+    all.firstOrNull { it.grapheme == part.lowercase() }?.let { return it.spoken }
+    return when (part.lowercase()) {
+        "a_e" -> "a, as in made"; "i_e" -> "i, as in ripe"; "o_e" -> "o, as in hope"; "u_e" -> "u, as in cube"
+        "jj" -> "j, as in Hajj"; "er" -> "er, as in chapter"
         else -> part
     }
 }

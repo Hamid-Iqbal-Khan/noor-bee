@@ -111,6 +111,11 @@ class QaidaEnglishDataTest {
       assertEquals("tiles of ${w.word}", w.word.toCharArray().sorted(), joined.toCharArray().sorted())
     }
     assertEquals(26, EnglishCourse.alphabet.size)
+    // every letter has an Islamic keyword, as asked: A for Allah, B for Bismillah, C for Charity, D for Dua
+    assertEquals(listOf("Allah", "Bismillah", "Charity", "Dua"), EnglishCourse.alphabet.take(4).map { it.keyword })
+    val stage2 = EnglishCourse.shortA + EnglishCourse.shortE + EnglishCourse.shortI + EnglishCourse.shortO + EnglishCourse.shortU
+    assertTrue(stage2.none { it.word in setOf("cat", "dog", "pig", "fox") })
+    stage2.forEach { assertTrue("first vowel of ${it.word}", it.parts[1].lowercase() in setOf("a", "e", "i", "o", "u")) }
   }
 
   @Test fun englishCourse_quizzesHaveOneRightAnswer() {
@@ -126,7 +131,7 @@ class QaidaEnglishDataTest {
         }
         if (q.instruction.startsWith("Which letter does")) {
           val kw = q.instruction.substringAfter('\'').substringBefore('\'')
-          assertTrue(kw.startsWith(q.options[q.correctIndex]))
+          assertTrue(kw.lowercase().startsWith(q.options[q.correctIndex]))
         }
       }
     }
