@@ -269,15 +269,19 @@ private fun WordRow(wd: ReadWord, speak: (String) -> Unit) {
     Card(Modifier.fillMaxWidth().testTag("english_word_${wd.word}"), colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, Line)) {
         Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            // long words (charity, children) get smaller tiles so the word stays on one line
+            val long = wd.parts.size > 5
             wd.parts.forEachIndexed { i, p ->
-                if (i > 0) T("+", Modifier.padding(horizontal = 3.dp), size = 16.sp, color = Quiet)
-                Box(Modifier.background(Tile, RoundedCornerShape(8.dp)).clickable { speak(soundOf(p)) }.padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    T(p, size = 20.sp, color = TileInk, weight = FontWeight.Bold)
+                if (i > 0) T("+", Modifier.padding(horizontal = if (long) 1.dp else 3.dp), size = if (long) 12.sp else 16.sp, color = Quiet)
+                Box(Modifier.background(Tile, RoundedCornerShape(8.dp)).clickable { speak(soundOf(p)) }
+                    .padding(horizontal = if (long) 5.dp else 8.dp, vertical = 4.dp)) {
+                    T(p, size = if (long) 16.sp else 20.sp, color = TileInk, weight = FontWeight.Bold)
                 }
             }
-            T("=", Modifier.padding(horizontal = 6.dp), size = 18.sp, color = Quiet)
+            T("=", Modifier.padding(horizontal = if (long) 3.dp else 6.dp), size = 18.sp, color = Quiet)
             Box(Modifier.weight(1f).clickable { speak(wd.word) }.testTag("english_say_${wd.word}")) {
-                T("${wd.word} ${wd.emoji}", size = 22.sp, color = Green, weight = FontWeight.Bold)
+                Text("${wd.word} ${wd.emoji}", color = Green, fontSize = if (long) 18.sp else 22.sp, fontWeight = FontWeight.Bold,
+                    maxLines = 1, softWrap = false)
             }
         }
     }
