@@ -1,0 +1,920 @@
+QaidaData.kt	ہونٹ
+QaidaData.kt	جوف (منہ اور حلق کا خالی حصہ)
+QaidaData.kt	الف خود ساکن رہتا ہے؛ اپنے سے پہلے والے حرف کی آواز کو لمبا کرتا ہے۔ حرکت والا الف دراصل ہمزہ (ء) ہوتا ہے۔
+QaidaData.kt	دونوں ہونٹوں کے تر حصے کو ملا کر۔
+QaidaData.kt	زبان کی نوک اوپر کے سامنے والے دانتوں کی جڑ سے لگا کر، باریک آواز۔
+QaidaData.kt	ط سے الگ رکھیں: ت باریک ہے، ط موٹی۔
+QaidaData.kt	زبان کی نوک اوپر کے سامنے والے دانتوں کے کنارے سے لگا کر، نرم آواز۔
+QaidaData.kt	اردو میں اسے 'س' پڑھتے ہیں۔ قرآن میں 'س' نہ پڑھیں؛ زبان کی نوک دانتوں کے کنارے پر رکھیں۔
+QaidaData.kt	جِیْم
+QaidaData.kt	زبان کے بیچ کا حصہ اوپر کے تالو سے لگا کر۔
+QaidaData.kt	حلق کے بیچ کے حصے سے، صاف سانس کی طرح، کھرکھراہٹ کے بغیر۔
+QaidaData.kt	اردو میں ح اور ہ ایک جیسے بولے جاتے ہیں۔ ح حلق کے بیچ سے ہے، ہ حلق کے آخری حصے سے۔
+QaidaData.kt	حلق کے اوپر والے حصے سے (منہ کے قریب)۔
+QaidaData.kt	زبان کی نوک اوپر کے سامنے والے دانتوں کی جڑ سے لگا کر۔
+QaidaData.kt	اردو کے 'ڈ' کی طرح زبان پیچھے نہ موڑیں۔
+QaidaData.kt	اردو میں اسے 'ز' پڑھتے ہیں۔ قرآن میں زبان کی نوک دانتوں کے کنارے پر رکھیں۔
+QaidaData.kt	زبان کی نوک اور اس کے ساتھ کا حصہ اوپر کے تالو سے لگا کر۔
+QaidaData.kt	اردو کے 'ڑ' کی طرح زبان نہ موڑیں۔
+QaidaData.kt	زبان کی نوک نیچے کے دانتوں کے قریب، سیٹی جیسی آواز (صفیر)۔
+QaidaData.kt	سِیْن
+QaidaData.kt	زبان کی نوک نیچے کے دانتوں کے قریب، سیٹی جیسی باریک آواز (صفیر)۔
+QaidaData.kt	شِیْن
+QaidaData.kt	زبان کے بیچ کا حصہ اوپر کے تالو سے لگا کر، آواز پھیلا کر۔
+QaidaData.kt	س کی جگہ سے، مگر منہ بھر کر موٹی آواز۔
+QaidaData.kt	اردو میں اسے 'س' پڑھتے ہیں۔ قرآن میں ص کی آواز موٹی (پُر) ہے۔
+QaidaData.kt	زبان کی کروٹ (کنارہ) اوپر کی داڑھوں سے لگا کر، موٹی آواز۔
+QaidaData.kt	اردو میں اسے 'ز' پڑھتے ہیں۔ یہ سب سے مشکل حرف ہے؛ استاد سے سن کر مشق کریں۔
+QaidaData.kt	ت کی جگہ سے، مگر منہ بھر کر موٹی آواز۔
+QaidaData.kt	اردو میں ت اور ط ایک جیسے بولے جاتے ہیں۔ ط موٹی (پُر) ہے۔
+QaidaData.kt	ذ کی جگہ سے (زبان کی نوک دانتوں کے کنارے)، مگر موٹی آواز۔
+QaidaData.kt	اردو میں اسے 'ز' پڑھتے ہیں۔ ظ کی آواز ذ جیسی مگر موٹی ہے۔
+QaidaData.kt	عَیْن
+QaidaData.kt	حلق کے بیچ کے حصے سے، آواز کو ہلکا سا دبا کر۔
+QaidaData.kt	اردو میں ع کو الف کی طرح پڑھ لیتے ہیں۔ قرآن میں ع کی آواز حلق کے بیچ سے صاف نکالیں۔
+QaidaData.kt	غَیْن
+QaidaData.kt	نیچے کے ہونٹ کا اندرونی حصہ اوپر کے دانتوں کے کنارے سے لگا کر۔
+QaidaData.kt	زبان کی جڑ کوّے کے قریب نرم تالو سے لگا کر، موٹی آواز۔
+QaidaData.kt	اردو میں ق کو اکثر 'ک' بولتے ہیں۔ ق کی جگہ ک سے پیچھے ہے اور آواز موٹی ہے۔
+QaidaData.kt	کَاف
+QaidaData.kt	زبان کی جڑ سے ذرا آگے کا حصہ تالو سے لگا کر، باریک آواز۔
+QaidaData.kt	ک
+QaidaData.kt	زبان کا کنارہ (نوک کے قریب) اوپر کے سامنے والے دانتوں کے مسوڑوں سے لگا کر۔
+QaidaData.kt	مِیْم
+QaidaData.kt	دونوں ہونٹوں کے خشک حصے کو ملا کر۔
+QaidaData.kt	زبان کی نوک اوپر کے مسوڑوں سے لگا کر۔
+QaidaData.kt	دونوں ہونٹوں کو گول کر کے، پوری طرح ملائے بغیر۔
+QaidaData.kt	اردو کے 'و' کی طرح دانت ہونٹ پر نہ لگائیں؛ صرف ہونٹ گول کریں۔
+QaidaData.kt	ہَا
+QaidaData.kt	حلق کے سب سے آخری حصے سے (سینے کے قریب)، ہلکی آواز۔
+QaidaData.kt	قرآن میں اس کی شکل ه ہے، اردو کی ہ / ھ نہیں۔
+QaidaData.kt	ہ
+QaidaData.kt	ہَمْزَہ
+QaidaData.kt	حلق کے سب سے آخری حصے سے، ہلکے جھٹکے کے ساتھ۔
+QaidaData.kt	یَا
+QaidaData.kt	عربی ي کے نیچے دو نقطے ہوتے ہیں؛ اردو میں آخر میں ی / ے لکھتے ہیں۔
+QaidaData.kt	ی
+QaidaData.kt	اردو میں تینوں کو 'س' بولتے ہیں۔ ث میں زبان کی نوک اوپر کے دانتوں کے کنارے پر رکھیں (نرم آواز)، ص کو منہ بھر کر موٹی آواز سے پڑھیں۔
+QaidaData.kt	سننے والا
+QaidaData.kt	پھر
+QaidaData.kt	اردو میں چاروں کو 'ز' بولتے ہیں۔ ذ: زبان کی نوک دانتوں کے کنارے پر، نرم آواز۔ ظ: یہی جگہ مگر موٹی آواز۔ ض: زبان کی کروٹ اوپر کی داڑھوں سے، موٹی آواز۔
+QaidaData.kt	زیتون
+QaidaData.kt	یاد
+QaidaData.kt	سایہ
+QaidaData.kt	چاشت کا وقت
+QaidaData.kt	ت باریک آواز ہے؛ ط اسی جگہ سے مگر منہ بھر کر موٹی آواز ہے۔
+QaidaData.kt	انجیر
+QaidaData.kt	پاکیزہ
+QaidaData.kt	ہ حلق کے آخری حصے سے ہلکی آواز ہے؛ ح حلق کے بیچ سے، صاف سانس کی طرح۔
+QaidaData.kt	ہدایت
+QaidaData.kt	تعریف
+QaidaData.kt	ء (حرکت والا الف) حلق کے آخری حصے سے ہلکے جھٹکے کے ساتھ؛ ع حلق کے بیچ سے دبا کر۔
+QaidaData.kt	ایک
+QaidaData.kt	ک باریک آواز ہے؛ ق زبان کی جڑ سے، ک سے پیچھے، موٹی آواز۔
+QaidaData.kt	کتاب
+QaidaData.kt	حرف کے اوپر ترچھی لکیر — 'اَ' کی چھوٹی آواز
+QaidaData.kt	زِیر
+QaidaData.kt	حرف کے نیچے ترچھی لکیر — 'اِ' کی چھوٹی آواز
+QaidaData.kt	پیش
+QaidaData.kt	حرف کے اوپر چھوٹا واؤ — 'اُ' کی چھوٹی آواز
+QaidaJuzAmma.kt	مرحلہ ۸: الہمزہ سے الضحیٰ تک
+QaidaJuzAmma.kt	الھمزہ ← الضحیٰ
+QaidaJuzAmma.kt	مرحلہ ۹: اللیل سے البروج تک
+QaidaJuzAmma.kt	اللیل ← البروج
+QaidaJuzAmma.kt	مرحلہ ۱۰: الانشقاق سے النبأ تک
+QaidaJuzAmma.kt	سورۃ التکویر
+QaidaJuzAmma.kt	سورۃ المطففین
+QaidaJuzAmma.kt	سورۃ الاعلیٰ
+QaidaJuzAmma.kt	سورۃ الغاشیہ
+QaidaJuzAmma.kt	سورۃ اللیل
+QaidaJuzAmma.kt	سورۃ الضحیٰ
+QaidaJuzAmma.kt	سورۃ التین
+QaidaJuzAmma.kt	سورۃ البینہ
+QaidaJuzAmma.kt	سورۃ العادیات
+QaidaJuzAmma.kt	سورۃ القارعہ
+QaidaJuzAmma.kt	سورۃ التکاثر
+QaidaJuzAmma.kt	سورۃ الہمزہ
+QaidaJuzAmma.kt	یہ کس سورت کی پہلی آیت ہے؟
+QaidaJuzAmma.kt	اس لفظ کا مطلب کیا ہے؟
+QaidaJuzAmma.kt	قرآن کا متن: معیاری (تنزیل) متن، انڈو پاک طرز کے نشانات کے ساتھ۔ معانی بچوں کے لیے آسان اردو میں ہیں؛ استاد اور کسی مستند ترجمے سے ملا کر پڑھیں۔
+QaidaJuzAmma.kt	میں نے یہ سورت پڑھ لی ✓
+QaidaJuzAmma.kt	آسان مفہوم
+QaidaNotes.kt	قرآن کی پہلی سورت، اسے 'اُمُّ القرآن' بھی کہتے ہیں۔ ہر نماز کی ہر رکعت میں پڑھی جاتی ہے؛ اس میں اللہ کی تعریف اور سیدھے راستے کی دعا ہے۔
+QaidaNotes.kt	اس سورت میں اللہ کی توحید (ایک ہونا) بیان ہے۔ نبی ﷺ نے فرمایا کہ یہ سورت ایک تہائی قرآن کے برابر ہے۔
+QaidaNotes.kt	جب دشمنوں نے طعنہ دیا کہ نبی ﷺ کا نام آگے نہیں چلے گا تو اللہ نے آپ ﷺ کو تسلی دی کہ آپ کو بہت بھلائی دی گئی ہے۔
+QaidaNotes.kt	تین آیتوں میں کامیابی کے چار اصول: ایمان، نیک کام، حق کی نصیحت اور صبر کی نصیحت۔
+QaidaNotes.kt	یہ اور اگلی سورت 'مُعَوِّذَتَین' (پناہ کی دو سورتیں) کہلاتی ہیں۔ نبی ﷺ سوتے وقت انہیں پڑھ کر ہاتھوں پر دم کرتے اور جسم پر پھیرتے تھے۔
+QaidaNotes.kt	پناہ کی دوسری سورت: اندر کے وسوسوں سے اللہ کی پناہ۔ سونے سے پہلے اور صبح و شام پڑھنا سنت ہے۔
+QaidaNotes.kt	نبی ﷺ کی پیدائش کے سال یمن کا حاکم ابرہہ ہاتھیوں والا لشکر لے کر کعبہ گرانے آیا۔ اللہ نے پرندوں کے ذریعے کنکریاں برسا کر پورا لشکر تباہ کر دیا۔
+QaidaNotes.kt	قریش مکہ کے تاجر تھے؛ سردیوں میں یمن اور گرمیوں میں شام کا تجارتی سفر کرتے تھے۔ کعبہ کی برکت سے ان کے سفر محفوظ تھے، اس لیے انہیں کعبہ کے رب کی عبادت کا حکم ہے۔
+QaidaNotes.kt	دین صرف نماز کا نام نہیں: یتیم اور غریب کا خیال رکھنا، دکھاوے سے بچنا اور چھوٹی چھوٹی مدد کرنا بھی دین ہے۔
+QaidaNotes.kt	مکہ کے سرداروں نے پیشکش کی کہ کچھ دن آپ ﷺ ان کے بتوں کی عبادت کریں اور کچھ دن وہ اللہ کی۔ اس پر یہ سورت اتری: عبادت میں کوئی سودا نہیں۔
+QaidaNotes.kt	فتحِ مکہ اور لوگوں کے جوق در جوق اسلام قبول کرنے کی خوشخبری۔ اسے آخری مکمل نازل ہونے والی سورت کہا جاتا ہے۔
+QaidaNotes.kt	ابو لہب نبی ﷺ کا چچا تھا مگر آپ ﷺ کا سخت دشمن؛ اس کی بیوی آپ ﷺ کے راستے میں کانٹے بچھاتی تھی۔ رشتہ داری ایمان کے بغیر کام نہیں آتی۔
+QaidaNotes.kt	طعنہ دینے، غیبت کرنے اور مال پر گھمنڈ کرنے کا انجام۔
+QaidaNotes.kt	زیادہ سے زیادہ جمع کرنے کی دوڑ انسان کو اللہ سے غافل کر دیتی ہے؛ ہر نعمت کا حساب ہوگا۔
+QaidaNotes.kt	قیامت کے دن زمین سب کچھ بتا دے گی؛ ذرّہ برابر نیکی بھی ضائع نہیں ہوتی۔
+QaidaNotes.kt	قرآن شبِ قدر میں اترا۔ یہ رات رمضان کی آخری دس راتوں میں (خاص طور پر طاق راتوں میں) تلاش کی جاتی ہے۔
+QaidaNotes.kt	اس کی پہلی پانچ آیتیں سب سے پہلی وحی ہیں جو غارِ حرا میں نبی ﷺ پر اتریں۔ آخری آیت سجدے کی آیت ہے۔
+QaidaNotes.kt	مشکل وقت میں نبی ﷺ کو تسلی: ہر مشکل کے ساتھ آسانی ہے۔
+QaidaNotes.kt	کچھ دن وحی رکی رہی تو دشمنوں نے کہا کہ رب نے چھوڑ دیا۔ اس پر یہ سورت تسلی کے لیے اتری۔
+QaidaNotes.kt	قومِ ثمود کا واقعہ: انہوں نے اللہ کی نشانی اونٹنی کو مار ڈالا اور تباہ ہوئے۔ کامیابی دل کو پاک رکھنے میں ہے۔
+QaidaNotes.kt	عاد، ثمود اور فرعون جیسی طاقتور قوموں کا انجام، اور 'اطمینان والی جان' کی خوشخبری۔
+QaidaNotes.kt	نبی ﷺ جمعہ اور عید کی نماز میں اکثر یہ سورت (اور الغاشیہ) پڑھتے تھے۔
+QaidaNotes.kt	پچھلے زمانے کے کچھ ایمان والوں کو صرف ایمان کی وجہ سے آگ کی کھائیوں میں ڈالا گیا؛ اللہ نے ظالموں کے انجام کی خبر دی۔
+QaidaNotes.kt	قیامت کے مناظر۔ نبی ﷺ نے فرمایا: جو قیامت کو آنکھوں سے دیکھنا چاہے وہ التکویر، الانفطار اور الانشقاق پڑھے۔
+QaidaNotes.kt	نبی ﷺ مکہ کے سرداروں کو اسلام کی دعوت دے رہے تھے کہ نابینا صحابی حضرت عبداللہ بن ام مکتومؓ دین سیکھنے آئے۔ اللہ نے سکھایا کہ سچا طالبِ علم زیادہ توجہ کا حق دار ہے۔ بعد میں نبی ﷺ ان کی بہت عزت فرماتے تھے۔
+QaidaNotes.kt	اس سورت سے پارہ عمّ شروع ہوتا ہے: قیامت کی 'بڑی خبر'، اللہ کی نعمتیں، اور جنت و دوزخ۔
+QaidaNotes.kt	نبی ﷺ کا ادب ہر حال میں لازم ہے۔ بچوں کو بتائیں کہ یہاں اللہ نے ہمیں سکھایا کہ ہر طالبِ علم کی قدر کریں، چاہے وہ غریب ہو یا نابینا۔
+QaidaNotes.kt	جاہلیت کے زمانے میں کچھ لوگ بیٹیوں کو زندہ دفن کر دیتے تھے۔ اسلام نے اسے بڑا گناہ کہا اور بیٹیوں کو عزت دی۔ چھوٹے بچوں کو نرمی سے مختصر بتائیں۔
+QaidaNotes.kt	جنت کی نعمتوں کا ذکر ہے۔ چھوٹے بچوں کو بس اتنا بتانا کافی ہے کہ جنت میں ہر خوشی اور ہر اچھی چیز ہوگی۔
+QaidaNotes.kt	اللہ کو مخلوق جیسا نہ سمجھیں؛ وہ ویسے آئے گا جیسے اس کی شان کے لائق ہے۔
+QaidaNotes.kt	یہ سورت کسی کو برا کہنا نہیں سکھاتی؛ یہ بتاتی ہے کہ اللہ کے رسول ﷺ سے دشمنی کا انجام برا ہے۔
+QaidaNotes.kt	گلا: آخر، بیچ، شروع
+QaidaNotes.kt	ء ہ · ع ح · غ خ
+QaidaNotes.kt	زبان کی جڑ سے نوک تک
+QaidaNotes.kt	ق ک ج ش ی ض ل ن ر ط د ت ص ز س ظ ذ ث
+QaidaNotes.kt	دونوں ہونٹ
+QaidaNotes.kt	منہ اور حلق کا خالی حصہ
+QaidaNotes.kt	مدّ والے: ا و ی
+QaidaNotes.kt	خیشوم
+QaidaNotes.kt	ناک کا بانسہ
+QaidaNotes.kt	غنّہ: نّ مّ
+QaidaNotes.kt	📍 مخارج کا نقشہ ▲
+QaidaNotes.kt	📍 مخارج کا نقشہ — حرف کہاں سے نکلتا ہے؟ (دیکھنے کے لیے ٹیپ کریں) ▼
+QaidaNotes.kt	آواز حلق سے شروع ہو کر ہونٹوں تک آتی ہے — اسی ترتیب سے مخارج ہیں۔ ہر حرف پر ٹیپ کر کے اس کا اپنا مخرج پڑھیں۔
+QaidaProgress.kt	جوڑ
+QaidaProgress.kt	معنی
+QaidaProgress.kt	سورتیں
+QaidaProgress.kt	تجوید
+QaidaProgress.kt	گرامر
+QaidaQuiz.kt	اس حرف کا نام کیا ہے؟
+QaidaQuiz.kt	اس حرف پر کون سی حرکت ہے؟
+QaidaScreens.kt	).toInt())} کی مشق
+QaidaScreens.kt	سبق ۲: ملتی جلتی آوازیں
+QaidaScreens.kt	سبق ۳: حرکات — زبر، زیر، پیش
+QaidaScreens.kt	سبق ۱: مرکبات — حروف ملانا
+QaidaScreens.kt	سبق ۳: تنوین
+QaidaScreens.kt	سبق ۴: کھڑا زبر، کھڑی زیر، اُلٹا پیش
+QaidaScreens.kt	سبق ۵: حروفِ مدّہ و لین
+QaidaScreens.kt	مرحلہ ۲ کی مشق
+QaidaScreens.kt	سبق ۱: تشدید
+QaidaScreens.kt	سبق ۲: غنّہ اور تشدید والے الفاظ
+QaidaScreens.kt	سبق ۳: مدّ کا نشان
+QaidaScreens.kt	سبق ۴: حروفِ شمسی و قمری
+QaidaScreens.kt	سبق ۵: سورۃ الفاتحہ
+QaidaScreens.kt	مرحلہ ۳ کی مشق
+QaidaScreens.kt	سبق ۱: وقف کا طریقہ
+QaidaScreens.kt	سبق ۳: قلقلہ
+QaidaScreens.kt	سبق ۴: الکوثر اور العصر
+QaidaScreens.kt	مرحلہ ۴ کی مشق
+QaidaScreens.kt	سبق ۱: قرآن کے عام الفاظ
+QaidaScreens.kt	سبق ۲: میرا، تیرا، اس کا
+QaidaScreens.kt	سبق ۳: الفاتحہ لفظ بہ لفظ
+QaidaScreens.kt	سبق ۴: الاخلاص، الکوثر، العصر
+QaidaScreens.kt	مرحلہ ۵ کی مشق
+QaidaScreens.kt	سبق ۱: الفیل اور قریش
+QaidaScreens.kt	سبق ۳: الکافرون اور النصر
+QaidaScreens.kt	سبق ۵: مطلب بتائیں
+QaidaScreens.kt	مرحلہ ۶ کی مشق
+QaidaScreens.kt	سبق ۱: اظہار
+QaidaScreens.kt	سبق ۵: میم ساکن
+QaidaScreens.kt	سبق ۶: قاعدہ پہچانیں
+QaidaScreens.kt	مرحلہ ۷ کی مشق
+QaidaScreens.kt	سبق ۱: مادہ (جڑ)
+QaidaScreens.kt	سبق ۲: سانچے (اوزان)
+QaidaScreens.kt	سبق ۳: ماضی — کس نے کیا
+QaidaScreens.kt	سبق ۴: مضارع — کون کرتا ہے
+QaidaScreens.kt	سبق ۵: حکم اور 'نہیں'
+QaidaScreens.kt	سبق ۶: مادہ جاسوس
+QaidaScreens.kt	مرحلہ ۱۱ کی مشق
+QaidaScreens.kt	نورانی قاعدہ
+QaidaScreens.kt	🔈 آیات اور قرآنی الفاظ: قاری مشاری العفاسی کی تلاوت (پہلی بار انٹرنیٹ چاہیے، پھر فون میں محفوظ)۔ اکیلے حروف اور حرکات ابھی فون کی آواز میں ہیں؛ قاری صاحب کی ریکارڈنگ جلد۔
+QaidaScreens.kt	۲: جوڑ
+QaidaScreens.kt	۵: معنی
+QaidaScreens.kt	۶: سورتیں
+QaidaScreens.kt	۷: تجوید
+QaidaScreens.kt	۱۱: گرامر
+QaidaScreens.kt	مرحلہ ۱: حروف اور پہلی آوازیں
+QaidaScreens.kt	روزانہ ۵ سے ۱۰ منٹ۔ ہر سبق کے بعد مشق کریں۔
+QaidaScreens.kt	ملتی جلتی آوازیں
+QaidaScreens.kt	وہ حروف جو اردو میں ایک جیسے بولے جاتے ہیں: س ث ص، ز ذ ظ ض، ت ط، ہ ح، ء ع، ک ق
+QaidaScreens.kt	حرکات: زبر، زیر، پیش
+QaidaScreens.kt	تختی ۴ — ہر حرف تین حرکتوں کے ساتھ، ہجے سمیت
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۱ مکمل
+QaidaScreens.kt	ماشاء اللہ! مرحلہ ۱ مکمل۔ اب مرحلہ ۲ (حروف ملا کر پڑھنا) شروع کریں ←
+QaidaScreens.kt	مرحلہ ۲: حروف جوڑنا اور نشانات
+QaidaScreens.kt	تختی ۲ تا ۹ — مرکبات، مقطعات، تنوین، کھڑی حرکات، مدّ و لین، جزم
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ۱ کی مشق مکمل کر لیں، پھر یہاں آئیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	مرکبات: حروف ملانا
+QaidaScreens.kt	تختی ۲–۳ — حرف کی شروع، درمیان اور آخر کی شکل؛ ا د ذ ر ز و آگے نہیں جڑتے
+QaidaScreens.kt	تختی ۳ — سورتوں کے شروع کے ۱۴ حروف، الگ الگ نام سے پڑھیں
+QaidaScreens.kt	تنوین: دو زبر، دو زیر، دو پیش
+QaidaScreens.kt	تختی ۵ — آخر میں 'ن' کی آواز: بًا بٍ بٌ
+QaidaScreens.kt	کھڑا زبر، کھڑی زیر، اُلٹا پیش
+QaidaScreens.kt	تختی ۶ — حرکت کو لمبا پڑھنا: بٰ بٖ بٗ
+QaidaScreens.kt	حروفِ مدّہ و لین
+QaidaScreens.kt	تختی ۷–۸ — ا و ی سے لمبی آواز، اور نرم آواز: بَا بُو بِی، بَوْ بَیْ
+QaidaScreens.kt	جزم (سکون)
+QaidaScreens.kt	تختی ۹ — ساکن حرف کو پچھلے حرف سے ملانا: اَبْ، قُلْ
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۲ مکمل
+QaidaScreens.kt	ماشاء اللہ! مرحلہ ۲ مکمل۔ اب مرحلہ ۳ (تشدید اور تلاوت) شروع کریں ←
+QaidaScreens.kt	مرحلہ ۳: تشدید اور پہلی تلاوت
+QaidaScreens.kt	تشدید، غنّہ، مدّ کا نشان، لامِ شمسی و قمری — پھر سورۃ الفاتحہ اور سورۃ الاخلاص
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ۲ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	تشدید
+QaidaScreens.kt	حرف دو بار — اَبَّ اِبِّ اُبُّ، ہر حرف پر ہجے کے ساتھ
+QaidaScreens.kt	غنّہ اور تشدید والے الفاظ
+QaidaScreens.kt	نّ مّ پر ناک کی آواز؛ رَبِّ، كُلُّ، عَلَّمَ
+QaidaScreens.kt	مدّ کا نشان (~)
+QaidaScreens.kt	زیادہ لمبی آواز: جَآءَ، السَّمَآءُ
+QaidaScreens.kt	حروفِ شمسی و قمری
+QaidaScreens.kt	اَلشَّمْسُ میں لام خاموش، اَلْقَمَرُ میں لام پڑھا جاتا ہے
+QaidaScreens.kt	تلاوت: سورۃ الفاتحہ
+QaidaScreens.kt	سات آیتیں، ہر آیت میں آنے والے اصول کے ساتھ
+QaidaScreens.kt	چار آیتیں
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۳ مکمل
+QaidaScreens.kt	ماشاء اللہ! مرحلہ ۳ مکمل۔ اب مرحلہ ۴ (وقف اور مختصر سورتیں) شروع کریں ←
+QaidaScreens.kt	مرحلہ ۴: وقف اور مختصر سورتیں
+QaidaScreens.kt	رکنے کا طریقہ، رموزِ اوقاف، قلقلہ — پھر الکوثر، العصر، الفلق اور الناس
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ۳ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	وقف کا طریقہ
+QaidaScreens.kt	رکتے وقت آخری حرف ساکن: اَحَدٌ ← اَحَدْ، عَلِيْمًا ← عَلِيْمَا
+QaidaScreens.kt	۝ م ط ج ز ص لا — کہاں رکنا ہے اور کہاں ملانا ہے
+QaidaScreens.kt	قلقلہ
+QaidaScreens.kt	ق ط ب ج د پر جزم ہو تو اچھلتی آواز
+QaidaScreens.kt	تلاوت: الکوثر اور العصر
+QaidaScreens.kt	دو چھوٹی سورتیں، ہر آیت پر وقف کے ساتھ
+QaidaScreens.kt	پانچ آیتیں — ہر آیت کے آخر میں قلقلہ
+QaidaScreens.kt	چھ آیتیں — غنّہ اور لامِ شمسی
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۴ مکمل
+QaidaScreens.kt	ماشاء اللہ! قاعدہ مکمل۔ اب مرحلہ ۵ میں جو پڑھا اس کا مطلب سیکھیں ←
+QaidaScreens.kt	رَبُّنَا  ·  ہمارا رب
+QaidaScreens.kt	مرحلہ ۵: قرآن سمجھیں
+QaidaScreens.kt	عام قرآنی الفاظ، ضمیریں، پھر الفاتحہ اور مختصر سورتیں لفظ بہ لفظ
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ۴ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	قرآن کے عام الفاظ
+QaidaScreens.kt	میرا، تیرا، اس کا
+QaidaScreens.kt	رَبُّنَا ہمارا رب، رَبُّكَ تیرا رب، رَبِّيْ میرا رب
+QaidaScreens.kt	الفاتحہ لفظ بہ لفظ
+QaidaScreens.kt	ہر لفظ کے نیچے اس کا اردو مطلب
+QaidaScreens.kt	الاخلاص، الکوثر، العصر
+QaidaScreens.kt	تین چھوٹی سورتیں لفظ بہ لفظ
+QaidaScreens.kt	پناہ مانگنے کی دو سورتیں لفظ بہ لفظ
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۵ مکمل
+QaidaScreens.kt	ماشاء اللہ! اب مرحلہ ۶ میں باقی چھوٹی سورتیں سمجھیں ←
+QaidaScreens.kt	الفیل ← المسد
+QaidaScreens.kt	مرحلہ ۶: چھوٹی سورتیں سمجھیں
+QaidaScreens.kt	پارہ عمّ کی باقی چھ سورتیں لفظ بہ لفظ، پھر مطلب بتانے کی مشق
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ۵ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	الفیل اور قریش
+QaidaScreens.kt	ہاتھی والوں کا واقعہ، اور قریش پر اللہ کی نعمت
+QaidaScreens.kt	سات آیتیں — یتیم، مسکین اور نماز
+QaidaScreens.kt	الکافرون اور النصر
+QaidaScreens.kt	تمہارا دین تمہارے لیے؛ اللہ کی مدد اور فتح
+QaidaScreens.kt	پانچ آیتیں لفظ بہ لفظ
+QaidaScreens.kt	مطلب بتائیں (کارڈ)
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۶ مکمل
+QaidaScreens.kt	ماشاء اللہ! اب مرحلہ ۷ میں نون اور میم ساکن کے قاعدے سیکھیں ←
+QaidaScreens.kt	مرحلہ ۷: نون اور میم ساکن
+QaidaScreens.kt	اظہار، ادغام، اقلاب، اخفاء — اور میم ساکن کے تین قاعدے
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ۶ کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	اظہار
+QaidaScreens.kt	حلق کے ۶ حروف سے پہلے نون صاف: اَنْعَمْتَ، مِنْ خَوْفٍ
+QaidaScreens.kt	ی ن م و میں غنّہ کے ساتھ، ل ر میں بغیر غنّہ: مِنْ مَّسَدٍ، يَكُنْ لَّهٗ
+QaidaScreens.kt	ب سے پہلے نون میم بن جاتا ہے: مِنْۢ بَعْدِ
+QaidaScreens.kt	باقی ۱۵ حروف سے پہلے نون چھپا کر: مِنْ شَرِّ، اَنْتُمْ
+QaidaScreens.kt	میم ساکن
+QaidaScreens.kt	اخفائے شفوی، ادغامِ شفوی، اظہارِ شفوی
+QaidaScreens.kt	قاعدہ پہچانیں
+QaidaScreens.kt	پڑھی ہوئی سورتوں کی مثالیں — خود بتائیں، پھر جواب دیکھیں
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ ۷ مکمل
+QaidaScreens.kt	ماشاء اللہ! قاعدہ کے سب قاعدے مکمل۔ اب مرحلہ ۸ میں پارہ عمّ کی باقی سورتیں سمجھیں ←
+QaidaScreens.kt	۱۰ سوال  ·  ۸ درست پر مرحلہ مکمل
+QaidaScreens.kt	ماشاء اللہ! پورا پارہ عمّ پڑھ اور سمجھ لیا۔ اب مرحلہ ۱۱ میں قرآنی گرامر سیکھیں ←
+QaidaScreens.kt	مرحلہ ۱۱: قرآنی گرامر کی بنیادیں
+QaidaScreens.kt	مادہ، سانچے، ماضی اور مضارع، حکم اور نفی — اردو کے جانے پہچانے الفاظ سے
+QaidaScreens.kt	مشورہ: یہ مرحلہ کسی بھی وقت پڑھا جا سکتا ہے، مگر پہلے کچھ سورتیں سمجھ لینا مفید ہے۔
+QaidaScreens.kt	مادہ (جڑ)
+QaidaScreens.kt	تین حرفی جڑ: ع ل م سے علم، عالم، معلوم
+QaidaScreens.kt	سانچے (اوزان)
+QaidaScreens.kt	فَاعِل کرنے والا، مَفْعُوْل جس پر ہوا، فَعِيْل بہت زیادہ، مَفْعَل جگہ
+QaidaScreens.kt	ماضی — کس نے کیا
+QaidaScreens.kt	مضارع — کون کرتا ہے
+QaidaScreens.kt	يَـ وہ، تَـ تو، اَ میں، نَـ ہم: نَعْبُدُ، اَعْبُدُ
+QaidaScreens.kt	حکم اور 'نہیں'
+QaidaScreens.kt	مادہ جاسوس 🔍
+QaidaScreens.kt	لفظ میں سے تین اصل حروف ڈھونڈیں
+QaidaScreens.kt	ماشاء اللہ! پورا کورس مکمل — حروف سے لے کر پارہ عمّ سمجھنے اور قرآنی گرامر تک۔ اب استاد کے ساتھ ناظرہ اور ترجمہ جاری رکھیں۔
+QaidaScreens.kt	🤲 تلاوت کے آداب
+QaidaScreens.kt	• ہو سکے تو وضو کر کے، پاک جگہ پر، توجہ سے پڑھیں (فون پر پڑھنے کے لیے وضو ضروری نہیں، مگر بہتر ہے)۔\n
+QaidaScreens.kt	• شروع میں اَعُوْذُ بِاللّٰهِ اور سورت کے شروع میں بِسْمِ اللّٰهِ پڑھیں۔\n
+QaidaScreens.kt	• آہستہ اور صاف پڑھیں؛ غلطی ہو تو دوبارہ ٹھیک پڑھیں۔\n
+QaidaScreens.kt	• ۩ کا نشان سجدۂ تلاوت ہے: یہ آیت پڑھنے یا سننے پر بالغ پر سجدہ واجب ہے (حنفی)۔
+QaidaScreens.kt	مکمل
+QaidaScreens.kt	حرف پر ٹیپ کریں، نام سنیں اور مخرج پڑھیں۔ موٹے (پُر) حروف سرخ ہیں — یاد رکھنے کو: خُصَّ ضَغْطٍ قِظْ (خ ص ض غ ط ق ظ)۔ ض کو کبھی ز یا د کی طرح نہ پڑھیں۔
+QaidaScreens.kt	ٹھیک ہے
+QaidaScreens.kt	پُر (موٹا) حرف
+QaidaScreens.kt	نام سنیں
+QaidaScreens.kt	⚠️ اردو بولنے والوں کے لیے
+QaidaScreens.kt	قرآن میں:
+QaidaScreens.kt	اردو میں:
+QaidaScreens.kt	اردو میں کئی عربی حروف ایک جیسے بولے جاتے ہیں۔ قرآن پڑھتے وقت ہر حرف کو اس کی اپنی جگہ سے ادا کرنا ضروری ہے، ورنہ لفظ کا معنی بدل سکتا ہے۔ ہر حرف اور مثال کو سنیں اور فرق پہچانیں۔
+QaidaScreens.kt	میں نے سب سن لیا ✓
+QaidaScreens.kt	ہر خانے پر ٹیپ کر کے ہجے سنیں، پھر پوری سطر خود پڑھیں: بَا زَبَر بَ، بَا زِیر بِ، بَا پیش بُ
+QaidaScreens.kt	میں نے پوری تختی پڑھ لی ✓
+QaidaScreens.kt	ماشاء اللہ! 🌟
+QaidaScreens.kt	شاباش، دوبارہ کوشش کریں 💪
+QaidaScreens.kt	دوبارہ مشق
+QaidaScreens.kt	اسباق کی فہرست
+QaidaScreens.kt	بہت خوب! ✓
+QaidaScreens.kt	درست جواب سبز رنگ میں ہے۔
+QaidaScreens.kt	نتیجہ دیکھیں
+QaidaScreens.kt	اگلا سوال
+QaidaStage11Data.kt	اردو میں بھی: علم
+QaidaStage11Data.kt	جاننے والا
+QaidaStage11Data.kt	اردو میں: عالم
+QaidaStage11Data.kt	جانا ہوا
+QaidaStage11Data.kt	اردو میں: معلوم
+QaidaStage11Data.kt	سب جاننے والا
+QaidaStage11Data.kt	اس نے سکھایا
+QaidaStage11Data.kt	العلق میں آیا
+QaidaStage11Data.kt	وہ جانتا ہے
+QaidaStage11Data.kt	الاعلیٰ میں آیا
+QaidaStage11Data.kt	لکھنا
+QaidaStage11Data.kt	اس نے لکھا
+QaidaStage11Data.kt	کتاب، لکھی ہوئی چیز
+QaidaStage11Data.kt	اردو میں: کتاب
+QaidaStage11Data.kt	لکھنے والا
+QaidaStage11Data.kt	اردو میں: کاتب
+QaidaStage11Data.kt	لکھا ہوا
+QaidaStage11Data.kt	اردو میں: مکتوب
+QaidaStage11Data.kt	کتابیں
+QaidaStage11Data.kt	البینہ میں آیا
+QaidaStage11Data.kt	سجدہ کرنا
+QaidaStage11Data.kt	اس نے سجدہ کیا
+QaidaStage11Data.kt	سجدے
+QaidaStage11Data.kt	سجدہ کرنے والا
+QaidaStage11Data.kt	سجدے کی جگہ
+QaidaStage11Data.kt	اردو میں: مسجد
+QaidaStage11Data.kt	سجدہ کر
+QaidaStage11Data.kt	پیدا کرنا
+QaidaStage11Data.kt	اس نے پیدا کیا
+QaidaStage11Data.kt	پیدا کرنے والا
+QaidaStage11Data.kt	اردو میں: خالق
+QaidaStage11Data.kt	پیدا کیا ہوا
+QaidaStage11Data.kt	اردو میں: مخلوق
+QaidaStage11Data.kt	پیدا کرنا، بناوٹ
+QaidaStage11Data.kt	عبادت کرنا
+QaidaStage11Data.kt	بندہ
+QaidaStage11Data.kt	اردو میں: عبد
+QaidaStage11Data.kt	جس کی عبادت ہو
+QaidaStage11Data.kt	عبادت کرنے والا
+QaidaStage11Data.kt	ہم عبادت کرتے ہیں
+QaidaStage11Data.kt	الفاتحہ میں آیا
+QaidaStage11Data.kt	رحم کرنا
+QaidaStage11Data.kt	اردو میں: رحمت
+QaidaStage11Data.kt	بہت رحم والا
+QaidaStage11Data.kt	بے حد مہربان
+QaidaStage11Data.kt	صرف اللہ کا نام
+QaidaStage11Data.kt	رحم دلی
+QaidaStage11Data.kt	البلد میں آیا
+QaidaStage11Data.kt	یاد کرنا
+QaidaStage11Data.kt	یاد، نصیحت
+QaidaStage11Data.kt	اردو میں: ذکر
+QaidaStage11Data.kt	یاد کرنے والا
+QaidaStage11Data.kt	نصیحت کی بات
+QaidaStage11Data.kt	عبس میں آیا
+QaidaStage11Data.kt	تو نصیحت کیجیے
+QaidaStage11Data.kt	الغاشیہ میں آیا
+QaidaStage11Data.kt	کام کرنے والا
+QaidaStage11Data.kt	جس پر کام ہوا
+QaidaStage11Data.kt	بہت زیادہ، ہمیشہ والی صفت
+QaidaStage11Data.kt	سب سننے والا
+QaidaStage11Data.kt	سب دیکھنے والا
+QaidaStage11Data.kt	کام کی جگہ یا وقت
+QaidaStage11Data.kt	لکھنے کی جگہ
+QaidaStage11Data.kt	نکلنے کا وقت
+QaidaStage11Data.kt	اترنے کی جگہ، گھر
+QaidaStage11Data.kt	اس (ایک مرد) نے کیا
+QaidaStage11Data.kt	انہوں نے کیا
+QaidaStage11Data.kt	وہ ایمان لائے
+QaidaStage11Data.kt	اس (عورت / قوم) نے کیا
+QaidaStage11Data.kt	اس نے جھٹلایا
+QaidaStage11Data.kt	تو نے کیا
+QaidaStage11Data.kt	تو نے انعام کیا
+QaidaStage11Data.kt	الفاتحہ
+QaidaStage11Data.kt	میں نے کیا
+QaidaStage11Data.kt	میں نے آگے بھیجا
+QaidaStage11Data.kt	ہم نے کیا
+QaidaStage11Data.kt	ہم نے پیدا کیا
+QaidaStage11Data.kt	التین
+QaidaStage11Data.kt	وہ (ایک مرد) کرتا ہے
+QaidaStage11Data.kt	الاعلیٰ
+QaidaStage11Data.kt	تو کرتا ہے / وہ (عورت) کرتی ہے
+QaidaStage11Data.kt	تو جانتا ہے
+QaidaStage11Data.kt	میں کرتا ہوں
+QaidaStage11Data.kt	میں عبادت کرتا ہوں
+QaidaStage11Data.kt	الکافرون
+QaidaStage11Data.kt	ہم کرتے ہیں
+QaidaStage11Data.kt	وہ سب کرتے ہیں
+QaidaStage11Data.kt	وہ جانتے ہیں
+QaidaStage11Data.kt	تم سب کرتے ہو
+QaidaStage11Data.kt	تم عبادت کرتے ہو
+QaidaStage11Data.kt	کہو
+QaidaStage11Data.kt	پڑھو
+QaidaStage11Data.kt	سجدہ کرو
+QaidaStage11Data.kt	تو تسبیح کرو
+QaidaStage11Data.kt	داخل ہو جا
+QaidaStage11Data.kt	میں عبادت نہیں کرتا
+QaidaStage11Data.kt	لَا + حال = نہیں کرتا
+QaidaStage11Data.kt	اس نے نہیں جنا
+QaidaStage11Data.kt	لَمْ + مضارع = ماضی میں نہیں کیا
+QaidaStage11Data.kt	اس نے آپ کو نہیں چھوڑا
+QaidaStage11Data.kt	مَا + ماضی = نہیں کیا
+QaidaStage11Data.kt	وہ ہرگز قابو نہ پائے گا
+QaidaStage11Data.kt	لَنْ + مضارع = ہرگز نہیں کرے گا
+QaidaStage11Data.kt	میرے بندے
+QaidaStage11Data.kt	بے حد مہربان (اللہ)
+QaidaStage11Data.kt	نصیحت
+QaidaStage11Data.kt	سجدہ کرنے والے
+QaidaStage11Data.kt	اس لفظ کا مادہ (جڑ) کیا ہے؟
+QaidaStage11Data.kt	یہ لفظ کس قسم کا ہے؟
+QaidaStage11Data.kt	یہ کام کون کر رہا ہے؟
+QaidaStage11Screens.kt	ماضی (گزرا ہوا کام): لفظ کا آخری حصہ بتاتا ہے کہ کس نے کیا — ـَ وہ، ـُوْا وہ سب، ـَتْ وہ (عورت)، ـْتَ تو، ـْتُ میں، ـْنَا ہم۔ نوٹ: خَلَقَ جیسے سادہ فعل کے علاوہ قَدَّمَ اور اَنْعَمَ جیسے دوسرے سانچے بھی ہیں؛ یہاں صرف آخری حصہ سیکھنا ہے۔
+QaidaStage11Screens.kt	مضارع (ہو رہا یا ہونے والا کام): شروع کا حرف بتاتا ہے کہ کون کر رہا ہے — يَـ وہ، تَـ تو، اَ میں، نَـ ہم۔ آخر میں ـُوْنَ ہو تو کئی لوگ۔
+QaidaStage11Screens.kt	یہ گرامر بچوں کے لیے آسان کر کے لکھی گئی ہے؛ تفصیل استاد سے سیکھیں۔
+QaidaStage11Screens.kt	میں نے یہ سبق پڑھ لیا ✓
+QaidaStage11Screens.kt	زیادہ تر عربی الفاظ تین حرفوں کے 'مادے' (جڑ) سے بنتے ہیں۔ مادہ ایک خیال بتاتا ہے، اور اس کے ارد گرد حروف بدلنے سے نئے الفاظ بنتے ہیں۔ اچھی خبر: اردو میں ان میں سے بہت سے الفاظ آپ پہلے سے جانتے ہیں!
+QaidaStage11Screens.kt	عربی میں الفاظ سانچوں (اوزان) میں ڈھلتے ہیں۔ سانچہ ف ع ل سے دکھایا جاتا ہے۔ ف ع ل کی جگہ مادے کے تین حروف رکھیں: فَاعِل میں ع ل م رکھیں تو عَالِم بنتا ہے۔
+QaidaStage11Screens.kt	حکم (امر): مضارع کا شروع والا حرف ہٹا کر آخر ساکن کر دیں۔ تَقْرَاُ (تو پڑھتا ہے) سے اِقْرَاْ (پڑھو) — شروع میں جزم آ جائے تو اس سے پہلے الف لگتا ہے۔ تَقُوْلُ (تو کہتا ہے) سے قُلْ (کہو) — بیچ کا و بھی گر جاتا ہے۔
+QaidaStage11Screens.kt	'نہیں' کے چار طریقے:
+QaidaStage11Screens.kt	مادہ جاسوس 🔍: لفظ میں سے اضافی حروف (اَل، مَـ، يَـ، ـُوْنَ، ـِيْنَ، الف وغیرہ) ہٹائیں اور تین اصل حروف ڈھونڈیں۔ پھر کارڈ پر ٹیپ کر کے دیکھیں۔
+QaidaStage11Screens.kt	❓ مادہ؟
+QaidaStage2Data.kt	کون / سے
+QaidaStage2Data.kt	نہیں
+QaidaStage2Data.kt	لکھا
+QaidaStage2Data.kt	پیدا کیا
+QaidaStage2Data.kt	روشنی
+QaidaStage2Data.kt	پالنے والا
+QaidaStage2Data.kt	دین / بدلہ
+QaidaStage2Data.kt	اَلِف لَام مِیْم
+QaidaStage2Data.kt	البقرہ، آلِ عمران، العنکبوت، الروم، لقمان، السجدہ
+QaidaStage2Data.kt	اَلِف لَام مِیْم صَاد
+QaidaStage2Data.kt	یونس، ہود، یوسف، ابراہیم، الحجر
+QaidaStage2Data.kt	اَلِف لَام مِیْم رَا
+QaidaStage2Data.kt	کَاف ہَا یَا عَیْن صَاد
+QaidaStage2Data.kt	مریم
+QaidaStage2Data.kt	طَا ہَا
+QaidaStage2Data.kt	طٰہٰ
+QaidaStage2Data.kt	طَا سِیْن مِیْم
+QaidaStage2Data.kt	طَا سِیْن
+QaidaStage2Data.kt	یَا سِیْن
+QaidaStage2Data.kt	یٰسٓ
+QaidaStage2Data.kt	حَا مِیْم
+QaidaStage2Data.kt	غافر سے الاحقاف تک (سات سورتیں)
+QaidaStage2Data.kt	عَیْن سِیْن قَاف
+QaidaStage2Data.kt	الشوریٰ (حٰمٓ کے بعد)
+QaidaStage2Data.kt	دو ترچھی لکیریں اوپر — آخر میں 'ن' کی آواز: بَن
+QaidaStage2Data.kt	دو زِیر
+QaidaStage2Data.kt	دو ترچھی لکیریں نیچے — آخر میں 'ن' کی آواز: بِن
+QaidaStage2Data.kt	دو زِیر بِن
+QaidaStage2Data.kt	دو پیش
+QaidaStage2Data.kt	دو پیش اوپر — آخر میں 'ن' کی آواز: بُن
+QaidaStage2Data.kt	دو پیش بُن
+QaidaStage2Data.kt	کھڑا زَبَر
+QaidaStage2Data.kt	اوپر سیدھی کھڑی لکیر — زبر کو ایک الف کے برابر لمبا کریں: بَا
+QaidaStage2Data.kt	کھڑا زَبَر بَا
+QaidaStage2Data.kt	کھڑی زِیر
+QaidaStage2Data.kt	نیچے سیدھی کھڑی لکیر — زیر کو لمبا کریں: بِی
+QaidaStage2Data.kt	کھڑی زِیر بِی
+QaidaStage2Data.kt	اُلٹا پیش
+QaidaStage2Data.kt	اوپر اُلٹا پیش — پیش کو لمبا کریں: بُو
+QaidaStage2Data.kt	اُلٹا پیش بُو
+QaidaStage2Data.kt	اوپر چھوٹا دائرہ (ساکن) — حرف کو پچھلے حرف سے ملا کر پڑھیں: اَبْ
+QaidaStage2Data.kt	زبر کے بعد الف — آواز ایک الف کے برابر لمبی: بَا
+QaidaStage2Data.kt	پیش کے بعد واؤ — لمبی آواز: بُو
+QaidaStage2Data.kt	زیر کے بعد یا — لمبی آواز: بِی
+QaidaStage2Data.kt	مثال: قَالَ (اس نے کہا)
+QaidaStage2Data.kt	مثال: يَقُولُ (وہ کہتا ہے)
+QaidaStage2Data.kt	مثال: قِيلَ (کہا گیا)
+QaidaStage2Data.kt	زبر کے بعد ساکن واؤ — نرم آواز، کھینچے بغیر: بَوْ
+QaidaStage2Data.kt	زبر کے بعد ساکن یا — نرم آواز: بَیْ
+QaidaStage2Data.kt	مثال: خَوْفٌ (ڈر)
+QaidaStage2Data.kt	مثال: بَيْتٌ (گھر)
+QaidaStage2Data.kt	سے
+QaidaStage2Data.kt	ہو جا
+QaidaStage2Data.kt	سب تعریف
+QaidaStage2Data.kt	بڑا مہربان — کھڑا زبر
+QaidaStage2Data.kt	یہ — کھڑا زبر
+QaidaStage2Data.kt	وہ — کھڑا زبر
+QaidaStage2Data.kt	اس سے — کھڑی زیر
+QaidaStage2Data.kt	اس کے لیے — اُلٹا پیش
+QaidaStage2Data.kt	اس لفظ کے حروف کون سے ہیں؟
+QaidaStage2Data.kt	اس پر کون سا نشان ہے؟
+QaidaStage2Screens.kt	تنوین کا مطلب ہے آخر میں چھپی ہوئی 'ن' کی آواز۔ دو زبر کو 'اَن'، دو زیر کو 'اِن' اور دو پیش کو 'اُن' پڑھیں۔ دو زبر عموماً الف کے ساتھ لکھا جاتا ہے، الف نہیں پڑھا جاتا۔
+QaidaStage2Screens.kt	انڈو پاک قرآن میں یہ نشان بہت آتے ہیں۔ کھڑا زبر = زبر + الف کی لمبائی، کھڑی زیر = زیر + یا کی لمبائی، اُلٹا پیش = پیش + واؤ کی لمبائی۔ ایک الف کے برابر (تقریباً دو حرکت) کھینچیں۔
+QaidaStage2Screens.kt	جزم والا حرف ساکن ہوتا ہے — اس پر کوئی حرکت نہیں۔ اسے اکیلا نہ پڑھیں، پچھلے حرف کے ساتھ ملا کر پڑھیں۔ ہجے: الف زبر اَ، با جزم — اَبْ۔
+QaidaStage2Screens.kt	میں نے یہ تختی پڑھ لی ✓
+QaidaStage2Screens.kt	عربی حروف آپس میں جڑ کر لکھے جاتے ہیں، جیسے اردو میں۔ ہر حرف کی چار شکلیں ہو سکتی ہیں: اکیلا، شروع، درمیان، آخر۔ ا د ذ ر ز و اپنے بعد والے حرف سے نہیں جڑتے۔
+QaidaStage2Screens.kt	اکیلا
+QaidaStage2Screens.kt	درمیان
+QaidaStage2Screens.kt	، آگے نہیں جڑتا
+QaidaStage2Screens.kt	اب لفظ کو حروف میں توڑیں — ٹیپ کر کے سنیں:
+QaidaStage2Screens.kt	قرآن کی ۲۹ سورتیں ایسے حروف سے شروع ہوتی ہیں جو ملا کر نہیں بلکہ ہر حرف کا نام لے کر پڑھے جاتے ہیں۔ ان کا اصل مطلب اللہ ہی بہتر جانتا ہے۔ جن حروف کے نام میں مدّ ہے (لَام، مِیْم، صَاد، سِیْن، قَاف، کَاف، نُوْن) انہیں ۶ حرکت کھینچیں؛ كٓهٰيٰعٓصٓ اور عٓسٓقٓ میں عَیْن کو ۴ یا ۶ حرکت۔
+QaidaStage2Screens.kt	قرآنی مثالیں:
+QaidaStage2Screens.kt	اب ہر حرف پر مشق کریں:
+QaidaStage2Screens.kt	حروفِ مدّہ تین ہیں: ا و ی۔ زبر کے بعد الف، پیش کے بعد واؤ، زیر کے بعد یا ہو تو آواز ایک الف کے برابر لمبی کریں۔
+QaidaStage2Screens.kt	حروفِ لین دو ہیں: ساکن و اور ساکن ی جن سے پہلے زبر ہو۔ انہیں نرمی سے، بغیر جھٹکے اور بغیر کھینچے پڑھیں۔
+QaidaStage3Data.kt	بے شک
+QaidaStage3Data.kt	رہا / لیکن
+QaidaStage3Data.kt	بے شک ہم
+QaidaStage3Data.kt	اس میں سے جو
+QaidaStage3Data.kt	ہر / سب
+QaidaStage3Data.kt	سکھایا
+QaidaStage3Data.kt	پسند کرتا ہے
+QaidaStage3Data.kt	آیا — مدِّ متصل: ۴ سے ۵ حرکت
+QaidaStage3Data.kt	آسمان — مدِّ متصل: ۴ سے ۵ حرکت
+QaidaStage3Data.kt	اس کے ساتھ جو — مدِّ منفصل: ۴ سے ۵ حرکت
+QaidaStage3Data.kt	وہ لوگ — مدِّ متصل: ۴ سے ۵ حرکت
+QaidaStage3Data.kt	گمراہ لوگ — مدِّ لازم: پورے ۶ حرکت
+QaidaStage3Data.kt	لوگ
+QaidaStage3Data.kt	بڑا مہربان
+QaidaStage3Data.kt	راستہ
+QaidaStage3Data.kt	سیدھا
+QaidaStage3Data.kt	اللّٰهِ اور الرَّحْمٰنِ میں کھڑا زبر؛ الرَّ میں لامِ شمسی اور تشدید
+QaidaStage3Data.kt	اَلْحَمْدُ میں لامِ قمری؛ رَبِّ میں تشدید؛ الْعٰلَمِيْنَ میں کھڑا زبر اور مدّ
+QaidaStage3Data.kt	دونوں لفظوں میں لامِ شمسی اور تشدید
+QaidaStage3Data.kt	مٰلِكِ میں کھڑا زبر؛ يَوْمِ میں حرفِ لین؛ الدِّيْنِ میں لامِ شمسی
+QaidaStage3Data.kt	اِيَّاكَ میں تشدید؛ نَعْبُدُ اور نَسْتَعِيْنُ میں جزم
+QaidaStage3Data.kt	الصِّرَاطَ میں لامِ شمسی؛ الْمُسْتَقِيْمَ میں لامِ قمری
+QaidaStage3Data.kt	الَّذِيْنَ میں لامِ شمسی؛ الضَّآلِّيْنَ میں مدِّ لازم — پورے ۶ حرکت کھینچیں
+QaidaStage3Data.kt	قُلْ میں جزم؛ اَحَدٌ میں دو پیش
+QaidaStage3Data.kt	الصَّمَدُ میں لامِ شمسی اور تشدید
+QaidaStage3Data.kt	ہر لفظ میں جزم؛ يُوْلَدْ میں حرفِ مدّہ
+QaidaStage3Data.kt	لَّهٗ میں تشدید (غنّہ کے بغیر ادغام) اور اُلٹا پیش؛ كُفُوًا میں دو زبر
+QaidaStage3Data.kt	حرفِ شمسی — لام نہیں پڑھا جاتا
+QaidaStage3Data.kt	حرفِ قمری — لام جزم سے پڑھا جاتا ہے
+QaidaStage3Data.kt	دوسرے حرف پر کیا ہے؟
+QaidaStage3Data.kt	اس لفظ میں اَل کا لام کیسا ہے؟
+QaidaStage3Data.kt	یہ حرف شمسی ہے یا قمری؟
+QaidaStage3Data.kt	شمسی ☀️
+QaidaStage3Data.kt	قمری 🌙
+QaidaStage3Screens.kt	سورۃ الفاتحہ آیت بہ آیت پڑھیں۔ ہر آیت پر ٹیپ کر کے سنیں، پھر خود پڑھیں۔ نیچے لکھا ہے کہ اس آیت میں کون سے اصول آئے ہیں۔ آیت کے آخر میں رُکیں۔
+QaidaStage3Screens.kt	سورۃ الاخلاص — چار آیتیں۔ پہلے ہر لفظ آہستہ پڑھیں، پھر پوری آیت روانی سے۔
+QaidaStage3Screens.kt	تشدید (ّ) کا مطلب ہے حرف دو بار: پہلی بار ساکن (پچھلے حرف کے ساتھ) اور دوسری بار حرکت کے ساتھ۔ کسی بھی خانے پر ٹیپ کریں — اس کے نیچے لفظ کا جوڑ دکھائی دے گا۔
+QaidaStage3Screens.kt	نّ اور مّ پر تشدید ہو تو غنّہ کریں: آواز ناک میں تقریباً دو حرکت کے برابر روکیں۔
+QaidaStage3Screens.kt	تشدید والے قرآنی الفاظ:
+QaidaStage3Screens.kt	جہاں حرفِ مدّہ (ا و ی) پر مدّ کا نشان (~) ہو، وہاں آواز عام مدّ سے لمبی کریں۔ ایک ہی لفظ میں ہمزہ آئے (جَآءَ) تو مدِّ متصل، اگلے لفظ میں ہمزہ ہو (بِمَآ اُنْزِلَ) تو مدِّ منفصل — دونوں ۴ سے ۵ حرکت۔ مدّ کے بعد تشدید یا جزم ہو (الضَّآلِّيْنَ) تو مدِّ لازم — ہمیشہ پورے ۶ حرکت۔ ایک حرکت = انگلی بند کرنے کا وقت۔
+QaidaStage3Screens.kt	مدّ کا نشان — زیادہ لمبا
+QaidaStage3Screens.kt	اَل (ال) کے بعد والا حرف دیکھیں۔ حرفِ شمسی ہو تو لام نہیں پڑھا جاتا اور اگلے حرف پر تشدید ہوتی ہے۔ حرفِ قمری ہو تو لام جزم سے صاف پڑھا جاتا ہے۔
+QaidaStage3Screens.kt	☀️ حروفِ شمسی (۱۴)
+QaidaStage3Screens.kt	🌙 حروفِ قمری (۱۴)
+QaidaStage3Screens.kt	یہ متن انڈو پاک طرز پر ہے؛ وقف کے نشانات ابھی شامل نہیں۔ استاد چھپے ہوئے مصحف سے ملا کر تصدیق کریں۔
+QaidaStage4Data.kt	دو پیش ← جزم
+QaidaStage4Data.kt	پیش ← جزم
+QaidaStage4Data.kt	زیر ← جزم
+QaidaStage4Data.kt	گول ة ← ہ ساکن
+QaidaStage4Data.kt	اُلٹا پیش ← جزم، لمبائی نہیں
+QaidaStage4Data.kt	کھڑی زیر ← جزم، لمبائی نہیں
+QaidaStage4Data.kt	تشدید والا حرف ← تشدید باقی، حرکت ہٹ جائے
+QaidaStage4Data.kt	ضرور رکیں
+QaidaStage4Data.kt	رکنا بہتر
+QaidaStage4Data.kt	رکیں یا ملائیں
+QaidaStage4Data.kt	ملانا بہتر
+QaidaStage4Data.kt	نہ رکیں
+QaidaStage4Data.kt	گول دائرہ — آیت
+QaidaStage4Data.kt	آیت ختم۔ یہاں رکیں اور سانس لیں۔
+QaidaStage4Data.kt	یہاں ضرور رکیں، ورنہ معنی بگڑ سکتا ہے۔
+QaidaStage4Data.kt	یہاں رکنا بہتر ہے۔
+QaidaStage4Data.kt	رکنا بہتر ہے۔
+QaidaStage4Data.kt	رکنا بھی ٹھیک، ملا کر پڑھنا بھی؛ رکنا بہتر۔
+QaidaStage4Data.kt	رک سکتے ہیں، مگر ملا کر پڑھنا بہتر ہے۔
+QaidaStage4Data.kt	سانس ٹوٹے تو رک سکتے ہیں، ورنہ ملائیں۔
+QaidaStage4Data.kt	صلے
+QaidaStage4Data.kt	صَلے
+QaidaStage4Data.kt	ملا کر پڑھنا بہتر ہے۔
+QaidaStage4Data.kt	کبھی رکا جاتا ہے، مگر ملا کر پڑھنا بہتر ہے۔
+QaidaStage4Data.kt	قِیل
+QaidaStage4Data.kt	بعض کے نزدیک رکنا ہے، مگر نہ رکنا بہتر ہے۔
+QaidaStage4Data.kt	لا — نہ رکیں
+QaidaStage4Data.kt	آیت کے بیچ میں ہو تو نہ رکیں؛ آیت کے نشان پر ہو تو رکنا جائز ہے۔
+QaidaStage4Data.kt	معانقہ
+QaidaStage4Data.kt	دو جگہ تین نقطے ہوں تو ان میں سے صرف ایک جگہ رکیں۔
+QaidaStage4Data.kt	سکتہ
+QaidaStage4Data.kt	سانس توڑے بغیر ذرا سی دیر رکیں، پھر آگے پڑھیں۔
+QaidaStage4Data.kt	چھوٹا م (مدنی مصحف)
+QaidaStage4Data.kt	وقفِ لازم: ضرور رکیں۔
+QaidaStage4Data.kt	قلے (مدنی مصحف)
+QaidaStage4Data.kt	ج (مدنی مصحف)
+QaidaStage4Data.kt	رکنا اور ملانا دونوں ٹھیک۔
+QaidaStage4Data.kt	صلے (مدنی مصحف)
+QaidaStage4Data.kt	لا (مدنی مصحف)
+QaidaStage4Data.kt	یہاں نہ رکیں۔
+QaidaStage4Data.kt	معانقہ (مدنی مصحف)
+QaidaStage4Data.kt	دو جگہوں میں سے صرف ایک پر رکیں۔
+QaidaStage4Data.kt	زیادہ قریب — قْ
+QaidaStage4Data.kt	انہیں کھلایا — طْ
+QaidaStage4Data.kt	جڑ کٹا — بْ
+QaidaStage4Data.kt	وہ بناتے ہیں — جْ
+QaidaStage4Data.kt	وہ داخل ہوتے ہیں — دْ
+QaidaStage4Data.kt	وقف پر — زیادہ واضح قلقلہ
+QaidaStage4Data.kt	وقف پر قلقلہ
+QaidaStage4Data.kt	سورۃ الکوثر
+QaidaStage4Data.kt	اِنَّآ میں غنّہ اور مدّ؛ اَعْطَيْنٰكَ میں کھڑا زبر
+QaidaStage4Data.kt	دو تشدید؛ آخری لفظ پہلے سے ساکن ہے
+QaidaStage4Data.kt	الْاَبْتَرُ میں بْ پر قلقلہ
+QaidaStage4Data.kt	لامِ قمری؛ وقف پر رْ
+QaidaStage4Data.kt	دو زیر والے لفظ پر وقف: خُسْرْ
+QaidaStage4Data.kt	لمبی آیت: سانس ٹوٹے تو بِالْحَقِّ پر رک کر دوبارہ ملا کر پڑھیں
+QaidaStage4Data.kt	وقف پر قْ — قلقلہ
+QaidaStage4Data.kt	وقف پر بْ — قلقلہ
+QaidaStage4Data.kt	النَّفّٰثٰتِ میں تشدید اور دو کھڑے زبر؛ وقف پر دْ — قلقلہ
+QaidaStage4Data.kt	وقف پر دْ — قلقلہ
+QaidaStage4Data.kt	النَّاسِ میں لامِ شمسی اور غنّہ
+QaidaStage4Data.kt	ہر آیت النَّاسْ پر رکتی ہے
+QaidaStage4Data.kt	اِلٰهِ میں کھڑا زبر
+QaidaStage4Data.kt	الْخَنَّاسِ میں تشدید اور غنّہ
+QaidaStage4Data.kt	حروفِ مدّہ: الَّذِيْ، فِيْ، صُدُوْرِ
+QaidaStage4Data.kt	الْجِنَّةِ میں غنّہ
+QaidaStage4Data.kt	اس لفظ پر رکیں تو کیسے پڑھیں گے؟
+QaidaStage4Data.kt	یہ وقف کا نشان کیا کہتا ہے؟
+QaidaStage4Data.kt	ان میں سے قلقلہ کا حرف کون سا ہے؟
+QaidaStage4Screens.kt	آیت کے آخر میں یا سانس ٹوٹنے پر لفظ پر رکیں تو آخری حرف کی حرکت ہٹا کر اسے ساکن پڑھیں۔ دو زبر ہو تو زبر اور الف پڑھیں، گول ة ہو تو 'ہ' ساکن پڑھیں۔ آخری حرف سے پہلے مدّ ہو (الرَّحِيْمْ، الْعٰلَمِيْنْ) تو رکتے وقت اسے ۲، ۴ یا ۶ حرکت کھینچ سکتے ہیں — ایک تلاوت میں ایک ہی لمبائی رکھیں۔
+QaidaStage4Screens.kt	قرآن میں آیت کے بیچ چھوٹے نشان بتاتے ہیں کہ کہاں رکنا ہے اور کہاں ملا کر پڑھنا ہے۔ پہلے انڈو پاک مصحف کے نشان ہیں، پھر مدنی مصحف کے — اس ایپ کی آیتوں میں مدنی مصحف والے نشان (ۚ ۖ ۗ) چھپے ہیں۔ رکیں تو وقف کا طریقہ استعمال کریں۔
+QaidaStage4Screens.kt	یہ وضاحتیں عام انڈو پاک مصاحف کے مطابق ہیں؛ استاد سے تصدیق کر لیں۔
+QaidaStage4Screens.kt	قلقلہ کے پانچ حروف ہیں: ق ط ب ج د — یاد رکھنے کو 'قُطْبُ جَدٍ'۔ جب ان پر جزم ہو تو آواز ہلکی سی اچھال کے ساتھ ادا کریں۔ لفظ کے آخر میں رکنے پر قلقلہ زیادہ واضح ہوتا ہے۔
+QaidaStage5Data.kt	اللہ کا نام اور صفات
+QaidaStage5Data.kt	اللہ
+QaidaStage5Data.kt	رب، پالنے والا
+QaidaStage5Data.kt	بے حد مہربان (صرف اللہ کا نام)
+QaidaStage5Data.kt	نہایت رحم والا
+QaidaStage5Data.kt	سب کچھ جاننے والا
+QaidaStage5Data.kt	حکمت والا
+QaidaStage5Data.kt	چھوٹے الفاظ (حروف)
+QaidaStage5Data.kt	میں
+QaidaStage5Data.kt	کی طرف
+QaidaStage5Data.kt	سے، کے بارے میں
+QaidaStage5Data.kt	نہیں، نہ
+QaidaStage5Data.kt	مگر، سوائے
+QaidaStage5Data.kt	ضمیریں
+QaidaStage5Data.kt	وہ (ایک)
+QaidaStage5Data.kt	وہ سب
+QaidaStage5Data.kt	ہم
+QaidaStage5Data.kt	وہ جو
+QaidaStage5Data.kt	وہ لوگ جو
+QaidaStage5Data.kt	کام (افعال)
+QaidaStage5Data.kt	اس نے کہا
+QaidaStage5Data.kt	کہو، کہہ دیجیے
+QaidaStage5Data.kt	تھا (اللہ کے لیے: ہمیشہ سے ہے)
+QaidaStage5Data.kt	انہوں نے عمل کیے
+QaidaStage5Data.kt	چیزوں کے نام
+QaidaStage5Data.kt	زمین
+QaidaStage5Data.kt	تیرا / آپ کا
+QaidaStage5Data.kt	تیرا رب
+QaidaStage5Data.kt	اس کا
+QaidaStage5Data.kt	اس کا رب
+QaidaStage5Data.kt	ان کا
+QaidaStage5Data.kt	ان کا رب
+QaidaStage5Data.kt	تمہارا
+QaidaStage5Data.kt	تمہارا رب
+QaidaStage5Data.kt	ہمارا
+QaidaStage5Data.kt	ہمارا رب
+QaidaStage5Data.kt	میرا
+QaidaStage5Data.kt	میرا رب
+QaidaStage5Data.kt	سورۃ الفاتحہ
+QaidaStage5Data.kt	نام سے
+QaidaStage5Data.kt	اللہ کے
+QaidaStage5Data.kt	جو بہت مہربان
+QaidaStage5Data.kt	اللہ کے لیے
+QaidaStage5Data.kt	جو رب ہے
+QaidaStage5Data.kt	تمام جہانوں کا
+QaidaStage5Data.kt	بہت مہربان
+QaidaStage5Data.kt	مالک
+QaidaStage5Data.kt	دن کا
+QaidaStage5Data.kt	بدلے کے
+QaidaStage5Data.kt	صرف تیری
+QaidaStage5Data.kt	اور صرف تجھ سے
+QaidaStage5Data.kt	ہم مدد مانگتے ہیں
+QaidaStage5Data.kt	ہمیں چلا
+QaidaStage5Data.kt	راستے پر
+QaidaStage5Data.kt	سیدھے
+QaidaStage5Data.kt	ان لوگوں کا
+QaidaStage5Data.kt	نہ
+QaidaStage5Data.kt	جن پر غضب ہوا
+QaidaStage5Data.kt	اور نہ
+QaidaStage5Data.kt	گمراہوں کا
+QaidaStage5Data.kt	کہہ دیجیے
+QaidaStage5Data.kt	وہ
+QaidaStage5Data.kt	ایک ہے
+QaidaStage5Data.kt	بے نیاز ہے (کسی کا محتاج نہیں)
+QaidaStage5Data.kt	اس کی کوئی اولاد
+QaidaStage5Data.kt	وہ کسی کی اولاد
+QaidaStage5Data.kt	اور نہیں
+QaidaStage5Data.kt	ہے
+QaidaStage5Data.kt	کوئی
+QaidaStage5Data.kt	بے شک ہم نے
+QaidaStage5Data.kt	آپ کو عطا کی
+QaidaStage5Data.kt	کوثر
+QaidaStage5Data.kt	تو نماز پڑھیے
+QaidaStage5Data.kt	اپنے رب کے لیے
+QaidaStage5Data.kt	اور قربانی کیجیے
+QaidaStage5Data.kt	آپ کا دشمن
+QaidaStage5Data.kt	وہی
+QaidaStage5Data.kt	بے نام و نشان ہے
+QaidaStage5Data.kt	قسم ہے زمانے کی
+QaidaStage5Data.kt	یقیناً میں ہے
+QaidaStage5Data.kt	سوائے
+QaidaStage5Data.kt	ان لوگوں کے جو
+QaidaStage5Data.kt	ایمان لائے
+QaidaStage5Data.kt	اور عمل کیے
+QaidaStage5Data.kt	نیک
+QaidaStage5Data.kt	اور ایک دوسرے کو نصیحت کی
+QaidaStage5Data.kt	حق کی
+QaidaStage5Data.kt	صبر کی
+QaidaStage5Data.kt	میں پناہ مانگتا ہوں
+QaidaStage5Data.kt	رب کی
+QaidaStage5Data.kt	صبح کے
+QaidaStage5Data.kt	برائی
+QaidaStage5Data.kt	اس کی جو
+QaidaStage5Data.kt	اور سے
+QaidaStage5Data.kt	اندھیرے کی
+QaidaStage5Data.kt	وہ چھا جائے
+QaidaStage5Data.kt	پھونکنے والیوں کی
+QaidaStage5Data.kt	گرہوں
+QaidaStage5Data.kt	حسد کرنے والے کی
+QaidaStage5Data.kt	وہ حسد کرے
+QaidaStage5Data.kt	لوگوں کے
+QaidaStage5Data.kt	بادشاہ
+QaidaStage5Data.kt	وسوسہ ڈالنے والے کی
+QaidaStage5Data.kt	جو پیچھے ہٹ جاتا ہے
+QaidaStage5Data.kt	وسوسہ ڈالتا ہے
+QaidaStage5Data.kt	سینوں
+QaidaStage5Data.kt	جنوں
+QaidaStage5Data.kt	اور انسانوں
+QaidaStage5Data.kt	عربی میں کیا کہتے ہیں؟
+QaidaStage5Data.kt	اس کا مطلب کیا ہے؟
+QaidaStage5Screens.kt	یہ معانی بچوں کے لیے آسان اردو میں لکھے گئے ہیں؛ کسی مستند ترجمے اور استاد سے ملا کر پڑھیں۔
+QaidaStage5Screens.kt	یہ وہ الفاظ ہیں جو قرآن میں بار بار آتے ہیں۔ انہیں یاد کر لیں تو ہر صفحے پر کچھ نہ کچھ سمجھ آنے لگے گا۔ ہر لفظ پر ٹیپ کر کے سنیں۔
+QaidaStage5Screens.kt	عربی میں 'میرا، تیرا، اس کا' لفظ کے آخر میں جڑ جاتا ہے۔ رَبّ (رب) کے ساتھ دیکھیں — یہی آخری حصے ہر لفظ کے ساتھ آتے ہیں۔
+QaidaStage5Screens.kt	 — لفظ بہ لفظ
+QaidaStage5Screens.kt	لفظ پر ٹیپ کریں · نمبر پر ٹیپ کر کے پوری آیت سنیں
+QaidaStage5Screens.kt	لفظی معنی: 
+QaidaStage5Screens.kt	تلاوت سے پہلے پڑھیں
+QaidaStage5Screens.kt	 — بسم اللہ آیت میں شمار نہیں
+QaidaStage5Screens.kt	سجدۂ تلاوت: یہ آیت پڑھنے یا سننے پر بالغ پر سجدہ واجب ہے (حنفی)؛ دوسرے مذاہب میں سنت۔ بچے کو سجدہ کرنا سکھائیں۔
+QaidaStage6Data.kt	سورۃ الفیل
+QaidaStage6Data.kt	کیا نہیں
+QaidaStage6Data.kt	آپ نے دیکھا
+QaidaStage6Data.kt	کیسا
+QaidaStage6Data.kt	سلوک کیا
+QaidaStage6Data.kt	آپ کے رب نے
+QaidaStage6Data.kt	والوں کے ساتھ
+QaidaStage6Data.kt	ہاتھی
+QaidaStage6Data.kt	کر دیا
+QaidaStage6Data.kt	ان کی چال کو
+QaidaStage6Data.kt	ناکامی
+QaidaStage6Data.kt	اور بھیجے
+QaidaStage6Data.kt	پرندے
+QaidaStage6Data.kt	جھنڈ کے جھنڈ
+QaidaStage6Data.kt	جو انہیں مارتے تھے
+QaidaStage6Data.kt	پتھروں سے
+QaidaStage6Data.kt	کے
+QaidaStage6Data.kt	پکی مٹی
+QaidaStage6Data.kt	پھر انہیں کر دیا
+QaidaStage6Data.kt	بھوسے کی طرح
+QaidaStage6Data.kt	کھایا ہوا
+QaidaStage6Data.kt	سورۃ قریش
+QaidaStage6Data.kt	مانوس کرنے کی وجہ سے
+QaidaStage6Data.kt	قریش کو
+QaidaStage6Data.kt	انہیں مانوس کرنا
+QaidaStage6Data.kt	سفر سے
+QaidaStage6Data.kt	سردی کے
+QaidaStage6Data.kt	اور گرمی کے
+QaidaStage6Data.kt	تو وہ عبادت کریں
+QaidaStage6Data.kt	گھر کے
+QaidaStage6Data.kt	جس نے
+QaidaStage6Data.kt	انہیں کھانا دیا
+QaidaStage6Data.kt	بھوک
+QaidaStage6Data.kt	اور انہیں امن دیا
+QaidaStage6Data.kt	ڈر
+QaidaStage6Data.kt	کیا آپ نے دیکھا
+QaidaStage6Data.kt	اسے جو
+QaidaStage6Data.kt	جھٹلاتا ہے
+QaidaStage6Data.kt	روزِ جزا کو
+QaidaStage6Data.kt	تو یہی ہے
+QaidaStage6Data.kt	دھکے دیتا ہے
+QaidaStage6Data.kt	یتیم کو
+QaidaStage6Data.kt	کھانا کھلانے
+QaidaStage6Data.kt	مسکین کو
+QaidaStage6Data.kt	تو خرابی ہے
+QaidaStage6Data.kt	ان نمازیوں کے لیے
+QaidaStage6Data.kt	اپنی نماز
+QaidaStage6Data.kt	غافل ہیں
+QaidaStage6Data.kt	دکھاوا کرتے ہیں
+QaidaStage6Data.kt	اور روکتے ہیں
+QaidaStage6Data.kt	برتنے کی چھوٹی چیزیں
+QaidaStage6Data.kt	سورۃ الکافرون
+QaidaStage6Data.kt	اے
+QaidaStage6Data.kt	کافرو
+QaidaStage6Data.kt	میں عبادت کرتا
+QaidaStage6Data.kt	جس کی
+QaidaStage6Data.kt	عبادت کرنے والے ہو
+QaidaStage6Data.kt	عبادت کرنے والا ہوں
+QaidaStage6Data.kt	تم نے عبادت کی
+QaidaStage6Data.kt	تمہارے لیے
+QaidaStage6Data.kt	تمہارا دین
+QaidaStage6Data.kt	اور میرے لیے
+QaidaStage6Data.kt	میرا دین
+QaidaStage6Data.kt	آ جائے
+QaidaStage6Data.kt	اللہ کی
+QaidaStage6Data.kt	اور آپ دیکھ لیں
+QaidaStage6Data.kt	لوگوں کو
+QaidaStage6Data.kt	داخل ہوتے
+QaidaStage6Data.kt	دین
+QaidaStage6Data.kt	تو تسبیح کیجیے
+QaidaStage6Data.kt	تعریف کے ساتھ
+QaidaStage6Data.kt	اپنے رب کی
+QaidaStage6Data.kt	اور اس سے بخشش مانگیے
+QaidaStage6Data.kt	بے شک وہ
+QaidaStage6Data.kt	بہت توبہ قبول کرنے والا
+QaidaStage6Data.kt	ٹوٹ گئے
+QaidaStage6Data.kt	دونوں ہاتھ
+QaidaStage6Data.kt	لہب کے
+QaidaStage6Data.kt	اور وہ برباد ہوا
+QaidaStage6Data.kt	کام آیا
+QaidaStage6Data.kt	اس کے
+QaidaStage6Data.kt	اس کا مال
+QaidaStage6Data.kt	اس نے کمایا
+QaidaStage6Data.kt	وہ جلد داخل ہوگا
+QaidaStage6Data.kt	آگ میں
+QaidaStage6Data.kt	والی
+QaidaStage6Data.kt	شعلوں
+QaidaStage6Data.kt	اور اس کی بیوی بھی
+QaidaStage6Data.kt	اٹھانے والی
+QaidaStage6Data.kt	لکڑیاں
+QaidaStage6Data.kt	اس کی گردن
+QaidaStage6Data.kt	رسی ہے
+QaidaStage6Data.kt	کی
+QaidaStage6Data.kt	بٹی ہوئی مونج
+QaidaStage6Screens.kt	شاباش! روز تھوڑی مشق کریں 💪
+QaidaStage6Screens.kt	نئے کارڈ
+QaidaStage6Screens.kt	مشق مکمل ✓
+QaidaStage6Screens.kt	لفظ دیکھ کر اس کا مطلب زبان سے بولیں، پھر کارڈ پلٹیں۔
+QaidaStage6Screens.kt	👆 پلٹنے کے لیے ٹیپ کریں
+QaidaStage6Screens.kt	یاد تھا ✓
+QaidaStage6Screens.kt	ابھی نہیں ↺
+QaidaStage7Data.kt	صاف پڑھنا
+QaidaStage7Data.kt	نون ساکن یا تنوین کے بعد حلق کا حرف ہو تو نون کو صاف، بغیر غنّہ کے پڑھیں۔
+QaidaStage7Data.kt	ادغام مع الغنّہ
+QaidaStage7Data.kt	ملا کر، غنّہ کے ساتھ
+QaidaStage7Data.kt	بعد میں ی ن م و ہو تو نون اگلے حرف میں مل جاتا ہے اور غنّہ ہوتا ہے (دو حرکت)۔
+QaidaStage7Data.kt	ادغام بلا غنّہ
+QaidaStage7Data.kt	ملا کر، غنّہ کے بغیر
+QaidaStage7Data.kt	بعد میں ل یا ر ہو تو نون پوری طرح مل جاتا ہے، غنّہ نہیں ہوتا۔
+QaidaStage7Data.kt	نون کو میم سے بدلنا
+QaidaStage7Data.kt	بعد میں ب ہو تو نون کو میم کی آواز سے بدل کر غنّہ کریں (دو حرکت)۔ انڈو پاک قرآن میں اوپر چھوٹا م لکھا ہوتا ہے۔
+QaidaStage7Data.kt	چھپا کر، غنّہ کے ساتھ
+QaidaStage7Data.kt	باقی ۱۵ حروف سے پہلے نون کو ناک میں چھپا کر غنّہ کے ساتھ پڑھیں (دو حرکت) — نہ پورا صاف، نہ پورا ملا ہوا۔ موٹے حروف (ص ض ط ظ ق) سے پہلے غنّہ بھی موٹا ہو جاتا ہے۔
+QaidaStage7Data.kt	نْ کے بعد ع
+QaidaStage7Data.kt	نْ کے بعد خ
+QaidaStage7Data.kt	قریش
+QaidaStage7Data.kt	تنوین کے بعد ء (ا)
+QaidaStage7Data.kt	نْ کے بعد ء (ا)
+QaidaStage7Data.kt	تنوین کے بعد ح
+QaidaStage7Data.kt	نْ کے بعد م
+QaidaStage7Data.kt	تنوین کے بعد و
+QaidaStage7Data.kt	تنوین کے بعد ی
+QaidaStage7Data.kt	نْ کے بعد ن
+QaidaStage7Data.kt	نْ کے بعد ل
+QaidaStage7Data.kt	تنوین کے بعد ر
+QaidaStage7Data.kt	نْ کے بعد ر
+QaidaStage7Data.kt	نْ کے بعد ب
+QaidaStage7Data.kt	تنوین کے بعد ب
+QaidaStage7Data.kt	ایک لفظ میں نْ کے بعد ب
+QaidaStage7Data.kt	نْ کے بعد ش
+QaidaStage7Data.kt	نْ کے بعد ت
+QaidaStage7Data.kt	نْ کے بعد ج
+QaidaStage7Data.kt	نْ کے بعد ف
+QaidaStage7Data.kt	تنوین کے بعد م
+QaidaStage7Data.kt	اخفائے شفوی
+QaidaStage7Data.kt	مْ کے بعد ب ہو تو میم کو ہونٹوں میں ہلکا چھپا کر غنّہ کریں (دو حرکت)۔
+QaidaStage7Data.kt	ادغامِ شفوی
+QaidaStage7Data.kt	مْ کے بعد م ہو تو دونوں میم ملا کر غنّہ کے ساتھ پڑھیں (دو حرکت)۔
+QaidaStage7Data.kt	اظہارِ شفوی
+QaidaStage7Data.kt	باقی سب حروف سے پہلے میم کو صاف پڑھیں — خاص طور پر و اور ف سے پہلے۔
+QaidaStage7Data.kt	باقی حروف
+QaidaStage7Data.kt	مْ کے بعد ب
+QaidaStage7Data.kt	الفیل
+QaidaStage7Data.kt	مْ کے بعد م
+QaidaStage7Data.kt	مْ کے بعد ت
+QaidaStage7Data.kt	مْ کے بعد د
+QaidaStage7Data.kt	مْ کے بعد و — یہاں خاص خیال
+QaidaStage7Data.kt	مْ کے بعد ف — یہاں خاص خیال
+QaidaStage7Data.kt	یہاں نون ساکن / تنوین کا کون سا قاعدہ ہے؟
+QaidaStage7Data.kt	نون ساکن کے بعد یہ حرف ہو تو کیا پڑھیں گے؟
+QaidaStage7Data.kt	یہاں میم ساکن کا کون سا قاعدہ ہے؟
+QaidaStage7Screens.kt	یاد رکھیں: ایک ہی لفظ کے اندر نْ کے بعد ی یا و ہو تو ادغام نہیں ہوتا، جیسے دُنْيَا اور صِنْوَانٌ — نون صاف پڑھیں۔
+QaidaStage7Screens.kt	میم ساکن (مْ) کے تین قاعدے ہیں — اگلا حرف دیکھیں:
+QaidaStage7Screens.kt	ہر کارڈ پر نون ساکن یا تنوین ڈھونڈیں، اگلا حرف دیکھیں اور قاعدہ خود بولیں۔ پھر کارڈ پر ٹیپ کر کے جواب دیکھیں۔
+QaidaStage7Screens.kt	❓ قاعدہ؟

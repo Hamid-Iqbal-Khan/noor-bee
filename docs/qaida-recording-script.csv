@@ -1,0 +1,129 @@
+audio_key,arabic,what_to_record_urdu
+letter_alif,ا,حرف کا نام: اَلِف
+letter_ba,ب,حرف کا نام: بَا
+letter_ta,ت,حرف کا نام: تَا
+letter_tha,ث,حرف کا نام: ثَا
+letter_jim,ج,حرف کا نام: جِیْم
+letter_ha_heavy,ح,حرف کا نام: حَا
+letter_kha,خ,حرف کا نام: خَا
+letter_dal,د,حرف کا نام: دَال
+letter_dhal,ذ,حرف کا نام: ذَال
+letter_ra,ر,حرف کا نام: رَا
+letter_zay,ز,حرف کا نام: زَا
+letter_sin,س,حرف کا نام: سِیْن
+letter_shin,ش,حرف کا نام: شِیْن
+letter_sad,ص,حرف کا نام: صَاد
+letter_dad,ض,حرف کا نام: ضَاد
+letter_ta_heavy,ط,حرف کا نام: طَا
+letter_dha_heavy,ظ,حرف کا نام: ظَا
+letter_ain,ع,حرف کا نام: عَیْن
+letter_ghain,غ,حرف کا نام: غَیْن
+letter_fa,ف,حرف کا نام: فَا
+letter_qaf,ق,حرف کا نام: قَاف
+letter_kaf,ك,حرف کا نام: کَاف
+letter_lam,ل,حرف کا نام: لَام
+letter_mim,م,حرف کا نام: مِیْم
+letter_nun,ن,حرف کا نام: نُوْن
+letter_waw,و,حرف کا نام: وَاو
+letter_ha,ه,حرف کا نام: ہَا
+letter_hamza,ء,حرف کا نام: ہَمْزَہ
+letter_ya,ي,حرف کا نام: یَا
+word_sin,سَمِيْعٌ,لفظ: سننے والا
+word_tha,ثُمَّ,لفظ: پھر
+word_sad,صَبْرٌ,لفظ: صبر
+word_zay,زَيْتُوْنٌ,لفظ: زیتون
+word_dhal,ذِكْرٌ,لفظ: یاد
+word_dha_heavy,ظِلٌّ,لفظ: سایہ
+word_dad,ضُحًى,لفظ: چاشت کا وقت
+word_ta,تِيْنٌ,لفظ: انجیر
+word_ta_heavy,طَيِّبٌ,لفظ: پاکیزہ
+word_ha,هُدًى,لفظ: ہدایت
+word_ha_heavy,حَمْدٌ,لفظ: تعریف
+word_hamza,أَحَدٌ,لفظ: ایک
+word_ain,عِلْمٌ,لفظ: علم
+word_kaf,كِتَابٌ,لفظ: کتاب
+word_qaf,قَلَمٌ,لفظ: قلم
+harakah_ba_zabar,بَ,ہجے: بَا زَبَر بَ
+harakah_ba_zer,بِ,ہجے: بَا زِیر بِ
+harakah_ba_pesh,بُ,ہجے: بَا پیش بُ
+harakah_ta_zabar,تَ,ہجے: تَا زَبَر تَ
+harakah_ta_zer,تِ,ہجے: تَا زِیر تِ
+harakah_ta_pesh,تُ,ہجے: تَا پیش تُ
+harakah_tha_zabar,ثَ,ہجے: ثَا زَبَر ثَ
+harakah_tha_zer,ثِ,ہجے: ثَا زِیر ثِ
+harakah_tha_pesh,ثُ,ہجے: ثَا پیش ثُ
+harakah_jim_zabar,جَ,ہجے: جِیْم زَبَر جَ
+harakah_jim_zer,جِ,ہجے: جِیْم زِیر جِ
+harakah_jim_pesh,جُ,ہجے: جِیْم پیش جُ
+harakah_ha_heavy_zabar,حَ,ہجے: حَا زَبَر حَ
+harakah_ha_heavy_zer,حِ,ہجے: حَا زِیر حِ
+harakah_ha_heavy_pesh,حُ,ہجے: حَا پیش حُ
+harakah_kha_zabar,خَ,ہجے: خَا زَبَر خَ
+harakah_kha_zer,خِ,ہجے: خَا زِیر خِ
+harakah_kha_pesh,خُ,ہجے: خَا پیش خُ
+harakah_dal_zabar,دَ,ہجے: دَال زَبَر دَ
+harakah_dal_zer,دِ,ہجے: دَال زِیر دِ
+harakah_dal_pesh,دُ,ہجے: دَال پیش دُ
+harakah_dhal_zabar,ذَ,ہجے: ذَال زَبَر ذَ
+harakah_dhal_zer,ذِ,ہجے: ذَال زِیر ذِ
+harakah_dhal_pesh,ذُ,ہجے: ذَال پیش ذُ
+harakah_ra_zabar,رَ,ہجے: رَا زَبَر رَ
+harakah_ra_zer,رِ,ہجے: رَا زِیر رِ
+harakah_ra_pesh,رُ,ہجے: رَا پیش رُ
+harakah_zay_zabar,زَ,ہجے: زَا زَبَر زَ
+harakah_zay_zer,زِ,ہجے: زَا زِیر زِ
+harakah_zay_pesh,زُ,ہجے: زَا پیش زُ
+harakah_sin_zabar,سَ,ہجے: سِیْن زَبَر سَ
+harakah_sin_zer,سِ,ہجے: سِیْن زِیر سِ
+harakah_sin_pesh,سُ,ہجے: سِیْن پیش سُ
+harakah_shin_zabar,شَ,ہجے: شِیْن زَبَر شَ
+harakah_shin_zer,شِ,ہجے: شِیْن زِیر شِ
+harakah_shin_pesh,شُ,ہجے: شِیْن پیش شُ
+harakah_sad_zabar,صَ,ہجے: صَاد زَبَر صَ
+harakah_sad_zer,صِ,ہجے: صَاد زِیر صِ
+harakah_sad_pesh,صُ,ہجے: صَاد پیش صُ
+harakah_dad_zabar,ضَ,ہجے: ضَاد زَبَر ضَ
+harakah_dad_zer,ضِ,ہجے: ضَاد زِیر ضِ
+harakah_dad_pesh,ضُ,ہجے: ضَاد پیش ضُ
+harakah_ta_heavy_zabar,طَ,ہجے: طَا زَبَر طَ
+harakah_ta_heavy_zer,طِ,ہجے: طَا زِیر طِ
+harakah_ta_heavy_pesh,طُ,ہجے: طَا پیش طُ
+harakah_dha_heavy_zabar,ظَ,ہجے: ظَا زَبَر ظَ
+harakah_dha_heavy_zer,ظِ,ہجے: ظَا زِیر ظِ
+harakah_dha_heavy_pesh,ظُ,ہجے: ظَا پیش ظُ
+harakah_ain_zabar,عَ,ہجے: عَیْن زَبَر عَ
+harakah_ain_zer,عِ,ہجے: عَیْن زِیر عِ
+harakah_ain_pesh,عُ,ہجے: عَیْن پیش عُ
+harakah_ghain_zabar,غَ,ہجے: غَیْن زَبَر غَ
+harakah_ghain_zer,غِ,ہجے: غَیْن زِیر غِ
+harakah_ghain_pesh,غُ,ہجے: غَیْن پیش غُ
+harakah_fa_zabar,فَ,ہجے: فَا زَبَر فَ
+harakah_fa_zer,فِ,ہجے: فَا زِیر فِ
+harakah_fa_pesh,فُ,ہجے: فَا پیش فُ
+harakah_qaf_zabar,قَ,ہجے: قَاف زَبَر قَ
+harakah_qaf_zer,قِ,ہجے: قَاف زِیر قِ
+harakah_qaf_pesh,قُ,ہجے: قَاف پیش قُ
+harakah_kaf_zabar,كَ,ہجے: کَاف زَبَر كَ
+harakah_kaf_zer,كِ,ہجے: کَاف زِیر كِ
+harakah_kaf_pesh,كُ,ہجے: کَاف پیش كُ
+harakah_lam_zabar,لَ,ہجے: لَام زَبَر لَ
+harakah_lam_zer,لِ,ہجے: لَام زِیر لِ
+harakah_lam_pesh,لُ,ہجے: لَام پیش لُ
+harakah_mim_zabar,مَ,ہجے: مِیْم زَبَر مَ
+harakah_mim_zer,مِ,ہجے: مِیْم زِیر مِ
+harakah_mim_pesh,مُ,ہجے: مِیْم پیش مُ
+harakah_nun_zabar,نَ,ہجے: نُوْن زَبَر نَ
+harakah_nun_zer,نِ,ہجے: نُوْن زِیر نِ
+harakah_nun_pesh,نُ,ہجے: نُوْن پیش نُ
+harakah_waw_zabar,وَ,ہجے: وَاو زَبَر وَ
+harakah_waw_zer,وِ,ہجے: وَاو زِیر وِ
+harakah_waw_pesh,وُ,ہجے: وَاو پیش وُ
+harakah_ha_zabar,هَ,ہجے: ہَا زَبَر هَ
+harakah_ha_zer,هِ,ہجے: ہَا زِیر هِ
+harakah_ha_pesh,هُ,ہجے: ہَا پیش هُ
+harakah_hamza_zabar,أَ,ہجے: ہَمْزَہ زَبَر أَ
+harakah_hamza_zer,إِ,ہجے: ہَمْزَہ زِیر إِ
+harakah_hamza_pesh,أُ,ہجے: ہَمْزَہ پیش أُ
+harakah_ya_zabar,يَ,ہجے: یَا زَبَر يَ
+harakah_ya_zer,يِ,ہجے: یَا زِیر يِ
+harakah_ya_pesh,يُ,ہجے: یَا پیش يُ

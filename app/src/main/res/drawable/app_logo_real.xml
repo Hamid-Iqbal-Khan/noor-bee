@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/apk/res-auto"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- 1. Outer circular sticker border (White sticker background) -->
+    <path
+        android:fillColor="#0D000000"
+        android:pathData="M100,13 C152,13 195,56 195,108 C195,160 152,203 100,203 C48,203 5,160 5,108 C5,56 48,13 100,13 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M100,5 C152,5 195,48 195,100 C195,152 152,195 100,195 C48,195 5,152 5,100 C5,48 48,5 100,5 Z" />
+
+    <!-- 2. Yellow inner circular background gradient -->
+    <path
+        android:pathData="M100,10 C150,10 190,50 190,100 C190,150 150,190 100,190 C50,190 10,150 10,100 C10,50 50,10 100,10 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="100"
+                android:startY="10"
+                android:endX="100"
+                android:endY="190"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#FFFDE7" />
+                <item android:offset="1.0" android:color="#FFF59D" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Concentric Inner Yellow Border -->
+    <path
+        android:strokeColor="#FFEB3B"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M100,14 C147,14 185,52 185,100 C185,148 147,186 100,186 C53,186 15,148 15,100 C15,52 53,14 100,14 Z" />
+
+    <!-- 3. Stars and light sparkles in background inner yellow circle -->
+    <path
+        android:fillColor="#FFD54F"
+        android:strokeColor="#FFF59D"
+        android:strokeWidth="0.5"
+        android:pathData="M155,35 L157,30 L159,35 L164,35 L160,38 L162,43 L157,40 L152,43 L154,38 L150,35 Z" />
+    <path
+        android:fillColor="#FF4081"
+        android:strokeColor="#FF80AB"
+        android:strokeWidth="0.5"
+        android:pathData="M172,95 L174,90 L176,95 L181,95 L177,98 L179,103 L174,100 L169,103 L171,98 L167,95 Z" />
+    <path
+        android:fillColor="#FF9100"
+        android:strokeColor="#FFB74D"
+        android:strokeWidth="0.5"
+        android:pathData="M162,125 L164,120 L166,125 L171,125 L167,128 L169,133 L164,130 L159,133 L161,128 L157,125 Z" />
+    <path
+        android:fillColor="#FF9100"
+        android:strokeColor="#FFB74D"
+        android:strokeWidth="0.5"
+        android:pathData="M32,105 L34,100 L36,105 L41,105 L37,108 L39,113 L34,110 L29,113 L31,108 L27,105 Z" />
+    <path
+        android:fillColor="#40C4FF"
+        android:strokeColor="#80D8FF"
+        android:strokeWidth="0.5"
+        android:pathData="M42,50 L44,45 L46,50 L51,50 L47,53 L49,58 L44,55 L39,58 L41,53 L37,50 Z" />
+
+    <!-- 4. Adorable Bee Wings -->
+    <path
+        android:fillColor="#80DEEA"
+        android:strokeColor="#00ACC1"
+        android:strokeWidth="1.2"
+        android:pathData="M75,70 C52,45 28,62 30,85 C32,108 55,110 75,98 Z" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.0"
+        android:fillColor="#00000000"
+        android:pathData="M45,74 Q56,80 68,86 M50,85 Q58,90 66,94" />
+    
+    <path
+        android:fillColor="#80DEEA"
+        android:fillAlpha="0.8"
+        android:strokeColor="#00ACC1"
+        android:strokeWidth="1.0"
+        android:pathData="M80,95 C62,85 40,95 40,110 C40,125 58,130 75,115 Z" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.8"
+        android:fillColor="#00000000"
+        android:pathData="M52,108 Q62,112 70,114" />
+
+    <!-- 5. Bee Body (Yellow with Black Stripes) -->
+    <path
+        android:fillColor="#FFF176"
+        android:strokeColor="#FBC02D"
+        android:strokeWidth="1.0"
+        android:pathData="M70,105 C70,85 122,85 122,105 C122,128 70,128 70,105 Z" />
+    
+    <!-- Black stripes -->
+    <path
+        android:fillColor="#37474F"
+        android:pathData="M73,100 C75,92 117,92 119,100 L115,108 C113,101 79,101 77,108 Z" />
+    <path
+        android:fillColor="#37474F"
+        android:pathData="M77,114 C79,107 113,107 115,114 L110,122 C108,116 84,116 82,122 Z" />
+
+    <!-- Wavy Arm (Left) -->
+    <path
+        android:fillColor="#37474F"
+        android:strokeColor="#212121"
+        android:strokeWidth="0.6"
+        android:pathData="M74,90 C64,88 52,80 48,74 C43,68 47,65 52,68 C57,72 64,80 74,84 Z" />
+    <path android:fillColor="#37474F" android:pathData="M47,70 a2,2 0 1,0 0,4 a2,2 0 1,0 0,-4" />
+    <path android:fillColor="#37474F" android:pathData="M50,67 a2,2 0 1,0 0,4 a2,2 0 1,0 0,-4" />
+    <path android:fillColor="#37474F" android:pathData="M54,65 a2,2 0 1,0 0,4 a2,2 0 1,0 0,-4" />
+
+    <!-- Right Arm holding book -->
+    <path
+        android:fillColor="#37474F"
+        android:strokeColor="#212121"
+        android:strokeWidth="0.6"
+        android:pathData="M112,112 C120,111 127,114 135,118 L138,114 C130,110 120,107 112,108 Z" />
+    <path android:fillColor="#37474F" android:pathData="M136,114 a2,2 0 1,0 0,4 a2,2 0 1,0 0,-4" />
+    <path android:fillColor="#37474F" android:pathData="M138,111 a2,2 0 1,0 0,4 a2,2 0 1,0 0,-4" />
+
+    <!-- 6. Bee Head & Face -->
+    <path
+        android:fillColor="#263238"
+        android:pathData="M96,35 A33,33 0 1,0 96,101 A33,33 0 1,0 96,35" />
+    <path
+        android:fillColor="#FFF59D"
+        android:strokeColor="#FBC02D"
+        android:strokeWidth="0.8"
+        android:pathData="M96,41 C74,41 72,85 96,93 C120,85 118,41 96,41 Z" />
+
+    <!-- Antennae -->
+    <path
+        android:strokeColor="#263238"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M85,42 Q75,30 80,18" />
+    <path android:fillColor="#263238" android:pathData="M80,13.5 a4.5,4.5 0 1,0 0,9 a4.5,4.5 0 1,0 0,-9" />
+    
+    <path
+        android:strokeColor="#263238"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M107,42 Q117,30 112,18" />
+    <path android:fillColor="#263238" android:pathData="M112,13.5 a4.5,4.5 0 1,0 0,9 a4.5,4.5 0 1,0 0,-9" />
+
+    <!-- Glossy Beautiful Eyes -->
+    <path android:fillColor="#263238" android:pathData="M83,52 a8.5,12 0 1,0 0,24 a8.5,12 0 1,0 0,-24" />
+    <path android:fillColor="#4E342E" android:pathData="M84.5,55 a5.5,9 0 1,0 0,18 a5.5,9 0 1,0 0,-18" />
+    <path android:fillColor="#FFFFFF" android:pathData="M82.5,57 a3,3 0 1,0 0,6 a3,3 0 1,0 0,-6" />
+    <path android:fillColor="#FFFFFF" android:pathData="M86.5,65.5 a1.5,1.5 0 1,0 0,3 a1.5,1.5 0 1,0 0,-3" />
+    
+    <path android:fillColor="#263238" android:pathData="M109,52 a8.5,12 0 1,0 0,24 a8.5,12 0 1,0 0,-24" />
+    <path android:fillColor="#4E342E" android:pathData="M107.5,55 a5.5,9 0 1,0 0,18 a5.5,9 0 1,0 0,-18" />
+    <path android:fillColor="#FFFFFF" android:pathData="M105.5,57 a3,3 0 1,0 0,6 a3,3 0 1,0 0,-6" />
+    <path android:fillColor="#FFFFFF" android:pathData="M109.5,65.5 a1.5,1.5 0 1,0 0,3 a1.5,1.5 0 1,0 0,-3" />
+
+    <path
+        android:strokeColor="#263238"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M73,61 C70,62 69,67 71,68" />
+    <path
+        android:strokeColor="#263238"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M119,61 C122,62 123,67 121,68" />
+
+    <!-- Blush and happy mouth -->
+    <path android:fillColor="#FF8A80" android:fillAlpha="0.8" android:pathData="M74,72 a5,4 0 1,0 0,8 a5,4 0 1,0 0,-8" />
+    <path android:fillColor="#FF8A80" android:fillAlpha="0.8" android:pathData="M118,72 a5,4 0 1,0 0,8 a5,4 0 1,0 0,-8" />
+    
+    <path
+        android:fillColor="#C62828"
+        android:strokeColor="#263238"
+        android:strokeWidth="1.2"
+        android:pathData="M90,75 C90,85 102,85 102,75 Z" />
+    <path
+        android:fillColor="#FF8A80"
+        android:pathData="M93,79 C96,82 99,82 101,78 Z" />
+    
+    <path
+        android:strokeColor="#263238"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M88,74 Q89,72 90,75 M104,74 Q103,72 102,75" />
+
+    <!-- 7. Purple Open Book -->
+    <path
+        android:fillColor="#311B92"
+        android:pathData="M115,108 L142,94 L148,122 L121,136 Z" />
+    <path
+        android:fillColor="#673AB7"
+        android:strokeColor="#311B92"
+        android:strokeWidth="1.2"
+        android:pathData="M116,106 L143,92 L149,120 L122,134 Z" />
+    
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M118,108 L133,103 L133,128 L118,132 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M133,103 L146,94 L152,119 L133,128 Z" />
+    
+    <path
+        android:strokeColor="#FFD54F"
+        android:strokeWidth="2.0"
+        android:pathData="M133,103 L133,128" />
+    
+    <path
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M121,123 L124,113 L127,123 M122.5,119 L125.5,119" />
+    
+    <path
+        android:strokeColor="#FFC107"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M137,114 C137,118 144,118 144,114" />
+    <path android:fillColor="#FFC107" android:pathData="M140.5,120.5 a1,1 0 1,0 0,2 a1,1 0 1,0 0,-2" />
+
+    <!-- 8. Speech Bubbles -->
+    <!-- Blue ABC Bubble -->
+    <path
+        android:fillColor="#0288D1"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.2"
+        android:pathData="M24,46 C24,38 46,38 46,46 C46,53 38,55 35,58 C35,55 24,53 24,46 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M27,48 L29,42 L31,48 L30,48 L29.5,46.5 L28.5,46.5 L28,48 Z M28.8,45 L29.8,45 L29.3,43.5 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M33,42 L35.5,42 Q36.5,42 36.5,43.2 C36.5,44 36,44.5 35.2,44.6 C36.2,44.8 36.7,45.3 36.7,46.2 Q36.7,48 35.5,48 L33,48 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,43.5 A2.5,2.5 0 0,0 37.5,46 A2.5,2.5 0 0,0 40,48.5 L40,47.5 A1.5,1.5 0 0,1 38.5,46 A1.5,1.5 0 0,1 40,44.5 Z" />
+
+    <!-- Green أ ب ت Bubble -->
+    <path
+        android:fillColor="#8BC34A"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.2"
+        android:pathData="M148,46 C148,38 170,38 170,46 C170,53 159,55 156,58 C156,55 148,53 148,46 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M152,41 L152,47 L153,47 L153,41 Z M151,39 C151.7,39.5 153.3,39.5 154,39 L152,40 Z" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M156,44 C156,46 160,46 160,44" />
+    <path android:fillColor="#FFFFFF" android:pathData="M158,47.5 a0.5,0.5 0 1,0 0,1 a0.5,0.5 0 1,0 0,-1" />
+    
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M162,44 C162,46 166,46 166,44" />
+    <path android:fillColor="#FFFFFF" android:pathData="M163.5,42 a0.5,0.5 0 1,0 0,1 a0.5,0.5 0 1,0 0,-1" />
+    <path android:fillColor="#FFFFFF" android:pathData="M164.5,42 a0.5,0.5 0 1,0 0,1 a0.5,0.5 0 1,0 0,-1" />
+
+    <!-- 9. "Noor Bee" Text Logo -->
+    <!-- N -->
+    <path
+        android:fillColor="#512DA8"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M48,152 L48,136 L52.5,136 L57,146 L57,136 L61,136 L61,152 L56.5,152 L52,142 L52,152 Z" />
+    
+    <!-- o -->
+    <path
+        android:fillColor="#FF5722"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M74,142 m-9,0 a9,9 0 1,1 18,0 a9,9 0 1,1 -18,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M74,139 L75,142 L78,142 L75.5,144 L76.5,147 L74,145 L71.5,147 L72.5,144 L70,142 L73,142 Z" />
+    
+    <!-- o -->
+    <path
+        android:fillColor="#03A9F4"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M94,142 m-9,0 a9,9 0 1,1 18,0 a9,9 0 1,1 -18,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M94,138.5 a3.5,3.5 0 1,0 0,7 a3.5,3.5 0 1,0 0,-7" />
+    
+    <!-- r -->
+    <path
+        android:fillColor="#4CAF50"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M109,152 L109,139 L113,139 L113,141 Q117,137 121,139 L119,144 C116,142 113,143 113,152 Z" />
+
+    <!-- B -->
+    <path
+        android:fillColor="#FFEB3B"
+        android:strokeColor="#311B92"
+        android:strokeWidth="1.8"
+        android:pathData="M66,170 L66,154 L73.5,154 C77.5,154 79.5,156 79.5,158 C79.5,160 77.5,161 75.5,162 C78.5,163 80.5,165 80.5,167 C80.5,170 77.5,170 73.5,170 Z M70.5,158 C70.5,159 71.5,160 73.5,160 C75.5,160 76.5,159 76.5,158 C76.5,157 75.5,156 73.5,156 C71.5,156 70.5,157 70.5,158 Z M70.5,166 C70.5,167 71.5,168 73.5,168 C75.5,168 77,167 77,166 C77,165 75.5,164 73.5,164 C71.5,164 70.5,165 70.5,166 Z" />
+    
+    <!-- e -->
+    <path
+        android:fillColor="#FFEB3B"
+        android:strokeColor="#311B92"
+        android:strokeWidth="1.8"
+        android:pathData="M84,162 C84,156 93.5,156 93.5,162 L88.5,162 L88.5,165 C88.5,167.5 93,167.5 93,165 Q93.5,170 84,170 Z M88.5,159 L91,159 Q91,156 88.5,156 C88.5,156 88.5,157 88.5,159 Z" />
+    
+    <!-- e -->
+    <path
+        android:fillColor="#FFEB3B"
+        android:strokeColor="#311B92"
+        android:strokeWidth="1.8"
+        android:pathData="M97,162 C97,156 106.5,156 106.5,162 L101.5,162 L101.5,165 C101.5,167.5 106,167.5 106,165 Q106.5,170 97,170 Z M101.5,159 L104,159 Q104,156 101.5,156 C101.5,156 101.5,157 101.5,159 Z" />
+
+    <!-- 10. Learn English / Learn Arabic Dual Ribbon Banners -->
+    <path
+        android:fillColor="#03A9F4"
+        android:pathData="M35,178 Q70,200 100,188 L100,195 Q65,203 30,185 Z" />
+    <path
+        android:fillColor="#E91E63"
+        android:pathData="M100,188 Q130,200 165,178 L170,185 Q135,203 100,195 Z" />
+    
+    <!-- Little connecting heart -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M100,191 C98,188 102,188 100,191 Z" />
+
+</vector>

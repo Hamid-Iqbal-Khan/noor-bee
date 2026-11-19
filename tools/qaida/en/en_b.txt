@@ -1,0 +1,188 @@
+153	-
+154	Lesson 2: Similar sounds
+155	Lesson 3: Vowel marks — fatha, kasra, damma
+156	Lesson 1: Joining letters
+157	Lesson 3: Tanween
+158	Lesson 4: Standing fatha, standing kasra, inverted damma
+159	Lesson 5: Madd and leen letters
+160	Stage 2 practice
+161	Lesson 1: Shaddah
+162	Lesson 2: Ghunnah and shaddah words
+163	Lesson 3: The madd sign
+164	Lesson 4: Sun and moon letters
+165	Lesson 5: Surah Al-Fatihah
+166	Stage 3 practice
+167	Lesson 1: How to stop
+168	Lesson 3: Qalqalah
+169	Lesson 4: Al-Kawthar and Al-'Asr
+170	Stage 4 practice
+171	Lesson 1: Common Quran words
+172	Lesson 2: My, your, his
+173	Lesson 3: Al-Fatihah word by word
+174	Lesson 4: Al-Ikhlas, Al-Kawthar, Al-'Asr
+175	Stage 5 practice
+176	Lesson 1: Al-Fil and Quraysh
+177	Lesson 3: Al-Kafirun and An-Nasr
+178	Lesson 5: Say the meaning
+179	Stage 6 practice
+180	Lesson 1: Izhar
+181	Lesson 5: Meem saakin
+182	Lesson 6: Spot the rule
+183	Stage 7 practice
+184	Lesson 1: The root
+185	Lesson 2: Word patterns
+186	Lesson 3: Past tense — who did it
+187	Lesson 4: Present tense — who is doing it
+188	Lesson 5: Commands and 'not'
+189	Lesson 6: Root detective
+190	Stage 11 practice
+191	Noorani Qaida
+192	🔈 Ayat and Quran words: recitation by Qari Mishary Alafasy (needs the internet the first time, then saved on the phone). Single letters and vowels use the phone's voice for now; the qari's recordings are coming soon.
+193	2: Joining
+194	5: Meanings
+195	6: Surahs
+196	7: Tajweed
+197	11: Grammar
+198	Stage 1: Letters and first sounds
+199	5 to 10 minutes a day. Do the practice after each lesson.
+200	Similar sounds
+201	Letters that can sound alike: س ث ص, ز ذ ظ ض, ت ط, ه ح, ء ع, ك ق
+202	Vowel marks: fatha, kasra, damma
+203	Page 4 — every letter with the three vowels, spelled out
+204	10 questions · 8 correct completes Stage 1
+205	Masha'Allah! Stage 1 complete. Now start Stage 2 (reading joined letters) →
+206	Stage 2: Joining letters and marks
+207	Pages 2 to 9 — joining, muqatta'at, tanween, standing vowels, madd and leen, sukoon
+208	Tip: finish the Stage 1 practice first, then come here. You can still start now if you like.
+209	Joining letters
+210	Pages 2–3 — the start, middle and end shapes of a letter; ا د ذ ر ز و don't join forward
+211	Page 3 — the 14 letters at the start of surahs, read one by one by their names
+212	Tanween: double fatha, double kasra, double damma
+213	Page 5 — an 'n' sound at the end: بًا بٍ بٌ
+214	Standing fatha, standing kasra, inverted damma
+215	Page 6 — stretching the vowel: بٰ بٖ بٗ
+216	Madd and leen letters
+217	Pages 7–8 — long sounds with ا و ي, and soft sounds: بَا بُو بِي, بَوْ بَيْ
+218	Sukoon (jazm)
+219	Page 9 — joining a resting letter to the one before: اَبْ, قُلْ
+220	10 questions · 8 correct completes Stage 2
+221	Masha'Allah! Stage 2 complete. Now start Stage 3 (shaddah and recitation) →
+222	Stage 3: Shaddah and first recitation
+223	Shaddah, ghunnah, the madd sign, sun and moon letters — then Surah Al-Fatihah and Surah Al-Ikhlas
+224	Tip: finish the Stage 2 practice first. You can still start now if you like.
+225	Shaddah
+226	A letter said twice — اَبَّ اِبِّ اُبُّ, each spelled out
+227	Ghunnah and shaddah words
+228	A nasal sound on نّ مّ; رَبِّ, كُلُّ, عَلَّمَ
+229	The madd sign (~)
+230	An extra-long sound: جَآءَ, السَّمَآءُ
+231	Sun and moon letters
+232	In اَلشَّمْسُ the laam is silent; in اَلْقَمَرُ the laam is read
+233	Recitation: Surah Al-Fatihah
+234	Seven ayat, each with the rules that appear in it
+235	Four ayat
+236	10 questions · 8 correct completes Stage 3
+237	Masha'Allah! Stage 3 complete. Now start Stage 4 (stopping and short surahs) →
+238	Stage 4: Stopping and short surahs
+239	How to stop, stop signs, qalqalah — then Al-Kawthar, Al-'Asr, Al-Falaq and An-Nas
+240	Tip: finish the Stage 3 practice first. You can still start now if you like.
+241	How to stop
+242	When stopping, the last letter rests: اَحَدٌ ← اَحَدْ, عَلِيْمًا ← عَلِيْمَا
+243	۝ م ط ج ز ص لا — where to stop and where to join
+244	Qalqalah
+245	A bouncing sound when ق ط ب ج د have a sukoon
+246	Recitation: Al-Kawthar and Al-'Asr
+247	Two short surahs, stopping at each ayah
+248	Five ayat — qalqalah at the end of each ayah
+249	Six ayat — ghunnah and the sun laam
+250	10 questions · 8 correct completes Stage 4
+251	Masha'Allah! The Qaida is complete. Now in Stage 5 learn the meaning of what you read →
+252	رَبُّنَا · our Lord
+253	Stage 5: Understand the Quran
+254	Common Quran words, pronoun endings, then Al-Fatihah and short surahs word by word
+255	Tip: finish the Stage 4 practice first. You can still start now if you like.
+256	Common Quran words
+257	My, your, his
+258	رَبُّنَا our Lord, رَبُّكَ your Lord, رَبِّيْ my Lord
+259	Al-Fatihah word by word
+260	The English meaning under every word
+261	Al-Ikhlas, Al-Kawthar, Al-'Asr
+262	Three short surahs word by word
+263	The two surahs of seeking refuge, word by word
+264	10 questions · 8 correct completes Stage 5
+265	Masha'Allah! Now in Stage 6 understand the rest of the short surahs →
+266	Al-Fil → Al-Masad
+267	Stage 6: Understand the short surahs
+268	The other six short surahs of Juz 'Amma word by word, then practise saying the meanings
+269	Tip: finish the Stage 5 practice first. You can still start now if you like.
+270	Al-Fil and Quraysh
+271	The people of the elephant, and Allah's blessing on the Quraysh
+272	Seven ayat — the orphan, the poor and prayer
+273	Al-Kafirun and An-Nasr
+274	For you your religion; Allah's help and victory
+275	Five ayat word by word
+276	Say the meaning (cards)
+277	10 questions · 8 correct completes Stage 6
+278	Masha'Allah! Now in Stage 7 learn the rules of noon and meem saakin →
+279	Stage 7: Noon and meem saakin
+280	Izhar, idgham, iqlab, ikhfa — and the three rules of meem saakin
+281	Tip: finish the Stage 6 practice first. You can still start now if you like.
+282	Izhar
+283	Noon said clearly before the 6 throat letters: اَنْعَمْتَ, مِنْ خَوْفٍ
+284	Merged with ghunnah into ي ن م و, without ghunnah into ل ر: مِنْ مَّسَدٍ, يَكُنْ لَّهٗ
+285	Before ب, noon turns into meem: مِنْۢ بَعْدِ
+286	Noon hidden before the other 15 letters: مِنْ شَرِّ, اَنْتُمْ
+287	Meem saakin
+288	Ikhfa shafawi, idgham shafawi, izhar shafawi
+289	Spot the rule
+290	Examples from the surahs you have read — say the rule yourself, then see the answer
+291	10 questions · 8 correct completes Stage 7
+292	Masha'Allah! All the Qaida rules are complete. Now in Stage 8 understand the rest of Juz 'Amma →
+293	10 questions · 8 correct completes the stage
+294	Masha'Allah! You have read and understood all of Juz 'Amma. Now learn Quranic grammar in Stage 11 →
+295	Stage 11: Basics of Quranic grammar
+296	Roots, patterns, past and present tense, commands and 'not' — with words you may already know
+297	Tip: you can study this stage at any time, but it helps to understand some surahs first.
+298	The root
+299	A three-letter root: from ع ل م come 'ilm, 'aalim, ma'loom
+300	Word patterns
+301	faa'il the doer, maf'ool the one it was done to, fa'eel very much, maf'al the place
+302	Past tense — who did it
+303	Present tense — who is doing it
+304	يَـ he, تَـ you, اَ I, نَـ we: نَعْبُدُ, اَعْبُدُ
+305	Commands and 'not'
+306	Root detective 🔍
+307	Find the three root letters in the word
+308	Masha'Allah! The whole course is complete — from the letters to understanding Juz 'Amma and Quranic grammar. Now continue reading and translation with a teacher.
+309	🤲 Manners of recitation
+310	• If you can, make wudu and read with attention in a clean place (wudu is not required to read on a phone, but it is better).
+311	• Say اَعُوْذُ بِاللّٰهِ at the start, and بِسْمِ اللّٰهِ at the beginning of a surah.
+312	• Read slowly and clearly; if you make a mistake, read it again correctly.
+313	• The ۩ sign marks a sajdah of recitation: an adult who reads or hears this ayah must prostrate (Hanafi).
+314	Done
+315	Tap a letter to hear its name and read its makhraj. Heavy (full) letters are red — to remember them: خُصَّ ضَغْطٍ قِظْ (خ ص ض غ ط ق ظ). Never read ض like 'z' or 'd'.
+316	OK
+317	Heavy (full) letter
+318	Hear the name
+319	⚠️ For English speakers
+320	In the Quran:
+321	In Urdu:
+322	Several Arabic letters can sound alike to English speakers, and some do not exist in English at all. When reading the Quran every letter must come from its own place, or the meaning of a word can change. Listen to each letter and example and hear the difference.
+323	I have heard them all ✓
+324	Tap each box to hear it spelled, then read the whole row yourself: Baa fatha ba, Baa kasra bi, Baa damma bu
+325	I have read the whole page ✓
+326	Masha'Allah! 🌟
+327	Well done — try again 💪
+328	Practise again
+329	List of lessons
+330	Excellent! ✓
+331	The correct answer is in green.
+332	See the result
+333	Next question
+334	You may know: 'ilm (knowledge)
+335	one who knows
+336	You may know: 'aalim (scholar)
+337	known
+338	You may know: ma'loom (known)
+339	All-Knowing
+340	he taught

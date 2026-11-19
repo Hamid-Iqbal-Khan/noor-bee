@@ -1,0 +1,200 @@
+561	Sun ☀️
+562	Moon 🌙
+563	Read Surah Al-Fatihah ayah by ayah. Tap each ayah to hear it, then read it yourself. Below each one are the rules that appear in it. Stop at the end of each ayah.
+564	Surah Al-Ikhlas — four ayat. First read each word slowly, then the whole ayah smoothly.
+565	Shaddah (ّ) means the letter is said twice: first resting (joined to the letter before), then with its vowel. Tap any box — the breakdown of the word appears under it.
+566	When نّ or مّ has a shaddah, make ghunnah: hold the sound in the nose for about two counts.
+567	Quran words with shaddah:
+568	Where a madd letter (ا و ي) carries the madd sign (~), make the sound longer than a normal madd. If a hamzah comes in the same word (جَآءَ) it is madd muttasil; if the hamzah is in the next word (بِمَآ اُنْزِلَ) it is madd munfasil — both 4 to 5 counts. If a shaddah or sukoon follows the madd (الضَّآلِّيْنَ) it is madd laazim — always a full 6 counts. One count = the time it takes to fold one finger.
+569	The madd sign — extra long
+570	Look at the letter after اَل (al). If it is a sun letter, the laam is not read and the next letter has a shaddah. If it is a moon letter, the laam is read clearly with sukoon.
+571	☀️ Sun letters (14)
+572	🌙 Moon letters (14)
+573	This text is in the IndoPak style; stop signs are not included yet. A teacher should check it against a printed mushaf.
+574	double damma → sukoon
+575	damma → sukoon
+576	kasra → sukoon
+577	round ة → resting ه
+578	inverted damma → sukoon, no stretching
+579	standing kasra → sukoon, no stretching
+580	letter with shaddah → the shaddah stays, the vowel goes
+581	Must stop
+582	Better to stop
+583	Stop or join
+584	Better to join
+585	Do not stop
+586	Round circle — end of ayah
+587	End of the ayah. Stop here and take a breath.
+588	You must stop here, or the meaning may go wrong.
+589	It is better to stop here.
+590	It is better to stop.
+591	Stopping is fine and so is joining; stopping is better.
+592	You may stop, but joining is better.
+593	If your breath runs out you may stop; otherwise join.
+594	Sale
+595	Salay
+596	Joining is better.
+597	Some stop here, but joining is better.
+598	Qeel
+599	Some say stop here, but it is better not to stop.
+600	Laa — do not stop
+601	In the middle of an ayah, don't stop; on an ayah sign, stopping is allowed.
+602	Mu'aanaqah
+603	When three dots appear in two places, stop at only one of them.
+604	Saktah
+605	Pause very briefly without breaking your breath, then read on.
+606	Small meem (Madani mushaf)
+607	Waqf laazim: you must stop.
+608	Qilay (Madani mushaf)
+609	Jeem (Madani mushaf)
+610	Stopping and joining are both fine.
+611	Salay (Madani mushaf)
+612	Laa (Madani mushaf)
+613	Do not stop here.
+614	Mu'aanaqah (Madani mushaf)
+615	Stop at only one of the two places.
+616	nearer — قْ
+617	He fed them — طْ
+618	cut off — بْ
+619	they gather — جْ
+620	they enter — دْ
+621	when stopping — a clearer qalqalah
+622	qalqalah when stopping
+623	Surah Al-Kawthar
+624	Ghunnah and madd in اِنَّآ; a standing fatha in اَعْطَيْنٰكَ
+625	Two shaddahs; the last word already rests
+626	Qalqalah on بْ in الْاَبْتَرُ
+627	A moon laam; رْ when stopping
+628	Stopping on a double-kasra word: خُسْرْ
+629	A long ayah: if your breath runs out, stop at بِالْحَقِّ and then read on, joining again
+630	قْ when stopping — qalqalah
+631	بْ when stopping — qalqalah
+632	Shaddah and two standing fathas in النَّفّٰثٰتِ; دْ when stopping — qalqalah
+633	دْ when stopping — qalqalah
+634	A sun laam and ghunnah in النَّاسِ
+635	Every ayah stops on النَّاسْ
+636	A standing fatha in اِلٰهِ
+637	Shaddah and ghunnah in الْخَنَّاسِ
+638	Madd letters: الَّذِيْ, فِيْ, صُدُوْرِ
+639	Ghunnah in الْجِنَّةِ
+640	How do you read this word if you stop on it?
+641	What does this stop sign say?
+642	Which of these is a qalqalah letter?
+643	When you stop on a word at the end of an ayah or when your breath runs out, drop the vowel of the last letter and read it resting. With a double fatha, read a fatha and alif; with a round ة, read a resting 'h'. If there is a madd before the last letter (الرَّحِيْمْ, الْعٰلَمِيْنْ), you may stretch it 2, 4 or 6 counts when stopping — keep the same length within one recitation.
+644	Small signs inside an ayah tell you where to stop and where to join. First come the signs of the IndoPak mushaf, then those of the Madani mushaf — the ayat in this app carry the Madani signs (ۚ ۖ ۗ). When you stop, use the stopping method.
+645	These explanations follow common IndoPak mushafs; check with a teacher.
+646	The five qalqalah letters are ق ط ب ج د — to remember them: 'qutbu jadin'. When they have a sukoon, say them with a slight bounce. At the end of a word, when you stop, the qalqalah is clearer.
+647	Allah's name and attributes
+648	Allah
+649	Lord, Sustainer
+650	The Most Gracious (a name only for Allah)
+651	The Most Merciful
+652	All-Knowing
+653	All-Wise
+654	Small words (particles)
+655	in
+656	to, towards
+657	from, about
+658	no, not
+659	except
+660	Pronouns
+661	he (one)
+662	they (all)
+663	we
+664	the one who
+665	those who
+666	Actions (verbs)
+667	he said
+668	say!
+669	was (for Allah: has always been)
+670	they did
+671	Names of things
+672	the earth
+673	your
+674	your Lord
+675	his
+676	his Lord
+677	their
+678	their Lord
+679	your (all of you)
+680	your Lord (all of you)
+681	our
+682	our Lord
+683	my
+684	my Lord
+685	Surah Al-Fatihah
+686	In the name
+687	of Allah
+688	the Most Gracious
+689	for Allah
+690	Lord
+691	of all the worlds
+692	the Most Merciful
+693	Master
+694	of the Day
+695	of Judgement
+696	You alone
+697	and You alone
+698	we ask for help
+699	guide us
+700	to the path
+701	the straight
+702	of those
+703	not
+704	who earned anger
+705	and not
+706	of those who went astray
+707	Say
+708	He
+709	is One
+710	is Self-Sufficient (needs no one)
+711	He has no child
+712	nor is He anyone's child
+713	and not
+714	is
+715	anyone
+716	Indeed We
+717	have given you
+718	Al-Kawthar
+719	so pray
+720	to your Lord
+721	and sacrifice
+722	your enemy
+723	he is the one
+724	cut off (forgotten)
+725	By time!
+726	is surely in
+727	except
+728	those who
+729	believed
+730	and did
+731	good deeds
+732	and urged one another
+733	to the truth
+734	to patience
+735	I seek refuge
+736	with the Lord
+737	of the daybreak
+738	the evil
+739	of what
+740	and from
+741	of the darkness
+742	when it spreads
+743	of those who blow
+744	on knots
+745	of the envier
+746	when he envies
+747	of mankind
+748	the King
+749	of the whisperer
+750	who slinks away
+751	who whispers
+752	into the hearts
+753	jinn
+754	and mankind
+755	What is it in Arabic?
+756	What does it mean?
+757	These meanings are written in simple English for children; read them alongside a trusted translation and a teacher.
+758	These are words that come again and again in the Quran. Learn them and you will start to understand something on every page. Tap each word to hear it.
+759	In Arabic, 'my, your, his' join on to the end of a word. See them with رَبّ (Lord) — the same endings join every word.
+760	 — word by word

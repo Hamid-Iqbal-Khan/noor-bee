@@ -1,0 +1,96 @@
+name: Android CI (build, test, emulator UAT)
+
+# Builds the Kotlin/Compose app, runs JVM + Robolectric/Roborazzi tests, then
+# installs the debug APK on an emulator for a smoke + monkey test.
+# Everything (APK, screenshots, reports, logs) is attached to a GitHub
+# pre-release so it can be fetched without the Actions API.
+on:
+  workflow_dispatch:
+  push:
+    branches: [kotlin-store-app]
+    paths-ignore: ['**.md']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  NORBY_BUILD: ${{ github.run_number }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      sha: ${{ steps.meta.outputs.sha }}
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: meta
+        run: |
+          echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "version=3.${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: 9.3.1 }
+      - name: .env for secrets plugin
+        run: cp .env.example .env
+      - name: Assemble debug APK
+        run: gradle :app:assembleDebug --stacktrace 2>&1 | tee build.log
+      - name: Unit + Robolectric/Roborazzi tests
+        if: always()
+        timeout-minutes: 20
+        run: gradle :app:testDebugUnitTest -Proborazzi.test.record=true --continue 2>&1 | tee test.log
+      - name: Lint
+        if: always()
+        run: gradle :app:lintDebug --continue 2>&1 | tee lint.log || true
+      - name: Collect outputs
+        if: always()
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/debug/app-debug.apk "out/Norby-${{ steps.meta.outputs.version }}.apk" || true
+          zip -qr out/reports.zip build.log test.log lint.log app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi app/build/outputs/roborazzi 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: build-out, path: out }
+
+  emulator:
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: build-out, path: out }
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Smoke + monkey test on emulator (API 34, Pixel)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          script: bash .github/scripts/emulator-uat.sh
+      - name: Publish pre-release with APK + reports
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          SHA=${{ needs.build.outputs.sha }}
+          zip -qr out/emulator.zip emu 2>/dev/null || true
+          VER=${{ needs.build.outputs.version }}
+          TAG="norby-$VER"
+          gh release create "$TAG" out/* --target "${{ github.sha }}" --prerelease \
+            --title "Norby $VER (test build, $SHA)" \
+            --notes "Norby $VER test APK (installs as 'Noor Bee (Test)'), plus CI reports. Signed with the fixed test key; not for Google Play. Download Norby-$VER.apk on the phone and open it."

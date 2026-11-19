@@ -1,0 +1,613 @@
+QaidaData.kt	حلق
+QaidaData.kt	زبان
+QaidaData.kt	ا
+QaidaData.kt	اَلِف
+QaidaData.kt	ب
+QaidaData.kt	بَا
+QaidaData.kt	ت
+QaidaData.kt	تَا
+QaidaData.kt	ث
+QaidaData.kt	ثَا
+QaidaData.kt	ج
+QaidaData.kt	ح
+QaidaData.kt	حَا
+QaidaData.kt	خ
+QaidaData.kt	خَا
+QaidaData.kt	د
+QaidaData.kt	دَال
+QaidaData.kt	ذ
+QaidaData.kt	ذَال
+QaidaData.kt	ر
+QaidaData.kt	رَا
+QaidaData.kt	ز
+QaidaData.kt	زَا
+QaidaData.kt	س
+QaidaData.kt	ش
+QaidaData.kt	ص
+QaidaData.kt	صَاد
+QaidaData.kt	ض
+QaidaData.kt	ضَاد
+QaidaData.kt	ط
+QaidaData.kt	طَا
+QaidaData.kt	ظ
+QaidaData.kt	ظَا
+QaidaData.kt	ع
+QaidaData.kt	غ
+QaidaData.kt	ف
+QaidaData.kt	فَا
+QaidaData.kt	ق
+QaidaData.kt	قَاف
+QaidaData.kt	ك
+QaidaData.kt	ل
+QaidaData.kt	لَام
+QaidaData.kt	م
+QaidaData.kt	ن
+QaidaData.kt	نُوْن
+QaidaData.kt	و
+QaidaData.kt	وَاو
+QaidaData.kt	ه
+QaidaData.kt	ء
+QaidaData.kt	ي
+QaidaData.kt	سَمِيْعٌ
+QaidaData.kt	ثُمَّ
+QaidaData.kt	صَبْرٌ
+QaidaData.kt	صبر
+QaidaData.kt	زَيْتُوْنٌ
+QaidaData.kt	ذِكْرٌ
+QaidaData.kt	ظِلٌّ
+QaidaData.kt	ضُحًى
+QaidaData.kt	تِيْنٌ
+QaidaData.kt	طَيِّبٌ
+QaidaData.kt	هُدًى
+QaidaData.kt	حَمْدٌ
+QaidaData.kt	أَحَدٌ
+QaidaData.kt	عِلْمٌ
+QaidaData.kt	علم
+QaidaData.kt	كِتَابٌ
+QaidaData.kt	قَلَمٌ
+QaidaData.kt	قلم
+QaidaData.kt	َ
+QaidaData.kt	زَبَر
+QaidaData.kt	بَ
+QaidaData.kt	ِ
+QaidaData.kt	بِ
+QaidaData.kt	ُ
+QaidaData.kt	بُ
+QaidaData.kt	أَ
+QaidaData.kt	إِ
+QaidaData.kt	أُ
+QaidaData.kt	بَا زَبَر بَ
+QaidaJuzAmma.kt	۸: عمّ ۱
+QaidaJuzAmma.kt	۹: عمّ ۲
+QaidaJuzAmma.kt	۱۰: عمّ ۳
+QaidaJuzAmma.kt	الانشقاق ← النبأ
+QaidaJuzAmma.kt	سورۃ النبأ
+QaidaJuzAmma.kt	سورۃ النازعات
+QaidaJuzAmma.kt	سورۃ عبس
+QaidaJuzAmma.kt	سورۃ الانفطار
+QaidaJuzAmma.kt	سورۃ الانشقاق
+QaidaJuzAmma.kt	سورۃ البروج
+QaidaJuzAmma.kt	سورۃ الطارق
+QaidaJuzAmma.kt	سورۃ الفجر
+QaidaJuzAmma.kt	سورۃ البلد
+QaidaJuzAmma.kt	سورۃ الشمس
+QaidaJuzAmma.kt	سورۃ الشرح
+QaidaJuzAmma.kt	سورۃ العلق
+QaidaJuzAmma.kt	سورۃ القدر
+QaidaJuzAmma.kt	سورۃ الزلزال
+QaidaJuzAmma.kt	سورۃ $s
+QaidaJuzAmma.kt	آسان مفہوم: $m
+QaidaNotes.kt	📜 پس منظر
+QaidaNotes.kt	👪 والدین کے لیے: $text
+QaidaNotes.kt	ف ب م و
+QaidaNotes.kt	جوف
+QaidaProgress.kt	حروف
+QaidaProgress.kt	تلاوت
+QaidaProgress.kt	وقف
+QaidaQuiz.kt	'${answer.qaidaName}' کون سا حرف ہے؟
+QaidaScreens.kt	مرحلہ ${urduDigit(page.removePrefix(
+QaidaScreens.kt	سبق ۱: حروفِ مفردات
+QaidaScreens.kt	مشق
+QaidaScreens.kt	سبق ۲: حروفِ مقطعات
+QaidaScreens.kt	سبق ۶: جزم
+QaidaScreens.kt	سبق ۶: سورۃ الاخلاص
+QaidaScreens.kt	سبق ۲: رموزِ اوقاف
+QaidaScreens.kt	سبق ۵: سورۃ الفلق
+QaidaScreens.kt	سبق ۶: سورۃ الناس
+QaidaScreens.kt	سبق ۵: الفلق اور الناس
+QaidaScreens.kt	سبق ۲: سورۃ الماعون
+QaidaScreens.kt	سبق ۴: سورۃ المسد
+QaidaScreens.kt	سبق ۲: ادغام
+QaidaScreens.kt	سبق ۳: اقلاب
+QaidaScreens.kt	سبق ۴: اخفاء
+QaidaScreens.kt	واپس
+QaidaScreens.kt	۱: حروف
+QaidaScreens.kt	۳: تلاوت
+QaidaScreens.kt	۴: وقف
+QaidaScreens.kt	ا ب ت
+QaidaScreens.kt	۱
+QaidaScreens.kt	حروفِ مفردات
+QaidaScreens.kt	قاعدے کے ۲۹ حروف، ان کے نام اور مخارج  ·  $seen/29 دیکھے
+QaidaScreens.kt	۲
+QaidaScreens.kt	۳
+QaidaScreens.kt	۴
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۱ مکمل
+QaidaScreens.kt	بًا  بٰ  اَبْ
+QaidaScreens.kt	حروفِ مقطعات
+QaidaScreens.kt	۵
+QaidaScreens.kt	۶
+QaidaScreens.kt	۷
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۲ مکمل
+QaidaScreens.kt	اَبَّ  اَلشَّمْسُ
+QaidaScreens.kt	تلاوت: سورۃ الاخلاص
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۳ مکمل
+QaidaScreens.kt	۝  م  ط  ج
+QaidaScreens.kt	رموزِ اوقاف
+QaidaScreens.kt	تلاوت: سورۃ الفلق
+QaidaScreens.kt	تلاوت: سورۃ الناس
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۴ مکمل
+QaidaScreens.kt	${QaidaStage5.allWords.size} الفاظ: اللہ کی صفات، حروف، ضمیریں، کام، چیزیں
+QaidaScreens.kt	الفلق اور الناس
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۵ مکمل
+QaidaScreens.kt	سورۃ الماعون
+QaidaScreens.kt	سورۃ المسد
+QaidaScreens.kt	${QaidaStage6.flashcards.size} الفاظ میں سے ۱۵ کارڈ — لفظ دیکھیں، مطلب بولیں، پلٹ کر دیکھیں
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۶ مکمل
+QaidaScreens.kt	مِنْ شَرِّ  ·  مِنْ مَّسَدٍ
+QaidaScreens.kt	ادغام
+QaidaScreens.kt	اقلاب
+QaidaScreens.kt	اخفاء
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ ۷ مکمل
+QaidaScreens.kt	${urduDigit(g.surahs.size)} سورتیں، ${urduDigit(QaidaJuzAmma.ayahCount(juz, stage))} آیتیں — ہر لفظ کے نیچے اس کا اردو مطلب
+QaidaScreens.kt	مشورہ: پہلے مرحلہ ${urduDigit(stage - 1)} کی مشق مکمل کر لیں۔ آپ چاہیں تو ابھی بھی شروع کر سکتے ہیں۔
+QaidaScreens.kt	سورۃ $n
+QaidaScreens.kt	${urduDigit(s?.ayat?.size ?: 0)} آیتیں لفظ بہ لفظ
+QaidaScreens.kt	مرحلہ ${urduDigit(stage)} کی مشق
+QaidaScreens.kt	بہترین نتیجہ: $best/10  ·  ۸ درست پر مرحلہ مکمل
+QaidaScreens.kt	ماشاء اللہ! اب مرحلہ ${urduDigit(next.stage)} شروع کریں ←
+QaidaScreens.kt	ع ل م  ←  عَالِمٌ
+QaidaScreens.kt	خَلَقَ، اٰمَنُوْا، اَنْعَمْتَ، قَدَّمْتُ، خَلَقْنَا
+QaidaScreens.kt	قُلْ، اقْرَاْ — لَا، لَمْ، مَا، لَنْ
+QaidaScreens.kt	${l.region.emoji} مخرج: ${l.region.urdu}
+QaidaScreens.kt	اردو میں سب '${g.urduSays}'
+QaidaScreens.kt	  (پُر)
+QaidaScreens.kt	مثال: ${ex.urduMeaning}
+QaidaScreens.kt	مثال سنیں: ${ex.urduMeaning}
+QaidaScreens.kt	$score / ${questions.size} درست
+QaidaScreens.kt	مرحلہ ${urduDigit(stageNo)} مکمل ہو گیا۔
+QaidaScreens.kt	۸ درست جواب پر مرحلہ ${urduDigit(stageNo)} مکمل ہوگا۔
+QaidaScreens.kt	سوال ${index + 1} / ${questions.size}   ·   درست: $score
+QaidaScreens.kt	۰۱۲۳۴۵۶۷۸۹
+QaidaStage11Data.kt	ع ل م
+QaidaStage11Data.kt	جاننا
+QaidaStage11Data.kt	علم، جاننا
+QaidaStage11Data.kt	عَالِمٌ
+QaidaStage11Data.kt	مَعْلُوْمٌ
+QaidaStage11Data.kt	عَلِيْمٌ
+QaidaStage11Data.kt	عَلَّمَ
+QaidaStage11Data.kt	يَعْلَمُ
+QaidaStage11Data.kt	ك ت ب
+QaidaStage11Data.kt	كَتَبَ
+QaidaStage11Data.kt	كِتٰبٌ
+QaidaStage11Data.kt	كَاتِبٌ
+QaidaStage11Data.kt	مَكْتُوْبٌ
+QaidaStage11Data.kt	كُتُبٌ
+QaidaStage11Data.kt	س ج د
+QaidaStage11Data.kt	سَجَدَ
+QaidaStage11Data.kt	سُجُوْدٌ
+QaidaStage11Data.kt	سَاجِدٌ
+QaidaStage11Data.kt	مَسْجِدٌ
+QaidaStage11Data.kt	اسْجُدْ
+QaidaStage11Data.kt	خ ل ق
+QaidaStage11Data.kt	خَلَقَ
+QaidaStage11Data.kt	خَالِقٌ
+QaidaStage11Data.kt	مَخْلُوْقٌ
+QaidaStage11Data.kt	خَلْقٌ
+QaidaStage11Data.kt	ع ب د
+QaidaStage11Data.kt	عَبْدٌ
+QaidaStage11Data.kt	عِبَادَةٌ
+QaidaStage11Data.kt	عبادت
+QaidaStage11Data.kt	مَعْبُوْدٌ
+QaidaStage11Data.kt	عَابِدٌ
+QaidaStage11Data.kt	نَعْبُدُ
+QaidaStage11Data.kt	ر ح م
+QaidaStage11Data.kt	رَحْمَةٌ
+QaidaStage11Data.kt	رحمت
+QaidaStage11Data.kt	رَحِيْمٌ
+QaidaStage11Data.kt	الرَّحْمٰنُ
+QaidaStage11Data.kt	الْمَرْحَمَةُ
+QaidaStage11Data.kt	ذ ك ر
+QaidaStage11Data.kt	ذَاكِرٌ
+QaidaStage11Data.kt	تَذْكِرَةٌ
+QaidaStage11Data.kt	فَذَكِّرْ
+QaidaStage11Data.kt	فَاعِلٌ
+QaidaStage11Data.kt	مَفْعُوْلٌ
+QaidaStage11Data.kt	فَعِيْلٌ
+QaidaStage11Data.kt	بَصِيْرٌ
+QaidaStage11Data.kt	مَفْعَلٌ / مَفْعِلٌ
+QaidaStage11Data.kt	مَكْتَبٌ
+QaidaStage11Data.kt	مَطْلَعٌ
+QaidaStage11Data.kt	القدر: مَطْلَعِ الْفَجْرِ
+QaidaStage11Data.kt	مَنْزِلٌ
+QaidaStage11Data.kt	فَعَلَ
+QaidaStage11Data.kt	العلق
+QaidaStage11Data.kt	فَعَلُوْا
+QaidaStage11Data.kt	اٰمَنُوْا
+QaidaStage11Data.kt	العصر
+QaidaStage11Data.kt	فَعَلَتْ
+QaidaStage11Data.kt	كَذَّبَتْ
+QaidaStage11Data.kt	الشمس
+QaidaStage11Data.kt	فَعَلْتَ
+QaidaStage11Data.kt	اَنْعَمْتَ
+QaidaStage11Data.kt	فَعَلْتُ
+QaidaStage11Data.kt	قَدَّمْتُ
+QaidaStage11Data.kt	الفجر
+QaidaStage11Data.kt	فَعَلْنَا
+QaidaStage11Data.kt	خَلَقْنَا
+QaidaStage11Data.kt	يَفْعَلُ
+QaidaStage11Data.kt	تَفْعَلُ
+QaidaStage11Data.kt	تَعْلَمُ
+QaidaStage11Data.kt	اَفْعَلُ
+QaidaStage11Data.kt	اَعْبُدُ
+QaidaStage11Data.kt	نَفْعَلُ
+QaidaStage11Data.kt	يَفْعَلُوْنَ
+QaidaStage11Data.kt	يَعْلَمُوْنَ
+QaidaStage11Data.kt	الانفطار
+QaidaStage11Data.kt	تَفْعَلُوْنَ
+QaidaStage11Data.kt	تَعْبُدُوْنَ
+QaidaStage11Data.kt	قُلْ
+QaidaStage11Data.kt	الاخلاص، الفلق، الناس
+QaidaStage11Data.kt	اقْرَاْ
+QaidaStage11Data.kt	فَسَبِّحْ
+QaidaStage11Data.kt	النصر
+QaidaStage11Data.kt	ادْخُلِيْ
+QaidaStage11Data.kt	لَا اَعْبُدُ
+QaidaStage11Data.kt	لَمْ يَلِدْ
+QaidaStage11Data.kt	مَا وَدَّعَكَ
+QaidaStage11Data.kt	لَنْ يَقْدِرَ
+QaidaStage11Data.kt	مسجد
+QaidaStage11Data.kt	الْكِتٰبِ
+QaidaStage11Data.kt	عِبَادِيْ
+QaidaStage11Data.kt	الرَّحْمٰنِ
+QaidaStage11Data.kt	الذِّكْرٰى
+QaidaStage11Data.kt	سَاجِدِيْنَ
+QaidaStage2Data.kt	ـ
+QaidaStage2Data.kt	قل
+QaidaStage2Data.kt	من
+QaidaStage2Data.kt	لم
+QaidaStage2Data.kt	كتب
+QaidaStage2Data.kt	خلق
+QaidaStage2Data.kt	علم / جانا
+QaidaStage2Data.kt	نور
+QaidaStage2Data.kt	رب
+QaidaStage2Data.kt	دين
+QaidaStage2Data.kt	الٓمٓ
+QaidaStage2Data.kt	الٓمٓصٓ
+QaidaStage2Data.kt	الاعراف
+QaidaStage2Data.kt	الٓر
+QaidaStage2Data.kt	اَلِف لَام رَا
+QaidaStage2Data.kt	الٓمٓر
+QaidaStage2Data.kt	الرعد
+QaidaStage2Data.kt	كٓهٰيٰعٓصٓ
+QaidaStage2Data.kt	طٰهٰ
+QaidaStage2Data.kt	طٰسٓمٓ
+QaidaStage2Data.kt	الشعراء، القصص
+QaidaStage2Data.kt	طٰسٓ
+QaidaStage2Data.kt	النمل
+QaidaStage2Data.kt	يٰسٓ
+QaidaStage2Data.kt	صٓ
+QaidaStage2Data.kt	حٰمٓ
+QaidaStage2Data.kt	عٓسٓقٓ
+QaidaStage2Data.kt	قٓ
+QaidaStage2Data.kt	نٓ
+QaidaStage2Data.kt	القلم
+QaidaStage2Data.kt	دو زبر بَن
+QaidaStage2Data.kt	دو زَبَر
+QaidaStage2Data.kt	بًا
+QaidaStage2Data.kt	دو زَبَر بَن
+QaidaStage2Data.kt	بٍ
+QaidaStage2Data.kt	بٌ
+QaidaStage2Data.kt	بٰ
+QaidaStage2Data.kt	بٖ
+QaidaStage2Data.kt	بٗ
+QaidaStage2Data.kt	جَزْم
+QaidaStage2Data.kt	اَبْ
+QaidaStage2Data.kt	جزم
+QaidaStage2Data.kt	ءً
+QaidaStage2Data.kt	ً
+QaidaStage2Data.kt	ٍ
+QaidaStage2Data.kt	ٌ
+QaidaStage2Data.kt	ٰ
+QaidaStage2Data.kt	ٖ
+QaidaStage2Data.kt	ٗ
+QaidaStage2Data.kt	اَ
+QaidaStage2Data.kt	ْ
+QaidaStage2Data.kt	اَلِف زَبَر اَ، ${letter.qaidaName} جَزْم: ${write(letter, m)}
+QaidaStage2Data.kt	بُو
+QaidaStage2Data.kt	بِي
+QaidaStage2Data.kt	قَالَ
+QaidaStage2Data.kt	يَقُولُ
+QaidaStage2Data.kt	قِيلَ
+QaidaStage2Data.kt	بَوْ
+QaidaStage2Data.kt	بَيْ
+QaidaStage2Data.kt	خَوْفٌ
+QaidaStage2Data.kt	بَيْتٌ
+QaidaStage2Data.kt	لَمْ
+QaidaStage2Data.kt	مِنْ
+QaidaStage2Data.kt	كُنْ
+QaidaStage2Data.kt	اَنْتَ
+QaidaStage2Data.kt	تُو
+QaidaStage2Data.kt	اَلْحَمْدُ
+QaidaStage2Data.kt	هٰذَا
+QaidaStage2Data.kt	ذٰلِكَ
+QaidaStage2Data.kt	بِهٖ
+QaidaStage2Data.kt	لَهٗ
+QaidaStage2Screens.kt	شروع
+QaidaStage2Screens.kt	آخر
+QaidaStage3Data.kt	ّ
+QaidaStage3Data.kt	اِ
+QaidaStage3Data.kt	اُ
+QaidaStage3Data.kt	اَلِف ${v.urduName}، ${letter.qaidaName} ${v.urduName} تشدید: ${tashdeed(letter, v)}
+QaidaStage3Data.kt	اِنَّ
+QaidaStage3Data.kt	اَمَّا
+QaidaStage3Data.kt	اِنَّا
+QaidaStage3Data.kt	جَنَّةٌ
+QaidaStage3Data.kt	باغ / جنت
+QaidaStage3Data.kt	مِمَّا
+QaidaStage3Data.kt	رَبِّ
+QaidaStage3Data.kt	كُلُّ
+QaidaStage3Data.kt	مُحَمَّدٌ
+QaidaStage3Data.kt	محمد ﷺ
+QaidaStage3Data.kt	اَلْحَقُّ
+QaidaStage3Data.kt	حق / سچ
+QaidaStage3Data.kt	يُحِبُّ
+QaidaStage3Data.kt	جَآءَ
+QaidaStage3Data.kt	السَّمَآءُ
+QaidaStage3Data.kt	بِمَآ
+QaidaStage3Data.kt	اُولٰٓئِكَ
+QaidaStage3Data.kt	الضَّآلِّيْنَ
+QaidaStage3Data.kt	اَلشَّمْسُ
+QaidaStage3Data.kt	سورج
+QaidaStage3Data.kt	اَلنَّاسُ
+QaidaStage3Data.kt	اَلرَّحْمٰنُ
+QaidaStage3Data.kt	اَلدِّيْنُ
+QaidaStage3Data.kt	اَلصِّرَاطُ
+QaidaStage3Data.kt	اَلْقَمَرُ
+QaidaStage3Data.kt	چاند
+QaidaStage3Data.kt	اَلْكِتٰبُ
+QaidaStage3Data.kt	اَلْعِلْمُ
+QaidaStage3Data.kt	اَلْمُسْتَقِيْمُ
+QaidaStage3Data.kt	بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ
+QaidaStage3Data.kt	اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَ
+QaidaStage3Data.kt	الرَّحْمٰنِ الرَّحِيْمِ
+QaidaStage3Data.kt	مٰلِكِ يَوْمِ الدِّيْنِ
+QaidaStage3Data.kt	اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُ
+QaidaStage3Data.kt	اِهْدِنَا الصِّرَاطَ الْمُسْتَقِيْمَ
+QaidaStage3Data.kt	صِرَاطَ الَّذِيْنَ اَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوْبِ عَلَيْهِمْ وَلَا الضَّآلِّيْنَ
+QaidaStage3Data.kt	قُلْ هُوَ اللّٰهُ اَحَدٌ
+QaidaStage3Data.kt	اَللّٰهُ الصَّمَدُ
+QaidaStage3Data.kt	لَمْ يَلِدْ وَلَمْ يُوْلَدْ
+QaidaStage3Data.kt	وَلَمْ يَكُنْ لَّهٗ كُفُوًا اَحَدٌ
+QaidaStage3Data.kt	تشدید کے ساتھ ${it.urduName}
+QaidaStage3Screens.kt	عام مدّ
+QaidaStage3Screens.kt	بَآ
+QaidaStage4Data.kt	\u064Bا
+QaidaStage4Data.kt	ا\u064B
+QaidaStage4Data.kt	\u064Eا
+QaidaStage4Data.kt	اَحَدٌ
+QaidaStage4Data.kt	الصَّمَدُ
+QaidaStage4Data.kt	الرَّحِيْمِ
+QaidaStage4Data.kt	الْفَلَقِ
+QaidaStage4Data.kt	عَلِيْمًا
+QaidaStage4Data.kt	دو زبر ← زبر اور الف
+QaidaStage4Data.kt	خَبِيْرًا
+QaidaStage4Data.kt	رَحْمَةً
+QaidaStage4Data.kt	الْحَقُّ
+QaidaStage4Data.kt	۝
+QaidaStage4Data.kt	وقفِ لازم
+QaidaStage4Data.kt	وقفِ مطلق
+QaidaStage4Data.kt	قف
+QaidaStage4Data.kt	قِف
+QaidaStage4Data.kt	وقفِ جائز
+QaidaStage4Data.kt	وقفِ مجوّز
+QaidaStage4Data.kt	وقفِ مرخّص
+QaidaStage4Data.kt	صل
+QaidaStage4Data.kt	صَل
+QaidaStage4Data.kt	لا
+QaidaStage4Data.kt	ـۘـ
+QaidaStage4Data.kt	ـۗـ
+QaidaStage4Data.kt	ـۚـ
+QaidaStage4Data.kt	ـۖـ
+QaidaStage4Data.kt	ـۙـ
+QaidaStage4Data.kt	ـۛـ ـۛـ
+QaidaStage4Data.kt	اَقْرَبُ
+QaidaStage4Data.kt	اَطْعَمَهُمْ
+QaidaStage4Data.kt	الْاَبْتَرُ
+QaidaStage4Data.kt	يَجْعَلُوْنَ
+QaidaStage4Data.kt	يَدْخُلُوْنَ
+QaidaStage4Data.kt	الْفَلَقْ
+QaidaStage4Data.kt	وَقَبْ
+QaidaStage4Data.kt	حَسَدْ
+QaidaStage4Data.kt	اِنَّآ اَعْطَيْنٰكَ الْكَوْثَرَ
+QaidaStage4Data.kt	فَصَلِّ لِرَبِّكَ وَانْحَرْ
+QaidaStage4Data.kt	اِنَّ شَانِئَكَ هُوَ الْاَبْتَرُ
+QaidaStage4Data.kt	سورۃ العصر
+QaidaStage4Data.kt	وَالْعَصْرِ
+QaidaStage4Data.kt	اِنَّ الْاِنْسَانَ لَفِيْ خُسْرٍ
+QaidaStage4Data.kt	اِلَّا الَّذِيْنَ اٰمَنُوْا وَعَمِلُوا الصّٰلِحٰتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ
+QaidaStage4Data.kt	سورۃ الفلق
+QaidaStage4Data.kt	قُلْ اَعُوْذُ بِرَبِّ الْفَلَقِ
+QaidaStage4Data.kt	مِنْ شَرِّ مَا خَلَقَ
+QaidaStage4Data.kt	وَمِنْ شَرِّ غَاسِقٍ اِذَا وَقَبَ
+QaidaStage4Data.kt	وَمِنْ شَرِّ النَّفّٰثٰتِ فِي الْعُقَدِ
+QaidaStage4Data.kt	وَمِنْ شَرِّ حَاسِدٍ اِذَا حَسَدَ
+QaidaStage4Data.kt	سورۃ الناس
+QaidaStage4Data.kt	قُلْ اَعُوْذُ بِرَبِّ النَّاسِ
+QaidaStage4Data.kt	مَلِكِ النَّاسِ
+QaidaStage4Data.kt	اِلٰهِ النَّاسِ
+QaidaStage4Data.kt	مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ
+QaidaStage4Data.kt	الَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ
+QaidaStage4Data.kt	مِنَ الْجِنَّةِ وَالنَّاسِ
+QaidaStage4Data.kt	ًٌٍَُِ
+QaidaStage4Screens.kt	✋ وقف:
+QaidaStage5Data.kt	اللّٰهُ
+QaidaStage5Data.kt	رَبٌّ
+QaidaStage5Data.kt	حَكِيْمٌ
+QaidaStage5Data.kt	فِيْ
+QaidaStage5Data.kt	عَلٰى
+QaidaStage5Data.kt	پر
+QaidaStage5Data.kt	اِلٰى
+QaidaStage5Data.kt	عَنْ
+QaidaStage5Data.kt	وَ
+QaidaStage5Data.kt	اور
+QaidaStage5Data.kt	لَا
+QaidaStage5Data.kt	اِلَّا
+QaidaStage5Data.kt	هُوَ
+QaidaStage5Data.kt	هُمْ
+QaidaStage5Data.kt	تُو، آپ
+QaidaStage5Data.kt	اَنَا
+QaidaStage5Data.kt	نَحْنُ
+QaidaStage5Data.kt	الَّذِيْ
+QaidaStage5Data.kt	الَّذِيْنَ
+QaidaStage5Data.kt	كَانَ
+QaidaStage5Data.kt	عَمِلُوْا
+QaidaStage5Data.kt	يَوْمٌ
+QaidaStage5Data.kt	دن
+QaidaStage5Data.kt	اَرْضٌ
+QaidaStage5Data.kt	سَمَآءٌ
+QaidaStage5Data.kt	آسمان
+QaidaStage5Data.kt	نَاسٌ
+QaidaStage5Data.kt	حَقٌّ
+QaidaStage5Data.kt	سچ، حق
+QaidaStage5Data.kt	قَلْبٌ
+QaidaStage5Data.kt	دل
+QaidaStage5Data.kt	باغ، جنت
+QaidaStage5Data.kt	ـكَ
+QaidaStage5Data.kt	رَبُّكَ
+QaidaStage5Data.kt	ـهٗ
+QaidaStage5Data.kt	رَبُّهٗ
+QaidaStage5Data.kt	ـهُمْ
+QaidaStage5Data.kt	رَبُّهُمْ
+QaidaStage5Data.kt	ـكُمْ
+QaidaStage5Data.kt	رَبُّكُمْ
+QaidaStage5Data.kt	ـنَا
+QaidaStage5Data.kt	رَبُّنَا
+QaidaStage5Data.kt	ـِيْ
+QaidaStage5Data.kt	رَبِّيْ
+QaidaStage5Data.kt	جن پر
+QaidaStage5Data.kt	ان پر
+QaidaStage5Data.kt	سورۃ الاخلاص
+QaidaStage5Data.kt	برابر
+QaidaStage5Data.kt	انسان
+QaidaStage5Data.kt	نقصان
+QaidaStage5Data.kt	جب
+QaidaStage5Data.kt	معبود
+QaidaStage5Data.kt	جو
+QaidaStage5Screens.kt	رَبّ
+QaidaStage5Screens.kt	۩
+QaidaStage6Data.kt	اَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِاَصْحٰبِ الْفِيْلِ
+QaidaStage6Data.kt	اَلَمْ يَجْعَلْ كَيْدَهُمْ فِيْ تَضْلِيْلٍ
+QaidaStage6Data.kt	وَّاَرْسَلَ عَلَيْهِمْ طَيْرًا اَبَابِيْلَ
+QaidaStage6Data.kt	تَرْمِيْهِمْ بِحِجَارَةٍ مِّنْ سِجِّيْلٍ
+QaidaStage6Data.kt	فَجَعَلَهُمْ كَعَصْفٍ مَّاْكُوْلٍ
+QaidaStage6Data.kt	لِاِيْلٰفِ قُرَيْشٍ
+QaidaStage6Data.kt	اٖلٰفِهِمْ رِحْلَةَ الشِّتَآءِ وَالصَّيْفِ
+QaidaStage6Data.kt	فَلْيَعْبُدُوْا رَبَّ هٰذَا الْبَيْتِ
+QaidaStage6Data.kt	اس
+QaidaStage6Data.kt	الَّذِيْٓ اَطْعَمَهُمْ مِّنْ جُوْعٍ وَّاٰمَنَهُمْ مِّنْ خَوْفٍ
+QaidaStage6Data.kt	اَرَءَيْتَ الَّذِيْ يُكَذِّبُ بِالدِّيْنِ
+QaidaStage6Data.kt	فَذٰلِكَ الَّذِيْ يَدُعُّ الْيَتِيْمَ
+QaidaStage6Data.kt	وَلَا يَحُضُّ عَلٰى طَعَامِ الْمِسْكِيْنِ
+QaidaStage6Data.kt	شوق دلاتا
+QaidaStage6Data.kt	فَوَيْلٌ لِّلْمُصَلِّيْنَ
+QaidaStage6Data.kt	الَّذِيْنَ هُمْ عَنْ صَلَاتِهِمْ سَاهُوْنَ
+QaidaStage6Data.kt	الَّذِيْنَ هُمْ يُرَآءُوْنَ
+QaidaStage6Data.kt	وَيَمْنَعُوْنَ الْمَاعُوْنَ
+QaidaStage6Data.kt	قُلْ يٰٓاَيُّهَا الْكٰفِرُوْنَ
+QaidaStage6Data.kt	لَآ اَعْبُدُ مَا تَعْبُدُوْنَ
+QaidaStage6Data.kt	وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُ
+QaidaStage6Data.kt	تم
+QaidaStage6Data.kt	وَلَآ اَنَا عَابِدٌ مَّا عَبَدْتُّمْ
+QaidaStage6Data.kt	لَكُمْ دِيْنُكُمْ وَلِيَ دِيْنِ
+QaidaStage6Data.kt	سورۃ النصر
+QaidaStage6Data.kt	اِذَا جَآءَ نَصْرُ اللّٰهِ وَالْفَتْحُ
+QaidaStage6Data.kt	مدد
+QaidaStage6Data.kt	اور فتح
+QaidaStage6Data.kt	وَرَاَيْتَ النَّاسَ يَدْخُلُوْنَ فِيْ دِيْنِ اللّٰهِ اَفْوَاجًا
+QaidaStage6Data.kt	فوج در فوج
+QaidaStage6Data.kt	فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُۚ اِنَّهٗ كَانَ تَوَّابًا
+QaidaStage6Data.kt	تَبَّتْ يَدَآ اَبِيْ لَهَبٍ وَّتَبَّ
+QaidaStage6Data.kt	ابو
+QaidaStage6Data.kt	مَآ اَغْنٰى عَنْهُ مَالُهٗ وَمَا كَسَبَ
+QaidaStage6Data.kt	اور جو
+QaidaStage6Data.kt	سَيَصْلٰى نَارًا ذَاتَ لَهَبٍ
+QaidaStage6Data.kt	وَّامْرَاَتُهٗ حَمَّالَةَ الْحَطَبِ
+QaidaStage6Data.kt	فِيْ جِيْدِهَا حَبْلٌ مِّنْ مَّسَدٍ
+QaidaStage6Screens.kt	$known / ${deck.size} معنی یاد تھے
+QaidaStage6Screens.kt	کارڈ ${index + 1} / ${deck.size}   ·   یاد تھے: $known
+QaidaStage7Data.kt	مِنْ خَوْفٍ
+QaidaStage7Data.kt	كُفُوًا اَحَدٌ
+QaidaStage7Data.kt	الاخلاص
+QaidaStage7Data.kt	مَنْ اٰمَنَ
+QaidaStage7Data.kt	عَلِيْمٌ حَكِيْمٌ
+QaidaStage7Data.kt	مِنْ مَّسَدٍ
+QaidaStage7Data.kt	المسد
+QaidaStage7Data.kt	لَهَبٍ وَّتَبَّ
+QaidaStage7Data.kt	خَيْرًا يَّرَهٗ
+QaidaStage7Data.kt	الزلزال
+QaidaStage7Data.kt	مِنْ نَّارٍ
+QaidaStage7Data.kt	يَكُنْ لَّهٗ
+QaidaStage7Data.kt	غَفُوْرٌ رَّحِيْمٌ
+QaidaStage7Data.kt	مِنْ رَّبِّهِمْ
+QaidaStage7Data.kt	مِنْۢ بَعْدِ
+QaidaStage7Data.kt	سَمِيْعٌۢ بَصِيْرٌ
+QaidaStage7Data.kt	اَنْۢبِئْهُمْ
+QaidaStage7Data.kt	مِنْ شَرِّ
+QaidaStage7Data.kt	الفلق
+QaidaStage7Data.kt	اَنْتُمْ
+QaidaStage7Data.kt	مِنْ جُوْعٍ
+QaidaStage7Data.kt	يُنْفِقُوْنَ
+QaidaStage7Data.kt	كُنْتُمْ
+QaidaStage7Data.kt	حَبْلٌ مِّنْ مَّسَدٍ
+QaidaStage7Data.kt	تَرْمِيْهِمْ بِحِجَارَةٍ
+QaidaStage7Data.kt	وَهُمْ بِالْاٰخِرَةِ
+QaidaStage7Data.kt	لَهُمْ مَّا
+QaidaStage7Data.kt	كَمْ مِّنْ
+QaidaStage7Data.kt	اَلَمْ تَرَ
+QaidaStage7Data.kt	لَكُمْ دِيْنُكُمْ
+QaidaStage7Data.kt	عَلَيْهِمْ وَلَا
+QaidaStage7Data.kt	هُمْ فِيْهَا
+QaidaStage7Data.kt	نْ + 
+QaidaStage7Screens.kt	حروف (${ids.size}):
+QaidaStage7Screens.kt	📖 $from میں آیا
+QaidaStage7Screens.kt	مْ + ${m.letters}
+QuranAudio.kt	اَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطٰنِ الرَّجِيْمِ
+QuranAudio.kt	أَلِفْ
+QuranAudio.kt	بَاءْ
+QuranAudio.kt	تَاءْ
+QuranAudio.kt	ثَاءْ
+QuranAudio.kt	جِيمْ
+QuranAudio.kt	حَاءْ
+QuranAudio.kt	خَاءْ
+QuranAudio.kt	دَالْ
+QuranAudio.kt	ذَالْ
+QuranAudio.kt	رَاءْ
+QuranAudio.kt	زَايْ
+QuranAudio.kt	سِينْ
+QuranAudio.kt	شِينْ
+QuranAudio.kt	صَادْ
+QuranAudio.kt	ضَادْ
+QuranAudio.kt	طَاءْ
+QuranAudio.kt	ظَاءْ
+QuranAudio.kt	عَيْنْ
+QuranAudio.kt	غَيْنْ
+QuranAudio.kt	فَاءْ
+QuranAudio.kt	قَافْ
+QuranAudio.kt	كَافْ
+QuranAudio.kt	لَامْ
+QuranAudio.kt	مِيمْ
+QuranAudio.kt	نُونْ
+QuranAudio.kt	وَاوْ
+QuranAudio.kt	هَاءْ
+QuranAudio.kt	هَمْزَةْ
+QuranAudio.kt	يَاءْ

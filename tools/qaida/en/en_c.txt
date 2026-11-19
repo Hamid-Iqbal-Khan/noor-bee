@@ -1,0 +1,220 @@
+341	in Al-'Alaq
+342	he knows
+343	in Al-A'la
+344	to write
+345	he wrote
+346	a book, something written
+347	You may know: kitaab (book)
+348	a writer
+349	You may know: kaatib (writer, scribe)
+350	written
+351	You may know: maktoob (a letter, written)
+352	books
+353	in Al-Bayyinah
+354	to prostrate
+355	he prostrated
+356	prostration
+357	one who prostrates
+358	a place of prostration
+359	You may know: masjid (mosque)
+360	prostrate!
+361	to create
+362	he created
+363	the Creator
+364	You may know: Khaaliq (Creator)
+365	created
+366	You may know: makhlooq (creation)
+367	creating, form
+368	to worship
+369	a servant (of Allah)
+370	You may know: 'abd (as in 'Abdullah)
+371	the one who is worshipped
+372	a worshipper
+373	we worship
+374	in Al-Fatihah
+375	to have mercy
+376	You may know: rahmah (mercy)
+377	Most Merciful
+378	The Most Gracious
+379	a name only for Allah
+380	compassion
+381	in Al-Balad
+382	to remember
+383	remembrance, reminder
+384	You may know: dhikr (remembrance)
+385	one who remembers
+386	a reminder
+387	in 'Abasa
+388	so remind
+389	in Al-Ghashiyah
+390	the doer
+391	the one it was done to
+392	very much, a lasting quality
+393	All-Hearing
+394	All-Seeing
+395	the place or time of an action
+396	a place of writing (desk, school)
+397	the time of rising
+398	a place of landing, a home
+399	he (one man) did
+400	they did
+401	they believed
+402	she (or a nation) did
+403	he denied
+404	you did
+405	you blessed (favoured)
+406	Al-Fatihah
+407	I did
+408	I sent ahead
+409	we did
+410	we created
+411	At-Tin
+412	he (one man) does
+413	Al-A'la
+414	you do / she does
+415	you know
+416	I do
+417	I worship
+418	Al-Kafirun
+419	we do
+420	they (all) do
+421	they know
+422	you (all) do
+423	you (all) worship
+424	say!
+425	read!
+426	prostrate!
+427	so glorify!
+428	enter!
+429	I do not worship
+430	لَا + present = does not do
+431	he did not give birth
+432	لَمْ + present form = did not (in the past)
+433	He has not left you
+434	مَا + past = did not
+435	he will never overpower
+436	لَنْ + present form = will never
+437	My servants
+438	The Most Gracious (Allah)
+439	reminder
+440	those who prostrate
+441	What is the root of this word?
+442	What kind of word is this?
+443	Who is doing this action?
+444	Past tense (a finished action): the ending tells who did it — ـَ he, ـُوْا they, ـَتْ she, ـْتَ you, ـْتُ I, ـْنَا we. Note: besides simple verbs like خَلَقَ there are other patterns such as قَدَّمَ and اَنْعَمَ; here we only learn the ending.
+445	Present tense (an action happening now or to come): the first letter tells who is doing it — يَـ he, تَـ you, اَ I, نَـ we. If it ends in ـُوْنَ, it means many people.
+446	This grammar is simplified for children; learn the details from a teacher.
+447	I have read this lesson ✓
+448	Most Arabic words come from a three-letter 'root'. The root carries one idea, and changing the letters around it makes new words. Good news: you may already know some of these words — like kitaab, masjid and 'aalim!
+449	Arabic words are shaped by patterns. A pattern is shown with ف ع ل. Put the three root letters in place of ف ع ل: put ع ل م into فَاعِل and you get عَالِم.
+450	Command: drop the first letter of the present tense and make the end rest. From تَقْرَاُ (you read) comes اِقْرَاْ (read!) — if the start has a sukoon, an alif is added before it. From تَقُوْلُ (you say) comes قُلْ (say!) — the middle و drops too.
+451	Four ways to say 'not':
+452	Root detective 🔍: remove the extra letters (اَل, مَـ, يَـ, ـُوْنَ, ـِيْنَ, alif and so on) and find the three root letters. Then tap the card to check.
+453	❓ Root?
+454	who / from
+455	not
+456	wrote
+457	created
+458	light
+459	Lord, Sustainer
+460	religion / recompense
+461	Alif Laam Meem
+462	Al-Baqarah, Aal 'Imran, Al-'Ankabut, Ar-Rum, Luqman, As-Sajdah
+463	Alif Laam Meem Saad
+464	Yunus, Hud, Yusuf, Ibrahim, Al-Hijr
+465	Alif Laam Meem Raa
+466	Kaaf Haa Yaa ʿAyn Saad
+467	Maryam
+468	Taa Haa
+469	Ta-Ha
+470	Taa Seen Meem
+471	Taa Seen
+472	Yaa Seen
+473	Ya-Seen
+474	Haa Meem
+475	Ghafir to Al-Ahqaf (seven surahs)
+476	ʿAyn Seen Qaaf
+477	Ash-Shura (after Haa Meem)
+478	Two slanted lines above — an 'n' sound at the end: ban
+479	Double kasra
+480	Two slanted lines below — an 'n' sound at the end: bin
+481	double kasra bin
+482	Double damma
+483	Double damma above — an 'n' sound at the end: bun
+484	double damma bun
+485	Standing fatha
+486	A small upright line above — stretch the fatha as long as one alif: baa
+487	standing fatha baa
+488	Standing kasra
+489	A small upright line below — stretch the kasra: bee
+490	standing kasra bee
+491	Inverted damma
+492	An upside-down damma above — stretch the damma: boo
+493	inverted damma boo
+494	A small circle above (resting, saakin) — read the letter joined to the one before: ab
+495	Alif after a fatha — the sound is as long as one alif: baa
+496	Waw after a damma — a long sound: boo
+497	Yaa after a kasra — a long sound: bee
+498	Example: قَالَ (he said)
+499	Example: يَقُولُ (he says)
+500	Example: قِيلَ (it was said)
+501	A resting waw after a fatha — a soft sound, not stretched: baw
+502	A resting yaa after a fatha — a soft sound: bay
+503	Example: خَوْفٌ (fear)
+504	Example: بَيْتٌ (house)
+505	from
+506	be!
+507	all praise
+508	the Most Gracious — standing fatha
+509	this — standing fatha
+510	that — standing fatha
+511	in it — standing kasra
+512	for him — inverted damma
+513	Which letters make up this word?
+514	Which mark is on this?
+515	Tanween means a hidden 'n' sound at the end. Read double fatha as 'an', double kasra as 'in' and double damma as 'un'. Double fatha is usually written with an alif, but that alif is not read.
+516	These marks appear often in the IndoPak Quran. Standing fatha = fatha + the length of an alif, standing kasra = kasra + the length of a yaa, inverted damma = damma + the length of a waw. Stretch for the length of one alif (about two counts).
+517	A letter with sukoon is resting (saakin) — it has no vowel. Don't read it alone; join it to the letter before. Spelled: Alif fatha a, Baa sukoon — ab.
+518	I have read this page ✓
+519	Arabic letters are joined when written. Each letter can have up to four shapes: alone, start, middle and end. ا د ذ ر ز و never join to the letter after them.
+520	Alone
+521	Middle
+522	, doesn't join forward
+523	Now break the word into letters — tap to hear:
+524	29 surahs of the Quran begin with letters that are not joined but read by saying each letter's name. Allah alone knows their true meaning. Letters whose names have a madd (Laam, Meem, Saad, Seen, Qaaf, Kaaf, Noon) are stretched 6 counts; in كٓهٰيٰعٓصٓ and عٓسٓقٓ, ʿAyn is stretched 4 or 6 counts.
+525	Examples from the Quran:
+526	Now practise on every letter:
+527	There are three madd letters: ا و ي. When an alif follows a fatha, a waw follows a damma, or a yaa follows a kasra, make the sound as long as one alif.
+528	There are two leen letters: a resting و and a resting ي with a fatha before them. Read them softly, with no jerk and no stretching.
+529	indeed
+530	as for / but
+531	indeed we
+532	of what
+533	every / all
+534	taught
+535	loves
+536	came — madd muttasil: 4 to 5 counts
+537	the sky — madd muttasil: 4 to 5 counts
+538	in what — madd munfasil: 4 to 5 counts
+539	those people — madd muttasil: 4 to 5 counts
+540	those who went astray — madd laazim: a full 6 counts
+541	people
+542	the Most Gracious
+543	the path
+544	straight
+545	A standing fatha in اللّٰهِ and الرَّحْمٰنِ; in الرَّ a sun laam and shaddah
+546	A moon laam in اَلْحَمْدُ; shaddah in رَبِّ; a standing fatha and madd in الْعٰلَمِيْنَ
+547	A sun laam and shaddah in both words
+548	A standing fatha in مٰلِكِ; a leen letter in يَوْمِ; a sun laam in الدِّيْنِ
+549	Shaddah in اِيَّاكَ; sukoon in نَعْبُدُ and نَسْتَعِيْنُ
+550	A sun laam in الصِّرَاطَ; a moon laam in الْمُسْتَقِيْمَ
+551	A sun laam in الَّذِيْنَ; madd laazim in الضَّآلِّيْنَ — stretch a full 6 counts
+552	Sukoon in قُلْ; double damma in اَحَدٌ
+553	A sun laam and shaddah in الصَّمَدُ
+554	Sukoon in every word; a madd letter in يُوْلَدْ
+555	Shaddah in لَّهٗ (merging without ghunnah) and an inverted damma; double fatha in كُفُوًا
+556	A sun letter — the laam is not read
+557	A moon letter — the laam is read with sukoon
+558	What is on the second letter?
+559	How is the laam of اَل in this word?
+560	Is this a sun letter or a moon letter?

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="128dp"
+    android:viewportWidth="60"
+    android:viewportHeight="32">
+
+    <!-- Left Cover (Crimson Red) peeking under -->
+    <path
+        android:fillColor="#C62828"
+        android:pathData="M 3,5 Q 16.5,8 30,4.5 L 30,24.5 Q 16.5,28.5 3,24.5 Z" />
+    
+    <!-- Right Cover (Royal Ocean Blue) peeking under -->
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M 30,4.5 Q 43.5,8 57,5 L 57,24.5 Q 43.5,28.5 30,24.5 Z" />
+
+    <!-- Left Book Page (Pristine White) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#B0BEC5"
+        android:strokeWidth="0.8"
+        android:pathData="M 5,3 Q 17.5,6 30,2.5 L 30,22.5 Q 17.5,26.5 5,22.5 Z" />
+
+    <!-- Right Book Page (Pristine White) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#B0BEC5"
+        android:strokeWidth="0.8"
+        android:pathData="M 30,2.5 Q 42.5,6 55,3 L 55,22.5 Q 42.5,26.5 30,22.5 Z" />
+
+    <!-- Elegant Gold Bookmark Ribbon Hanging Center -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M 28.5,3.5 L 31.5,3.5 L 31.5,28 L 30,26 L 28.5,28 Z" />
+
+</vector>
