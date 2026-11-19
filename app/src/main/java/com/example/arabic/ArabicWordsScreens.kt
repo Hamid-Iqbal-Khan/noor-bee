@@ -116,8 +116,10 @@ object ArabicWordsQuiz {
 @Composable
 private fun T(text: String, modifier: Modifier = Modifier, size: TextUnit = 15.sp, color: Color = Ink,
               weight: FontWeight = FontWeight.Normal, align: TextAlign = TextAlign.Start, urdu: Boolean = false) =
+    // Urdu always runs right to left, even inside an English screen, so "(سیب)" keeps its brackets together
     if (urdu) Text(text, modifier, color = color, fontSize = size, fontFamily = UrduFont, fontWeight = weight,
-        textAlign = align, lineHeight = size * 2.0f)
+        textAlign = align, lineHeight = size * 2.0f, softWrap = true,
+        style = androidx.compose.material3.LocalTextStyle.current.copy(textDirection = androidx.compose.ui.text.style.TextDirection.Rtl))
     else Text(text, modifier, color = color, fontSize = size, fontWeight = weight, textAlign = align, lineHeight = size * 1.35f)
 
 @Composable
@@ -245,7 +247,9 @@ private fun Row_(tag: String, number: Int, title: String, subtitle: String, done
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 T(title, size = 17.sp, weight = FontWeight.Bold, urdu = urdu)
-                Text(subtitle, color = Quiet, fontSize = 15.sp, fontFamily = QaidaArabicFont, maxLines = 1)
+                // a row of vowelled Arabic words uses the Arabic font; plain text follows the medium
+                if (subtitle.any { it in '\u064B'..'\u0652' }) Text(subtitle, color = Quiet, fontSize = 15.sp, fontFamily = QaidaArabicFont, maxLines = 1)
+                else T(subtitle, size = 13.sp, color = Quiet, urdu = urdu)
             }
         }
     }

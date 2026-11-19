@@ -66,11 +66,11 @@ class ArabicWordsTest {
   @Test fun card_turnsFromArabicToEnglish_withUrduOnBothSides() {
     launch(urdu = false); shot("level1_home_en")
     open("arabic_set_a1.1")
-    rule.onNodeWithTag("arabic_card_arabic").assertTextContains("تُفَّاحَةٌ")
-    rule.onNodeWithTag("arabic_card_urdu").assertTextContains("(سیب)"); shot("card_front_arabic")
+    rule.onNodeWithTag("arabic_card_arabic", useUnmergedTree = true).assertTextContains("تُفَّاحَةٌ")
+    rule.onNodeWithTag("arabic_card_urdu", useUnmergedTree = true).assertTextContains("(سیب)"); shot("card_front_arabic")
     rule.onNodeWithTag("arabic_card").performClick(); rule.waitForIdle()
-    rule.onNodeWithTag("arabic_card_english").assertTextContains("an apple")
-    rule.onNodeWithTag("arabic_card_urdu").assertTextContains("(سیب)"); shot("card_back_english")
+    rule.onNodeWithTag("arabic_card_english", useUnmergedTree = true).assertTextContains("an apple")
+    rule.onNodeWithTag("arabic_card_urdu", useUnmergedTree = true).assertTextContains("(سیب)"); shot("card_back_english")
     rule.onNodeWithTag("arabic_card_speak").performClick()
     assertEquals("تُفَّاحَةٌ", spoken.last())
   }
