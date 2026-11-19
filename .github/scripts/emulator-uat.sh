@@ -110,6 +110,10 @@ tap_text "The alphabet"; sleep 3; shot 42_english_alphabet; adb shell input keye
 tap_text "2: Blending"; sleep 2; tap_text "Short a"; sleep 3; shot 43_english_blending; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
 tap_text "My Stickers"; sleep 2; shot 07_stickers; adb shell input keyevent 4; sleep 2
+tap_text "Level 1: First words"; sleep 3; shot 44_arabic_words_level1
+tap_text "Fruits"; sleep 3; shot 45_arabic_card_front
+adb shell input tap 540 1100; sleep 2; shot 46_arabic_card_back
+adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 2
 # Rotation
 adb shell settings put system accelerometer_rotation 0; adb shell settings put system user_rotation 1; sleep 3; shot 08_landscape
 adb shell settings put system user_rotation 0; sleep 2

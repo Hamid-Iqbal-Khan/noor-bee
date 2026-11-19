@@ -518,10 +518,9 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("cranberry", "Cranberry", "توت بري", "Kran-ber-ee", "Toot bar-ree", "Fruits", "🍒", "cranberry.mp3"),
             WordItem("raspberry", "Raspberry", "توت العليق", "Raz-ber-ee", "Toot al-ul-layq", "Fruits", "🍓", "raspberry.mp3"),
             WordItem("avocado", "Avocado", "أفوكادو", "Ah-vo-kah-doh", "Ah-foo-kah-doo", "Fruits", "🥑", "avocado.mp3"),
-            WordItem("pineapple", "Pineapple", "أناناس", "Pine-ap-ple", "Ah-nah-nas", "Fruits", "🍍", "pineapple.mp3"),
             WordItem("cantaloupe", "Cantaloupe", "شمام كَنْتَالُوب", "Kan-tah-lohp", "Sha-mam kan-tah-loob", "Fruits", "🍈", "cantaloupe.mp3"),
             WordItem("dragonfruit", "Dragonfruit", "فاكهة التنين", "Dra-gon-froot", "Fah-ki-hat at-tin-neen", "Fruits", "🐉", "dragonfruit.mp3"),
-            WordItem("passionfruit", "Passionfruit", "فاكهة الآلام", "Pa-shon-froot", "Fah-ki-hat al-ah-lahm", "Fruits", "🍇", "passionfruit.mp3"),
+            WordItem("passionfruit", "Passionfruit", "فاكهة الشغف", "Pa-shon-froot", "Fah-ki-hat al-ah-lahm", "Fruits", "🍇", "passionfruit.mp3"),
             WordItem("tangerine", "Tangerine", "يوسفي", "Tan-jeh-reen", "Yoo-su-fee", "Fruits", "🍊", "tangerine.mp3"),
             WordItem("starfruit", "Starfruit", "فاكهة النجمة", "Star-froot", "Fah-ki-hat an-naj-mah", "Fruits", "⭐", "starfruit.mp3"),
             WordItem("persimmon", "Persimmon", "خرما", "Per-sim-on", "Khar-mah", "Fruits", "🍅", "persimmon.mp3"),
@@ -548,7 +547,6 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("jellyfish", "Jellyfish", "قنديل البحر", "Jel-ee-fish", "Qin-deel al-bahr", "Animals", "🪼", "jellyfish.mp3"),
             WordItem("starfish", "Starfish", "نجم البحر", "Star-fish", "Najm al-bahr", "Animals", "⭐", "starfish.mp3"),
             WordItem("woodpecker", "Woodpecker", "نقار الخشب", "Wood-pek-er", "Naq-qar al-kha-shab", "Animals", "🐦", "woodpecker.mp3"),
-            WordItem("squirrel", "Squirrel", "سنجاب", "Skwir-rel", "Sin-jab", "Animals", "🐿️", "squirrel.mp3"),
             WordItem("hedgehog", "Hedgehog", "قنفذ", "Hej-hog", "Qun-futh", "Animals", "🦔", "hedgehog.mp3"),
             WordItem("dolphin", "Dolphin", "دلفين", "Dol-fin", "Dil-feen", "Animals", "🐬", "dolphin.mp3"),
             WordItem("octopus", "Octopus", "أخطبوط", "Ok-to-pus", "Akh-ta-boot", "Animals", "🐙", "octopus.mp3"),
@@ -569,10 +567,9 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("calendar", "Calendar", "تقويم", "Kal-en-der", "Taq-weem", "Objects", "📅", "calendar.mp3"),
             WordItem("keyboard", "Keyboard", "لوحة المفاتيح", "Kee-bord", "Law-hat al-ma-fa-teeh", "Objects", "⌨️", "keyboard.mp3"),
             WordItem("projector", "Projector", "جهاز عرض", "Pro-jek-tor", "Ji-haz ard", "Objects", "📽️", "projector.mp3"),
-            WordItem("umbrella", "Umbrella", "مظلة", "Um-brel-lah", "Mi-dal-lah", "Objects", "☂️", "umbrella.mp3"),
             WordItem("backpack", "Backpack", "حقيبة ظهر", "Bak-pak", "Ha-qee-bat zahr", "Objects", "🎒", "backpack.mp3"),
             WordItem("headphones", "Headphones", "سماعات رأس", "Hed-fohnz", "Sam-ma-'at ra's", "Objects", "🎧", "headphones.mp3"),
-            WordItem("flashlight", "Flashlight", "مصباح يدوي", "Flash-lite", "Mis-bah ya-da-wee", "Objects", "橫", "flashlight.mp3"),
+            WordItem("flashlight", "Flashlight", "مصباح يدوي", "Flash-lite", "Mis-bah ya-da-wee", "Objects", "🔦", "flashlight.mp3"),
             WordItem("globe", "Globe", "كرة أرضية", "Glohb", "Ku-rah ar-dee-yah", "Objects", "🌐", "globe.mp3"),
             WordItem("toothbrush", "Toothbrush", "فرشاة أسنان", "Tooth-brush", "Fur-shat as-nan", "Objects", "🪥", "toothbrush.mp3"),
             WordItem("screwdriver", "Screwdriver", "مفك براغي", "Skroo-dri-ver", "Mi-fak ba-ra-ghee", "Objects", "🪛", "screwdriver.mp3"),
@@ -583,14 +580,7 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
     fun getAgeSevenVocabularyList(): List<WordItem> {
         return listOf(
             // --- Fruits (Level 5 / Age 7 Advanced Vocabulary) ---
-            WordItem("pomegranate", "Pomegranate", "رُمَّان", "Pom-gran-at", "Rum-man", "Fruits", "🍎", "pomegranate.mp3"),
-            WordItem("fig", "Fig", "تِين", "Fig", "Teen", "Fruits", "🍇", "fig.mp3"),
-            WordItem("date", "Date", "تَمْر", "Date", "Tamr", "Fruits", "🌴", "date.mp3"),
-            WordItem("apricot", "Apricot", "مِشْمِش", "Ap-ri-kot", "Mish-mish", "Fruits", "🍑", "apricot.mp3"),
-            WordItem("kiwi", "Kiwi", "كِيْوِي", "Kee-wee", "Kee-wee", "Fruits", "🥝", "kiwi.mp3"),
             WordItem("lychee", "Lychee", "لِيْتْشِي", "Lee-chee", "Lee-tchee", "Fruits", "🍒", "lychee.mp3"),
-            WordItem("coconut", "Coconut", "جَوْزُ الْهِنْد", "Koh-koh-nut", "Jawz al-hind", "Fruits", "🥥", "coconut.mp3"),
-            WordItem("plum", "Plum", "خَوْخ", "Plum", "Khawkh", "Fruits", "🍑", "plum.mp3"),
             WordItem("olive", "Olive", "زَيْتُون", "Ol-iv", "Zay-toon", "Fruits", "🫒", "olive.mp3"),
             WordItem("quince", "Quince", "سَفَرْجَل", "Kwins", "Sa-far-jal", "Fruits", "🍏", "quince.mp3"),
 
@@ -598,25 +588,16 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("eagle", "Eagle", "نَسْر", "Ee-gul", "Nasr", "Animals", "🦅", "eagle.mp3"),
             WordItem("falcon", "Falcon", "صَقْر", "Fal-kon", "Saqr", "Animals", "🦅", "falcon.mp3"),
             WordItem("koala", "Koala", "كُوالا", "Koh-ah-lah", "Koo-ah-lah", "Animals", "🐨", "koala.mp3"),
-            WordItem("camel", "Camel", "جَمَل", "Kam-el", "Ja-mal", "Animals", "🐪", "camel.mp3"),
             WordItem("whale", "Whale", "حُوت", "Wayl", "Hoot", "Animals", "🐋", "whale.mp3"),
             WordItem("beaver", "Beaver", "قُنْدُس", "Bee-ver", "Qun-dus", "Animals", "🦫", "beaver.mp3"),
-            WordItem("peacock", "Peacock", "طَاوُوس", "Pee-kok", "Ta-woos", "Animals", "🦚", "peacock.mp3"),
-            WordItem("leopard", "Leopard", "فَهْدٌ مُنَقَّط", "Leh-pard", "Fahd mu-naq-qat", "Animals", "🐆", "leopard.mp3"),
             WordItem("gazelle", "Gazelle", "غَزَال", "Gah-zel", "Gha-zal", "Animals", "🦌", "gazelle.mp3"),
             WordItem("ostrich", "Ostrich", "نَعَامَة", "Os-trich", "Na'a-mah", "Animals", "🦤", "ostrich.mp3"),
 
             // --- Objects (Level 5 / Age 7 Advanced Vocabulary) ---
             WordItem("barometer", "Barometer", "مِقْيَاسُ الضَّغْط", "Bah-rom-e-ter", "Miq-yas ad-daght", "Objects", "🌡️", "barometer.mp3"),
-            WordItem("telescope", "Telescope", "تِلِسْكُوب", "Tel-eh-skohp", "Te-les-koob", "Objects", "🔭", "telescope.mp3"),
             WordItem("stethoscope", "Stethoscope", "سَمَّاعَةُ الطَّبِيب", "Steth-o-skohp", "Sam-ma'at at-ta-beeb", "Objects", "🩺", "stethoscope.mp3"),
             WordItem("pendulum", "Pendulum", "بَنْدُول", "Pen-dyoo-lum", "Ban-dool", "Objects", "⏱️", "pendulum.mp3"),
             WordItem("generator", "Generator", "مُوَلِّد", "Jen-er-ay-tor", "Mu-wal-lid", "Objects", "⚙️", "generator.mp3"),
-            WordItem("projector", "Projector", "عَارِضَة", "Pro-jek-tor", "A'a-ri-dah", "Objects", "📽️", "projector.mp3"),
-            WordItem("compass", "Compass", "بوصلة", "Kum-pas", "Baw-sa-lah", "Objects", "🧭", "compass.mp3"),
-            WordItem("thermometer", "Thermometer", "مِيزَانُ الْحَرَارَة", "Ther-mom-e-ter", "Mee-zan al-ha-ra-rah", "Objects", "🌡️", "thermometer.mp3"),
-            WordItem("hourglass", "Hourglass", "سَاعَةٌ رَمْلِيَّة", "Ow-er-glas", "Sa'ah ram-lee-yah", "Objects", "⏳", "hourglass.mp3"),
-            WordItem("microscope", "Microscope", "مِجْهَر", "My-kro-skohp", "Mij-har", "Objects", "🔬", "microscope.mp3")
         )
     }
 
@@ -626,25 +607,10 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("mangosteen", "Mangosteen", "مَنْغُوسْتِين", "Man-go-steen", "Man-ghoos-teen", "Fruits", "🥭", "mangosteen.mp3"),
             WordItem("rambutan", "Rambutan", "رَامْبُوتَان", "Ram-boo-tan", "Ram-boo-tan", "Fruits", "🍇", "rambutan.mp3"),
             WordItem("durian", "Durian", "دُورْيَان", "Doo-ree-an", "Doo-ree-an", "Fruits", "🍈", "durian.mp3"),
-            WordItem("persimmon", "Persimmon", "كَاكِي", "Per-sim-on", "Kah-kee", "Fruits", "🍑", "persimmon.mp3"),
-            WordItem("papaya", "Papaya", "بَابَايَا", "Pah-pah-yah", "Bah-bah-yah", "Fruits", "🥭", "papaya.mp3"),
-            WordItem("passionfruit", "Passionfruit", "فَاكِهَةُ الشَّغَف", "Pa-shon-froot", "Fah-ki-hat ash-sha-ghaf", "Fruits", "🍇", "passionfruit.mp3"),
-            WordItem("dragonfruit", "Dragonfruit", "فَاكِهَةُ التِّنِّين", "Dra-gon-froot", "Fah-ki-hat at-tin-neen", "Fruits", "🐉", "dragonfruit.mp3"),
-            WordItem("boysenberry", "Boysenberry", "تُوتُ بَوْيْزِنْ", "Boy-zen-ber-ee", "Toot boy-zen", "Fruits", "🫐", "boysenberry.mp3"),
             WordItem("chestnut", "Chestnut", "أَبُو فَرْوَة", "Chest-nut", "Aboo far-wah", "Fruits", "🌰", "chestnut.mp3"),
-            WordItem("mulberry", "Mulberry", "تُوتٌ أَسْوَدُ", "Mul-ber-ee", "Toot as-wad", "Fruits", "🫐", "mulberry.mp3"),
 
             // --- Animals (Level 6 / Age 8 Expert Vocabulary) ---
-            WordItem("platypus", "Platypus", "مِنْقَارُ الْبَطِّ", "Plat-ee-pus", "Min-qar al-bat", "Animals", "🦆", "platypus.mp3"),
-            WordItem("chameleon", "Chameleon", "حِرْبَاءُ مُتَلَوِّنَة", "Ka-mee-lee-on", "Hir-ba' mu-ta-law-wi-nah", "Animals", "🦎", "chameleon.mp3"),
             WordItem("komodo", "Komodo Dragon", "تِنِّينُ كُومُودُو", "Ko-mo-doh dra-gon", "Tin-neen koo-moo-doo", "Animals", "🦎", "komodo.mp3"),
-            WordItem("hippopotamus", "Hippopotamus", "فَرَسُ النَّهْرِ", "Hip-po-pot-a-mus", "Fa-ras an-nahr", "Animals", "🦛", "hippopotamus.mp3"),
-            WordItem("cheetah", "Cheetah", "فَهْدٌ سَرِيعٌ", "Chee-tah", "Fahd sa-ree'", "Animals", "🐆", "cheetah.mp3"),
-            WordItem("gorilla", "Gorilla", "غُورِيلَّا", "Go-ril-lah", "Gho-ree-la", "Animals", "🦍", "gorilla.mp3"),
-            WordItem("chimpanzee", "Chimpanzee", "شِمْبَانْزِي", "Chim-pan-zee", "Shim-ban-zee", "Animals", "🐒", "chimpanzee.mp3"),
-            WordItem("jellyfish", "Jellyfish", "قِنْدِيلُ الْبَحْرِ", "Jel-ee-fish", "Qin-deel al-bahr", "Animals", "🪼", "jellyfish.mp3"),
-            WordItem("starfish", "Starfish", "نَجْمُ الْبَحْرِ", "Star-fish", "Najm al-bahr", "Animals", "⭐", "starfish.mp3"),
-            WordItem("kangaroo", "Kangaroo", "كَانْغَر", "Kan-gah-roo", "Kan-ghar", "Animals", "🦘", "kangaroo.mp3"),
 
             // --- Objects (Level 6 / Age 8 Expert Vocabulary) ---
             WordItem("seismograph", "Seismograph", "مِقْيَاسُ الزَّلازِل", "Size-mo-graf", "Miq-yas az-za-la-zil", "Objects", "📊", "seismograph.mp3"),
@@ -653,10 +619,6 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("speedometer", "Speedometer", "مِقْيَاسُ السُّرْعَة", "Spee-dom-e-ter", "Miq-yas as-sur-'ah", "Objects", "⏱️", "speedometer.mp3"),
             WordItem("anemometer", "Anemometer", "مِقْيَاسُ الرِّيَاح", "An-e-mom-e-ter", "Miq-yas ar-ri-yah", "Objects", "💨", "anemometer.mp3"),
             WordItem("syringe", "Syringe", "حُقْنَةٌ طِبِّيَّة", "Sih-rinj", "Huq-nah tib-bee-yah", "Objects", "💉", "syringe.mp3"),
-            WordItem("calculator", "Calculator", "حَاسِبَةٌ إِلكترُونِيَّة", "Kal-kyoo-lay-tor", "Ha-si-bah", "Objects", "🧮", "calculator.mp3"),
-            WordItem("telescope", "Telescope", "تِلِسْكُوبٌ فَلَكِيّ", "Tel-eh-skohp", "Te-les-koob", "Objects", "🔭", "telescope.mp3"),
-            WordItem("microscope", "Microscope", "مِجْهَرٌ دَقِيق", "My-kro-skohp", "Mij-har", "Objects", "🔬", "microscope.mp3"),
-            WordItem("globe", "Globe", "كُرَةٌ أَرْضِيَّة", "Glohb", "Ku-rah ar-dee-yah", "Objects", "🌐", "globe.mp3")
         )
     }
 
@@ -779,7 +741,6 @@ class NoorBeeViewModel(application: Application) : AndroidViewModel(application)
             WordItem("clock", "Clock", "ساعة", "Klok", "Sa'ah", "Objects", "⏰", "clock.mp3"),
             WordItem("phone", "Phone", "هاتف", "Fohn", "Ha-tif", "Objects", "📱", "phone.mp3"),
             WordItem("computer", "Computer", "حاسوب", "Kom-pew-ter", "Ha-soob", "Objects", "💻", "computer.mp3"),
-            WordItem("window", "Window", "نافذة", "Win-dow", "Na-fi-thah", "Objects", "🪟", "window.mp3"),
             WordItem("spoon", "Spoon", "ملعقة", "Spoon", "Mil'aqah", "Objects", "🥄", "spoon.mp3"),
             WordItem("umbrella", "Umbrella", "مظلة", "Um-brel-lah", "Mi-dal-lah", "Objects", "☂️", "umbrella.mp3"),
             WordItem("lightbulb", "Lightbulb", "مصباح", "Lite-bulb", "Mis-bah", "Objects", "💡", "lightbulb.mp3")

@@ -119,7 +119,8 @@ fun HomeDashboardScreen(
     onNavigateToQaida: (Int) -> Unit = {},      // Urdu path: Qaida stage 1 or 2
     onNavigateToQuranEnglish: (Int) -> Unit = {},   // English path: the same Quran course, taught in English
     onNavigateToEnglishCourse: (Int) -> Unit = {},  // English path: English reading course stage
-    onOpenArabicTopic: (String) -> Unit = {},   // Arabic section: "Alphabet" or "Vocabulary"
+    onOpenArabicTopic: (String) -> Unit = {},   // old Arabic path (still used by an Arabic-language profile)
+    onNavigateToArabicWords: (Int) -> Unit = {},    // Arabic words course, level 1–6
     onLevelChanged: (Int) -> Unit = {}
 ) {
     var showParentGate by remember { mutableStateOf(false) }
@@ -734,48 +735,44 @@ fun HomeDashboardScreen(
                         }
                     }
 
-                    // Arabic section: Arabic letters, phonics and words (moved down from the top switch)
+                    // Arabic section: Arabic words from first nouns to short sentences. Flip cards show
+                    // Arabic and English with the Urdu meaning in brackets on both sides. (The old
+                    // "Arabic letters & phonics" card repeated Stage 1 of the Quran course, so it is gone.)
+                    val urduDash = profile.currentLanguage == "Urdu"
                     Text(
-                        text = "العربية · Arabic Words & Phonics 🇸🇦",
+                        text = if (urduDash) "العربية · عربی الفاظ سیکھیں 🇸🇦" else "العربية · Learn Arabic words 🇸🇦",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = DeepNavy,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = 4.dp).testTag("dashboard_arabic_title")
                     )
-                    // Right-to-left like the Qaida: first card on the right
-                    androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().testTag("dashboard_arabic_section"),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        Box(modifier = Modifier.weight(1f).testTag("dashboard_arabic_letters")) {
-                            DashboardHoneycomb(
-                                title = "الحروف والأصوات 🔤",
-                                subtitle = "Arabic letters & phonics",
-                                color = Color(0xFFE3F2FD),
-                                borderStroke = Color(0xFF1565C0),
-                                emoji = "🇸🇦",
-                                onClick = { onOpenArabicTopic("Alphabet") }
-                            )
+                    androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides
+                        (if (urduDash) androidx.compose.ui.unit.LayoutDirection.Rtl else androidx.compose.ui.unit.LayoutDirection.Ltr)) {
+                        Column(Modifier.fillMaxWidth().testTag("dashboard_arabic_section"), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            com.example.arabic.ArabicWords.levels.chunked(2).forEach { pair ->
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    pair.forEach { lv ->
+                                        Box(Modifier.weight(1f).testTag("dashboard_arabic_level${lv.number}")) {
+                                            DashboardHoneycomb(
+                                                title = if (urduDash) "درجہ ${lv.number}: ${lv.titleUrdu}" else "Level ${lv.number}: ${lv.title}",
+                                                subtitle = lv.sets.first().words.first().arabic + "  ·  " + (if (urduDash) lv.bandUrdu else lv.band),
+                                                color = lv.bg,
+                                                borderStroke = lv.line,
+                                                emoji = lv.sets.first().emoji,
+                                                onClick = { onNavigateToArabicWords(lv.number) }
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        Box(modifier = Modifier.weight(1f).testTag("dashboard_arabic_words")) {
-                            DashboardHoneycomb(
-                                title = "الكلمات 🍎",
-                                subtitle = "Arabic word games",
-                                color = Color(0xFFFCE4EC),
-                                borderStroke = Color(0xFFAD1457),
-                                emoji = "🍎",
-                                onClick = { onOpenArabicTopic("Vocabulary") }
-                            )
-                        }
-                    }
                     }
 
                     // Row 3 (Quran Explorer)
                     Box(modifier = Modifier.fillMaxWidth()) {
                         DashboardHoneycomb(
                             title = "Quran Explorer 🕌",
-                            subtitle = "Interactive API Text & Recit",
+                            subtitle = "Read and listen to every surah",
                             color = Color.White,
                             borderStroke = BorderGrey,
                             emoji = "🕌",

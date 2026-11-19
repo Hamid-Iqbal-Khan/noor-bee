@@ -414,21 +414,7 @@ fun DuaScreens(
                     cardColor = Color(0xFFFFFDE7)
                 )
             )
-            else -> listOf(
-                SupplicationItem(
-                    id = "steadfast_heart",
-                    title = "Steadfast Heart 💖",
-                    arabTitle = "يا مقلب القلوب 💖",
-                    emoji = "💖",
-                    arabic = "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
-                    transliteration = "Ya Muqallibal-qulubi thabbit qalbi 'ala dinik",
-                    english = "O Turner of the hearts, keep my heart steadfast upon Your religion",
-                    tip = "A powerful, sweet dua to keep our hearts glowing with goodness and kindness! 🌟",
-                    arabTip = "دعاء عظيم وجميل ليظل قلبنا مليئاً بالخير والإيمان والطاعة! 🌟",
-                    accentColor = Color(0xFFE91E63), // Pink
-                    cardColor = Color(0xFFFFF0F5)
-                )
-            )
+            else -> emptyList() // ages are kept between 3 and 8, so this is never reached (it held a second copy of the age-7 entry)
         }
     }
 
@@ -1371,20 +1357,7 @@ fun generateQuizQuestionsForAge(age: Int): List<DuaQuizQuestion> {
                 emoji = "☀️"
             )
         )
-        else -> listOf(
-            DuaQuizQuestion(
-                id = "steadfast_heart_q",
-                questionText = "Which Dua do we say to keep our heart steadfast and shining on Islam? 💖",
-                questionTextAr = "ما الدعاء الذي نردده ليثبت الله قلوبنا الطاهرة على طاعته وإسلامنا الحبيب؟ 💖",
-                options = listOf("Ya Muqallibal-qulubi thabbit qalbi 'ala dinik", "Subhanallah", "Alhamdulillah"),
-                correctAnswer = "Ya Muqallibal-qulubi thabbit qalbi 'ala dinik",
-                optionsAr = listOf("يا مقلب القلوب ثبت قلبي على دينك", "سبحان الله", "الحمد لله"),
-                correctAnswerAr = "يا مقلب القلوب ثبت قلبي على دينك",
-                infoTip = "Ask Allah to guide your heart to do kind and helpful deeds every day!",
-                infoTipAr = "نسأل الله الهداية والتثبيت الدائم لقلوبنا لتفعل الخير وتتجنب الأذى!",
-                emoji = "💖"
-            )
-        )
+        else -> emptyList() // ages are kept between 3 and 8, so this is never reached (it held a second copy of the age-7 entry)
     }
 }
 

@@ -155,10 +155,11 @@ class MainActivity : ComponentActivity() {
                                     onNavigateToEnglishCourse = { stage ->
                                         navController.navigate("english?stage=$stage")
                                     },
-                                    onOpenArabicTopic = { topic ->
-                                        // Arabic content follows the profile's language; switch it, then open the path
-                                        viewModel.updateLanguage("Arabic")
-                                        navController.navigate("path/$topic")
+                                    onOpenArabicTopic = { topic -> navController.navigate("path/$topic") },
+                                    onNavigateToArabicWords = { level ->
+                                        // the course follows the dashboard's language; the profile's language is not changed
+                                        val ur = activeProfile?.currentLanguage == "Urdu"
+                                        navController.navigate("arabicwords?level=$level&ur=$ur")
                                     },
                                     onLevelChanged = { newLevel ->
                                         viewModel.updateLevel(newLevel)
@@ -253,6 +254,33 @@ class MainActivity : ComponentActivity() {
                                                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                                                     t.language = Locale("ar")
                                                 }
+                                                t.setSpeechRate(config.speechRate * 0.8f)
+                                                t.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+                                            }
+                                        }
+                                    },
+                                    onEarnRewards = { coins, stars, desc -> viewModel.earnCoinsAndStars(coins, stars, desc) }
+                                )
+                            }
+
+                            // ARABIC WORDS — first nouns to short sentences, flip cards with Urdu meanings
+                            composable(
+                                "arabicwords?level={level}&ur={ur}",
+                                arguments = listOf(
+                                    androidx.navigation.navArgument("level") { type = androidx.navigation.NavType.IntType; defaultValue = 1 },
+                                    androidx.navigation.navArgument("ur") { type = androidx.navigation.NavType.BoolType; defaultValue = false },
+                                )
+                            ) { entry ->
+                                com.example.arabic.ArabicWordsScreen(
+                                    profileId = activeProfile?.id ?: 0,
+                                    urdu = entry.arguments?.getBoolean("ur") ?: false,
+                                    startLevel = entry.arguments?.getInt("level") ?: 1,
+                                    onBackPressed = { navController.popBackStack() },
+                                    onSpeakArabic = { text ->
+                                        tts?.let { t ->
+                                            if (ttsReady) {
+                                                val r = t.setLanguage(Locale("ar", "SA"))
+                                                if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) t.language = Locale("ar")
                                                 t.setSpeechRate(config.speechRate * 0.8f)
                                                 t.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
                                             }

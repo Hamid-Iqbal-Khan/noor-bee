@@ -127,6 +127,8 @@ class UatFlowTest {
     clickText("Stage 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
     clickText("My Stickers"); step(2_000); shot("07c_stickers"); goBack()
+    waitTag("home_dashboard_screen"); dismissGuide()
+    clickText("Level 1: First words"); step(1_500); waitTag("arabic_words_root"); shot("07d_arabic_words"); goBack()
   }
 
   @Test fun saveProfile_doubleTap_createsOnlyOneProfile() {
