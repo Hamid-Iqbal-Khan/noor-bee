@@ -78,14 +78,14 @@ class EnglishScreensTest {
 
   @Test fun tileTap_saysJustThatLetter_andWordSaysTheWord() {
     launch(2); open("english_lesson_e2.1")
-    assertTrue(soundOf("R") == "R" && soundOf("a") == "A" && soundOf("b") == "B" && soundOf("jj") == "J")
-    rule.onNodeWithTag("english_say_Rab").performClick(); rule.waitForIdle()
-    assertTrue(spoken.last() == "Rab")
+    assertTrue(soundOf("H") == "H" && soundOf("a") == "A" && soundOf("jj") == "J")
+    rule.onNodeWithTag("english_say_Hajj").performClick(); rule.waitForIdle()
+    assertTrue(spoken.last() == "haj")
   }
 
   @Test fun letterTap_speaksSoundAndKeyword() {
     launch(1); open("english_lesson_e1.1")
     rule.onNodeWithTag("english_letter_s").performScrollTo().performClick(); rule.waitForIdle()
-    assertTrue(spoken.last() == "s, as in Salah")
+    assertTrue(spoken.last() == "s, as in sa-laah")
   }
 }

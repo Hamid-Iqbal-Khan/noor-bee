@@ -115,7 +115,11 @@ class QaidaEnglishDataTest {
     assertEquals(listOf("Allah", "Bismillah", "Charity", "Dua"), EnglishCourse.alphabet.take(4).map { it.keyword })
     val stage2 = EnglishCourse.shortA + EnglishCourse.shortE + EnglishCourse.shortI + EnglishCourse.shortO + EnglishCourse.shortU
     assertTrue(stage2.none { it.word in setOf("cat", "dog", "pig", "fox") })
-    stage2.forEach { assertTrue("first vowel of ${it.word}", it.parts[1].lowercase() in setOf("a", "e", "i", "o", "u")) }
+    stage2.forEach { EnglishCourse.firstVowel(it) }   // every word has a vowel to ask about
+    assertTrue(stage2.none { it.word in setOf("Rab", "Nas", "misk", "Hud", "Nuh") })   // clear, well-known words only
+    assertEquals("doo-ah", EnglishCourse.pronounce("Dua"))
+    assertEquals("I make doo-ah with my hands.", EnglishCourse.pronounce("I make dua with my hands."))
+    assertEquals("A", EnglishCourse.pronounce("A"))
   }
 
   @Test fun englishCourse_quizzesHaveOneRightAnswer() {

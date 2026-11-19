@@ -85,6 +85,9 @@ fun EnglishScreen(
     onEarnRewards: (Int, Int, String) -> Unit,
     startStage: Int = 1,
 ) {
+    // every word goes to the voice through the pronunciation list (Dua -> doo-ah, Eid -> eed)
+    val onSpeakRaw = onSpeak
+    @Suppress("NAME_SHADOWING") val onSpeak: (String) -> Unit = { onSpeakRaw(EnglishCourse.pronounce(it)) }
     val context = LocalContext.current
     val progress = remember(profileId) { EnglishProgress(context, profileId) }
     var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, EnglishCourse.stages.size)) }
@@ -295,7 +298,7 @@ internal fun soundOf(part: String): String {
     // letter teams: just the one sound they make, nothing more
     return when (t) {
         "sh" -> "shh"; "ch" -> "ch"; "th" -> "th"; "ng" -> "ng"; "ck" -> "K"; "ll" -> "L"; "ss" -> "S"
-        "wh" -> "W"; "ph" -> "F"; "qu" -> "kw"; "jj" -> "J"; "er" -> "er"
+        "wh" -> "W"; "ph" -> "F"; "qu" -> "kw"; "jj" -> "J"; "er" -> "er"; "cc" -> "K"; "mm" -> "M"
         "ai", "ay", "a_e" -> "ay"; "ee", "ea" -> "ee"; "oa", "ow", "o_e" -> "oh"; "igh", "i_e" -> "eye"
         "oo" -> "oo"; "u_e" -> "you"
         else -> t

@@ -65,7 +65,7 @@ object EnglishQuiz {
                 when (kind) {
                     0 -> q(wd.emoji, "Which word is this?", wd.word, all.map { it.word }, random, wd.word)
                     1 -> q(wd.parts.joinToString(" · "), "Blend the sounds. Which word do they make?", wd.word, all.map { it.word }, random, word = true)
-                    else -> q(wd.word, "Which vowel sound do you hear first?", wd.parts[1], listOf("a", "e", "i", "o", "u"), random, wd.word, word = true)
+                    else -> q(wd.word, "Which vowel sound do you hear first?", EnglishCourse.firstVowel(wd), listOf("a", "e", "i", "o", "u"), random, wd.word, word = true)
                 }
             }
             3 -> {

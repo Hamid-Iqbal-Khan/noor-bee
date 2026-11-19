@@ -60,25 +60,25 @@ object EnglishCourse {
         Sound("d", "Dua", "🤲"),
         Sound("e", "Eid", "🎉", "In Eid, e says its long sound 'ee'. Its short sound is 'e' as in egg."),
         Sound("f", "Fajr", "🌅"),
-        Sound("g", "Good deeds", "🌟"),
+        Sound("g", "Good deeds", "🤝"),
         Sound("h", "Hajj", "⛺"),
         Sound("i", "Islam", "💚"),
         Sound("j", "Jannah", "🌴"),
-        Sound("k", "Kaaba", "🕋"),
+        Sound("k", "Kaaba", "⬛"),
         Sound("l", "Learn", "📚", "The first word of the Quran revealed was Iqra: Read!"),
         Sound("m", "Masjid", "🕌"),
-        Sound("n", "Nur", "💡", "Nur means light. An-Nur is a name of Allah."),
+        Sound("n", "Namaz", "🙇", "Namaz is the Urdu and Persian word for Salah, the prayer."),
         Sound("o", "Olive", "🌿", "Allah swears by the fig and the olive in Surah At-Tin."),
-        Sound("p", "Peace", "🕊️", "As-Salamu alaikum means peace be upon you."),
+        Sound("p", "Prophet", "🌹", "Prophet Muhammad ﷺ is the last Prophet of Allah."),
         Sound("q", "Quran", "📗", "In English q nearly always comes with u (quiet). Quran is an Arabic word."),
         Sound("r", "Ramadan", "🌙"),
-        Sound("s", "Salah", "🙇"),
+        Sound("s", "Salah", "🕋", "Salah is the prayer we offer five times a day."),
         Sound("t", "Tasbih", "📿"),
         Sound("u", "Ummah", "🌍", "The Ummah is all the Muslims of the world."),
         Sound("v", "Virtue", "🏅"),
         Sound("w", "Wudu", "💧"),
-        Sound("x", "six", "6️⃣", "x says 'ks', usually at the end of a word: six articles of faith."),
-        Sound("y", "Yaseen", "💖", "Surah Yaseen is called the heart of the Quran."),
+        Sound("x", "six", "6️⃣", "No Islamic word starts with x. x says 'ks' at the end of a word: we believe in six articles of faith."),
+        Sound("y", "Yusuf", "🌟", "Prophet Yusuf, peace be upon him: his story is told in Surah Yusuf."),
         Sound("z", "Zakat", "💰"),
     )
 
@@ -90,29 +90,33 @@ object EnglishCourse {
 
     /** Teaching groups — the first six letters already make words (Nas, sit, tap, pin). */
     val groups = listOf(
-        "s a t p i n" to "With just these six you can read: Nas (people), sit, tap, pin",
-        "m d g o c k" to "Now: Adam, dad, Mom, mat (prayer mat)",
-        "ck e u r" to "Now: Nur (light), Eid, sun, rest",
-        "h b f l" to "Now: Rab (Lord), Bilal, halal, help",
-        "j v w x y z qu" to "Now: Hajj, Wudu, Zakat, six, Yunus, quiet",
+        "s a t p i n" to "With just these six you can read: sit, tap, pin, tip",
+        "m d g o c k" to "Now: Adam, dad, Mom, mat (prayer mat), Mecca",
+        "ck e u r" to "Now: Eid, Ummah, sun, rest",
+        "h b f l" to "Now: Bilal, halal, help, Fajr",
+        "j v w x y z qu" to "Now: Hajj, Wudu, Zakat, six, Yusuf, quiet",
     )
 
     // ---- Stage 2: blending short Islamic words (the first vowel is a short sound) ------------------------
-    val shortA = listOf(w("Rab", "🌍"), w("Nas", "👥"), w("Hajj", "🕋", "H", "a", "jj"), w("cap", "🧢"), w("dad", "👨"),
-        w("halal", "🍗"), w("lamb", "🐑"))
-    val shortE = listOf(w("help", "🤝"), w("ten", "🔟"), w("bed", "🛏️"), w("web", "🕸️"), w("pen", "🖊️"),
-        w("Medina", "🏙️"))
-    val shortI = listOf(w("gift", "🎁"), w("milk", "🥛"), w("Bilal", "📢"), w("sit", "🪑"), w("misk", "🌸"))
-    val shortO = listOf(w("box", "📦"), w("Mom", "👩"), w("mosque", "🕌", "m", "o", "s", "qu", "e"), w("socks", "🧦", "s", "o", "ck", "s"))
-    val shortU = listOf(w("Nuh", "🚢"), w("Hud", "💨"), w("Yunus", "🐋"), w("sun", "☀️"), w("cup", "☕"), w("hug", "🤗"))
+    val shortA = listOf(w("Adam", "🌱"), w("Hajj", "🕋", "H", "a", "jj"), w("mat", "🙏"), w("cap", "🧢"), w("hands", "🤲"),
+        w("lamb", "🐑"), w("dad", "👨"))
+    val shortE = listOf(w("Mecca", "🕌", "M", "e", "cc", "a"), w("help", "🤝"), w("ten", "🔟"), w("bed", "🛏️"), w("pen", "🖊️"),
+        w("Medina", "🌴"))
+    val shortI = listOf(w("Islam", "💚"), w("Ismail", "🐏"), w("Ibrahim", "🔥"), w("gift", "🎁"), w("milk", "🥛"))
+    val shortO = listOf(w("box", "📦"), w("Mom", "👩"), w("honest", "✅"), w("socks", "🧦", "s", "o", "ck", "s"))
+    val shortU = listOf(w("Ummah", "🌍", "U", "mm", "a", "h"), w("Jummah", "📅", "J", "u", "mm", "a", "h"), w("sun", "☀️"),
+        w("cup", "☕"), w("hug", "🤗"))
+
+    /** The first vowel tile of a word (the sound the Stage 2 practice asks about). */
+    fun firstVowel(word: ReadWord): String = word.parts.first { it.lowercase() in setOf("a", "e", "i", "o", "u") }.lowercase()
 
     // ---- Stage 3: two letters, one sound ------------------------------------------------------------
     val digraphsA = listOf(
-        Sound("sh", "Shukr", "🤍", "put a finger on your lips: shh! Shukr means thankfulness to Allah"),
+        Sound("sh", "ship", "🚢", "put a finger on your lips: shh! Prophet Nuh built a ship"),
         Sound("ch", "Charity", "💝"),
         Sound("th", "thanks", "🙏", "tongue between the teeth — like the Arabic ث"),
     )
-    val digraphWordsA = listOf(w("Shukr", "🤍", "Sh", "u", "k", "r"), w("fish", "🐟", "f", "i", "sh"), w("wash", "🧼", "w", "a", "sh"),
+    val digraphWordsA = listOf(w("ship", "🚢", "sh", "i", "p"), w("fish", "🐟", "f", "i", "sh"), w("wash", "🧼", "w", "a", "sh"),
         w("charity", "💝", "ch", "a", "r", "i", "t", "y"), w("children", "🧒", "ch", "i", "l", "d", "r", "e", "n"),
         w("chapter", "📖", "ch", "a", "p", "t", "er"),
         w("thanks", "🙏", "th", "a", "n", "k", "s"), w("truth", "✔️", "t", "r", "u", "th"))
@@ -196,19 +200,20 @@ object EnglishCourse {
                     "Tap each picture and copy the sound. Watch out: ck is one sound, and in English q always brings u.",
                     sounds = sounds("ck e u r") + sounds("h b f l") + sounds("j v w x y z qu")),
             )),
-        EnStage(2, "Blending", "Stage 2: Reading short Islamic words", "R + a + b = Rab", "R·a·b",
+        EnStage(2, "Blending", "Stage 2: Reading short Islamic words", "H + a + jj = Hajj", "H·a·jj",
             "🧩", Color(0xFFFFF4D6), Color(0xFFE0A800), listOf(
-                EnLesson("e2.1", "Short a", "Rab, Nas, Hajj, halal…", LessonKind.WORDS,
-                    "Say each sound, then push them together faster and faster: R… a… b… Rab! (Rab means Lord.)", words = shortA),
-                EnLesson("e2.2", "Short e", "help, ten, pen, Medina…", LessonKind.WORDS, "e as in egg. Blend each word.", words = shortE),
-                EnLesson("e2.3", "Short i", "gift, milk, Bilal, misk…", LessonKind.WORDS, "i as in Islam. Blend each word.", words = shortI),
-                EnLesson("e2.4", "Short o", "box, Mom, mosque, socks…", LessonKind.WORDS, "o as in olive. Blend each word.", words = shortO),
-                EnLesson("e2.5", "Short u", "Nuh, Hud, Yunus, sun…", LessonKind.WORDS,
-                    "u as in Ummah. Nuh, Hud and Yunus are prophets of Allah, peace be upon them.", words = shortU),
+                EnLesson("e2.1", "Short a", "Adam, Hajj, hands, lamb…", LessonKind.WORDS,
+                    "Tap each letter, then tap the word. Push the sounds together faster and faster: H… a… jj… Hajj!", words = shortA),
+                EnLesson("e2.2", "Short e", "Mecca, help, ten, Medina…", LessonKind.WORDS, "e as in egg. Blend each word.", words = shortE),
+                EnLesson("e2.3", "Short i", "Islam, Ismail, Ibrahim, gift…", LessonKind.WORDS,
+                    "i as in Islam. Ibrahim and Ismail, peace be upon them, built the Kaaba. Blend each word.", words = shortI),
+                EnLesson("e2.4", "Short o", "box, Mom, honest, socks…", LessonKind.WORDS, "o as in olive. Blend each word.", words = shortO),
+                EnLesson("e2.5", "Short u", "Ummah, Jummah, sun, cup…", LessonKind.WORDS,
+                    "u as in Ummah. Jummah is our special Friday prayer.", words = shortU),
             )),
-        EnStage(3, "Digraphs", "Stage 3: Two letters, one sound", "Shukr, Charity, thanks…", "sh ch th",
+        EnStage(3, "Digraphs", "Stage 3: Two letters, one sound", "ship, Charity, thanks…", "sh ch th",
             "👯", Color(0xFFF3E5F5), Color(0xFF6A1B9A), listOf(
-                EnLesson("e3.1", "sh · ch · th", "Shukr, charity, thanks", LessonKind.SOUNDS,
+                EnLesson("e3.1", "sh · ch · th", "ship, charity, thanks", LessonKind.SOUNDS,
                     "Some letters team up to make one new sound. Read the pair as one tile.",
                     sounds = digraphsA, words = digraphWordsA),
                 EnLesson("e3.2", "ck · ng · ll · ss", "black stone, fasting, Allah, bless", LessonKind.SOUNDS,
@@ -251,6 +256,27 @@ object EnglishCourse {
     )
 
     fun stage(n: Int) = stages.first { it.number == n }
+
+    /**
+     * How the phone's English voice should say the Arabic words, written the way an English
+     * reader would say them (the voice otherwise reads "Dua" as "dew-a" and "Eid" as "eyed").
+     * Single letters are never changed, so a tile still says just its letter.
+     */
+    val pronunciation = mapOf(
+        "Dua" to "doo-ah", "Eid" to "eed", "Fajr" to "fudger", "Jannah" to "jannah", "Kaaba" to "kaa-bah",
+        "Masjid" to "mus-jid", "Namaz" to "na-maaz", "Quran" to "Kur-aan", "Salah" to "sa-laah", "Tasbih" to "tas-beeh",
+        "Ummah" to "oom-mah", "Jummah" to "joom-mah", "Wudu" to "woo-doo", "Yusuf" to "yoo-suf", "Zakat" to "za-kaat",
+        "Ismail" to "is-ma-eel", "Ibrahim" to "ib-ra-heem", "Hajj" to "haj", "Bismillah" to "bis-mil-lah",
+        "Allah" to "al-lah", "Ramadan" to "ra-ma-daan", "Sunnah" to "soon-nah", "Hadith" to "ha-deeth",
+        "Muhammad" to "mu-ham-mad", "Bilal" to "bi-laal", "halal" to "ha-laal", "Medina" to "ma-dee-nah",
+        "Mecca" to "mek-kah", "Alhamdulillah" to "al-ham-du-lil-lah", "Assalamu" to "as-sa-laa-mu", "alaikum" to "a-lai-kum",
+    )
+
+    /** Text as the voice should say it: known Arabic words respelled, everything else as written. */
+    fun pronounce(text: String): String {
+        if (text.length <= 2) return text
+        return Regex("[A-Za-z]+").replace(text) { m -> pronunciation.entries.firstOrNull { it.key.equals(m.value, true) }?.value ?: m.value }
+    }
 
     /** Every word the course reads, for quizzes and checks. */
     val allWords: List<ReadWord> get() = (shortA + shortE + shortI + shortO + shortU + digraphWordsA + digraphWordsB +
