@@ -76,6 +76,13 @@ class EnglishScreensTest {
   @Test fun stage5() = walk(5)
   @Test fun stage6() = walk(6)
 
+  @Test fun tileTap_saysJustThatLetter_andWordSaysTheWord() {
+    launch(2); open("english_lesson_e2.1")
+    assertTrue(soundOf("R") == "R" && soundOf("a") == "A" && soundOf("b") == "B" && soundOf("jj") == "J")
+    rule.onNodeWithTag("english_say_Rab").performClick(); rule.waitForIdle()
+    assertTrue(spoken.last() == "Rab")
+  }
+
   @Test fun letterTap_speaksSoundAndKeyword() {
     launch(1); open("english_lesson_e1.1")
     rule.onNodeWithTag("english_letter_s").performScrollTo().performClick(); rule.waitForIdle()
