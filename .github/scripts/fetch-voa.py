@@ -45,7 +45,7 @@ def transcript(lines):
         m = SPEAKER.match(l)
         if not m or m.group(1) in NOT_SPEAKERS:
             continue
-        who, said = m.group(1).strip(), m.group(2).strip().strip('"“”').strip()
+        who, said = m.group(1).strip(), clean(m.group(2))
         if said and not said.lower().startswith("http"):
             out.append((who, said))
     # keep one copy of each line (pages repeat the transcript in mobile and desktop markup)
@@ -54,6 +54,13 @@ def transcript(lines):
         if t not in seen:
             seen.add(t); uniq.append(t)
     return uniq
+
+
+def clean(text):
+    """Drop stage directions "(walks off)" and the stray spaces the page puts before punctuation."""
+    text = re.sub(r"\s*\([^)]*\)\s*", " ", text)
+    text = re.sub(r"\s+([.,!?;:])", r"\1", text)
+    return re.sub(r"\s+", " ", text).strip().strip('"“”').strip()
 
 
 def conversation_mp3(page):
