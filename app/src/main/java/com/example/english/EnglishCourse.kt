@@ -25,7 +25,13 @@ data class ReadWord(val word: String, val parts: List<String>, val emoji: String
 /** A sentence to read; [key] is the word its picture shows (used for "fill the gap"). */
 data class Sentence(val text: String, val emoji: String, val key: String = "")
 
-enum class LessonKind { ALPHABET, SOUNDS, WORDS, PAIRS, TRICKY, CARDS, SENTENCES, STORY }
+/** A phrase to say, what it means or when we say it, and a picture. */
+data class Phrase(val text: String, val meaning: String, val emoji: String)
+
+/** One line of a conversation. */
+data class Line(val speaker: String, val text: String)
+
+enum class LessonKind { ALPHABET, SOUNDS, WORDS, PAIRS, TRICKY, CARDS, SENTENCES, STORY, PHRASES, DIALOGUE }
 
 data class EnLesson(
     val id: String,           // progress key, e.g. "e2.3"
@@ -38,6 +44,8 @@ data class EnLesson(
     val pairs: List<Pair<ReadWord, ReadWord>> = emptyList(),   // magic e: cap -> cape
     val tricky: List<String> = emptyList(),
     val sentences: List<Sentence> = emptyList(),
+    val phrases: List<Phrase> = emptyList(),
+    val dialogue: List<Line> = emptyList(),
 )
 
 data class EnStage(
@@ -187,6 +195,190 @@ object EnglishCourse {
         Sentence("Ali says, \"Alhamdulillah!\"", "🤲"), Sentence("Allah loves those who are kind.", "💗"),
     )
 
+    // ---- Stages 5–10: speaking, in the life of a Muslim family ------------------------------------------
+    private fun ph(text: String, meaning: String, emoji: String) = Phrase(text, meaning, emoji)
+    private fun talk(vararg lines: Pair<String, String>) = lines.map { Line(it.first, it.second) }
+
+    val islamicGreetings = listOf(
+        ph("Assalamu alaikum", "Peace be upon you. We say it when we meet someone.", "👋"),
+        ph("Wa alaikum assalam", "And upon you be peace. This is the reply to salam.", "😊"),
+        ph("Assalamu alaikum wa rahmatullahi wa barakatuh", "Peace, mercy and blessings of Allah be upon you. The full salam brings more reward.", "🌟"),
+        ph("Good morning!", "We say it in the morning, after the salam.", "🌅"),
+        ph("Good night. Sleep well.", "We say it at bedtime, then read our dua.", "🌙"),
+        ph("Fi amanillah", "In Allah's care. We say it when we say goodbye.", "🤲"),
+    )
+    val dailyWords = listOf(
+        ph("Bismillah", "In the name of Allah. We say it before we start: eating, reading, getting dressed.", "🍽️"),
+        ph("Alhamdulillah", "All praise is for Allah. We say it when we are happy, after eating, and after we sneeze.", "💚"),
+        ph("InshaAllah", "If Allah wills. We say it when we talk about the future.", "🗓️"),
+        ph("MashaAllah", "Allah has willed it. We say it when we see something good.", "🌸"),
+        ph("SubhanAllah", "Glory be to Allah. We say it when we see something amazing.", "🌄"),
+        ph("JazakAllahu khairan", "May Allah reward you with good. A beautiful way to say thank you.", "🎁"),
+        ph("Astaghfirullah", "I ask Allah to forgive me. We say it when we make a mistake.", "🙏"),
+        ph("Ameen", "O Allah, please accept. We say it after a dua.", "☝️"),
+    )
+    val politeWords = listOf(
+        ph("Please", "We say it when we ask for something.", "🙂"),
+        ph("Thank you", "We say it when someone helps us or gives us something.", "💐"),
+        ph("You're welcome", "The reply when someone says thank you.", "🤗"),
+        ph("Sorry", "We say it when we hurt someone or make a mistake.", "😔"),
+        ph("Excuse me", "We say it to ask someone politely, or to pass by.", "🙋"),
+        ph("May I come in?", "We ask before we enter a room or a house.", "🚪"),
+    )
+    val meetingFriend = talk(
+        "Ali" to "Assalamu alaikum, Yusuf!", "Yusuf" to "Wa alaikum assalam, Ali!",
+        "Ali" to "How are you?", "Yusuf" to "Alhamdulillah, I am fine. And you?",
+        "Ali" to "Alhamdulillah, I am fine too.", "Yusuf" to "See you at the masjid, InshaAllah.",
+        "Ali" to "InshaAllah. Fi amanillah!",
+    )
+    val sneezing = talk(
+        "Maryam" to "Atchoo! Alhamdulillah!", "Aisha" to "Yarhamukillah! May Allah have mercy on you.",
+        "Maryam" to "Yahdikumullah wa yuslihu balakum. May Allah guide you and make your life good.",
+        "Aisha" to "Ameen!",
+    )
+
+    val familyWords = listOf(
+        ph("father", "Abu, Baba, Dad", "👨"), ph("mother", "Ummi, Mama, Mum", "👩"), ph("brother", "a boy in my family", "👦"),
+        ph("sister", "a girl in my family", "👧"), ph("grandfather", "my father's or my mother's father", "👴"),
+        ph("grandmother", "my father's or my mother's mother", "👵"), ph("uncle", "my father's or mother's brother", "🧔"),
+        ph("aunt", "my father's or mother's sister", "🧕"), ph("baby", "a very young child", "👶"),
+        ph("family", "all of us together", "👨‍👩‍👧‍👦"),
+    )
+    val familySentences = listOf(
+        Sentence("This is my father. He is kind.", "👨", "father"), Sentence("This is my mother. She cooks for us.", "👩", "mother"),
+        Sentence("I have one brother and two sisters.", "👦", "brother"), Sentence("My grandfather reads the Quran every morning.", "👴", "grandfather"),
+        Sentence("My baby sister is sleeping.", "👶", "baby"), Sentence("I love my family for the sake of Allah.", "💗", "family"),
+    )
+    val homeWords = listOf(
+        ph("kitchen", "where we cook food", "🍳"), ph("bedroom", "where we sleep", "🛏️"),
+        ph("bathroom", "we go in with the left foot and say the dua", "🚿"), ph("living room", "where the family sits together", "🛋️"),
+        ph("prayer corner", "a clean place where we pray at home", "🙇"), ph("garden", "where flowers and trees grow", "🌳"),
+    )
+    val helpingAtHome = talk(
+        "Mother" to "Ahmad, can you help me, please?", "Ahmad" to "Yes, Ummi. What can I do?",
+        "Mother" to "Please set the table for dinner.", "Ahmad" to "Okay, InshaAllah.",
+        "Mother" to "JazakAllahu khairan, my son.", "Ahmad" to "Wa iyyaki, Ummi.",
+    )
+
+    val fivePrayers = listOf(
+        ph("Fajr", "the prayer at dawn, before the sun rises", "🌅"), ph("Zuhr", "the prayer after midday", "☀️"),
+        ph("Asr", "the prayer in the afternoon", "🌤️"), ph("Maghrib", "the prayer just after sunset", "🌇"),
+        ph("Isha", "the prayer at night", "🌙"),
+    )
+    val morning = listOf(
+        Sentence("I wake up and say the dua.", "⏰", "dua"), Sentence("I brush my teeth and make wudu.", "💧", "wudu"),
+        Sentence("I pray Fajr with my father.", "🌅", "Fajr"), Sentence("I eat breakfast with my right hand.", "🥣", "breakfast"),
+        Sentence("I say Bismillah before I eat.", "🍽️", "Bismillah"), Sentence("Then I go to school.", "🏫", "school"),
+    )
+    val evening = listOf(
+        Sentence("I come home and pray Asr.", "🏠", "Asr"), Sentence("I read the Quran after Maghrib.", "📗", "Quran"),
+        Sentence("We eat dinner together.", "🍲", "dinner"), Sentence("I do my homework.", "📝", "homework"),
+        Sentence("I pray Isha and go to bed.", "🌙", "Isha"), Sentence("I say the dua before I sleep.", "😴", "sleep"),
+    )
+    val weekDays = listOf(
+        ph("Monday", "The Prophet ﷺ liked to fast on Mondays.", "1️⃣"), ph("Tuesday", "the day after Monday", "2️⃣"),
+        ph("Wednesday", "the middle of the week", "3️⃣"), ph("Thursday", "The Prophet ﷺ liked to fast on Thursdays too.", "4️⃣"),
+        ph("Friday", "Jumu'ah! We go to the masjid for the Friday prayer.", "🕌"), ph("Saturday", "a day to visit family", "6️⃣"),
+        ph("Sunday", "a day to help at home", "7️⃣"),
+    )
+    val whatTime = talk(
+        "Bilal" to "Excuse me, what time is it?", "Hamza" to "It is one o'clock.",
+        "Bilal" to "Is it time for Zuhr?", "Hamza" to "Yes, the adhan is soon.",
+        "Bilal" to "Let's make wudu and go to the masjid.", "Hamza" to "Good idea!",
+    )
+
+    val masjidPhrases = listOf(
+        ph("Let's go to the masjid.", "We invite a friend to pray with us.", "🕌"),
+        ph("Take off your shoes.", "We keep the masjid clean.", "👟"),
+        ph("Enter with your right foot.", "This is the sunnah way to enter the masjid.", "🦶"),
+        ph("Please be quiet.", "People are praying and reading the Quran.", "🤫"),
+        ph("Pray two rak'ahs.", "We greet the masjid with two rak'ahs before we sit.", "🙇"),
+        ph("Stand in a straight line.", "We stand shoulder to shoulder for the prayer.", "📏"),
+    )
+    val questionWords = listOf(
+        ph("What?", "What is your name?", "❓"), ph("Where?", "Where is the masjid?", "📍"),
+        ph("When?", "When is the Asr prayer?", "⏰"), ph("Who?", "Who is the imam?", "🧔"),
+        ph("Why?", "Why do we fast in Ramadan?", "🤔"), ph("How?", "How do you make wudu?", "💧"),
+    )
+    val atTheMasjid = talk(
+        "Imam" to "Assalamu alaikum. Welcome to the masjid.", "Zaid" to "Wa alaikum assalam. Where can I make wudu?",
+        "Imam" to "The wudu area is on the left.", "Zaid" to "JazakAllahu khairan. When is the Asr prayer?",
+        "Imam" to "At four o'clock, InshaAllah.", "Zaid" to "Thank you. I will be here.",
+    )
+    val classroom = talk(
+        "Teacher" to "Good morning, class!", "Class" to "Good morning, Teacher!",
+        "Sara" to "May I ask a question, please?", "Teacher" to "Yes, of course.",
+        "Sara" to "How do you spell 'masjid'?", "Teacher" to "M, A, S, J, I, D.",
+        "Sara" to "Thank you, Teacher.",
+    )
+
+    val ramadanWords = listOf(
+        ph("Ramadan", "the month of fasting", "🌙"), ph("suhoor", "the meal before dawn", "🥣"),
+        ph("iftar", "the meal when we break the fast at sunset", "🍉"), ph("fasting", "no food or drink from dawn to sunset", "🚫"),
+        ph("Taraweeh", "the night prayers of Ramadan", "🕌"), ph("Laylat al-Qadr", "the Night of Power, better than a thousand months", "✨"),
+        ph("Zakat al-Fitr", "the charity we give before the Eid prayer", "💰"), ph("Eid Mubarak", "Blessed Eid! The Eid greeting.", "🎉"),
+    )
+    val yesterday = listOf(
+        Sentence("Yesterday I woke up for suhoor.", "🥣", "suhoor"), Sentence("I fasted all day.", "☀️", "fasted"),
+        Sentence("At sunset we broke our fast with dates.", "🌴", "dates"), Sentence("We prayed Maghrib together.", "🌇", "Maghrib"),
+        Sentence("At night I went to Taraweeh with my father.", "🕌", "Taraweeh"), Sentence("I read one juz of the Quran.", "📗", "juz"),
+    )
+    val pastTense = listOf(
+        ph("I pray → I prayed", "Yesterday I prayed all five prayers.", "🙇"), ph("I go → I went", "I went to the masjid.", "🚶"),
+        ph("I eat → I ate", "I ate dates at iftar.", "🌴"), ph("I give → I gave", "I gave charity to a poor man.", "💝"),
+        ph("I see → I saw", "I saw the new moon.", "🌙"), ph("I say → I said", "I said Bismillah.", "💬"),
+        ph("I help → I helped", "I helped my mother.", "🤝"), ph("I read → I read", "I read Surah Al-Fatihah.", "📖"),
+    )
+    val eidMorning = talk(
+        "Hamza" to "Eid Mubarak, Ali!", "Ali" to "Eid Mubarak! Taqabbal Allahu minna wa minkum.",
+        "Hamza" to "Ameen. Did you go to the Eid prayer?", "Ali" to "Yes, I went with my family.",
+        "Hamza" to "What did you do after the prayer?", "Ali" to "We visited my grandparents, and I gave a gift to my cousin.",
+        "Hamza" to "MashaAllah! That is lovely.",
+    )
+
+    val newFriend = talk(
+        "Musa" to "Assalamu alaikum! My name is Musa. What is your name?", "Idris" to "Wa alaikum assalam. My name is Idris.",
+        "Musa" to "Nice to meet you, Idris. How old are you?", "Idris" to "I am eight years old. And you?",
+        "Musa" to "I am nine. Which surah are you learning now?", "Idris" to "I am learning Surah Al-Mulk.",
+        "Musa" to "MashaAllah! May Allah make it easy for you.", "Idris" to "Ameen. Would you like to play football after Asr?",
+        "Musa" to "Yes, InshaAllah!",
+    )
+    val grandparents = talk(
+        "Fatima" to "Assalamu alaikum, Grandma! May we come in?", "Grandma" to "Wa alaikum assalam! Come in, my dear.",
+        "Fatima" to "How are you feeling today?", "Grandma" to "Alhamdulillah, much better.",
+        "Fatima" to "We brought you some dates and fruit.", "Grandma" to "JazakAllahu khairan. May Allah bless you.",
+        "Fatima" to "Wa iyyaki, Grandma. Can I make you some tea?", "Grandma" to "Yes please, that would be lovely.",
+    )
+    val atTheShop = talk(
+        "Ahmad" to "Assalamu alaikum. Is this chicken halal?", "Shopkeeper" to "Wa alaikum assalam. Yes, it is halal.",
+        "Ahmad" to "How much is it?", "Shopkeeper" to "It is five dirhams.",
+        "Ahmad" to "I would like one, please.", "Shopkeeper" to "Here you are.",
+        "Ahmad" to "Thank you. JazakAllahu khairan.",
+    )
+    val yunusStory = listOf(
+        Sentence("Prophet Yunus left his town and got on a ship.", "🚢", "ship"),
+        Sentence("A big storm came, and the sea was very rough.", "🌊", "storm"),
+        Sentence("Yunus went into the sea, and a big whale swallowed him.", "🐋", "whale"),
+        Sentence("Inside the whale, it was very dark.", "🌑", "dark"),
+        Sentence("Yunus made dua: La ilaha illa anta, subhanaka, inni kuntu minaz-zalimin.", "🤲", "dua"),
+        Sentence("Allah heard his dua and saved him from the whale.", "💚", "saved"),
+    )
+    val feelings = listOf(
+        Sentence("I feel happy because I helped my friend.", "😊", "happy"),
+        Sentence("I feel sad when someone is hurt, so I make dua for them.", "😢", "sad"),
+        Sentence("When I am angry, I sit down and say A'udhu billah.", "😠", "angry"),
+        Sentence("I feel thankful, so I say Alhamdulillah.", "🙏", "thankful"),
+        Sentence("When I feel scared at night, I read Ayat al-Kursi.", "😨", "scared"),
+        Sentence("I feel proud, but I remember that everything is from Allah.", "🏅", "proud"),
+    )
+
+    /** Everything a speaking stage's practice can ask about. */
+    fun speakingPool(stage: Int): Triple<List<Phrase>, List<List<Line>>, List<Sentence>> {
+        val st = stage(stage)
+        return Triple(st.lessons.flatMap { it.phrases }, st.lessons.map { it.dialogue }.filter { it.isNotEmpty() },
+            st.lessons.flatMap { it.sentences })
+    }
+
     val stages: List<EnStage> = listOf(
         EnStage(1, "Sounds", "Stage 1: Letters and their sounds", "A for Allah, B for Bismillah", "a b c",
             "🔤", Color(0xFFE3F2FD), Color(0xFF1565C0), listOf(
@@ -200,7 +392,7 @@ object EnglishCourse {
                     "Tap each picture and copy the sound. Watch out: ck is one sound, and in English q always brings u.",
                     sounds = sounds("ck e u r") + sounds("h b f l") + sounds("j v w x y z qu")),
             )),
-        EnStage(2, "Blending", "Stage 2: Reading short Islamic words", "H + a + jj = Hajj", "H·a·jj",
+        EnStage(2, "Blending", "Stage 2: Reading short words", "H + a + jj = Hajj", "H·a·jj",
             "🧩", Color(0xFFFFF4D6), Color(0xFFE0A800), listOf(
                 EnLesson("e2.1", "Short a", "Adam, Hajj, hands, lamb…", LessonKind.WORDS,
                     "Tap each letter, then tap the word. Push the sounds together faster and faster: H… a… jj… Hajj!", words = shortA),
@@ -211,7 +403,7 @@ object EnglishCourse {
                 EnLesson("e2.5", "Short u", "Ummah, Jummah, sun, cup…", LessonKind.WORDS,
                     "u as in Ummah. Jummah is our special Friday prayer.", words = shortU),
             )),
-        EnStage(3, "Digraphs", "Stage 3: Two letters, one sound", "ship, Charity, thanks…", "sh ch th",
+        EnStage(3, "Letter teams", "Stage 3: Letter teams and long vowels", "ship, charity, pray, Deen…", "sh  ee",
             "👯", Color(0xFFF3E5F5), Color(0xFF6A1B9A), listOf(
                 EnLesson("e3.1", "sh · ch · th", "ship, charity, thanks", LessonKind.SOUNDS,
                     "Some letters team up to make one new sound. Read the pair as one tile.",
@@ -220,38 +412,104 @@ object EnglishCourse {
                     "These teams often come at the end of a word.", sounds = digraphsB, words = digraphWordsB),
                 EnLesson("e3.3", "wh · ph · qu", "white, Prophet, quiet", LessonKind.SOUNDS,
                     "ph sounds like f, and qu sounds like kw.", sounds = digraphsC, words = digraphWordsC),
-            )),
-        EnStage(4, "Long vowels", "Stage 4: Long vowel sounds", "pray, Deen, peace, night…", "a_e  ee",
-            "🪄", Color(0xFFE0F2F1), Color(0xFF00695C), listOf(
-                EnLesson("e4.1", "Magic e", "hop → hope, cub → cube", LessonKind.PAIRS,
+                EnLesson("e3.4", "Magic e", "hop → hope, cub → cube", LessonKind.PAIRS,
                     "A silent e at the end jumps over one letter and makes the vowel say its name. The Kaaba is a cube!", pairs = magicE),
-                EnLesson("e4.2", "Vowel teams", "pray, Deen, peace, night, moon", LessonKind.SOUNDS,
+                EnLesson("e3.5", "Vowel teams", "pray, Deen, peace, night, moon", LessonKind.SOUNDS,
                     "Two (or three) vowels together often say the name of the first one.", sounds = vowelTeams, words = teamWords),
             )),
-        EnStage(5, "Tricky words", "Stage 5: Tricky words", "the, said, was… Allah, Quran", "the  said",
-            "⭐", Color(0xFFFFF8E1), Color(0xFFFF8F00), listOf(
-                EnLesson("e5.1", "Tricky words 1", tricky1.joinToString(", "), LessonKind.TRICKY,
+        EnStage(4, "First reading", "Stage 4: Sight words and first sentences", "the, said… Allah, Quran", "the  said",
+            "📚", Color(0xFFFFF8E1), Color(0xFFFF8F00), listOf(
+                EnLesson("e4.1", "Tricky words 1", tricky1.joinToString(", "), LessonKind.TRICKY,
                     "Tricky words don't follow the sound rules. Look, say, and remember them by sight.", tricky = tricky1),
-                EnLesson("e5.2", "Tricky words 2", tricky2.joinToString(", "), LessonKind.TRICKY,
+                EnLesson("e4.2", "Tricky words 2", tricky2.joinToString(", "), LessonKind.TRICKY,
                     "Tap each word to hear it, then say it yourself.", tricky = tricky2),
-                EnLesson("e5.3", "Tricky words 3", tricky3.joinToString(", "), LessonKind.TRICKY,
+                EnLesson("e4.3", "Tricky words 3", tricky3.joinToString(", "), LessonKind.TRICKY,
                     "Tap each word to hear it, then say it yourself.", tricky = tricky3),
-                EnLesson("e5.4", "Islamic words", islamicWords.joinToString(", "), LessonKind.TRICKY,
+                EnLesson("e4.4", "Islamic words", islamicWords.joinToString(", "), LessonKind.TRICKY,
                     "These words come from Arabic. Learn to read them by sight — you will meet them in every Islamic book.",
                     tricky = islamicWords),
-                EnLesson("e5.5", "Flash cards", "15 cards — read the word, then check", LessonKind.CARDS,
+                EnLesson("e4.5", "Flash cards", "15 cards — read the word, then check", LessonKind.CARDS,
                     "Read the word out loud, then tap to hear if you were right.", tricky = allTricky),
-            )),
-        EnStage(6, "Reading", "Stage 6: Reading sentences", "sentences and a story about kindness", "📚",
-            "📚", Color(0xFFE8F5E9), Color(0xFF2E7D32), listOf(
-                EnLesson("e6.1", "My deen", "I read the Quran every day.", LessonKind.SENTENCES,
-                    "Point to each word as you read. Tap a word to hear it, or the speaker to hear the sentence.",
-                    sentences = sentences1),
-                EnLesson("e6.2", "Good manners", "I say Bismillah before I eat.", LessonKind.SENTENCES,
+                EnLesson("e4.6", "My deen", "I read the Quran every day.", LessonKind.SENTENCES,
+                    "Point to each word as you read. Tap a word to hear it, or the speaker to hear the sentence.", sentences = sentences1),
+                EnLesson("e4.7", "Good manners", "I say Bismillah before I eat.", LessonKind.SENTENCES,
                     "Read about good manners from our deen.", sentences = sentences2),
-                EnLesson("e6.3", "Story: Ali and the thirsty cat", "Six sentences, then talk about it", LessonKind.STORY,
+                EnLesson("e4.8", "Story: Ali and the thirsty cat", "Six sentences, then talk about it", LessonKind.STORY,
                     "Read the story. The Prophet ﷺ told us there is reward in being kind to every living thing. Then tell someone: what did Ali do?",
                     sentences = story),
+            )),
+        EnStage(5, "Greetings", "Stage 5: Salam and good manners", "Assalamu alaikum! How are you?", "👋",
+            "🤝", Color(0xFFE8F5E9), Color(0xFF2E7D32), listOf(
+                EnLesson("e5.1", "Islamic greetings", "Assalamu alaikum, wa alaikum assalam…", LessonKind.PHRASES,
+                    "A Muslim greets with salam. Tap each greeting, listen, and say it out loud.", phrases = islamicGreetings),
+                EnLesson("e5.2", "Words we say every day", "Bismillah, InshaAllah, MashaAllah…", LessonKind.PHRASES,
+                    "These words keep Allah in our talk all day. Learn what each one means and when we say it.", phrases = dailyWords),
+                EnLesson("e5.3", "Polite English", "please, thank you, sorry…", LessonKind.PHRASES,
+                    "Good manners are part of our deen. Use these words every day.", phrases = politeWords),
+                EnLesson("e5.4", "Talk: meeting a friend", "Ali meets Yusuf", LessonKind.DIALOGUE,
+                    "Listen to the talk. Then tap 'Your turn' and say Yusuf's words yourself.", dialogue = meetingFriend),
+                EnLesson("e5.5", "Talk: when someone sneezes", "Alhamdulillah — Yarhamukillah", LessonKind.DIALOGUE,
+                    "The Prophet ﷺ taught us what to say when we sneeze, and how to reply.", dialogue = sneezing),
+            )),
+        EnStage(6, "Family", "Stage 6: My family and my home", "This is my father. He is kind.", "👨‍👩‍👧",
+            "🏠", Color(0xFFFFEBEE), Color(0xFFC62828), listOf(
+                EnLesson("e6.1", "My family", "father, mother, brother, sister…", LessonKind.PHRASES,
+                    "Tap each word and say it. Then point to someone in your family and say who they are.", phrases = familyWords),
+                EnLesson("e6.2", "This is my family", "This is my father. He is kind.", LessonKind.SENTENCES,
+                    "Read each sentence. Then talk about your own family: This is my…", sentences = familySentences),
+                EnLesson("e6.3", "My home", "kitchen, bedroom, prayer corner…", LessonKind.PHRASES,
+                    "Learn the rooms of a home.", phrases = homeWords),
+                EnLesson("e6.4", "Talk: helping at home", "Ahmad helps his mother", LessonKind.DIALOGUE,
+                    "Helping our parents is a good deed. Listen, then take Ahmad's part.", dialogue = helpingAtHome),
+            )),
+        EnStage(7, "My day", "Stage 7: My day as a Muslim", "I pray Fajr with my father.", "⏰",
+            "⏰", Color(0xFFE0F7FA), Color(0xFF00838F), listOf(
+                EnLesson("e7.1", "The five prayers", "Fajr, Zuhr, Asr, Maghrib, Isha", LessonKind.PHRASES,
+                    "Our day is built around five prayers. Learn their names and their times.", phrases = fivePrayers),
+                EnLesson("e7.2", "My morning", "I wake up and say the dua.", LessonKind.SENTENCES,
+                    "Read about a Muslim morning. Then tell someone about your morning.", sentences = morning),
+                EnLesson("e7.3", "My evening", "I read the Quran after Maghrib.", LessonKind.SENTENCES,
+                    "Read about a Muslim evening.", sentences = evening),
+                EnLesson("e7.4", "Days of the week", "Monday… Friday is Jumu'ah", LessonKind.PHRASES,
+                    "Learn the seven days. Which day do we go to the masjid for Jumu'ah?", phrases = weekDays),
+                EnLesson("e7.5", "Talk: what time is it?", "Is it time for Zuhr?", LessonKind.DIALOGUE,
+                    "Listen, then take Hamza's part.", dialogue = whatTime),
+            )),
+        EnStage(8, "Masjid & school", "Stage 8: At the masjid and at school", "Where can I make wudu?", "🕌",
+            "🕌", Color(0xFFEDE7F6), Color(0xFF4527A0), listOf(
+                EnLesson("e8.1", "At the masjid", "Take off your shoes. Please be quiet.", LessonKind.PHRASES,
+                    "The manners of the masjid, in English.", phrases = masjidPhrases),
+                EnLesson("e8.2", "Question words", "What? Where? When? Who? Why? How?", LessonKind.PHRASES,
+                    "Questions help us learn. Each word comes with a question you can ask.", phrases = questionWords),
+                EnLesson("e8.3", "Talk: at the masjid door", "Zaid meets the imam", LessonKind.DIALOGUE,
+                    "Listen, then take Zaid's part.", dialogue = atTheMasjid),
+                EnLesson("e8.4", "Talk: in the classroom", "May I ask a question, please?", LessonKind.DIALOGUE,
+                    "Listen, then take Sara's part.", dialogue = classroom),
+            )),
+        EnStage(9, "Ramadan & Eid", "Stage 9: Ramadan and Eid", "Yesterday I fasted all day.", "🌙",
+            "🌙", Color(0xFFFFF3E0), Color(0xFFE65100), listOf(
+                EnLesson("e9.1", "Ramadan words", "suhoor, iftar, Taraweeh…", LessonKind.PHRASES,
+                    "Learn the words of the blessed month.", phrases = ramadanWords),
+                EnLesson("e9.2", "Now and yesterday", "I pray → I prayed, I go → I went", LessonKind.PHRASES,
+                    "To talk about yesterday, the action word changes. Many add -ed; some change completely.", phrases = pastTense),
+                EnLesson("e9.3", "Yesterday in Ramadan", "I fasted all day.", LessonKind.SENTENCES,
+                    "Read about a day in Ramadan. Every action happened yesterday.", sentences = yesterday),
+                EnLesson("e9.4", "Talk: Eid morning", "Eid Mubarak! Taqabbal Allahu minna wa minkum", LessonKind.DIALOGUE,
+                    "Listen, then take Ali's part.", dialogue = eidMorning),
+            )),
+        EnStage(10, "Let's talk", "Stage 10: Let's talk", "Nice to meet you! Which surah are you learning?", "💬",
+            "💬", Color(0xFFE8EAF6), Color(0xFF283593), listOf(
+                EnLesson("e10.1", "Talk: a new friend", "My name is Musa. What is your name?", LessonKind.DIALOGUE,
+                    "A longer talk. Listen, then take Idris's part — and then talk about yourself.", dialogue = newFriend),
+                EnLesson("e10.2", "Talk: visiting Grandma", "May we come in?", LessonKind.DIALOGUE,
+                    "Visiting family is a good deed. Listen, then take Fatima's part.", dialogue = grandparents),
+                EnLesson("e10.3", "Talk: at the shop", "Is this chicken halal?", LessonKind.DIALOGUE,
+                    "Listen, then take Ahmad's part.", dialogue = atTheShop),
+                EnLesson("e10.4", "Story: Prophet Yunus", "the ship, the whale and the dua", LessonKind.STORY,
+                    "Read the story of Prophet Yunus, peace be upon him (Surah Al-Anbiya 21:87–88). Then tell it in your own words.",
+                    sentences = yunusStory),
+                EnLesson("e10.5", "How I feel", "I feel happy because…", LessonKind.SENTENCES,
+                    "Talk about your feelings, and what a Muslim does with each one.", sentences = feelings),
             )),
     )
 
@@ -270,6 +528,16 @@ object EnglishCourse {
         "Allah" to "al-lah", "Ramadan" to "ra-ma-daan", "Sunnah" to "soon-nah", "Hadith" to "ha-deeth",
         "Muhammad" to "mu-ham-mad", "Bilal" to "bi-laal", "halal" to "ha-laal", "Medina" to "ma-dee-nah",
         "Mecca" to "mek-kah", "Alhamdulillah" to "al-ham-du-lil-lah", "Assalamu" to "as-sa-laa-mu", "alaikum" to "a-lai-kum",
+        "assalam" to "as-sa-laam", "rahmatullahi" to "rah-ma-tul-laa-hi", "barakatuh" to "ba-ra-kaa-tuh", "amanillah" to "a-maa-nil-lah",
+        "InshaAllah" to "in-shaa-al-lah", "MashaAllah" to "maa-shaa-al-lah", "SubhanAllah" to "sub-haa-nal-lah",
+        "JazakAllahu" to "ja-zaa-kal-laa-hu", "khairan" to "khai-ran", "Astaghfirullah" to "as-tagh-fi-rul-lah", "Ameen" to "aa-meen",
+        "Yarhamukillah" to "yar-ha-mu-kil-lah", "Yahdikumullah" to "yah-dee-ku-mul-lah", "yuslihu" to "yus-li-hu", "balakum" to "baa-la-kum",
+        "Ummi" to "oom-mee", "iyyaki" to "iy-yaa-ki", "Zuhr" to "zuhr", "Asr" to "asr", "Maghrib" to "mugh-rib", "Isha" to "ee-shaa",
+        "suhoor" to "su-hoor", "iftar" to "if-taar", "Taraweeh" to "ta-raa-weeh", "Laylat" to "lai-lat", "Qadr" to "qadr",
+        "Fitr" to "fitr", "Mubarak" to "mu-baa-rak", "Taqabbal" to "ta-qab-bal", "Allahu" to "al-laa-hu", "minna" to "min-naa",
+        "minkum" to "min-kum", "juz" to "juz", "Mulk" to "mulk", "Yunus" to "yoo-nus", "subhanaka" to "sub-haa-na-ka",
+        "illa" to "il-laa", "anta" to "an-ta", "inni" to "in-nee", "kuntu" to "kun-tu", "minaz" to "mi-naz", "zalimin" to "zaa-li-meen",
+        "Kursi" to "kur-see", "Ayat" to "aa-yat", "udhu" to "oo-dhu", "billah" to "bil-lah", "rak'ahs" to "rak-ahs", "Jumu'ah" to "ju-mu-ah",
     )
 
     /** Text as the voice should say it: known Arabic words respelled, everything else as written. */

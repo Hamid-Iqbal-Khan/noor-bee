@@ -2,6 +2,7 @@ package com.example.qaida
 
 import com.example.english.EnglishCourse
 import com.example.english.EnglishQuiz
+import com.example.english.LessonKind
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -103,7 +104,7 @@ class QaidaEnglishDataTest {
 
   // ---- English reading course ------------------------------------------------------------------------------
   @Test fun englishCourse_structure() {
-    assertEquals(6, EnglishCourse.stages.size)
+    assertEquals(10, EnglishCourse.stages.size)
     val ids = EnglishCourse.stages.flatMap { s -> s.lessons.map { it.id } }
     assertEquals(ids.size, ids.distinct().size)
     EnglishCourse.allWords.forEach { w ->
@@ -120,11 +121,22 @@ class QaidaEnglishDataTest {
     assertEquals("doo-ah", EnglishCourse.pronounce("Dua"))
     assertEquals("I make doo-ah with my hands.", EnglishCourse.pronounce("I make dua with my hands."))
     assertEquals("A", EnglishCourse.pronounce("A"))
+    // speaking stages: Muslim greetings first, every talk has two people and every gap word is in its sentence
+    assertEquals("Assalamu alaikum", EnglishCourse.stage(5).lessons.first().phrases.first().text.trimEnd('!', '.'))
+    for (n in 5..10) {
+      val st = EnglishCourse.stage(n)
+      assertTrue("stage $n has a talk", st.lessons.any { it.kind == LessonKind.DIALOGUE })
+      st.lessons.forEach { l ->
+        if (l.kind == LessonKind.DIALOGUE) assertTrue("${l.id} talk", l.dialogue.size >= 2 && l.dialogue.map { it.speaker }.distinct().size == 2)
+        if (l.kind == LessonKind.PHRASES) assertTrue("${l.id} phrases", l.phrases.size >= 4)
+        l.sentences.forEach { s -> assertTrue("${l.id} gap '${s.key}' in '${s.text}'", s.key.isNotEmpty() && Regex("\\b${Regex.escape(s.key)}\\b").containsMatchIn(s.text)) }
+      }
+    }
   }
 
   @Test fun englishCourse_quizzesHaveOneRightAnswer() {
     val emojiOf = EnglishCourse.allWords.associate { it.word to it.emoji }
-    for (stage in 1..6) repeat(300) { seed ->
+    for (stage in 1..10) repeat(300) { seed ->
       EnglishQuiz.generate(stage, Random(seed)).forEach { q ->
         assertEquals("stage $stage: 4 options ${q.options}", 4, q.options.size)
         assertEquals("stage $stage: distinct ${q.options}", 4, q.options.distinct().size)

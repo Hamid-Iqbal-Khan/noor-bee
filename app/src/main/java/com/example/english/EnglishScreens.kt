@@ -67,7 +67,7 @@ import com.example.qaida.Paper
 import com.example.qaida.Quiet
 import kotlin.random.Random
 
-private val Line = Color(0xFFE2E5EA)
+private val Edge = Color(0xFFE2E5EA)
 private val Tile = Color(0xFFFFF8E1)
 private val TileInk = Color(0xFF5D4037)
 
@@ -102,7 +102,7 @@ fun EnglishScreen(
             IconButton(onClick = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } }, modifier = Modifier.testTag("english_back")) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
             }
-            T(when { page == "quiz" -> "Stage $stage practice"; lesson != null -> lesson.title; else -> "Learn to read English" },
+            T(when { page == "quiz" -> "Stage $stage practice"; lesson != null -> lesson.title; else -> "Learn English" },
                 size = 18.sp, color = Color.White, weight = FontWeight.Bold)
         }
         Row(Modifier.fillMaxWidth().background(Amber).padding(horizontal = 16.dp, vertical = 2.dp)) {
@@ -174,7 +174,7 @@ private fun EnglishHome(progress: EnglishProgress, refreshKey: Int, stage: Int, 
 @Composable
 private fun LessonCard(tag: String, number: Int, title: String, subtitle: String, done: Boolean, onClick: () -> Unit) {
     Card(Modifier.fillMaxWidth().clickable(onClick = onClick).testTag(tag), colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, if (done) Green else Line), shape = RoundedCornerShape(18.dp)) {
+        border = BorderStroke(1.dp, if (done) Green else Edge), shape = RoundedCornerShape(18.dp)) {
         Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(44.dp).background(if (done) Green else GreenSoft, CircleShape), contentAlignment = Alignment.Center) {
                 T(if (done) "✓" else number.toString(), size = 17.sp, color = if (done) Color.White else Green, weight = FontWeight.Bold)
@@ -219,6 +219,8 @@ private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String)
             LessonKind.TRICKY -> trickyWords(l.tricky, speak)
             LessonKind.SENTENCES, LessonKind.STORY -> items(l.sentences, key = { it.text }) { SentenceCard(it, speak) }
             LessonKind.CARDS -> Unit
+            LessonKind.PHRASES -> items(l.phrases, key = { "ph_" + it.text }) { PhraseCard(it, speak) }
+            LessonKind.DIALOGUE -> dialogues(l.id, listOf(l.dialogue), speak)
         }
         item {
             Button(onClick = onDone, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("english_done"),
@@ -252,7 +254,7 @@ private fun LazyListScope.alphabet(sounds: List<Sound>, seen: Set<String>, speak
 @Composable
 private fun SoundRow(s: Sound, speak: (String) -> Unit) {
     Card(Modifier.fillMaxWidth().clickable { speak(s.spoken) }.testTag("english_sound_${s.grapheme}"),
-        colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Line)) {
+        colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Edge)) {
         Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(60.dp).background(Tile, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
                 T(s.grapheme, size = 28.sp, color = TileInk, weight = FontWeight.Bold)
@@ -270,7 +272,7 @@ private fun SoundRow(s: Sound, speak: (String) -> Unit) {
 @Composable
 private fun WordRow(wd: ReadWord, speak: (String) -> Unit) {
     Card(Modifier.fillMaxWidth().testTag("english_word_${wd.word}"), colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Line)) {
+        border = BorderStroke(1.dp, Edge)) {
         Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
             // long words (charity, children) get smaller tiles so the word stays on one line
             val long = wd.parts.size > 5
@@ -308,7 +310,7 @@ internal fun soundOf(part: String): String {
 @Composable
 private fun PairRow(a: ReadWord, b: ReadWord, speak: (String) -> Unit) {
     Card(Modifier.fillMaxWidth().testTag("english_pair_${a.word}"), colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Line)) {
+        border = BorderStroke(1.dp, Edge)) {
         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             Column(Modifier.clickable { speak(a.word) }, horizontalAlignment = Alignment.CenterHorizontally) {
                 T(a.word, size = 24.sp, weight = FontWeight.Bold); T(a.emoji, size = 18.sp)
@@ -339,7 +341,7 @@ private fun LazyListScope.trickyWords(words: List<String>, speak: (String) -> Un
 @Composable
 private fun SentenceCard(s: Sentence, speak: (String) -> Unit) {
     Card(Modifier.fillMaxWidth().testTag("english_sentence_${s.text.hashCode()}"), colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Line)) {
+        border = BorderStroke(1.dp, Edge)) {
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             T(s.emoji, Modifier.clickable { speak(s.text) }.padding(end = 8.dp), size = 30.sp)
             FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -432,7 +434,7 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
         Card(Modifier.padding(vertical = 12.dp).widthIn(min = 160.dp).clickable { q.speak?.let(speak) }.testTag("english_quiz_prompt"),
             colors = CardDefaults.cardColors(containerColor = GreenSoft)) {
             Box(Modifier.padding(horizontal = 28.dp, vertical = 12.dp), contentAlignment = Alignment.Center) {
-                T(q.prompt, size = if (q.promptIsWord) (if (q.prompt.length > 14) 22.sp else 40.sp) else 56.sp,
+                T(q.prompt, size = if (q.promptIsWord) (if (q.prompt.length > 40) 18.sp else if (q.prompt.length > 14) 22.sp else 40.sp) else 56.sp,
                     weight = FontWeight.Bold, align = TextAlign.Center)
             }
         }
@@ -440,8 +442,8 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
             val bg = when { chosen == null -> Color.White; i == q.correctIndex -> Color(0xFFC8E6C9); i == chosen -> Color(0xFFFFCDD2); else -> Color.White }
             Card(Modifier.fillMaxWidth().padding(vertical = 4.dp).heightIn(min = 56.dp)
                 .clickable(enabled = chosen == null) { chosen = i; if (i == q.correctIndex) score++ }.testTag("english_option_$i"),
-                colors = CardDefaults.cardColors(containerColor = bg), border = BorderStroke(1.dp, Line)) {
-                Box(Modifier.fillMaxWidth().padding(10.dp), contentAlignment = Alignment.Center) { T(opt, size = 24.sp, align = TextAlign.Center) }
+                colors = CardDefaults.cardColors(containerColor = bg), border = BorderStroke(1.dp, Edge)) {
+                Box(Modifier.fillMaxWidth().padding(10.dp), contentAlignment = Alignment.Center) { T(opt, size = if (opt.length > 30) 15.sp else if (opt.length > 14) 18.sp else 24.sp, align = TextAlign.Center) }
             }
         }
         if (chosen != null) {
@@ -450,6 +452,75 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
             Button(onClick = { if (index + 1 >= questions.size) { finished = true; onFinished(score) } else index++ },
                 colors = ButtonDefaults.buttonColors(containerColor = Green), modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("english_next")) {
                 T(if (index + 1 >= questions.size) "See the result" else "Next question", color = Color.White, weight = FontWeight.Bold)
+            }
+        }
+    }
+}
+
+@Composable
+private fun PhraseCard(p: Phrase, speak: (String) -> Unit) {
+    Card(Modifier.fillMaxWidth().clickable { speak(p.text) }.testTag("english_phrase_${p.text.hashCode()}"),
+        colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Edge)) {
+        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            T(p.emoji, Modifier.padding(end = 10.dp), size = 30.sp)
+            Column(Modifier.weight(1f)) {
+                T(p.text, size = 20.sp, weight = FontWeight.Bold, color = Green)
+                T(p.meaning, size = 13.sp, color = Quiet)
+            }
+            T("🔊", Modifier.padding(start = 6.dp), size = 22.sp)
+        }
+    }
+}
+
+/** A talk between two people: tap a line to hear it, hear it all, or practise one side. */
+private fun LazyListScope.dialogues(id: String, talks: List<List<Line>>, speak: (String) -> Unit) {
+    talks.forEachIndexed { n, talk ->
+        item(key = "talk_${id}_$n") { TalkCard(id, n, talk, speak) }
+    }
+}
+
+@Composable
+private fun TalkCard(id: String, n: Int, talk: List<Line>, speak: (String) -> Unit) {
+    val speakers = talk.map { it.speaker }.distinct()
+    var practise by remember(id, n) { mutableStateOf<String?>(null) }
+    var shown by remember(id, n) { mutableStateOf(setOf<Int>()) }
+    Card(Modifier.fillMaxWidth().testTag("english_talk_${id}_$n"), colors = CardDefaults.cardColors(containerColor = Paper),
+        border = BorderStroke(1.dp, Edge)) {
+        Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                T("Talk ${n + 1}", Modifier.weight(1f), size = 15.sp, weight = FontWeight.Bold)
+                TextButton(onClick = { speak(talk.joinToString(" ") { it.text }) }, modifier = Modifier.testTag("english_talk_all_${id}_$n")) {
+                    T("▶ Listen to all", size = 13.sp, color = Green, weight = FontWeight.Bold)
+                }
+            }
+            talk.forEachIndexed { i, ln ->
+                val first = ln.speaker == speakers.first()
+                val hidden = practise == ln.speaker && i !in shown
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = if (first) Arrangement.Start else Arrangement.End) {
+                    Card(Modifier.widthIn(max = 290.dp).clickable {
+                            if (hidden) shown = shown + i
+                            speak(ln.text)
+                        }.testTag("english_line_${id}_${n}_$i"),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = if (first) GreenSoft else Tile)) {
+                        Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+                            T(ln.speaker, size = 11.sp, color = Quiet, weight = FontWeight.Bold)
+                            T(if (hidden) "🗣️ Your turn — say it, then tap" else ln.text, size = 17.sp,
+                                color = if (hidden) Quiet else Ink, weight = FontWeight.SemiBold)
+                        }
+                    }
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                T("Be:", size = 13.sp, color = Quiet)
+                speakers.forEach { sp ->
+                    val on = practise == sp
+                    OutlinedButton(onClick = { practise = if (on) null else sp; shown = emptySet() },
+                        border = BorderStroke(1.dp, if (on) Green else Edge),
+                        modifier = Modifier.testTag("english_be_${id}_${n}_$sp")) {
+                        T(sp, size = 13.sp, color = if (on) Green else Ink, weight = FontWeight.Bold)
+                    }
+                }
             }
         }
     }

@@ -668,7 +668,7 @@ fun HomeDashboardScreen(
                         Text("📖 Learn to read the Quran", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
                             modifier = Modifier.testTag("dashboard_quran_en_title"))
                         EnglishCourseCards(quranEnglishCards, "dashboard_quran_en_stage", onNavigateToQuranEnglish)
-                        Text("🔤 Learn to read English", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
+                        Text("🔤 Learn English — from ABC to speaking", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
                             modifier = Modifier.padding(top = 4.dp).testTag("dashboard_english_title"))
                         EnglishCourseCards(englishReadingCards, "dashboard_english_stage", onNavigateToEnglishCourse)
                     } else {

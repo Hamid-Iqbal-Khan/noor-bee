@@ -75,6 +75,22 @@ class EnglishScreensTest {
   @Test fun stage4() = walk(4)
   @Test fun stage5() = walk(5)
   @Test fun stage6() = walk(6)
+  @Test fun stage7() = walk(7)
+  @Test fun stage8() = walk(8)
+  @Test fun stage9() = walk(9)
+  @Test fun stage10() = walk(10)
+
+  @Test fun dialogueRolePlay() {
+    launch(5)
+    val l = EnglishCourse.stage(5).lessons.first { it.kind == LessonKind.DIALOGUE }
+    open("english_lesson_${l.id}")
+    rule.onNodeWithTag("english_talk_all_${l.id}_0").performScrollTo().performClick(); rule.waitForIdle()
+    assertTrue("listen to all", spoken.any { it.length > l.dialogue.first().text.length })
+    val who = l.dialogue[1].speaker
+    rule.onNodeWithTag("english_be_${l.id}_0_$who").performScrollTo().performClick(); rule.waitForIdle()
+    rule.onNodeWithTag("english_line_${l.id}_0_1").performScrollTo().performClick(); rule.waitForIdle()
+    shot("dialogue_roleplay")
+  }
 
   @Test fun tileTap_saysJustThatLetter_andWordSaysTheWord() {
     launch(2); open("english_lesson_e2.1")
