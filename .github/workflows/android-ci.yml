@@ -24,7 +24,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     outputs:
       sha: ${{ steps.meta.outputs.sha }}
       version: ${{ steps.meta.outputs.version }}
@@ -40,6 +40,12 @@ jobs:
         with: { gradle-version: 9.3.1 }
       - name: .env for secrets plugin
         run: cp .env.example .env
+      - name: Install ffmpeg (static build)
+        run: |
+          curl -sSL --retry 3 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o /tmp/ff.tar.xz \
+            && tar -xJf /tmp/ff.tar.xz -C /tmp && sudo cp /tmp/ffmpeg-*-static/ffmpeg /usr/local/bin/ \
+            || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+          ffmpeg -hide_banner -encoders 2>/dev/null | grep -E "libopus" || true
       - name: Cache English word recordings
         uses: actions/cache@v4
         with:
@@ -51,12 +57,30 @@ jobs:
           if [ -f app/src/main/assets/audio/en/index.txt ]; then
             echo "using cached recordings"; cp app/src/main/assets/audio/en/report.txt audio-report.txt 2>/dev/null || true
           else
-            which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
             python3 .github/scripts/fetch-english-audio.py app/src/main/java/com/example/english/EnglishCourse.kt \
               app/src/main/assets/audio/en audio-report.txt || echo "audio fetch failed; the app falls back to the phone voice"
             cp audio-report.txt app/src/main/assets/audio/en/report.txt 2>/dev/null || true
           fi
           ls app/src/main/assets/audio/en | wc -l
+      - name: Cache VOA conversations
+        uses: actions/cache@v4
+        with:
+          path: |
+            app/src/main/assets/voa
+            .voa-cache
+          key: voa-${{ hashFiles('.github/voa/lessons.tsv', '.github/scripts/fetch-voa.py') }}
+      - name: Fetch VOA conversations and cut line clips (Levels 5-8)
+        run: |
+          mkdir -p .voa-cache app/src/main/assets/voa
+          if [ ! -f .voa-cache/VoaData.kt ]; then
+            pip install -q faster-whisper
+            python3 .github/scripts/fetch-voa.py .github/voa/lessons.tsv app/src/main/assets .voa-cache/VoaData.kt .voa-cache/voa-report.txt \
+              || echo "VOA fetch failed; the app ships Levels 1-4 only"
+          fi
+          if [ -f .voa-cache/VoaData.kt ]; then cp .voa-cache/VoaData.kt app/src/main/java/com/example/english/VoaData.kt; fi
+          cp .voa-cache/voa-report.txt voa-report.txt 2>/dev/null || true
+          cp app/src/main/java/com/example/english/VoaData.kt VoaData.generated.kt
+          du -sh app/src/main/assets/voa || true
       - name: Assemble debug APK
         run: gradle :app:assembleDebug --stacktrace 2>&1 | tee build.log
       - name: Unit + Robolectric/Roborazzi tests
@@ -71,7 +95,7 @@ jobs:
         run: |
           mkdir -p out
           cp app/build/outputs/apk/debug/app-debug.apk "out/Norby-${{ steps.meta.outputs.version }}.apk" || true
-          zip -qr out/reports.zip build.log test.log lint.log audio-report.txt app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi app/build/outputs/roborazzi 2>/dev/null || true
+          zip -qr out/reports.zip build.log test.log lint.log audio-report.txt voa-report.txt VoaData.generated.kt app/build/reports app/build/test-results app/src/test/screenshots app/build/outputs/roborazzi app/build/outputs/roborazzi 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: build-out, path: out }
@@ -80,7 +104,7 @@ jobs:
     needs: build
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4

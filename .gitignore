@@ -19,3 +19,5 @@ debug.keystore
 !norby-test.keystore
 __pycache__/
 app/src/main/assets/audio/
+app/src/main/assets/voa/
+.voa-cache/

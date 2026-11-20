@@ -29,7 +29,7 @@ data class Phrase(val text: String, val meaning: String, val emoji: String)
 /** One line of a conversation. */
 data class Line(val speaker: String, val text: String)
 
-enum class LessonKind { ALPHABET, SOUNDS, WORDS, PAIRS, TRICKY, CARDS, SENTENCES, STORY, PHRASES, DIALOGUE }
+enum class LessonKind { ALPHABET, SOUNDS, WORDS, PAIRS, TRICKY, CARDS, SENTENCES, STORY, PHRASES, DIALOGUE, REPEAT }
 
 data class EnLesson(
     val id: String,           // progress key, e.g. "e2.3"
@@ -222,7 +222,31 @@ object EnglishCourse {
         Sentence("They all pulled. Pop! Out came the turnip!", "🎉"),
     )
 
-    // ---- Speaking levels (5–8) are added in the next build ---------------------------------------------
+    // ---- Levels 5–8: speaking, from VOA Learning English "Let's Learn English" (public domain) ----------
+    private val speakingLevels = listOf(
+        Triple("Hello", "Level 5: Hello! Meeting people", "👋") to Pair(Color(0xFFE8F5E9), Color(0xFF2E7D32)),
+        Triple("My world", "Level 6: My world — weather, family, home", "🏡") to Pair(Color(0xFFE1F5FE), Color(0xFF0277BD)),
+        Triple("Out and about", "Level 7: Out and about — shops, food, the past", "🛍️") to Pair(Color(0xFFFFF3E0), Color(0xFFEF6C00)),
+        Triple("Let's talk", "Level 8: Let's talk — opinions and experiences", "💬") to Pair(Color(0xFFFCE4EC), Color(0xFFAD1457)),
+    )
+
+    private fun speakingStage(level: Int): EnStage? {
+        val talks = VoaData.lessons.filter { it.level == level }
+        if (talks.isEmpty()) return null
+        val (names, colours) = speakingLevels[level - 5]
+        val lessons = talks.flatMapIndexed { i, t ->
+            listOf(
+                EnLesson("e$level.${2 * i + 1}", "Talk: ${t.title}", "Listen to the whole conversation", LessonKind.DIALOGUE,
+                    "Real voices from VOA Learning English. Tap ▶ to hear the whole talk, tap a line to hear it again, " +
+                        "then choose 'Be …' and say that person's lines yourself.", dialogue = t.lines),
+                EnLesson("e$level.${2 * i + 2}", "Say it: ${t.title}", "Listen and repeat, line by line", LessonKind.REPEAT,
+                    "Listen to each line, then say it out loud in the same way. Copy the music of the voice.", dialogue = t.lines),
+            )
+        }
+        return EnStage(level, names.first, names.second, talks.first().lines.first().text, names.third, names.third,
+            colours.first, colours.second, lessons)
+    }
+
     /** Everything a speaking level's practice can ask about. */
     fun speakingPool(stage: Int): Triple<List<Phrase>, List<List<Line>>, List<Sentence>> {
         val st = stage(stage)
@@ -230,7 +254,9 @@ object EnglishCourse {
             st.lessons.flatMap { it.sentences })
     }
 
-    val stages: List<EnStage> = listOf(
+    val stages: List<EnStage> by lazy { readingStages + (5..8).mapNotNull { speakingStage(it) } }
+
+    private val readingStages: List<EnStage> = listOf(
         EnStage(1, "Sounds", "Level 1: Letters and sounds", "a for apple, b for ball", "a b c",
             "🔤", Color(0xFFE3F2FD), Color(0xFF1565C0), listOf(
                 EnLesson("e1.1", "The alphabet", "a for apple, b for ball, c for cat…", LessonKind.ALPHABET,

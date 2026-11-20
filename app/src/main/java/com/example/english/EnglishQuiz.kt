@@ -128,28 +128,32 @@ object EnglishQuiz {
         return q(shown, "Look at the picture. Which word fills the gap?", s.key, pool.map { it.key }, random, s.text, word = true)
     }
 
-    /** Stages 5–10: meanings of phrases, the right reply in a talk, and sentence gaps. */
+    /** Levels 5–8: hear a line and find it, pick the right reply, fill a missing word. */
     private fun speaking(stage: Int, kind: Int, random: Random): EnQuestion {
-        val (phrases, talks, sentences) = EnglishCourse.speakingPool(stage)
-        val canReply = talks.isNotEmpty()
-        return when {
-            kind == 0 && phrases.size >= 4 -> {
-                val p = phrases.random(random)
-                q(p.text, "What does it mean? When do we say it?", p.meaning, phrases.map { it.meaning }, random, p.text, word = true)
+        val talks = EnglishCourse.speakingPool(stage).second
+        val lines = talks.flatten().map { it.text }.distinct()
+        val otherLevels = EnglishCourse.stages.filter { it.number >= 5 }.flatMap { st -> st.lessons.map { it.dialogue } }.flatten()
+            .map { it.text }.distinct()
+        return when (kind) {
+            0 -> {
+                val ln = lines.random(random)
+                q("🔊", "Listen. Which sentence do you hear?", ln, lines, random, ln, word = true)
             }
-            kind == 1 && canReply -> {
-                val talk = talks.random(random)
+            1 -> {
+                val talk = talks.filter { it.size >= 2 }.random(random)
                 val i = random.nextInt(talk.size - 1)
                 val answer = talk[i + 1].text
-                // wrong replies come from other talks in the course, so they do not fit this one
-                val others = EnglishCourse.stages.flatMap { st -> st.lessons.map { it.dialogue } }.filter { it.isNotEmpty() && it != talk }
-                    .flatten().map { it.text }.filter { it != answer && it != talk[i].text }
-                q("${talk[i].speaker}: ${talk[i].text}", "What is a good reply?", answer, others, random, talk[i].text, word = true)
+                // wrong replies come from other conversations, so they do not fit this one
+                val wrong = otherLevels.filter { o -> talk.none { it.text == o } }
+                q("${talk[i].speaker}: ${talk[i].text}", "What comes next in the conversation?", answer, wrong, random, talk[i].text, word = true)
             }
-            sentences.size >= 4 -> gap(sentences.random(random), sentences, random)
             else -> {
-                val p = phrases.random(random)
-                q(p.meaning, "Which words match this meaning?", p.text, phrases.map { it.text }, random, p.text, word = true)
+                val words = { t: String -> t.split(' ').map { it.trim('.', ',', '!', '?', '"', '\'', '…') }.filter { it.length >= 4 && it.all(Char::isLetter) } }
+                val ln = lines.filter { words(it).isNotEmpty() }.random(random)
+                val gap = words(ln).maxBy { it.length }
+                val shown = ln.replaceFirst(Regex("\\b${Regex.escape(gap)}\\b"), "____")
+                val pool = lines.flatMap(words).distinct().filter { w -> !Regex("\\b${Regex.escape(w)}\\b", RegexOption.IGNORE_CASE).containsMatchIn(ln) }
+                q(shown, "Which word fills the gap?", gap, pool, random, ln, word = true)
             }
         }
     }

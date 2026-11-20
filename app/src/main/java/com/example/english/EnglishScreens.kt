@@ -189,6 +189,13 @@ private fun CreditsScreen() {
                 "Sounds and the Dolch list. Stories retell public-domain folk tales.", size = 13.sp, color = Quiet)
         }
         item { T("Word recordings (${credits.size}) from Wikimedia Commons:", size = 15.sp, weight = FontWeight.Bold) }
+        if (VoaData.lessons.isNotEmpty()) {
+            item {
+                T("Conversations and their audio (Levels 5–8): VOA Learning English, \"Let's Learn English\" — public domain, " +
+                    "courtesy of learningenglish.voanews.com.", size = 13.sp, weight = FontWeight.Bold)
+            }
+            items(VoaData.lessons, key = { "voa_${it.number}" }) { v -> T("Lesson ${v.number}: ${v.title}\n${v.url}", size = 12.sp) }
+        }
         items(credits, key = { it.word }) { c ->
             T("${c.word} — ${c.author}, ${c.licence}\n${c.source}", size = 12.sp)
         }
@@ -245,6 +252,7 @@ private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String)
             LessonKind.CARDS -> Unit
             LessonKind.PHRASES -> items(l.phrases, key = { "ph_" + it.text }) { PhraseCard(it, speak) }
             LessonKind.DIALOGUE -> dialogues(l.id, listOf(l.dialogue), speak)
+            LessonKind.REPEAT -> item(key = "repeat_${l.id}") { RepeatCard(l.id, l.dialogue, speak) }
         }
         item {
             Button(onClick = onDone, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("english_done"),
@@ -546,6 +554,36 @@ private fun TalkCard(id: String, n: Int, talk: List<Line>, speak: (String) -> Un
                         modifier = Modifier.testTag("english_be_${id}_${n}_$sp")) {
                         T(sp, size = 13.sp, color = if (on) Green else Ink, weight = FontWeight.Bold)
                     }
+                }
+            }
+        }
+    }
+}
+
+/** Listen and repeat: one line at a time — hear it, say it, next. */
+@Composable
+private fun RepeatCard(id: String, lines: List<Line>, speak: (String) -> Unit) {
+    var i by remember(id) { mutableIntStateOf(0) }
+    val ln = lines[i.coerceIn(0, lines.size - 1)]
+    Card(Modifier.fillMaxWidth().testTag("english_repeat_$id"), colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, Edge), shape = RoundedCornerShape(20.dp)) {
+        Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            T("${i + 1} / ${lines.size}", size = 13.sp, color = Quiet)
+            T(ln.speaker, size = 14.sp, color = Green, weight = FontWeight.Bold)
+            T(ln.text, size = 22.sp, weight = FontWeight.SemiBold, align = TextAlign.Center)
+            Button(onClick = { speak(ln.text) }, modifier = Modifier.heightIn(min = 52.dp).testTag("english_repeat_play"),
+                colors = ButtonDefaults.buttonColors(containerColor = Green)) {
+                T("▶  Listen", size = 16.sp, color = Color.White, weight = FontWeight.Bold)
+            }
+            T("🗣️ Now you say it!", size = 15.sp, color = Quiet)
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedButton(onClick = { if (i > 0) i-- }, enabled = i > 0, modifier = Modifier.testTag("english_repeat_back")) {
+                    T("‹ Back", size = 14.sp)
+                }
+                OutlinedButton(onClick = { if (i < lines.size - 1) { i++; speak(lines[i].text) } }, enabled = i < lines.size - 1,
+                    modifier = Modifier.testTag("english_repeat_next")) {
+                    T("Next ›", size = 14.sp)
                 }
             }
         }

@@ -26,7 +26,14 @@ object EnglishAudio {
         ctx.assets.open("$DIR/index.txt").bufferedReader().readLines().map { it.trim() }.filter { it.isNotEmpty() }.toSet()
     }.getOrDefault(emptySet()).also { index = it }
 
-    fun has(ctx: Context, text: String): Boolean = text.trim().length > 1 && key(text) in index(ctx)
+    /** Asset path of the recording for [text]: a VOA conversation line, or a single-word recording. */
+    private fun clip(ctx: Context, text: String): String? {
+        if (text.trim().length <= 1) return null
+        val k = key(text)
+        return VoaData.clips[k] ?: if (k in index(ctx)) "$DIR/$k.ogg" else null
+    }
+
+    fun has(ctx: Context, text: String): Boolean = clip(ctx, text) != null
 
     /** Say [text]: a recording if there is one, else [voice]. "s, as in sun" = the letter, then the word. */
     fun speak(ctx: Context, text: String, voice: (String) -> Unit) {
@@ -43,10 +50,10 @@ object EnglishAudio {
     }
 
     private fun play(ctx: Context, text: String): Boolean {
-        if (!has(ctx, text)) return false
+        val path = clip(ctx, text) ?: return false
         return try {
             player?.release()
-            val afd = ctx.assets.openFd("$DIR/${key(text)}.ogg")
+            val afd = ctx.assets.openFd(path)
             player = MediaPlayer().apply {
                 setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
                 afd.close()

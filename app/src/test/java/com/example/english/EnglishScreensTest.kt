@@ -74,6 +74,30 @@ class EnglishScreensTest {
   @Test fun stage2() = walk(2)
   @Test fun stage3() = walk(3)
   @Test fun stage4() = walk(4)
+  // speaking levels exist when CI has fetched the VOA conversations
+  @Test fun stage5() { org.junit.Assume.assumeTrue(EnglishCourse.stages.size >= 5); walk(5) }
+  @Test fun stage6() { org.junit.Assume.assumeTrue(EnglishCourse.stages.size >= 6); walk(6) }
+  @Test fun stage7() { org.junit.Assume.assumeTrue(EnglishCourse.stages.size >= 7); walk(7) }
+  @Test fun stage8() { org.junit.Assume.assumeTrue(EnglishCourse.stages.size >= 8); walk(8) }
+
+  @Test fun listenAndRepeat_andRolePlay() {
+    org.junit.Assume.assumeTrue(EnglishCourse.stages.size >= 5)
+    launch(5)
+    val talk = EnglishCourse.stage(5).lessons.first { it.kind == LessonKind.DIALOGUE }
+    open("english_lesson_${talk.id}")
+    rule.onNodeWithTag("english_talk_all_${talk.id}_0").performScrollTo().performClick(); rule.waitForIdle()
+    val who = talk.dialogue[1].speaker
+    rule.onNodeWithTag("english_be_${talk.id}_0_$who").performScrollTo().performClick(); rule.waitForIdle()
+    shot("voa_roleplay")
+    rule.onNodeWithTag("english_back").performClick(); rule.waitForIdle()
+    val rep = EnglishCourse.stage(5).lessons.first { it.kind == LessonKind.REPEAT }
+    open("english_lesson_${rep.id}")
+    rule.onNodeWithTag("english_repeat_play").performScrollTo().performClick(); rule.waitForIdle()
+    assertTrue(spoken.last() == rep.dialogue[0].text)
+    rule.onNodeWithTag("english_repeat_next").performScrollTo().performClick(); rule.waitForIdle()
+    assertTrue(spoken.last() == rep.dialogue[1].text)
+    shot("voa_repeat")
+  }
   @Test fun credits_listsSources() {
     launch(1); open("english_credits")
     rule.onNodeWithTag("english_credits_list").assertExists(); shot("credits")

@@ -9,7 +9,7 @@ CC BY-SA, CC0, public domain), converts them to short mono Opus clips and writes
 and audio-report.txt (found / missing) for the build reports.
 Usage: fetch-english-audio.py <EnglishCourse.kt> <out dir> <report file>
 """
-import csv, html, json, os, re, subprocess, sys, tempfile, time, urllib.parse, urllib.request
+import csv, html, json, urllib.error, os, re, subprocess, sys, tempfile, time, urllib.parse, urllib.request
 
 API = "https://commons.wikimedia.org/w/api.php"
 UA = "NoorBeeCourseBuilder/1.0 (https://github.com/Hamid-Iqbal-Khan/noor-bee; CI audio fetch)"
@@ -28,6 +28,21 @@ def get(params):
         except Exception as e:  # network hiccup: back off and retry
             print("retry", attempt, e, file=sys.stderr); time.sleep(2 + attempt * 3)
     raise SystemExit("Commons API unreachable")
+
+
+def download(url):
+    """Polite download: one at a time, and wait as long as the server asks when it says 429."""
+    for attempt in range(8):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code != 429 and e.code < 500:
+                raise
+            wait = int(e.headers.get("Retry-After", "0") or 0) or 20 * (attempt + 1)
+            print(f"  {e.code}: waiting {wait}s", file=sys.stderr); time.sleep(min(wait, 120))
+    raise RuntimeError("gave up on " + url)
 
 
 def key(word):
@@ -105,10 +120,8 @@ def main(src, out_dir, report):
     with tempfile.TemporaryDirectory() as tmp:
         for wd, (url, lic, author, page, title) in chosen.items():
             k = key(wd); raw = os.path.join(tmp, "in")
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
             try:
-                with urllib.request.urlopen(req, timeout=60) as r, open(raw, "wb") as f:
-                    f.write(r.read())
+                open(raw, "wb").write(download(url))
                 trim = "silenceremove=start_periods=1:start_threshold=-45dB,areverse," \
                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse,apad=pad_dur=0.08"
                 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-ac", "1", "-ar", "24000",
@@ -117,7 +130,7 @@ def main(src, out_dir, report):
                 print("failed", wd, e, file=sys.stderr); missing.append(wd); continue
             index.append(k)
             rows.append([wd, author, lic, page or ("https://commons.wikimedia.org/wiki/" + urllib.parse.quote(title.replace(" ", "_")))])
-            time.sleep(0.1)
+            time.sleep(1.5)   # Wikimedia asks bots to keep a low request rate
 
     open(os.path.join(out_dir, "index.txt"), "w").write("\n".join(sorted(index)) + "\n")
     with open(os.path.join(out_dir, "CREDITS.csv"), "w", newline="") as f:

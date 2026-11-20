@@ -104,7 +104,12 @@ class QaidaEnglishDataTest {
 
   // ---- English reading course ------------------------------------------------------------------------------
   @Test fun englishCourse_structure() {
-    assertEquals(4, EnglishCourse.stages.size)
+    // 4 reading levels, plus 4 speaking levels when CI has fetched the VOA conversations
+    assertTrue(EnglishCourse.stages.size == 4 || EnglishCourse.stages.size == 8)
+    com.example.english.VoaData.lessons.forEach { v ->
+      assertTrue("VOA ${v.number} has a conversation", v.lines.size >= 2)
+      v.lines.forEach { assertTrue("clip for '${it.text}'", com.example.english.VoaData.clips.containsKey(com.example.english.EnglishAudio.key(it.text))) }
+    }
     val ids = EnglishCourse.stages.flatMap { s -> s.lessons.map { it.id } }
     assertEquals(ids.size, ids.distinct().size)
     EnglishCourse.allWords.forEach { w ->
@@ -128,7 +133,7 @@ class QaidaEnglishDataTest {
 
   @Test fun englishCourse_quizzesHaveOneRightAnswer() {
     val emojiOf = EnglishCourse.allWords.associate { it.word to it.emoji }
-    for (stage in 1..4) repeat(300) { seed ->
+    for (stage in EnglishCourse.stages.map { it.number }) repeat(300) { seed ->
       EnglishQuiz.generate(stage, Random(seed)).forEach { q ->
         assertEquals("stage $stage: 4 options ${q.options}", 4, q.options.size)
         assertEquals("stage $stage: distinct ${q.options}", 4, q.options.distinct().size)
