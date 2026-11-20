@@ -1567,7 +1567,7 @@ private val quranEnglishCards = listOf(
 )
 
 private val englishReadingCards = com.example.english.EnglishCourse.stages.map {
-    CourseCard(it.number, "Stage ${it.number}: ${it.short} ${it.emoji}", it.subtitle, it.emoji, it.bg, it.line)
+    CourseCard(it.number, "Level ${it.number}: ${it.short} ${it.emoji}", it.subtitle, it.emoji, it.bg, it.line)
 }
 
 /** Cards two to a row, left to right; a stage on its own (Quran Stage 7) gets the full width, as on the Urdu dashboard. */

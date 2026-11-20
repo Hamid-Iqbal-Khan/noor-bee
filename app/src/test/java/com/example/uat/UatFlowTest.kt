@@ -124,7 +124,7 @@ class UatFlowTest {
     // English mode: the Quran course taught in English, then the English reading course (they replaced the old games).
     clickText("Stage 1: Letters"); step(1_500); waitTag("qaida_root"); shot("07_quran_english_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
-    clickText("Stage 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
+    clickText("Level 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
     clickText("My Stickers"); step(2_000); shot("07c_stickers"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()

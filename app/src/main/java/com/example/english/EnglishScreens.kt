@@ -85,10 +85,12 @@ fun EnglishScreen(
     onEarnRewards: (Int, Int, String) -> Unit,
     startStage: Int = 1,
 ) {
-    // every word goes to the voice through the pronunciation list (Dua -> doo-ah, Eid -> eed)
+    // a real recording when there is one, else the phone's voice
     val onSpeakRaw = onSpeak
-    @Suppress("NAME_SHADOWING") val onSpeak: (String) -> Unit = { onSpeakRaw(EnglishCourse.pronounce(it)) }
     val context = LocalContext.current
+    @Suppress("NAME_SHADOWING") val onSpeak: (String) -> Unit = { t ->
+        EnglishAudio.speak(context, t) { onSpeakRaw(EnglishCourse.pronounce(it)) }
+    }
     val progress = remember(profileId) { EnglishProgress(context, profileId) }
     var stage by rememberSaveable { mutableIntStateOf(startStage.coerceIn(1, EnglishCourse.stages.size)) }
     var page by rememberSaveable { mutableStateOf("home") }
@@ -102,23 +104,24 @@ fun EnglishScreen(
             IconButton(onClick = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } }, modifier = Modifier.testTag("english_back")) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
             }
-            T(when { page == "quiz" -> "Stage $stage practice"; lesson != null -> lesson.title; else -> "Learn English" },
+            T(when { page == "quiz" -> "Level $stage practice"; page == "credits" -> "Sound credits"; lesson != null -> lesson.title; else -> "Learn English" },
                 size = 18.sp, color = Color.White, weight = FontWeight.Bold)
         }
         Row(Modifier.fillMaxWidth().background(Amber).padding(horizontal = 16.dp, vertical = 2.dp)) {
-            T("🔈 Sounds use the phone's English voice. Copy each sound out loud — a grown-up can model it too.", size = 11.sp, color = Quiet)
+            T("🔈 Words are read by real people. Letter sounds and sentences still use the phone's voice for now.", size = 11.sp, color = Quiet)
         }
         Box(Modifier.weight(1f)) {
             when {
                 page == "quiz" -> EnglishQuizScreen(stage, onSpeak, onFinished = { score ->
                     progress.record(stage, score)
-                    if (score >= EnglishProgress.PASS_MARK) onEarnRewards(10, 50, "English: Stage $stage practice passed")
+                    if (score >= EnglishProgress.PASS_MARK) onEarnRewards(10, 50, "English: Level $stage practice passed")
                     refresh++
                 }, onDone = { page = "home"; refresh++ })
                 lesson != null -> LessonScreen(lesson, progress, onSpeak) {
                     progress.markDone(lesson.id); onEarnRewards(5, 20, "English: ${lesson.title}")
                     page = "home"; refresh++
                 }
+                page == "credits" -> CreditsScreen()
                 else -> EnglishHome(progress, refresh, stage, onStage = { stage = it }) { page = it }
             }
         }
@@ -151,22 +154,43 @@ private fun EnglishHome(progress: EnglishProgress, refreshKey: Int, stage: Int, 
         val prev = EnglishCourse.stages.firstOrNull { it.number == stage - 1 }
         if (prev != null && !done(prev.quizKey)) {
             Card(colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine), modifier = Modifier.testTag("english_s${stage}_hint")) {
-                T("Tip: finish the Stage ${prev.number} practice first. You can still start now if you like.", Modifier.padding(12.dp), size = 13.sp)
+                T("Tip: finish the Level ${prev.number} practice first. You can still start now if you like.", Modifier.padding(12.dp), size = 13.sp)
             }
         }
         st.lessons.forEachIndexed { i, l -> LessonCard("english_lesson_${l.id}", i + 1, l.title, l.subtitle, done(l.id)) { open(l.id) } }
         val best = progress.best(stage)
-        LessonCard("english_quiz_$stage", st.lessons.size + 1, "Stage $stage practice",
-            if (best > 0) "Best score: $best/10  ·  8 correct completes the stage" else "10 questions  ·  8 correct completes the stage",
+        LessonCard("english_quiz_$stage", st.lessons.size + 1, "Level $stage practice",
+            if (best > 0) "Best score: $best/10  ·  8 correct completes the level" else "10 questions  ·  8 correct completes the level",
             done(st.quizKey)) { open("quiz") }
         if (done(st.quizKey)) {
             val next = EnglishCourse.stages.firstOrNull { it.number == stage + 1 }
             Card(Modifier.clickable { next?.let { onStage(it.number) } }.testTag("english_go_next_$stage"),
                 colors = CardDefaults.cardColors(containerColor = Amber), border = BorderStroke(1.dp, AmberLine)) {
-                T(if (next != null) "Masha'Allah! Stage $stage complete. Now start Stage ${next.number}: ${next.short} →"
-                    else "Masha'Allah! You can read English sentences and stories. Keep reading a little every day!",
+                T(if (next != null) "Well done! Level $stage complete. Now start Level ${next.number}: ${next.short} →"
+                    else "Well done! You can read English sentences and stories. Keep reading a little every day!",
                     Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
             }
+        }
+        TextButton(onClick = { open("credits") }, modifier = Modifier.testTag("english_credits")) {
+            T("Sound credits and sources", size = 13.sp, color = Green)
+        }
+    }
+}
+
+/** Who recorded each word, under which licence — required by CC BY / CC BY-SA. */
+@Composable
+private fun CreditsScreen() {
+    val ctx = LocalContext.current
+    val credits = remember { EnglishAudio.credits(ctx) }
+    LazyColumn(Modifier.fillMaxSize().testTag("english_credits_list"), contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        item {
+            T("Course order: \"Letters and Sounds\" (UK Department for Education and Skills, 2007). Sight words: Letters and " +
+                "Sounds and the Dolch list. Stories retell public-domain folk tales.", size = 13.sp, color = Quiet)
+        }
+        item { T("Word recordings (${credits.size}) from Wikimedia Commons:", size = 15.sp, weight = FontWeight.Bold) }
+        items(credits, key = { it.word }) { c ->
+            T("${c.word} — ${c.author}, ${c.licence}\n${c.source}", size = 12.sp)
         }
     }
 }
@@ -301,8 +325,10 @@ internal fun soundOf(part: String): String {
     return when (t) {
         "sh" -> "shh"; "ch" -> "ch"; "th" -> "th"; "ng" -> "ng"; "ck" -> "K"; "ll" -> "L"; "ss" -> "S"
         "wh" -> "W"; "ph" -> "F"; "qu" -> "kw"; "jj" -> "J"; "er" -> "er"; "cc" -> "K"; "mm" -> "M"
-        "ai", "ay", "a_e" -> "ay"; "ee", "ea" -> "ee"; "oa", "ow", "o_e" -> "oh"; "igh", "i_e" -> "eye"
-        "oo" -> "oo"; "u_e" -> "you"
+        "ai", "ay", "a_e" -> "ay"; "ee", "ea" -> "ee"; "oa", "o_e" -> "oh"; "ow" -> "ow"; "igh", "i_e" -> "eye"
+        "oo", "ue", "ew" -> "oo"; "u_e" -> "you"; "ie" -> "eye"
+        "ar" -> "ar"; "or" -> "or"; "ur", "ir" -> "er"; "ou" -> "ow"; "oi", "oy" -> "oy"; "nk" -> "nk"
+        "ff" -> "F"; "zz" -> "Z"; "gg" -> "G"; "dd" -> "D"
         else -> t
     }
 }

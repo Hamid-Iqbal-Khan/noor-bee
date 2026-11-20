@@ -105,7 +105,7 @@ adb shell input keyevent 4; sleep 2
 adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 4
 if [ -n "$(find_text "Let's Play")" ]; then tap_text "Let's Play"; sleep 3; fi
 for k in 1 2 3 4 5 6; do adb shell input swipe 540 900 540 2000 200; sleep 1; done
-tap_text "Stage 1: Sounds"; sleep 3; shot 41_english_reading_stage1
+tap_text "Level 1: Sounds"; sleep 3; shot 41_english_reading_stage1
 tap_text "The alphabet"; sleep 3; shot 42_english_alphabet; adb shell input keyevent 4; sleep 1
 tap_text "2: Blending"; sleep 2; tap_text "Short a"; sleep 3; shot 43_english_blending; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2

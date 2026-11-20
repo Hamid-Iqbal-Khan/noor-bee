@@ -7,6 +7,8 @@ plugins {
 }
 
 android {
+    // word recordings are played straight from the APK, so keep them uncompressed
+    androidResources { noCompress += "ogg" }
   namespace = "com.example"
   compileSdk { version = release(36) { minorApiLevel = 1 } }
 

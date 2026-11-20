@@ -104,7 +104,7 @@ class QaidaEnglishDataTest {
 
   // ---- English reading course ------------------------------------------------------------------------------
   @Test fun englishCourse_structure() {
-    assertEquals(10, EnglishCourse.stages.size)
+    assertEquals(4, EnglishCourse.stages.size)
     val ids = EnglishCourse.stages.flatMap { s -> s.lessons.map { it.id } }
     assertEquals(ids.size, ids.distinct().size)
     EnglishCourse.allWords.forEach { w ->
@@ -112,31 +112,23 @@ class QaidaEnglishDataTest {
       assertEquals("tiles of ${w.word}", w.word.toCharArray().sorted(), joined.toCharArray().sorted())
     }
     assertEquals(26, EnglishCourse.alphabet.size)
-    // every letter has an Islamic keyword, as asked: A for Allah, B for Bismillah, C for Charity, D for Dua
-    assertEquals(listOf("Allah", "Bismillah", "Charity", "Dua"), EnglishCourse.alphabet.take(4).map { it.keyword })
-    val stage2 = EnglishCourse.shortA + EnglishCourse.shortE + EnglishCourse.shortI + EnglishCourse.shortO + EnglishCourse.shortU
-    assertTrue(stage2.none { it.word in setOf("cat", "dog", "pig", "fox") })
-    stage2.forEach { EnglishCourse.firstVowel(it) }   // every word has a vowel to ask about
-    assertTrue(stage2.none { it.word in setOf("Rab", "Nas", "misk", "Hud", "Nuh") })   // clear, well-known words only
-    assertEquals("doo-ah", EnglishCourse.pronounce("Dua"))
-    assertEquals("I make doo-ah with my hands.", EnglishCourse.pronounce("I make dua with my hands."))
-    assertEquals("A", EnglishCourse.pronounce("A"))
-    // speaking stages: Muslim greetings first, every talk has two people and every gap word is in its sentence
-    assertEquals("Assalamu alaikum", EnglishCourse.stage(5).lessons.first().phrases.first().text.trimEnd('!', '.'))
-    for (n in 5..10) {
-      val st = EnglishCourse.stage(n)
-      assertTrue("stage $n has a talk", st.lessons.any { it.kind == LessonKind.DIALOGUE })
-      st.lessons.forEach { l ->
-        if (l.kind == LessonKind.DIALOGUE) assertTrue("${l.id} talk", l.dialogue.size >= 2 && l.dialogue.map { it.speaker }.distinct().size == 2)
-        if (l.kind == LessonKind.PHRASES) assertTrue("${l.id} phrases", l.phrases.size >= 4)
-        l.sentences.forEach { s -> assertTrue("${l.id} gap '${s.key}' in '${s.text}'", s.key.isNotEmpty() && Regex("\\b${Regex.escape(s.key)}\\b").containsMatchIn(s.text)) }
-      }
+    // general English keywords: a for apple, b for ball, c for cat, d for dog
+    assertEquals(listOf("apple", "ball", "cat", "dog"), EnglishCourse.alphabet.take(4).map { it.keyword })
+    // no religious content in the English course (that lives in the Quran sections)
+    val text = (EnglishCourse.alphabet.map { it.keyword } + EnglishCourse.allWords.map { it.word } + EnglishCourse.allTricky +
+      EnglishCourse.stages.flatMap { s -> s.lessons.flatMap { l -> l.sentences.map { it.text } + l.title + l.intro } }).joinToString(" ")
+    listOf("Allah", "Islam", "Quran", "masjid", "dua", "Bismillah", "Salah", "Ramadan", "Eid").forEach {
+      assertTrue("found $it", !Regex("\\b$it\\b", RegexOption.IGNORE_CASE).containsMatchIn(text))
     }
+    EnglishCourse.stages.flatMap { it.lessons }.flatMap { it.sentences }.filter { it.key.isNotEmpty() }.forEach { s ->
+      assertTrue("gap '${s.key}' in '${s.text}'", Regex("\\b${Regex.escape(s.key)}\\b").containsMatchIn(s.text))
+    }
+    assertEquals("A", EnglishCourse.pronounce("A"))
   }
 
   @Test fun englishCourse_quizzesHaveOneRightAnswer() {
     val emojiOf = EnglishCourse.allWords.associate { it.word to it.emoji }
-    for (stage in 1..10) repeat(300) { seed ->
+    for (stage in 1..4) repeat(300) { seed ->
       EnglishQuiz.generate(stage, Random(seed)).forEach { q ->
         assertEquals("stage $stage: 4 options ${q.options}", 4, q.options.size)
         assertEquals("stage $stage: distinct ${q.options}", 4, q.options.distinct().size)
