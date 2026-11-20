@@ -306,7 +306,7 @@ object EnglishCourse {
         "Imam" to "At four o'clock, InshaAllah.", "Zaid" to "Thank you. I will be here.",
     )
     val classroom = talk(
-        "Teacher" to "Good morning, class!", "Class" to "Good morning, Teacher!",
+        "Teacher" to "Good morning, class!", "Sara" to "Assalamu alaikum, Teacher. Good morning!",
         "Sara" to "May I ask a question, please?", "Teacher" to "Yes, of course.",
         "Sara" to "How do you spell 'masjid'?", "Teacher" to "M, A, S, J, I, D.",
         "Sara" to "Thank you, Teacher.",
