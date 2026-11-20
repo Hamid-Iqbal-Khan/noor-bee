@@ -50,7 +50,7 @@ def key(word):
 
 
 def words_from(src):
-    s = open(src, encoding="utf-8").read()
+    s = "\n".join(open(f, encoding="utf-8").read() for f in src.split(","))
     out = []
     out += re.findall(r'\bw\("([^"]+)"', s)                         # practice words
     out += re.findall(r'Sound\("[^"]+", "([^"]+)"', s)              # picture keywords

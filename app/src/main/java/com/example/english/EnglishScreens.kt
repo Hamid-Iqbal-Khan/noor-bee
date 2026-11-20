@@ -108,7 +108,7 @@ fun EnglishScreen(
                 size = 18.sp, color = Color.White, weight = FontWeight.Bold)
         }
         Row(Modifier.fillMaxWidth().background(Amber).padding(horizontal = 16.dp, vertical = 2.dp)) {
-            T("🔈 Words are read by real people. Letter sounds and sentences still use the phone's voice for now.", size = 11.sp, color = Quiet)
+            T("🔈 Words and conversations are read by real people. Letter sounds and whole story sentences still use the phone's voice.", size = 11.sp, color = Quiet)
         }
         Box(Modifier.weight(1f)) {
             when {
@@ -196,6 +196,8 @@ private fun CreditsScreen() {
             }
             items(VoaData.lessons, key = { "voa_${it.number}" }) { v -> T("Lesson ${v.number}: ${v.title}\n${v.url}", size = 12.sp) }
         }
+        item { T("Stories (CC BY 4.0, text as published):", size = 15.sp, weight = FontWeight.Bold) }
+        items(Stories.books, key = { "story_" + it.title }) { b -> T(b.credit, size = 12.sp) }
         items(credits, key = { it.word }) { c ->
             T("${c.word} — ${c.author}, ${c.licence}\n${c.source}", size = 12.sp)
         }
@@ -248,7 +250,8 @@ private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String)
             LessonKind.WORDS -> items(l.words, key = { "w_" + it.word }) { WordRow(it, speak) }
             LessonKind.PAIRS -> items(l.pairs, key = { "p_" + it.first.word }) { (a, b) -> PairRow(a, b, speak) }
             LessonKind.TRICKY -> trickyWords(l.tricky, speak)
-            LessonKind.SENTENCES, LessonKind.STORY -> items(l.sentences, key = { it.text }) { SentenceCard(it, speak) }
+            LessonKind.SENTENCES -> items(l.sentences, key = { it.text }) { SentenceCard(it, speak) }
+            LessonKind.STORY -> item(key = "story_${l.id}") { StoryPager(l.id, l.sentences, speak) }
             LessonKind.CARDS -> Unit
             LessonKind.PHRASES -> items(l.phrases, key = { "ph_" + it.text }) { PhraseCard(it, speak) }
             LessonKind.DIALOGUE -> dialogues(l.id, listOf(l.dialogue), speak)
@@ -586,6 +589,30 @@ private fun RepeatCard(id: String, lines: List<Line>, speak: (String) -> Unit) {
                     T("Next ›", size = 14.sp)
                 }
             }
+        }
+    }
+}
+
+/** A picture story, one page at a time. */
+@Composable
+private fun StoryPager(id: String, pages: List<Sentence>, speak: (String) -> Unit) {
+    var i by remember(id) { mutableIntStateOf(0) }
+    val p = pages[i.coerceIn(0, pages.size - 1)]
+    Column(Modifier.fillMaxWidth().testTag("english_story_$id"), horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Edge),
+            shape = RoundedCornerShape(20.dp)) {
+            Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                T(p.emoji, Modifier.clickable { speak(p.text) }, size = 72.sp)
+                Spacer(Modifier.height(8.dp))
+                SentenceCard(p, speak)
+            }
+        }
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            OutlinedButton(onClick = { if (i > 0) i-- }, enabled = i > 0, modifier = Modifier.testTag("english_story_prev")) { T("‹ Back", size = 14.sp) }
+            T("Page ${i + 1} of ${pages.size}", size = 13.sp, color = Quiet)
+            OutlinedButton(onClick = { if (i < pages.size - 1) i++ }, enabled = i < pages.size - 1,
+                modifier = Modifier.testTag("english_story_next")) { T("Next ›", size = 14.sp) }
         }
     }
 }

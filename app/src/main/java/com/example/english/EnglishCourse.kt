@@ -230,6 +230,12 @@ object EnglishCourse {
         Triple("Let's talk", "Level 8: Let's talk — opinions and experiences", "💬") to Pair(Color(0xFFFCE4EC), Color(0xFFAD1457)),
     )
 
+    /** StoryWeaver picture stories for a level, numbered on from [first]. */
+    private fun storyLessons(level: Int, first: Int) = Stories.forLevel(level).mapIndexed { i, b ->
+        EnLesson("e$level.${first + i}", "Story: ${b.title}", "A StoryWeaver story, ${b.pages.size} pages", LessonKind.STORY,
+            "Read one page at a time. Tap a word to hear it. Story: ${b.credit}", sentences = b.pages)
+    }
+
     private fun speakingStage(level: Int): EnStage? {
         val talks = VoaData.lessons.filter { it.level == level }
         if (talks.isEmpty()) return null
@@ -244,7 +250,7 @@ object EnglishCourse {
             )
         }
         return EnStage(level, names.first, names.second, talks.first().lines.first().text, names.third, names.third,
-            colours.first, colours.second, lessons)
+            colours.first, colours.second, lessons + storyLessons(level, lessons.size + 1))
     }
 
     /** Everything a speaking level's practice can ask about. */
@@ -336,7 +342,7 @@ object EnglishCourse {
                     "Read the story. Then tell someone: why did the hen eat the bread herself?", sentences = story),
                 EnLesson("e4.10", "Story: The Enormous Turnip", "An old folk tale in seven sentences", LessonKind.STORY,
                     "Read the story. Who was the smallest helper?", sentences = story2),
-            )),
+            ) + storyLessons(4, 11)),
     )
 
     fun stage(n: Int) = stages.first { it.number == n }
