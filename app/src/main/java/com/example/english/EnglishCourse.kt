@@ -271,8 +271,7 @@ object EnglishCourse {
                 "Tap a phrase to hear a real person say it, then say it yourself.", phrases = phrases)
         }
         prep?.tips?.let { tips ->
-            lessons += EnLesson(id(), "Grammar: " + tips.joinToString(" · ") { it.title.substringBefore(" (") }.take(48),
-                "${tips.size} short tips with real examples", LessonKind.GRAMMAR,
+            lessons += EnLesson(id(), "Grammar tips", tips.joinToString(" · ") { it.title.substringBefore(" (") }, LessonKind.GRAMMAR,
                 "Read each tip, then tap the examples to hear how people really say it.", tips = tips)
         }
         talks.forEach { t ->
