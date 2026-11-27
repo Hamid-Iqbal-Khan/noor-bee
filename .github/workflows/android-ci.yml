@@ -50,14 +50,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: app/src/main/assets/audio/en
-          key: en-audio-${{ hashFiles('app/src/main/java/com/example/english/EnglishCourse.kt', 'app/src/main/java/com/example/english/Stories.kt', '.github/scripts/fetch-english-audio.py') }}
+          key: en-audio-${{ hashFiles('app/src/main/java/com/example/english/EnglishCourse.kt', 'app/src/main/java/com/example/english/Stories.kt', 'app/src/main/java/com/example/english/SpeakingContent.kt', '.github/scripts/fetch-english-audio.py') }}
       - name: Fetch English word recordings (Wikimedia Commons)
         run: |
           mkdir -p app/src/main/assets/audio/en
           if [ -f app/src/main/assets/audio/en/index.txt ]; then
             echo "using cached recordings"; cp app/src/main/assets/audio/en/report.txt audio-report.txt 2>/dev/null || true
           else
-            python3 .github/scripts/fetch-english-audio.py app/src/main/java/com/example/english/EnglishCourse.kt,app/src/main/java/com/example/english/Stories.kt \
+            python3 .github/scripts/fetch-english-audio.py app/src/main/java/com/example/english/EnglishCourse.kt,app/src/main/java/com/example/english/Stories.kt,app/src/main/java/com/example/english/SpeakingContent.kt \
               app/src/main/assets/audio/en audio-report.txt || echo "audio fetch failed; the app falls back to the phone voice"
             cp audio-report.txt app/src/main/assets/audio/en/report.txt 2>/dev/null || true
           fi

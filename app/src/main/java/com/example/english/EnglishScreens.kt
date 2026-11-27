@@ -1,6 +1,14 @@
 package com.example.english
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -41,6 +49,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -104,11 +113,9 @@ fun EnglishScreen(
             IconButton(onClick = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } }, modifier = Modifier.testTag("english_back")) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
             }
-            T(when { page == "quiz" -> "Level $stage practice"; page == "credits" -> "Sound credits"; lesson != null -> lesson.title; else -> "Learn English" },
+            T(when { page == "quiz" -> "Level $stage practice"; page == "credits" -> "Sound credits"; page == "sounds" -> "Grown-ups: letter sounds"
+                lesson != null -> lesson.title; else -> "Learn English" },
                 size = 18.sp, color = Color.White, weight = FontWeight.Bold)
-        }
-        Row(Modifier.fillMaxWidth().background(Amber).padding(horizontal = 16.dp, vertical = 2.dp)) {
-            T("🔈 Words and conversations are read by real people. Letter sounds and whole story sentences still use the phone's voice.", size = 11.sp, color = Quiet)
         }
         Box(Modifier.weight(1f)) {
             when {
@@ -117,11 +124,12 @@ fun EnglishScreen(
                     if (score >= EnglishProgress.PASS_MARK) onEarnRewards(10, 50, "English: Level $stage practice passed")
                     refresh++
                 }, onDone = { page = "home"; refresh++ })
-                lesson != null -> LessonScreen(lesson, progress, onSpeak) {
+                lesson != null -> LessonScreen(lesson, progress, onSpeak, nextTitle = st.lessons.getOrNull(st.lessons.indexOf(lesson) + 1)?.title) {
                     progress.markDone(lesson.id); onEarnRewards(5, 20, "English: ${lesson.title}")
                     page = "home"; refresh++
                 }
                 page == "credits" -> CreditsScreen()
+                page == "sounds" -> LetterSoundsScreen()
                 else -> EnglishHome(progress, refresh, stage, onStage = { stage = it }) { page = it }
             }
         }
@@ -137,9 +145,10 @@ private fun EnglishHome(progress: EnglishProgress, refreshKey: Int, stage: Int, 
             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             EnglishCourse.stages.forEach { s ->
                 val on = s.number == stage
+                val passed = done(s.quizKey)
                 Box(Modifier.widthIn(min = 72.dp).heightIn(min = 44.dp).background(if (on) Green else Color.Transparent, RoundedCornerShape(20.dp))
                     .clickable { onStage(s.number) }.testTag("english_stage_tab_${s.number}"), contentAlignment = Alignment.Center) {
-                    T("${s.number}: ${s.short}", Modifier.padding(horizontal = 8.dp), size = 13.sp, color = if (on) Color.White else Green,
+                    T((if (passed) "✓ " else "") + "${s.number}: ${s.short}", Modifier.padding(horizontal = 8.dp), size = 13.sp, color = if (on) Color.White else Green,
                         weight = FontWeight.Bold, align = TextAlign.Center)
                 }
             }
@@ -148,7 +157,18 @@ private fun EnglishHome(progress: EnglishProgress, refreshKey: Int, stage: Int, 
             Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 T(st.hero, size = 38.sp, color = st.line, weight = FontWeight.Bold, align = TextAlign.Center)
                 T(st.title, size = 18.sp, weight = FontWeight.Bold, align = TextAlign.Center)
-                T("5 to 10 minutes a day. Do the practice after the lessons.", size = 13.sp, color = Quiet, align = TextAlign.Center)
+                val doneCount = st.lessons.count { done(it.id) }
+                T("$doneCount of ${st.lessons.size} lessons done · 10 minutes a day is plenty", size = 13.sp, color = Quiet, align = TextAlign.Center)
+                Spacer(Modifier.height(6.dp))
+                LinearProgressIndicator(progress = { doneCount / st.lessons.size.toFloat() }, color = st.line, trackColor = Color.White,
+                    modifier = Modifier.fillMaxWidth().height(8.dp).testTag("english_progress_$stage"))
+            }
+        }
+        val next = st.lessons.firstOrNull { !done(it.id) }
+        if (next != null) {
+            Button(onClick = { open(next.id) }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("english_continue"),
+                colors = ButtonDefaults.buttonColors(containerColor = Green)) {
+                T("▶  Continue: ${next.title}", size = 15.sp, color = Color.White, weight = FontWeight.Bold)
             }
         }
         val prev = EnglishCourse.stages.firstOrNull { it.number == stage - 1 }
@@ -170,6 +190,11 @@ private fun EnglishHome(progress: EnglishProgress, refreshKey: Int, stage: Int, 
                     else "Well done! You can read English sentences and stories. Keep reading a little every day!",
                     Modifier.padding(16.dp), size = 15.sp, weight = FontWeight.Bold)
             }
+        }
+        T("🔈 Words and conversations are spoken by real people. Single letter sounds use the phone's voice until a grown-up records them.",
+            size = 12.sp, color = Quiet)
+        TextButton(onClick = { open("sounds") }, modifier = Modifier.testTag("english_grownups")) {
+            T("👪 Grown-ups: record the letter sounds", size = 13.sp, color = Green, weight = FontWeight.Bold)
         }
         TextButton(onClick = { open("credits") }, modifier = Modifier.testTag("english_credits")) {
             T("Sound credits and sources", size = 13.sp, color = Green)
@@ -225,7 +250,7 @@ private fun LessonCard(tag: String, number: Int, title: String, subtitle: String
 // Lessons
 // ---------------------------------------------------------------------------------------------------
 @Composable
-private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String) -> Unit, onDone: () -> Unit) {
+private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String) -> Unit, nextTitle: String? = null, onDone: () -> Unit) {
     if (l.kind == LessonKind.CARDS) { Flashcards(l.tricky, speak, onDone); return }
     var seen by remember { mutableStateOf(progress.seen()) }
     LazyColumn(Modifier.fillMaxSize().testTag("english_${l.id}_list"), contentPadding = PaddingValues(16.dp),
@@ -248,7 +273,9 @@ private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String)
                 }
             }
             LessonKind.WORDS -> items(l.words, key = { "w_" + it.word }) { WordRow(it, speak) }
-            LessonKind.PAIRS -> items(l.pairs, key = { "p_" + it.first.word }) { (a, b) -> PairRow(a, b, speak) }
+            LessonKind.PAIRS -> items(l.pairs, key = { "p_" + it.first.word }) { (a, b) -> PairRow(a, b, l.pairJoin, speak) }
+            LessonKind.VOCAB -> vocabGrid(l.vocab, speak)
+            LessonKind.GRAMMAR -> items(l.tips, key = { "t_" + it.title }) { TipCard(it, speak) }
             LessonKind.TRICKY -> trickyWords(l.tricky, speak)
             LessonKind.SENTENCES -> items(l.sentences, key = { it.text }) { SentenceCard(it, speak) }
             LessonKind.STORY -> item(key = "story_${l.id}") { StoryPager(l.id, l.sentences, speak) }
@@ -260,7 +287,11 @@ private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String)
         item {
             Button(onClick = onDone, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("english_done"),
                 colors = ButtonDefaults.buttonColors(containerColor = Green)) {
-                T("I have read this lesson ✓", size = 15.sp, color = Color.White, weight = FontWeight.Bold)
+                T(when (l.kind) {
+                    LessonKind.DIALOGUE, LessonKind.REPEAT, LessonKind.PHRASES, LessonKind.VOCAB -> "I practised this ✓"
+                    else -> "I have read this lesson ✓"
+                } + (nextTitle?.let { "  ·  next: $it" } ?: ""), size = 15.sp, color = Color.White, weight = FontWeight.Bold,
+                    align = TextAlign.Center)
             }
         }
     }
@@ -313,7 +344,7 @@ private fun WordRow(wd: ReadWord, speak: (String) -> Unit) {
             val long = wd.parts.size > 5
             wd.parts.forEachIndexed { i, p ->
                 if (i > 0) T("+", Modifier.padding(horizontal = if (long) 1.dp else 3.dp), size = if (long) 12.sp else 16.sp, color = Quiet)
-                Box(Modifier.background(Tile, RoundedCornerShape(8.dp)).clickable { speak(soundOf(p)) }
+                Box(Modifier.background(Tile, RoundedCornerShape(8.dp)).clickable { speak(EnglishAudio.SOUND + p) }
                     .padding(horizontal = if (long) 5.dp else 8.dp, vertical = 4.dp)) {
                     T(p, size = if (long) 16.sp else 20.sp, color = TileInk, weight = FontWeight.Bold)
                 }
@@ -345,14 +376,14 @@ internal fun soundOf(part: String): String {
 }
 
 @Composable
-private fun PairRow(a: ReadWord, b: ReadWord, speak: (String) -> Unit) {
+private fun PairRow(a: ReadWord, b: ReadWord, join: String, speak: (String) -> Unit) {
     Card(Modifier.fillMaxWidth().testTag("english_pair_${a.word}"), colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, Edge)) {
         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             Column(Modifier.clickable { speak(a.word) }, horizontalAlignment = Alignment.CenterHorizontally) {
                 T(a.word, size = 24.sp, weight = FontWeight.Bold); T(a.emoji, size = 18.sp)
             }
-            T("+ e →", size = 18.sp, color = Quiet)
+            T(join, size = 18.sp, color = Quiet)
             Column(Modifier.clickable { speak(b.word) }, horizontalAlignment = Alignment.CenterHorizontally) {
                 T(b.word, size = 24.sp, color = Green, weight = FontWeight.Bold); T(b.emoji, size = 18.sp)
             }
@@ -386,7 +417,7 @@ private fun SentenceCard(s: Sentence, speak: (String) -> Unit) {
                     T(wd, Modifier.clickable { speak(wd.trim('.', ',', '!', '"', '?')) }, size = 22.sp, weight = FontWeight.SemiBold)
                 }
             }
-            T("🔊", Modifier.clickable { speak(s.text) }.padding(start = 6.dp), size = 22.sp)
+            T("🔊", Modifier.clickable { speak(s.text) }.padding(start = 6.dp).semantics { contentDescription = "Listen" }, size = 22.sp)
         }
     }
 }
@@ -402,7 +433,7 @@ private fun Flashcards(words: List<String>, speak: (String) -> Unit, onDone: () 
     var heard by rememberSaveable(seed, index) { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         if (index >= deck.size) {
-            T(if (known >= deck.size * 2 / 3) "Masha'Allah! 🌟" else "Well done! Practise a little every day 💪", size = 24.sp,
+            T(if (known >= deck.size * 2 / 3) "Excellent! 🌟" else "Well done! Practise a little every day 💪", size = 24.sp,
                 weight = FontWeight.Bold, align = TextAlign.Center)
             T("$known / ${deck.size} read correctly", size = 20.sp, color = Green, align = TextAlign.Center, modifier = Modifier.testTag("english_cards_result"))
             Spacer(Modifier.height(16.dp))
@@ -448,14 +479,23 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
     var score by rememberSaveable(seed) { mutableIntStateOf(0) }
     var chosen by rememberSaveable(seed, index) { mutableStateOf<Int?>(null) }
     var finished by rememberSaveable(seed) { mutableStateOf(false) }
+    var missed by rememberSaveable(seed) { mutableStateOf(listOf<String>()) }
 
     if (finished) {
         val passed = score >= EnglishProgress.PASS_MARK
         Column(Modifier.fillMaxSize().padding(24.dp).testTag("english_quiz_result"), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-            T(if (passed) "Masha'Allah! 🌟" else "Well done — try again 💪", size = 24.sp, weight = FontWeight.Bold, align = TextAlign.Center)
+            T(if (passed) "Excellent! 🌟" else "Good try — practise again 💪", size = 24.sp, weight = FontWeight.Bold, align = TextAlign.Center)
             T("$score / ${questions.size} correct", size = 20.sp, color = Green, align = TextAlign.Center)
-            T(if (passed) "Stage $stage is complete." else "8 correct answers complete Stage $stage.", size = 14.sp, color = Quiet, align = TextAlign.Center)
+            if (missed.isNotEmpty()) {
+                Spacer(Modifier.height(10.dp))
+                T("Practise these:", size = 14.sp, weight = FontWeight.Bold)
+                missed.distinct().forEach { m ->
+                    T("🔊 $m", Modifier.clickable { speak(m) }.padding(vertical = 3.dp).testTag("english_missed"), size = 15.sp,
+                        color = Green, align = TextAlign.Center)
+                }
+            }
+            T(if (passed) "Level $stage is complete." else "8 correct answers complete Level $stage.", size = 14.sp, color = Quiet, align = TextAlign.Center)
             Spacer(Modifier.height(16.dp))
             Button(onClick = { seed = System.currentTimeMillis() }, colors = ButtonDefaults.buttonColors(containerColor = Green),
                 modifier = Modifier.testTag("english_quiz_retry")) { T("Practise again", color = Color.White) }
@@ -464,6 +504,8 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
         return
     }
     val q = questions[index]
+    // listening questions play straight away (tap the card to hear again)
+    LaunchedEffect(seed, index) { if (q.prompt == "🔊") { delay(400); q.speak?.let(speak) } }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         T("Question ${index + 1} / ${questions.size}   ·   correct: $score", size = 13.sp, color = Quiet)
         Spacer(Modifier.height(8.dp))
@@ -478,7 +520,10 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
         q.options.forEachIndexed { i, opt ->
             val bg = when { chosen == null -> Color.White; i == q.correctIndex -> Color(0xFFC8E6C9); i == chosen -> Color(0xFFFFCDD2); else -> Color.White }
             Card(Modifier.fillMaxWidth().padding(vertical = 4.dp).heightIn(min = 56.dp)
-                .clickable(enabled = chosen == null) { chosen = i; if (i == q.correctIndex) score++ }.testTag("english_option_$i"),
+                .clickable(enabled = chosen == null) {
+                    chosen = i
+                    if (i == q.correctIndex) score++ else missed = missed + q.options[q.correctIndex]
+                }.testTag("english_option_$i"),
                 colors = CardDefaults.cardColors(containerColor = bg), border = BorderStroke(1.dp, Edge)) {
                 Box(Modifier.fillMaxWidth().padding(10.dp), contentAlignment = Alignment.Center) { T(opt, size = if (opt.length > 30) 15.sp else if (opt.length > 14) 18.sp else 24.sp, align = TextAlign.Center) }
             }
@@ -516,6 +561,9 @@ private fun LazyListScope.dialogues(id: String, talks: List<List<Line>>, speak: 
     }
 }
 
+private val SpeakerColours = listOf(Color(0xFFE8F5E9), Color(0xFFE3F2FD), Color(0xFFFFF3E0), Color(0xFFF3E5F5), Color(0xFFFCE4EC))
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TalkCard(id: String, n: Int, talk: List<Line>, speak: (String) -> Unit) {
     val speakers = talk.map { it.speaker }.distinct()
@@ -524,38 +572,38 @@ private fun TalkCard(id: String, n: Int, talk: List<Line>, speak: (String) -> Un
     Card(Modifier.fillMaxWidth().testTag("english_talk_${id}_$n"), colors = CardDefaults.cardColors(containerColor = Paper),
         border = BorderStroke(1.dp, Edge)) {
         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                T("Talk ${n + 1}", Modifier.weight(1f), size = 15.sp, weight = FontWeight.Bold)
-                TextButton(onClick = { speak(talk.joinToString(" ") { it.text }) }, modifier = Modifier.testTag("english_talk_all_${id}_$n")) {
-                    T("▶ Listen to all", size = 13.sp, color = Green, weight = FontWeight.Bold)
-                }
+            Button(onClick = { speak(talk.joinToString(" ") { it.text }) }, modifier = Modifier.fillMaxWidth().testTag("english_talk_all_${id}_$n"),
+                colors = ButtonDefaults.buttonColors(containerColor = Green)) {
+                T("▶  Listen to the whole conversation", size = 14.sp, color = Color.White, weight = FontWeight.Bold)
             }
             talk.forEachIndexed { i, ln ->
-                val first = ln.speaker == speakers.first()
+                val who = speakers.indexOf(ln.speaker)
                 val hidden = practise == ln.speaker && i !in shown
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = if (first) Arrangement.Start else Arrangement.End) {
-                    Card(Modifier.widthIn(max = 290.dp).clickable {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = if (who % 2 == 0) Arrangement.Start else Arrangement.End) {
+                    Card(Modifier.widthIn(max = 300.dp).clickable {
                             if (hidden) shown = shown + i
                             speak(ln.text)
                         }.testTag("english_line_${id}_${n}_$i"),
                         shape = RoundedCornerShape(14.dp),
-                        colors = CardDefaults.cardColors(containerColor = if (first) GreenSoft else Tile)) {
+                        colors = CardDefaults.cardColors(containerColor = SpeakerColours[who % SpeakerColours.size])) {
                         Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
                             T(ln.speaker, size = 11.sp, color = Quiet, weight = FontWeight.Bold)
-                            T(if (hidden) "🗣️ Your turn — say it, then tap" else ln.text, size = 17.sp,
+                            T(if (hidden) "🗣️ Your turn — say it, then tap to check" else ln.text, size = 17.sp,
                                 color = if (hidden) Quiet else Ink, weight = FontWeight.SemiBold)
                         }
                     }
                 }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                T("Be:", size = 13.sp, color = Quiet)
-                speakers.forEach { sp ->
-                    val on = practise == sp
-                    OutlinedButton(onClick = { practise = if (on) null else sp; shown = emptySet() },
-                        border = BorderStroke(1.dp, if (on) Green else Edge),
-                        modifier = Modifier.testTag("english_be_${id}_${n}_$sp")) {
-                        T(sp, size = 13.sp, color = if (on) Green else Ink, weight = FontWeight.Bold)
+            if (speakers.size > 1) {
+                T("Practise one part: choose a person, say their lines, then tap to check.", size = 12.sp, color = Quiet)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    speakers.forEach { sp ->
+                        val on = practise == sp
+                        OutlinedButton(onClick = { practise = if (on) null else sp; shown = emptySet() },
+                            border = BorderStroke(1.dp, if (on) Green else Edge),
+                            modifier = Modifier.testTag("english_be_${id}_${n}_$sp")) {
+                            T("Be $sp", size = 13.sp, color = if (on) Green else Ink, weight = FontWeight.Bold)
+                        }
                     }
                 }
             }
@@ -563,23 +611,61 @@ private fun TalkCard(id: String, n: Int, talk: List<Line>, speak: (String) -> Un
     }
 }
 
-/** Listen and repeat: one line at a time — hear it, say it, next. */
+/** Asks for the microphone once; returns (granted, ask). */
+@Composable
+private fun rememberMic(): Pair<Boolean, () -> Unit> {
+    val ctx = LocalContext.current
+    var granted by remember { mutableStateOf(ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
+    return granted to { launcher.launch(Manifest.permission.RECORD_AUDIO) }
+}
+
+/** ● Record / ■ Stop and ▶ play back, for the child's voice or a grown-up's letter sound. */
+@Composable
+private fun RecordButtons(tag: String, hasRecording: () -> Boolean, start: () -> Boolean, play: () -> Unit, onSaved: () -> Unit = {}) {
+    val (granted, ask) = rememberMic()
+    var recording by remember { mutableStateOf(false) }
+    var saved by remember(tag) { mutableStateOf(hasRecording()) }
+    LaunchedEffect(recording) { if (recording) { delay(15_000); if (recording) { EnglishAudio.stopRecording(); recording = false; saved = hasRecording(); onSaved() } } }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        OutlinedButton(onClick = {
+            when {
+                !granted -> ask()
+                recording -> { EnglishAudio.stopRecording(); recording = false; saved = hasRecording(); onSaved() }
+                else -> recording = start()
+            }
+        }, border = BorderStroke(1.dp, if (recording) Color(0xFFC62828) else Green), modifier = Modifier.testTag("${tag}_record")) {
+            T(if (recording) "■ Stop" else "● Record", size = 14.sp, color = if (recording) Color(0xFFC62828) else Green, weight = FontWeight.Bold)
+        }
+        OutlinedButton(onClick = play, enabled = saved && !recording, modifier = Modifier.testTag("${tag}_play")) {
+            T("▶ Play", size = 14.sp)
+        }
+    }
+}
+
+/** Listen and repeat: one line at a time — hear it, say it, record yourself, compare. */
 @Composable
 private fun RepeatCard(id: String, lines: List<Line>, speak: (String) -> Unit) {
+    val ctx = LocalContext.current
     var i by remember(id) { mutableIntStateOf(0) }
     val ln = lines[i.coerceIn(0, lines.size - 1)]
+    LaunchedEffect(id, i) { EnglishAudio.clearMyVoice(ctx) }
     Card(Modifier.fillMaxWidth().testTag("english_repeat_$id"), colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, Edge), shape = RoundedCornerShape(20.dp)) {
         Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)) {
             T("${i + 1} / ${lines.size}", size = 13.sp, color = Quiet)
+            LinearProgressIndicator(progress = { (i + 1) / lines.size.toFloat() }, color = Green, modifier = Modifier.fillMaxWidth())
             T(ln.speaker, size = 14.sp, color = Green, weight = FontWeight.Bold)
             T(ln.text, size = 22.sp, weight = FontWeight.SemiBold, align = TextAlign.Center)
             Button(onClick = { speak(ln.text) }, modifier = Modifier.heightIn(min = 52.dp).testTag("english_repeat_play"),
                 colors = ButtonDefaults.buttonColors(containerColor = Green)) {
                 T("▶  Listen", size = 16.sp, color = Color.White, weight = FontWeight.Bold)
             }
-            T("🗣️ Now you say it!", size = 15.sp, color = Quiet)
+            T("🗣️ Now say it! Then record yourself and compare.", size = 14.sp, color = Quiet, align = TextAlign.Center)
+            key(id, i) {
+                RecordButtons("english_me", { EnglishAudio.hasMyVoice(ctx) }, { EnglishAudio.startMyVoice(ctx) }, { EnglishAudio.playMyVoice(ctx) })
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedButton(onClick = { if (i > 0) i-- }, enabled = i > 0, modifier = Modifier.testTag("english_repeat_back")) {
                     T("‹ Back", size = 14.sp)
@@ -587,6 +673,82 @@ private fun RepeatCard(id: String, lines: List<Line>, speak: (String) -> Unit) {
                 OutlinedButton(onClick = { if (i < lines.size - 1) { i++; speak(lines[i].text) } }, enabled = i < lines.size - 1,
                     modifier = Modifier.testTag("english_repeat_next")) {
                     T("Next ›", size = 14.sp)
+                }
+            }
+        }
+    }
+}
+
+/** Picture words: tap a card to hear the word. */
+@OptIn(ExperimentalLayoutApi::class)
+private fun LazyListScope.vocabGrid(words: List<Vocab>, speak: (String) -> Unit) {
+    item {
+        FlowRow(Modifier.fillMaxWidth().testTag("english_vocab"), horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            words.forEach { v ->
+                Column(Modifier.width(100.dp).background(Color.White, RoundedCornerShape(16.dp)).clickable { speak(v.word) }
+                    .padding(8.dp).testTag("english_vocab_${v.word}").semantics { contentDescription = v.word },
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    T(v.picture, size = if (v.picture.length <= 2 || v.picture.codePointCount(0, v.picture.length) <= 2) 34.sp else 24.sp,
+                        color = Green, weight = FontWeight.Bold)
+                    T(v.word, size = 16.sp, weight = FontWeight.Bold, align = TextAlign.Center)
+                }
+            }
+        }
+    }
+}
+
+/** One grammar idea: the rule, a pattern, and real example sentences to hear. */
+@Composable
+private fun TipCard(t: Tip, speak: (String) -> Unit) {
+    Card(Modifier.fillMaxWidth().testTag("english_tip_${t.title.hashCode()}"), colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, Edge), shape = RoundedCornerShape(18.dp)) {
+        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            T(t.title, size = 18.sp, color = Green, weight = FontWeight.Bold)
+            T(t.rule, size = 14.sp)
+            Box(Modifier.fillMaxWidth().background(Amber, RoundedCornerShape(10.dp)).padding(10.dp)) {
+                T(t.pattern, size = 16.sp, weight = FontWeight.SemiBold)
+            }
+            T("Hear it in the conversations:", size = 12.sp, color = Quiet)
+            t.examples.forEach { ex ->
+                Row(Modifier.fillMaxWidth().clickable { speak(ex) }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                    T("🔊", Modifier.padding(end = 8.dp).semantics { contentDescription = "Listen" }, size = 18.sp)
+                    T(ex, size = 15.sp)
+                }
+            }
+        }
+    }
+}
+
+/** For a parent or teacher: record each letter sound once; the tiles then play that voice. */
+@Composable
+private fun LetterSoundsScreen() {
+    val ctx = LocalContext.current
+    val sounds = remember { EnglishCourse.recordableSounds }
+    var refresh by remember { mutableIntStateOf(0) }
+    LazyColumn(Modifier.fillMaxSize().testTag("english_sounds_list"), contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        item {
+            T("Free recordings of single letter sounds don't exist, so the tiles use the phone's voice, which says letter names. " +
+                "Record each sound once here (for example s = \"sss\", not \"ess\") and the tiles will play your voice. " +
+                "Recordings stay on this phone.", size = 13.sp, color = Quiet)
+        }
+        item {
+            val n = refresh.let { sounds.count { EnglishAudio.hasSound(ctx, it.grapheme) } }
+            T("$n of ${sounds.size} sounds recorded", size = 15.sp, weight = FontWeight.Bold)
+        }
+        items(sounds, key = { "rec_" + it.grapheme }) { s ->
+            Card(colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Edge)) {
+                Row(Modifier.fillMaxWidth().padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(52.dp).background(Tile, RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
+                        T(s.grapheme.replace("_", ""), size = 22.sp, color = TileInk, weight = FontWeight.Bold)
+                    }
+                    Spacer(Modifier.width(10.dp))
+                    Column(Modifier.weight(1f)) {
+                        T("as in ${s.keyword} ${s.emoji}", size = 14.sp, weight = FontWeight.Bold)
+                        RecordButtons("english_sound_${s.grapheme}", { EnglishAudio.hasSound(ctx, s.grapheme) },
+                            { EnglishAudio.startSoundRecording(ctx, s.grapheme) }, { EnglishAudio.playSound(ctx, s.grapheme) }) { refresh++ }
+                    }
                 }
             }
         }

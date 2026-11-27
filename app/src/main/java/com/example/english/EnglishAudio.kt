@@ -2,14 +2,19 @@ package com.example.english
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.media.MediaRecorder
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import java.io.File
 
 /**
- * Plays real human recordings for English words (Wikimedia Commons / Lingua Libre, fetched by CI into
- * assets/audio/en, listed in index.txt with their credits in CREDITS.csv). Anything without a recording
- * falls back to the phone's voice. Single letters always use the voice, so a tile says just its letter.
+ * Plays real human recordings:
+ *  - single words: Wikimedia Commons / Lingua Libre, fetched by CI into assets/audio/en (credits in CREDITS.csv);
+ *  - conversation lines: VOA Learning English (VoaData.clips);
+ *  - letter sounds: recorded on this phone by a parent or teacher (no free recordings of single sounds exist).
+ * Anything without a recording falls back to the phone's voice. Also records the child for "listen and repeat".
  */
 object EnglishAudio {
     private const val DIR = "audio/en"
@@ -17,10 +22,18 @@ object EnglishAudio {
     @Volatile var enabled = true
     private var index: Set<String>? = null
     private var player: MediaPlayer? = null
+    private var recorder: MediaRecorder? = null
     private val handler by lazy { Handler(Looper.getMainLooper()) }
     private val asIn = Regex("^(\\S+), as in (.+)$")
+    /** Prefix for a sound tile: "§sh" means "the sound of sh". */
+    const val SOUND = "§"
 
     fun key(text: String) = text.trim().trim('.', ',', '!', '?', '"', '\'', ' ').lowercase().replace(' ', '_')
+    /** Letters and digits only, so straight and curly apostrophes or spacing never stop a match. */
+    fun loose(text: String) = text.lowercase().filter { it.isLetterOrDigit() }
+    private val looseClips by lazy { VoaData.clips.entries.associate { loose(it.key) to it.value } }
+    /** True when [text] is spoken in one of the VOA conversations (so it has a real recording). */
+    fun isVoaLine(text: String) = VoaData.clips.containsKey(key(text)) || looseClips.containsKey(loose(text))
 
     private fun index(ctx: Context): Set<String> = index ?: runCatching {
         ctx.assets.open("$DIR/index.txt").bufferedReader().readLines().map { it.trim() }.filter { it.isNotEmpty() }.toSet()
@@ -30,20 +43,40 @@ object EnglishAudio {
     private fun clip(ctx: Context, text: String): String? {
         if (text.trim().length <= 1) return null
         val k = key(text)
-        return VoaData.clips[k] ?: if (k in index(ctx)) "$DIR/$k.ogg" else null
+        return VoaData.clips[k] ?: looseClips[loose(text)] ?: if (k in index(ctx)) "$DIR/$k.ogg" else null
     }
 
     fun has(ctx: Context, text: String): Boolean = clip(ctx, text) != null
 
-    /** Say [text]: a recording if there is one, else [voice]. "s, as in sun" = the letter, then the word. */
+    // ---- letter sounds recorded by a grown-up ---------------------------------------------------------
+    private fun soundFile(ctx: Context, grapheme: String) =
+        File(File(ctx.filesDir, "english_sounds").apply { mkdirs() }, "${grapheme.lowercase().replace("_", "-")}.m4a")
+    fun hasSound(ctx: Context, grapheme: String) = soundFile(ctx, grapheme).let { it.exists() && it.length() > 0 }
+    fun deleteSound(ctx: Context, grapheme: String) { soundFile(ctx, grapheme).delete() }
+    fun startSoundRecording(ctx: Context, grapheme: String) = startRecording(ctx, soundFile(ctx, grapheme))
+    fun playSound(ctx: Context, grapheme: String) = playFile(soundFile(ctx, grapheme))
+
+    // ---- the child's own voice (listen and repeat) ------------------------------------------------------
+    private fun myVoice(ctx: Context) = File(ctx.cacheDir, "english_my_voice.m4a")
+    fun startMyVoice(ctx: Context) = startRecording(ctx, myVoice(ctx))
+    fun hasMyVoice(ctx: Context) = myVoice(ctx).let { it.exists() && it.length() > 0 }
+    fun playMyVoice(ctx: Context) = playFile(myVoice(ctx))
+    fun clearMyVoice(ctx: Context) { myVoice(ctx).delete() }
+
+    /** Say [text]: a recording if there is one, else [voice]. "s, as in sun" = the letter sound, then the word. */
     fun speak(ctx: Context, text: String, voice: (String) -> Unit) {
+        if (text.startsWith(SOUND)) {   // a sound tile
+            val g = text.drop(1)
+            if (!enabled || !(hasSound(ctx, g) && playSound(ctx, g))) voice(soundOf(g))
+            return
+        }
         if (!enabled) { voice(text); return }
         handler.removeCallbacksAndMessages(null)
         val m = asIn.find(text)
         if (m != null) {
             val (letter, word) = m.destructured
-            voice(letter)
-            handler.postDelayed({ if (!play(ctx, word)) voice(word) }, 900)
+            if (!(hasSound(ctx, letter) && playSound(ctx, letter))) voice(letter)
+            handler.postDelayed({ if (!play(ctx, word)) voice(word) }, 1000)
             return
         }
         if (!play(ctx, text)) voice(text)
@@ -52,7 +85,7 @@ object EnglishAudio {
     private fun play(ctx: Context, text: String): Boolean {
         val path = clip(ctx, text) ?: return false
         return try {
-            player?.release()
+            stopPlayer()
             val afd = ctx.assets.openFd(path)
             player = MediaPlayer().apply {
                 setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
@@ -62,8 +95,51 @@ object EnglishAudio {
             }
             true
         } catch (e: Exception) {
-            Log.w("EnglishAudio", "could not play ${key(text)}", e); false
+            Log.w("EnglishAudio", "could not play $path", e); false
         }
+    }
+
+    private fun playFile(f: File): Boolean {
+        if (!f.exists() || f.length() == 0L) return false
+        return try {
+            stopPlayer()
+            player = MediaPlayer().apply {
+                setDataSource(f.absolutePath)
+                setOnCompletionListener { it.release(); if (player === it) player = null }
+                prepare(); start()
+            }
+            true
+        } catch (e: Exception) {
+            Log.w("EnglishAudio", "could not play ${f.name}", e); false
+        }
+    }
+
+    private fun stopPlayer() { runCatching { player?.release() }; player = null }
+
+    private fun startRecording(ctx: Context, out: File): Boolean {
+        stopRecording(); stopPlayer()
+        return try {
+            @Suppress("DEPRECATION")
+            recorder = (if (Build.VERSION.SDK_INT >= 31) MediaRecorder(ctx) else MediaRecorder()).apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setAudioSamplingRate(44100); setAudioEncodingBitRate(96000)
+                setMaxDuration(15_000)
+                setOutputFile(out.absolutePath)
+                prepare(); start()
+            }
+            true
+        } catch (e: Exception) {
+            Log.w("EnglishAudio", "could not record", e); recorder = null; false
+        }
+    }
+
+    /** Stops a recording in progress; returns true if one was saved. */
+    fun stopRecording(): Boolean {
+        val r = recorder ?: return false
+        recorder = null
+        return runCatching { r.stop(); true }.getOrDefault(false).also { runCatching { r.release() } }
     }
 
     /** One credit line per recording: word, author, licence, source page. */

@@ -98,6 +98,29 @@ class EnglishScreensTest {
     assertTrue(spoken.last() == rep.dialogue[1].text)
     shot("voa_repeat")
   }
+  @Test fun grownUps_canRecordLetterSounds() {
+    launch(1); open("english_grownups")
+    rule.onNodeWithTag("english_sounds_list").assertExists()
+    rule.onNodeWithTag("english_sound_s_record").assertExists(); shot("grownup_sounds")
+  }
+
+  @Test fun continueButton_opensNextLesson() {
+    launch(2); open("english_continue")
+    rule.onNodeWithTag("english_e2.1_list").assertExists()
+  }
+
+  @Test fun speakingLevel_vocabAndGrammar() {
+    org.junit.Assume.assumeTrue(EnglishCourse.stages.size >= 5)
+    launch(5)
+    val vocab = EnglishCourse.stage(5).lessons.first { it.kind == LessonKind.VOCAB }
+    open("english_lesson_${vocab.id}")
+    rule.onNodeWithTag("english_vocab_${vocab.vocab.first().word}").performScrollTo().performClick(); rule.waitForIdle()
+    assertTrue(spoken.last() == vocab.vocab.first().word); shot("vocab")
+    rule.onNodeWithTag("english_back").performClick(); rule.waitForIdle()
+    val grammar = EnglishCourse.stage(5).lessons.first { it.kind == LessonKind.GRAMMAR }
+    open("english_lesson_${grammar.id}"); shot("grammar")
+  }
+
   @Test fun credits_listsSources() {
     launch(1); open("english_credits")
     rule.onNodeWithTag("english_credits_list").assertExists(); shot("credits")

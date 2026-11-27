@@ -51,7 +51,7 @@ object EnglishQuiz {
             2 -> shortWords(n % 3, random)
             3 -> if (n % 2 == 0) letterTeams((n / 2) % 3, random) else longVowels((n / 2) % 3, random)
             4 -> if (n % 2 == 0) trickyWord(random) else firstSentences((n / 2) % 3, random)
-            else -> speaking(stage, n % 3, random)
+            else -> speaking(stage, n % 5, random)
         }
     }
 
@@ -128,31 +128,49 @@ object EnglishQuiz {
         return q(shown, "Look at the picture. Which word fills the gap?", s.key, pool.map { it.key }, random, s.text, word = true)
     }
 
-    /** Levels 5–8: hear a line and find it, pick the right reply, fill a missing word. */
+    /** Levels 5–8: picture words, phrase meanings, hear-and-find, the right reply, and a missing word. */
     private fun speaking(stage: Int, kind: Int, random: Random): EnQuestion {
-        val talks = EnglishCourse.speakingPool(stage).second
+        val st = EnglishCourse.stage(stage)
+        val vocab = st.lessons.flatMap { it.vocab }.distinctBy { it.word }
+        val phrases = st.lessons.flatMap { it.phrases }
+        val talks = st.lessons.map { it.dialogue }.filter { it.size >= 2 }.distinct()
         val lines = talks.flatten().map { it.text }.distinct()
-        val otherLevels = EnglishCourse.stages.filter { it.number >= 5 }.flatMap { st -> st.lessons.map { it.dialogue } }.flatten()
+        val otherLines = EnglishCourse.stages.filter { it.number >= 5 }.flatMap { s -> s.lessons.map { it.dialogue } }.flatten()
             .map { it.text }.distinct()
-        return when (kind) {
-            0 -> {
+        return when {
+            kind == 0 && vocab.size >= 4 -> {
+                val v = vocab.random(random)
+                q(v.picture, "Which word is this?", v.word, vocab.map { it.word }, random, v.word, word = v.picture.length > 2 && v.picture.all { it.isLetterOrDigit() })
+            }
+            kind == 1 && phrases.size >= 4 -> {
+                val p = phrases.random(random)
+                q(p.text, "When do we say this?", p.meaning, phrases.map { it.meaning }, random, p.text, word = true)
+            }
+            kind == 2 && lines.size >= 4 -> {
                 val ln = lines.random(random)
                 q("🔊", "Listen. Which sentence do you hear?", ln, lines, random, ln, word = true)
             }
-            1 -> {
-                val talk = talks.filter { it.size >= 2 }.random(random)
-                val i = random.nextInt(talk.size - 1)
+            kind == 3 && talks.isNotEmpty() -> {
+                // a reply long enough to be clearly right, with wrong replies from other conversations
+                val choices = talks.flatMap { t -> (0 until t.size - 1).map { t to it } }
+                    .filter { (t, i) -> t[i + 1].text.split(' ').size >= 3 && t[i].speaker != t[i + 1].speaker }
+                val (talk, i) = if (choices.isNotEmpty()) choices.random(random) else talks.first().let { it to 0 }
                 val answer = talk[i + 1].text
-                // wrong replies come from other conversations, so they do not fit this one
-                val wrong = otherLevels.filter { o -> talk.none { it.text == o } }
-                q("${talk[i].speaker}: ${talk[i].text}", "What comes next in the conversation?", answer, wrong, random, talk[i].text, word = true)
+                val wrong = otherLines.filter { o -> o.split(' ').size >= 3 && talk.none { it.text == o } }
+                q("${talk[i].speaker}: ${talk[i].text}", "What is the best reply?", answer, wrong, random, talk[i].text, word = true)
             }
             else -> {
-                val words = { t: String -> t.split(' ').map { it.trim('.', ',', '!', '?', '"', '\'', '…') }.filter { it.length >= 4 && it.all(Char::isLetter) } }
-                val ln = lines.filter { words(it).isNotEmpty() }.random(random)
+                // the gap is a real word of the sentence, never a name
+                val words = { t: String ->
+                    t.split(' ').drop(1).map { it.trim('.', ',', '!', '?', '"', '\'', '…', '’') }
+                        .filter { it.length >= 4 && it.all(Char::isLetter) && it[0].isLowerCase() }
+                }
+                val pool0 = lines.ifEmpty { phrases.map { it.text } }
+                val ln = pool0.filter { words(it).isNotEmpty() }.random(random)
                 val gap = words(ln).maxBy { it.length }
                 val shown = ln.replaceFirst(Regex("\\b${Regex.escape(gap)}\\b"), "____")
-                val pool = lines.flatMap(words).distinct().filter { w -> !Regex("\\b${Regex.escape(w)}\\b", RegexOption.IGNORE_CASE).containsMatchIn(ln) }
+                val pool = pool0.flatMap(words).distinct()
+                    .filter { w -> !Regex("\\b${Regex.escape(w)}\\b", RegexOption.IGNORE_CASE).containsMatchIn(ln) }
                 q(shown, "Which word fills the gap?", gap, pool, random, ln, word = true)
             }
         }

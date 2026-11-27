@@ -29,7 +29,13 @@ data class Phrase(val text: String, val meaning: String, val emoji: String)
 /** One line of a conversation. */
 data class Line(val speaker: String, val text: String)
 
-enum class LessonKind { ALPHABET, SOUNDS, WORDS, PAIRS, TRICKY, CARDS, SENTENCES, STORY, PHRASES, DIALOGUE, REPEAT }
+/** A picture word: tap the picture to hear the word. [picture] is an emoji or a short label such as "13" or "Mon". */
+data class Vocab(val word: String, val picture: String)
+
+/** One grammar idea in plain words, with real example sentences from the conversations. */
+data class Tip(val title: String, val rule: String, val pattern: String, val examples: List<String>)
+
+enum class LessonKind { ALPHABET, SOUNDS, WORDS, PAIRS, TRICKY, CARDS, SENTENCES, STORY, PHRASES, DIALOGUE, REPEAT, VOCAB, GRAMMAR }
 
 data class EnLesson(
     val id: String,           // progress key, e.g. "e2.3"
@@ -44,6 +50,9 @@ data class EnLesson(
     val sentences: List<Sentence> = emptyList(),
     val phrases: List<Phrase> = emptyList(),
     val dialogue: List<Line> = emptyList(),
+    val vocab: List<Vocab> = emptyList(),
+    val tips: List<Tip> = emptyList(),
+    val pairJoin: String = "+ e →",                           // what sits between the two words of a pair
 )
 
 data class EnStage(
@@ -240,14 +249,33 @@ object EnglishCourse {
         val talks = VoaData.lessons.filter { it.level == level }
         if (talks.isEmpty()) return null
         val (names, colours) = speakingLevels[level - 5]
-        val lessons = talks.flatMapIndexed { i, t ->
-            listOf(
-                EnLesson("e$level.${2 * i + 1}", "Talk: ${t.title}", "Listen to the whole conversation", LessonKind.DIALOGUE,
-                    "Real voices from VOA Learning English. Tap ▶ to hear the whole talk, tap a line to hear it again, " +
-                        "then choose 'Be …' and say that person's lines yourself.", dialogue = t.lines),
-                EnLesson("e$level.${2 * i + 2}", "Say it: ${t.title}", "Listen and repeat, line by line", LessonKind.REPEAT,
-                    "Listen to each line, then say it out loud in the same way. Copy the music of the voice.", dialogue = t.lines),
-            )
+        // words first, then phrases and grammar, then the real conversations that use them
+        val prep = SpeakingContent.levels[level]
+        val lessons = mutableListOf<EnLesson>()
+        fun id() = "e$level.${lessons.size + 1}"
+        prep?.words?.forEach { (title, words) ->
+            lessons += EnLesson(id(), title, words.take(4).joinToString(", ") { it.word } + "…", LessonKind.VOCAB,
+                "Tap each picture to hear the word. Say it after the voice.", vocab = words)
+        }
+        prep?.pairs?.forEach { (title, join, pairs) ->
+            lessons += EnLesson(id(), title, pairs.take(3).joinToString(", ") { "${it.first.word} $join ${it.second.word}" }, LessonKind.PAIRS,
+                "Tap each word to hear it.", pairs = pairs, pairJoin = join)
+        }
+        prep?.phrases?.let { (title, phrases) ->
+            lessons += EnLesson(id(), "Phrases: $title", "${phrases.size} things people say every day", LessonKind.PHRASES,
+                "Tap a phrase to hear a real person say it, then say it yourself.", phrases = phrases)
+        }
+        prep?.tips?.let { tips ->
+            lessons += EnLesson(id(), "Grammar: " + tips.joinToString(" · ") { it.title.substringBefore(" (") }.take(48),
+                "${tips.size} short tips with real examples", LessonKind.GRAMMAR,
+                "Read each tip, then tap the examples to hear how people really say it.", tips = tips)
+        }
+        talks.forEach { t ->
+            lessons += EnLesson(id(), "Talk: ${t.title}", "Listen to the whole conversation", LessonKind.DIALOGUE,
+                "Real voices from VOA Learning English. Tap ▶ to hear the whole talk, tap a line to hear it again, " +
+                    "then choose 'Be …' and say that person's lines yourself.", dialogue = t.lines)
+            lessons += EnLesson(id(), "Say it: ${t.title}", "Listen, repeat, record yourself", LessonKind.REPEAT,
+                "Listen to each line, say it out loud, then record yourself and compare.", dialogue = t.lines)
         }
         return EnStage(level, names.first, names.second, talks.first().lines.first().text, names.third, names.third,
             colours.first, colours.second, lessons + storyLessons(level, lessons.size + 1))
@@ -346,6 +374,14 @@ object EnglishCourse {
     )
 
     fun stage(n: Int) = stages.first { it.number == n }
+
+    /** Every sound a tile can make, for grown-ups to record once (letters, then letter teams). */
+    val recordableSounds: List<Sound> by lazy {
+        (alphabet + extra.values + digraphsA + digraphsB + digraphsC + vowelTeams +
+            magicE.map { (_, long) -> long.parts.first { it.endsWith("_e") } }.distinct()
+                .map { g -> Sound(g, magicE.first { it.second.parts.contains(g) }.second.word, "✨") })
+            .distinctBy { it.grapheme }
+    }
 
     /** Respellings for the phone voice, used only when no recording exists. Single letters are never changed. */
     val pronunciation = mapOf("yo-yo" to "yo yo")

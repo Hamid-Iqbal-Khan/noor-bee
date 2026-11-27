@@ -53,6 +53,7 @@ def words_from(src):
     s = "\n".join(open(f, encoding="utf-8").read() for f in src.split(","))
     out = []
     out += re.findall(r'\bw\("([^"]+)"', s)                         # practice words
+    out += re.findall(r'\b(?:v|rw)\("([^"]+)"', s)                  # speaking-level picture words and pairs
     out += re.findall(r'Sound\("[^"]+", "([^"]+)"', s)              # picture keywords
     for body in re.findall(r'val (?:tricky\d|colours|numbers) = listOf\(([^)]*)\)', s):
         out += re.findall(r'"([^"]+)"', body)                       # sight words

@@ -106,6 +106,14 @@ class QaidaEnglishDataTest {
   @Test fun englishCourse_structure() {
     // 4 reading levels, plus 4 speaking levels when CI has fetched the VOA conversations
     assertTrue(EnglishCourse.stages.size == 4 || EnglishCourse.stages.size == 8)
+    // every phrase and grammar example in the speaking levels is a real VOA line, so it plays a real voice
+    if (com.example.english.VoaData.lessons.isNotEmpty()) {
+      com.example.english.SpeakingContent.levels.values.forEach { lv ->
+        (lv.phrases.second.map { it.text } + lv.tips.flatMap { it.examples }).forEach {
+          assertTrue("not a VOA line: $it", com.example.english.EnglishAudio.isVoaLine(it))
+        }
+      }
+    }
     com.example.english.VoaData.lessons.forEach { v ->
       assertTrue("VOA ${v.number} has a conversation", v.lines.size >= 2)
       v.lines.forEach { assertTrue("clip for '${it.text}'", com.example.english.VoaData.clips.containsKey(com.example.english.EnglishAudio.key(it.text))) }

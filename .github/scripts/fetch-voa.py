@@ -59,6 +59,9 @@ def transcript(lines):
 def clean(text):
     """Drop stage directions "(walks off)" and the stray spaces the page puts before punctuation."""
     text = re.sub(r"\s*\([^)]*\)\s*", " ", text)
+    text = text.replace("';", "'").replace("c elery", "celery")          # typos on the VOA pages
+    if text.count("“") != text.count("”"):
+        text = text.replace("“", "").replace("”", "")
     text = re.sub(r"\s+([.,!?;:])", r"\1", text)
     return re.sub(r"\s+", " ", text).strip().strip('"“”').strip()
 
