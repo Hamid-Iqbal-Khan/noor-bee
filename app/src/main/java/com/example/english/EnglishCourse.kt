@@ -250,7 +250,12 @@ object EnglishCourse {
         if (talks.isEmpty()) return null
         val (names, colours) = speakingLevels[level - 5]
         // words first, then phrases and grammar, then the real conversations that use them
-        val prep = SpeakingContent.levels[level]
+        // show only phrases and examples that have a real recording (a VOA line the recogniser found)
+        val real = { t: String -> EnglishAudio.isVoaLine(t) }
+        val prep = SpeakingContent.levels[level]?.let { lv ->
+            lv.copy(phrases = lv.phrases.first to lv.phrases.second.filter { real(it.text) },
+                tips = lv.tips.map { t -> t.copy(examples = t.examples.filter(real)) }.filter { it.examples.isNotEmpty() })
+        }
         val lessons = mutableListOf<EnLesson>()
         fun id() = "e$level.${lessons.size + 1}"
         prep?.words?.forEach { (title, words) ->

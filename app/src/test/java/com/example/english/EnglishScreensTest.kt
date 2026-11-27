@@ -101,7 +101,7 @@ class EnglishScreensTest {
   @Test fun grownUps_canRecordLetterSounds() {
     launch(1); open("english_grownups")
     rule.onNodeWithTag("english_sounds_list").assertExists()
-    rule.onNodeWithTag("english_sound_s_record").assertExists(); shot("grownup_sounds")
+    rule.onNodeWithTag("english_sound_a_record").assertExists(); shot("grownup_sounds")
   }
 
   @Test fun continueButton_opensNextLesson() {

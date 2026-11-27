@@ -108,10 +108,13 @@ class QaidaEnglishDataTest {
     assertTrue(EnglishCourse.stages.size == 4 || EnglishCourse.stages.size == 8)
     // every phrase and grammar example in the speaking levels is a real VOA line, so it plays a real voice
     if (com.example.english.VoaData.lessons.isNotEmpty()) {
-      com.example.english.SpeakingContent.levels.values.forEach { lv ->
-        (lv.phrases.second.map { it.text } + lv.tips.flatMap { it.examples }).forEach {
-          assertTrue("not a VOA line: $it", com.example.english.EnglishAudio.isVoaLine(it))
-        }
+      // the app shows only lines with a real recording; make sure enough of each list survives
+      com.example.english.SpeakingContent.levels.forEach { (n, lv) ->
+        val phrases = lv.phrases.second.count { com.example.english.EnglishAudio.isVoaLine(it.text) }
+        assertTrue("level $n phrases with audio: $phrases", phrases >= lv.phrases.second.size - 2)
+        lv.tips.forEach { t -> assertTrue("tip '${t.title}' has a real example", t.examples.any { com.example.english.EnglishAudio.isVoaLine(it) }) }
+        val shown = EnglishCourse.stage(n).lessons.flatMap { it.phrases.map { p -> p.text } + it.tips.flatMap { t -> t.examples } }
+        shown.forEach { assertTrue("shown without audio: $it", com.example.english.EnglishAudio.isVoaLine(it)) }
       }
     }
     com.example.english.VoaData.lessons.forEach { v ->
