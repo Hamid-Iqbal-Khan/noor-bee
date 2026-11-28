@@ -140,7 +140,7 @@ fun QaidaScreen(
     val wordIndex = remember(juz) { QuranAudio.buildIndex(emptyList(), QuranAudio.courseAyat(juz)) }
     // the open lesson's tracker (set inside TrackLesson below), so every tap counts as "heard"
     val current = remember { arrayOfNulls<LessonTracker>(1) }
-    val markDone: (String) -> Unit = { l -> markDone(l); current[0]?.done() }
+    val markDone: (String) -> Unit = { l -> progress.markLessonDone(l); current[0]?.done() }
     val play: (String, String) -> Unit = { key, text ->
         current[0]?.heard(key)
         audio.play(key, QuranAudio.urlForKey(key) ?: wordIndex.urlsFor(text), QuranAudio.speechFor(key, text), onSpeakArabic)
