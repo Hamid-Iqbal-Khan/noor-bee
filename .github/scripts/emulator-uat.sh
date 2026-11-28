@@ -84,6 +84,15 @@ adb shell input swipe 540 1700 540 1100 300; sleep 1
 tap_text "مرحلہ ۱۱: گرامر"; sleep 3; shot 34_qaida_stage11_home
 tap_text "تین حرفی جڑ"; sleep 2; shot 35_qaida_roots; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
+# Urdu dashboard: the Quran course explained in English, after the Urdu Qaida stages
+for k in 1 2 3 4 5 6 7 8; do [ -n "$(find_text "Stage 1: Letters")" ] && break; adb shell input swipe 540 1700 540 1000 300; sleep 1; done
+shot 35b_dashboard_urdu_quran_english
+tap_text "Stage 1: Letters"; sleep 3; shot 36_quran_english_stage1
+tap_text "The single letters"; sleep 3; shot 37_quran_english_letters
+tap_text "Thaa"; sleep 2; shot 38_quran_english_letter_detail; adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 1
+tap_text "Vowel marks:"; sleep 3; shot 39_quran_english_harakat; adb shell input keyevent 4; sleep 1
+tap_text "5: Meanings"; sleep 2; tap_text "Al-Fatihah word by word"; sleep 3; shot 40_quran_english_fatiha_wbw; adb shell input keyevent 4; sleep 1
+adb shell input keyevent 4; sleep 2
 adb shell input swipe 540 1000 540 1700 300; sleep 1
 adb shell input swipe 540 1700 540 700 300; sleep 1; shot 19_dashboard_arabic_section
 adb shell input swipe 540 700 540 1700 300; sleep 1
@@ -92,16 +101,6 @@ tap_text "English"; sleep 2
 tap_text "Daily Duas"; sleep 2; shot 04_duas; adb shell input keyevent 4; sleep 2
 tap_text "Quran Explorer"; sleep 3; shot 05_quran
 tap_text "Surat-ul-Fateha"; sleep 3; shot 06_surah_fatiha; adb shell input keyevent 4; sleep 2; adb shell input keyevent 4; sleep 2; shot 06b_back_to_dashboard
-# make sure the app (not the launcher) is in front before scrolling: a swipe on the launcher opens the shade
-adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 4
-if [ -n "$(find_text "Let's Play")" ]; then tap_text "Let's Play"; sleep 3; fi
-for k in 1 2 3 4 5 6; do adb shell input swipe 540 900 540 2000 200; sleep 1; done
-tap_text "Stage 1: Letters"; sleep 3; shot 36_quran_english_stage1
-tap_text "The single letters"; sleep 3; shot 37_quran_english_letters
-tap_text "Thaa"; sleep 2; shot 38_quran_english_letter_detail; adb shell input keyevent 4; sleep 1; adb shell input keyevent 4; sleep 1
-tap_text "Vowel marks:"; sleep 3; shot 39_quran_english_harakat; adb shell input keyevent 4; sleep 1
-tap_text "5: Meanings"; sleep 2; tap_text "Al-Fatihah word by word"; sleep 3; shot 40_quran_english_fatiha_wbw; adb shell input keyevent 4; sleep 1
-adb shell input keyevent 4; sleep 2
 adb shell am start -n "$PKG/com.example.MainActivity" >/dev/null 2>&1; sleep 4
 if [ -n "$(find_text "Let's Play")" ]; then tap_text "Let's Play"; sleep 3; fi
 for k in 1 2 3 4 5 6; do adb shell input swipe 540 900 540 2000 200; sleep 1; done

@@ -22,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.rules.ExternalResource
 import org.junit.Assert.assertEquals
 import org.junit.Rule
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -119,11 +120,13 @@ class UatFlowTest {
     log("tap stage 2 card"); clickTag("dashboard_qaida_stage2"); log("tapped"); step(1_500); log("stepped")
     shot("06b_qaida_stage2"); log("shot"); goBack(); log("back")
     waitTag("home_dashboard_screen"); dismissGuide()
-    // Urdu mode adds the Qaida stage cards and pushes the English games further down: switch back first.
-    clickText("English"); step(1_000); dismissGuide()
-    // English mode: the Quran course taught in English, then the English reading course (they replaced the old games).
+    // the Quran course explained in English now sits on the Urdu dashboard, after the Urdu Qaida stages
     clickText("Stage 1: Letters"); step(1_500); waitTag("qaida_root"); shot("07_quran_english_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
+    // Urdu mode adds the Qaida stage cards and pushes the English games further down: switch back first.
+    clickText("English"); step(1_000); dismissGuide()
+    // English mode: only the English course
+    assertTrue(rule.onAllNodes(hasTestTag("dashboard_quran_en_title"), useUnmergedTree = true).fetchSemanticsNodes().isEmpty())
     clickText("Level 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
     clickText("My Stickers"); step(2_000); shot("07c_stickers"); goBack()

@@ -662,14 +662,16 @@ fun HomeDashboardScreen(
                             }
                         }
                         }
-                    } else if (!isArabicPath) {
-                        // English path: the Quran course (same 11 stages as the Urdu course, taught in English),
-                        // then the English reading course. Both read left to right.
-                        Text("📖 Learn to read the Quran", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
-                            modifier = Modifier.testTag("dashboard_quran_en_title"))
+                        // The same Quran course explained in English lives here too, with the other Quran
+                        // learning, so the English dashboard holds only the English course.
+                        Text("📖 قرآن پڑھنا سیکھیں — انگریزی میں · Learn to read the Quran in English", fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold, color = DeepNavy,
+                            modifier = Modifier.padding(top = 6.dp).testTag("dashboard_quran_en_title"))
                         EnglishCourseCards(quranEnglishCards, "dashboard_quran_en_stage", onNavigateToQuranEnglish)
+                    } else if (!isArabicPath) {
+                        // English path: only the English course, from the alphabet to speaking.
                         Text("🔤 Learn English — from ABC to speaking", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy,
-                            modifier = Modifier.padding(top = 4.dp).testTag("dashboard_english_title"))
+                            modifier = Modifier.testTag("dashboard_english_title"))
                         EnglishCourseCards(englishReadingCards, "dashboard_english_stage", onNavigateToEnglishCourse)
                     } else {
                     // Row 1
