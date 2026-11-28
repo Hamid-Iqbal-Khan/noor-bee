@@ -109,9 +109,10 @@ class LessonTracker(private val log: StudyLog, val course: String, val key: Stri
     fun done(score: Int? = null) { finished = true; log.update(course, key, title, percent = 100, heard = heardItems.size, score = score) }
 
     fun percent(): Int = if (finished) 100 else {
-        val byItems = if (expected > 0) heardItems.size / expected.toFloat() else 0f
-        // seeing or hearing everything is not the same as finishing: 100 only with the Done button or a practice
-        (maxOf(reach, byItems) * 100).toInt().coerceAtMost(95)
+        // when the lesson says how many items it has, listening to them counts most (scrolling past is not studying);
+        // seeing or hearing everything is still not finishing: 100 only with the Done button or a practice
+        val covered = if (expected > 0) 0.3f * reach + 0.7f * (heardItems.size / expected.toFloat()).coerceAtMost(1f) else reach
+        (covered * 100).toInt().coerceAtMost(95)
     }
 
     private fun save() = log.update(course, key, title, percent = percent(), heard = heardItems.size)

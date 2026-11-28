@@ -16,13 +16,19 @@ class StudyLogTest {
     val log = StudyLog(ctx, 9001)
     val a = LessonTracker(log, "English", "e2.1", "Level 2 · Short a")
     a.open(); a.reach(0.2f); a.heard("cat"); a.heard("hat"); a.reach(0.45f); a.close()
+    // a short lesson that fits on one screen is not "covered" until its items are heard
+    val c = LessonTracker(log, "English", "e2.2", "Level 2 · Short e")
+    c.expect(7); c.open(); c.reach(1f)
+    assertEquals(30, log.day().first { it.key == "e2.2" }.percent)
+    repeat(7) { c.heard("w$it") }
+    assertEquals(95, log.day().first { it.key == "e2.2" }.percent)
     val b = LessonTracker(log, "Quran (Urdu)", "s2_joining", "Stage 2 · Joining")
     b.open(); b.reach(0.3f); b.done(); b.close()
     val q = LessonTracker(log, "English", "quiz2", "Level 2 practice")
     q.open(); q.position(5, 10); q.done(score = 8); q.close()
 
     val today = log.day()
-    assertEquals(3, today.size)
+    assertEquals(4, today.size)
     val short = today.first { it.key == "e2.1" }
     assertEquals(45, short.percent); assertEquals(2, short.heard)
     assertEquals(100, today.first { it.key == "s2_joining" }.percent)
@@ -39,7 +45,7 @@ class StudyLogTest {
     val t = LessonTracker(log, "Quran (Urdu)", "letters", "Stage 1 · Letters")
     t.expect(29); t.open()
     repeat(29) { t.heard("l$it") }
-    assertEquals(95, log.day().first().percent)   // 100 only when the lesson is finished
+    assertEquals(70, log.day().first().percent)   // heard all 29 but never scrolled: 70; 100 only when finished
     t.done(); assertEquals(100, log.day().first().percent)
   }
 }

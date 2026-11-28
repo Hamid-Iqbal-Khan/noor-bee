@@ -257,6 +257,12 @@ private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speakIn: (Strin
     val tracker = LocalLessonTracker.current
     val speak: (String) -> Unit = { tracker?.heard(it); speakIn(it) }
     val onDone: () -> Unit = { tracker?.done(); onDoneIn() }
+    // items a child can tap and hear in this lesson (stories, repeat and cards count pages instead)
+    remember(l.id) {
+        val n = l.sounds.size + l.words.size + l.pairs.size * 2 + l.sentences.size + l.phrases.size + l.vocab.size +
+            l.tips.sumOf { it.examples.size } + l.dialogue.size + (if (l.kind == LessonKind.TRICKY) l.tricky.size else 0)
+        if (l.kind !in setOf(LessonKind.STORY, LessonKind.REPEAT, LessonKind.CARDS) && n > 0) tracker?.expect(n)
+    }
     if (l.kind == LessonKind.CARDS) { Flashcards(l.tricky, speak, onDone); return }
     var seen by remember { mutableStateOf(progress.seen()) }
     LazyColumn(Modifier.fillMaxSize().testTag("english_${l.id}_list"), state = trackedListState(), contentPadding = PaddingValues(16.dp),

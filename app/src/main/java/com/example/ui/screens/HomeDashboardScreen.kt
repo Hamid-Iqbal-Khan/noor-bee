@@ -1536,7 +1536,7 @@ private fun StudyReportDialog(log: com.example.progress.StudyLog, urdu: Boolean,
                         Text(listOfNotNull(
                             e.course,
                             mins(e.seconds),
-                            if (e.heard > 0) L("${e.heard} items heard", "${e.heard} چیزیں سنیں") else null,
+                            if (e.heard > 0) L(if (e.heard == 1) "1 item heard" else "${e.heard} items heard", "${e.heard} چیزیں سنیں") else null,
                             e.score?.let { L("score $it/10", "نمبر $it/10") },
                         ).joinToString("  ·  "), fontSize = 12.sp, color = SlateGrey)
                     }
