@@ -365,11 +365,11 @@ internal fun soundOf(part: String): String {
     if (t.length == 1) return t.uppercase()
     // letter teams: just the one sound they make, nothing more
     return when (t) {
-        "sh" -> "shh"; "ch" -> "ch"; "th" -> "th"; "ng" -> "ng"; "ck" -> "K"; "ll" -> "L"; "ss" -> "S"
+        "sh" -> "shh"; "ch" -> "chuh"; "th" -> "thuh"; "ng" -> "ing"; "ck" -> "K"; "ll" -> "L"; "ss" -> "S"
         "wh" -> "W"; "ph" -> "F"; "qu" -> "kw"; "jj" -> "J"; "er" -> "er"; "cc" -> "K"; "mm" -> "M"
         "ai", "ay", "a_e" -> "ay"; "ee", "ea" -> "ee"; "oa", "o_e" -> "oh"; "ow" -> "ow"; "igh", "i_e" -> "eye"
         "oo", "ue", "ew" -> "oo"; "u_e" -> "you"; "ie" -> "eye"
-        "ar" -> "ar"; "or" -> "or"; "ur", "ir" -> "er"; "ou" -> "ow"; "oi", "oy" -> "oy"; "nk" -> "nk"
+        "ar" -> "ar"; "or" -> "or"; "ur", "ir" -> "er"; "ou" -> "ow"; "oi", "oy" -> "oy"; "nk" -> "ink"
         "ff" -> "F"; "zz" -> "Z"; "gg" -> "G"; "dd" -> "D"
         else -> t
     }

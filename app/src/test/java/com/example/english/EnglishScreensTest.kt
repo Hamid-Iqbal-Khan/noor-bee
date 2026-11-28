@@ -136,6 +136,15 @@ class EnglishScreensTest {
   @Test fun letterTap_speaksSoundAndKeyword() {
     launch(1); open("english_lesson_e1.1")
     rule.onNodeWithTag("english_letter_s").performScrollTo().performClick(); rule.waitForIdle()
-    assertTrue(spoken.last() == "s, as in sun")
+    assertTrue(spoken.last() == "S, as in sun")
+  }
+
+  // the sh card must say the sound "shh", never the raw letters (the voice read them as "shish")
+  @Test fun letterTeamCard_speaksItsSound() {
+    launch(3); open("english_lesson_e3.1")
+    rule.onNodeWithTag("english_sound_sh").performScrollTo().performClick(); rule.waitForIdle()
+    assertTrue(spoken.last(), spoken.last() == "shh, as in ship")
+    rule.onNodeWithTag("english_sound_ch").performScrollTo().performClick(); rule.waitForIdle()
+    assertTrue(spoken.last(), spoken.last() == "chuh, as in chick")
   }
 }

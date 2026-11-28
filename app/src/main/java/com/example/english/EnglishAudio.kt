@@ -70,12 +70,13 @@ object EnglishAudio {
             if (!enabled || !(hasSound(ctx, g) && playSound(ctx, g))) voice(soundOf(g))
             return
         }
-        if (!enabled) { voice(text); return }
+        if (!enabled) { voice(asIn.find(text)?.let { "${soundOf(it.groupValues[1])}, as in ${it.groupValues[2]}" } ?: text); return }
         handler.removeCallbacksAndMessages(null)
         val m = asIn.find(text)
         if (m != null) {
             val (letter, word) = m.destructured
-            if (!(hasSound(ctx, letter) && playSound(ctx, letter))) voice(letter)
+            // a letter team goes through the same respelling as its tile ("sh" -> "shh"), never the raw letters
+            if (!(hasSound(ctx, letter) && playSound(ctx, letter))) voice(soundOf(letter))
             handler.postDelayed({ if (!play(ctx, word)) voice(word) }, 1000)
             return
         }
