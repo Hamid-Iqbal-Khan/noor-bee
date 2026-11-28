@@ -83,7 +83,7 @@ fun LearningPathScreens(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            val lessonAge = (profile.level + 2).coerceIn(3, 8)
+            val lessonAge = profile.age.coerceIn(3, 8)
             val isAgeThreeAlphabet = lessonAge == 3 && topicGroup == "Alphabet"
             val isAgeFourAlphabet = lessonAge == 4 && topicGroup == "Alphabet"
             val isAgeFiveAlphabet = lessonAge == 5 && topicGroup == "Alphabet"

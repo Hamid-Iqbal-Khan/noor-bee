@@ -395,7 +395,7 @@ fun ColumnScope.PhonicsWhiteboardLayout(
     profile: ChildProfile,
     onSoundTrigger: (String) -> Unit
 ) {
-    val profile = profile.copy(age = (profile.level + 2).coerceIn(3, 8))
+    val profile = profile.copy(age = profile.age.coerceIn(3, 8))
     var isArabicLanguage by remember { mutableStateOf(profile.currentLanguage == "Arabic") }
     
     val englishLetters = remember { ('A'..'Z').map { it.toString() } }

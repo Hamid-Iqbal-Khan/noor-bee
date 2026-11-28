@@ -124,7 +124,14 @@ fun HomeDashboardScreen(
     onLevelChanged: (Int) -> Unit = {}
 ) {
     var showParentGate by remember { mutableStateOf(false) }
-    var showAgeSelectorDialog by remember { mutableStateOf(false) }
+    var showTodayReport by remember { mutableStateOf(false) }
+    val urduUi = profile.currentLanguage == "Urdu"
+    // re-read whenever the dashboard comes back into view (after a lesson)
+    val logContext = LocalContext.current
+    val studyLog = remember(profile.id) { com.example.progress.StudyLog(logContext, profile.id) }
+    var studyRefresh by remember { mutableIntStateOf(0) }
+    androidx.lifecycle.compose.LifecycleResumeEffect(profile.id) { studyRefresh++; onPauseOrDispose { } }
+    val todayLessons = remember(profile.id, studyRefresh) { studyLog.day() }
     var showProfileManager by remember { mutableStateOf(false) }
     var showTutorialDialog by remember { mutableStateOf(false) }
     var pinValue by remember { mutableStateOf("") }
@@ -281,12 +288,12 @@ fun HomeDashboardScreen(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Level select/change pill
+                    // Today: what the child studied today (opens the daily report)
                     Card(
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { showAgeSelectorDialog = true }
-                            .testTag("level_selector_badge"),
+                            .clickable { showTodayReport = true }
+                            .testTag("today_badge"),
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(containerColor = LightBlueGrey),
                         border = BorderStroke(1.dp, MinimalBlue)
@@ -298,10 +305,10 @@ fun HomeDashboardScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text("🌟", fontSize = 14.sp)
+                            Text("📅", fontSize = 14.sp)
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Level ${profile.level}",
+                                text = if (urduUi) "آج: ${todayLessons.size} اسباق" else "Today: ${todayLessons.size}",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 color = MinimalBlue,
@@ -728,9 +735,9 @@ fun HomeDashboardScreen(
                         Box(modifier = Modifier.weight(1f)) {
                             DashboardHoneycomb(
                                 title = "Daily Duas 🌙",
-                                subtitle = if (profile.level == 1) "🧸 Level 1 Match!" else "Sweet supplications",
-                                color = if (profile.level == 1) Color(0xFFFFFDEC) else Color.White,
-                                borderStroke = if (profile.level == 1) Color(0xFFFFB300) else BorderGrey,
+                                subtitle = "Sweet supplications",
+                                color = Color.White,
+                                borderStroke = BorderGrey,
                                 emoji = "🌙",
                                 onClick = onNavigateToDua
                             )
@@ -944,107 +951,10 @@ fun HomeDashboardScreen(
                 )
             }
 
-            if (showAgeSelectorDialog) {
-                AlertDialog(
-                    onDismissRequest = { showAgeSelectorDialog = false },
-                    title = {
-                        Text(
-                            text = "Select Level 🌟",
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 18.sp
-                        )
-                    },
-                    text = {
-                        Column {
-                            Text(
-                                "Choose a level to customize learning activities:",
-                                fontSize = 13.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                            
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                (1..3).forEach { selectableLevel ->
-                                    val isSelected = profile.level == selectableLevel
-                                    Box(
-                                        modifier = Modifier
-                                            .size(45.dp)
-                                            .clip(CircleShape)
-                                            .background(
-                                                if (isSelected) LightBlueGrey else BadgeGrey
-                                            )
-                                            .border(
-                                                width = 1.dp,
-                                                color = if (isSelected) MinimalBlue else Color.Transparent,
-                                                shape = CircleShape
-                                            )
-                                            .clickable {
-                                                onLevelChanged(selectableLevel)
-                                                showAgeSelectorDialog = false
-                                            }
-                                            .weight(1f),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            text = "$selectableLevel",
-                                            fontWeight = FontWeight.Bold,
-                                            color = if (isSelected) DeepNavy else SlateGrey,
-                                            fontSize = 15.sp
-                                        )
-                                    }
-                                }
-                            }
 
-                            Spacer(modifier = Modifier.height(12.dp))
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                (4..6).forEach { selectableLevel ->
-                                    val isSelected = profile.level == selectableLevel
-                                    Box(
-                                        modifier = Modifier
-                                            .size(45.dp)
-                                            .clip(CircleShape)
-                                            .background(
-                                                if (isSelected) LightBlueGrey else BadgeGrey
-                                            )
-                                            .border(
-                                                width = 1.dp,
-                                                color = if (isSelected) MinimalBlue else Color.Transparent,
-                                                shape = CircleShape
-                                            )
-                                            .clickable {
-                                                onLevelChanged(selectableLevel)
-                                                showAgeSelectorDialog = false
-                                            }
-                                            .weight(1f),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            text = "$selectableLevel",
-                                            fontWeight = FontWeight.Bold,
-                                            color = if (isSelected) DeepNavy else SlateGrey,
-                                            fontSize = 15.sp
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    confirmButton = {
-                        TextButton(onClick = { showAgeSelectorDialog = false }) {
-                            Text("Cancel", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-                        }
-                    }
-                )
+            if (showTodayReport) {
+                StudyReportDialog(studyLog, urduUi, onDismiss = { showTodayReport = false })
             }
 
             if (showProfileManager) {
@@ -1210,38 +1120,6 @@ fun HomeDashboardScreen(
                                             }
                                         }
 
-                                        Spacer(modifier = Modifier.height(12.dp))
-                                        Text(
-                                            text = "Select Level: Level $newSiblingLevel",
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 13.sp,
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            modifier = Modifier.align(Alignment.Start)
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            (1..6).forEach { selectableLevel ->
-                                                val isSel = newSiblingLevel == selectableLevel
-                                                Box(
-                                                    modifier = Modifier
-                                                        .size(36.dp)
-                                                        .background(if (isSel) LightBlueGrey else BadgeGrey, CircleShape)
-                                                        .border(1.dp, if (isSel) MinimalBlue else Color.Transparent, CircleShape)
-                                                        .clickable { newSiblingLevel = selectableLevel },
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    Text(
-                                                        text = "$selectableLevel",
-                                                        fontWeight = FontWeight.Bold,
-                                                        fontSize = 13.sp,
-                                                        color = if (isSel) DeepNavy else SlateGrey
-                                                    )
-                                                }
-                                            }
-                                        }
                                     }
                                 }
                             } else {
@@ -1366,41 +1244,6 @@ fun HomeDashboardScreen(
                                             }
                                         }
 
-                                        Spacer(modifier = Modifier.height(12.dp))
-                                        Text(
-                                            text = "Select Level: Level $editLevel",
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 13.sp,
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            modifier = Modifier.align(Alignment.Start)
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            (1..6).forEach { selectableLevel ->
-                                                val isSel = editLevel == selectableLevel
-                                                Box(
-                                                    modifier = Modifier
-                                                        .size(36.dp)
-                                                        .background(if (isSel) LightBlueGrey else BadgeGrey, CircleShape)
-                                                        .border(1.dp, if (isSel) MinimalBlue else Color.Transparent, CircleShape)
-                                                        .clickable {
-                                                            editLevel = selectableLevel
-                                                            isEditingActive = true
-                                                        },
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    Text(
-                                                        text = "$selectableLevel",
-                                                        fontWeight = FontWeight.Bold,
-                                                        fontSize = 13.sp,
-                                                        color = if (isSel) DeepNavy else SlateGrey
-                                                    )
-                                                }
-                                            }
-                                        }
 
                                         if (isEditingActive) {
                                             Spacer(modifier = Modifier.height(14.dp))
@@ -1647,6 +1490,77 @@ fun DashboardHoneycomb(
                     textAlign = TextAlign.Center,
                     lineHeight = 11.sp
                 )
+            }
+        }
+    }
+}
+
+
+/** For parents: what the child studied today (each lesson with how much was covered) and the last 7 days. */
+@Composable
+private fun StudyReportDialog(log: com.example.progress.StudyLog, urdu: Boolean, onDismiss: () -> Unit) {
+    val days = remember { log.recent(7) }
+    val today = days.first().second
+    fun L(en: String, ur: String) = if (urdu) ur else en
+    fun mins(sec: Int) = if (sec < 60) L("<1 min", "1 منٹ سے کم") else L("${sec / 60} min", "${sec / 60} منٹ")
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss,
+        properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
+        Card(Modifier.fillMaxWidth(0.94f).fillMaxHeight(0.85f).testTag("study_report"), shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides
+                (if (urdu) androidx.compose.ui.unit.LayoutDirection.Rtl else androidx.compose.ui.unit.LayoutDirection.Ltr)) {
+            androidx.compose.foundation.lazy.LazyColumn(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                item {
+                    Text(L("📅 Today's learning", "📅 آج کی پڑھائی"), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = DeepNavy)
+                    val finished = today.count { it.percent >= 100 }
+                    Text(L("${today.size} lessons opened · $finished finished · ${mins(today.sumOf { it.seconds })}",
+                        "${today.size} اسباق کھولے · $finished مکمل · ${mins(today.sumOf { it.seconds })}"),
+                        fontSize = 14.sp, color = SlateGrey, modifier = Modifier.testTag("study_report_summary"))
+                }
+                if (today.isEmpty()) item {
+                    Text(L("Nothing studied yet today. Open any lesson and it will appear here with how much was covered.",
+                        "آج ابھی کوئی سبق نہیں پڑھا۔ کوئی بھی سبق کھولیں، وہ یہاں دکھے گا کہ کتنا پڑھا۔"), fontSize = 14.sp, color = SlateGrey)
+                }
+                items(today.size) { i ->
+                    val e = today[i]
+                    Column(Modifier.fillMaxWidth().background(BadgeGrey, RoundedCornerShape(14.dp)).padding(12.dp).testTag("study_lesson_$i")) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(e.title, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = DeepNavy, modifier = Modifier.weight(1f))
+                            Text(if (e.percent >= 100) "✅ 100%" else "${e.percent}%", fontSize = 15.sp, fontWeight = FontWeight.ExtraBold,
+                                color = if (e.percent >= 100) Color(0xFF2E7D32) else MinimalBlue)
+                        }
+                        Spacer(Modifier.height(6.dp))
+                        LinearProgressIndicator(progress = { e.percent / 100f }, modifier = Modifier.fillMaxWidth().height(6.dp),
+                            color = if (e.percent >= 100) Color(0xFF2E7D32) else MinimalBlue, trackColor = Color.White)
+                        Spacer(Modifier.height(6.dp))
+                        Text(listOfNotNull(
+                            e.course,
+                            mins(e.seconds),
+                            if (e.heard > 0) L("${e.heard} items heard", "${e.heard} چیزیں سنیں") else null,
+                            e.score?.let { L("score $it/10", "نمبر $it/10") },
+                        ).joinToString("  ·  "), fontSize = 12.sp, color = SlateGrey)
+                    }
+                }
+                item {
+                    Spacer(Modifier.height(6.dp))
+                    Text(L("Last 7 days", "پچھلے 7 دن"), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = DeepNavy)
+                }
+                items(days.size) { i ->
+                    val (date, list) = days[i]
+                    val label = if (i == 0) L("Today", "آج") else if (i == 1) L("Yesterday", "کل") else date
+                    Row(Modifier.fillMaxWidth().testTag("study_day_$i"), verticalAlignment = Alignment.CenterVertically) {
+                        Text(label, fontSize = 13.sp, color = DeepNavy, modifier = Modifier.width(96.dp))
+                        Text(if (list.isEmpty()) "—" else L("${list.size} lessons · ${list.count { it.percent >= 100 }} finished · ${mins(list.sumOf { it.seconds })}",
+                            "${list.size} اسباق · ${list.count { it.percent >= 100 }} مکمل · ${mins(list.sumOf { it.seconds })}"),
+                            fontSize = 13.sp, color = SlateGrey)
+                    }
+                }
+                item {
+                    TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth().testTag("study_report_close")) {
+                        Text(L("Close", "بند کریں"), fontWeight = FontWeight.Bold, color = MinimalBlue)
+                    }
+                }
+            }
             }
         }
     }

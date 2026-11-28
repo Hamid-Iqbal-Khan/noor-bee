@@ -40,6 +40,7 @@ private val Line = Color(0xFFE2E5EA)
 internal fun Stage2Lesson(page: String, play: (String, String) -> Unit, onDone: () -> Unit) {
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_${page}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

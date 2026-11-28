@@ -96,6 +96,7 @@ object QaidaJuzAmmaQuiz {
 internal fun JuzAmmaLesson(surah: QaidaStage5.WbwSurah, play: (String, String) -> Unit, onDone: () -> Unit) {
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_juz_${surah.number}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

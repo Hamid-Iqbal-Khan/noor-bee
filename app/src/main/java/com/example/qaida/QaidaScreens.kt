@@ -1,6 +1,10 @@
 package com.example.qaida
 
 import androidx.activity.compose.BackHandler
+import com.example.progress.LessonTracker
+import com.example.progress.LocalLessonTracker
+import com.example.progress.TrackLesson
+import com.example.progress.trackedListState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -134,7 +138,11 @@ fun QaidaScreen(
     val juz = remember { QaidaJuzAmma.load(context) }
     remember { QaidaMafhoom.load(context) }
     val wordIndex = remember(juz) { QuranAudio.buildIndex(emptyList(), QuranAudio.courseAyat(juz)) }
+    // the open lesson's tracker (set inside TrackLesson below), so every tap counts as "heard"
+    val current = remember { arrayOfNulls<LessonTracker>(1) }
+    val markDone: (String) -> Unit = { l -> markDone(l); current[0]?.done() }
     val play: (String, String) -> Unit = { key, text ->
+        current[0]?.heard(key)
         audio.play(key, QuranAudio.urlForKey(key) ?: wordIndex.urlsFor(text), QuranAudio.speechFor(key, text), onSpeakArabic)
     }
 
@@ -201,55 +209,65 @@ fun QaidaScreen(
             QaidaHeader(title, onBack = { if (page == "home") onBackPressed() else { page = "home"; refresh++ } })
             if (!recordingsPresent) TemporaryAudioBanner()
             Box(Modifier.weight(1f)) {
+              if (page == "home") current[0] = null
+              val inLesson: @Composable (@Composable () -> Unit) -> Unit = { c ->
+                  if (page == "home") c() else TrackLesson(profileId, if (english) "Quran (English)" else "Quran (Urdu)", page,
+                      (if (page.startsWith("j_") || page.startsWith("jq_")) "" else "${page.substringBefore('_').removePrefix("s").toIntOrNull()?.let { tx("مرحلہ ${urduDigit(it)} · ", "Stage $it · ") } ?: tx("مرحلہ ۱ · ", "Stage 1 · ")}") + tr(title)) {
+                      current[0] = LocalLessonTracker.current
+                      if (page == "letters") current[0]?.expect(QaidaData.letters.size)
+                      c()
+                  }
+              }
+              inLesson {
                 when (page) {
                     "letters" -> LettersLesson(progress, play) {
-                        progress.markLessonDone(QaidaProgress.LESSON_LETTERS); onEarnRewards(5, 20, "Qaida: 29 letters")
+                        markDone(QaidaProgress.LESSON_LETTERS); onEarnRewards(5, 20, "Qaida: 29 letters")
                     }
                     "sounds" -> SoundsLesson(play) {
-                        progress.markLessonDone(QaidaProgress.LESSON_SOUNDS); onEarnRewards(5, 20, "Qaida: sound pairs")
+                        markDone(QaidaProgress.LESSON_SOUNDS); onEarnRewards(5, 20, "Qaida: sound pairs")
                         page = "home"; refresh++
                     }
                     "harakat" -> HarakatLesson(play) {
-                        progress.markLessonDone(QaidaProgress.LESSON_HARAKAT); onEarnRewards(5, 20, "Qaida: harakat")
+                        markDone(QaidaProgress.LESSON_HARAKAT); onEarnRewards(5, 20, "Qaida: harakat")
                         page = "home"; refresh++
                     }
                     "quiz" -> QaidaQuizScreen(play, stageNo = 1, generate = { QaidaQuiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score)
+                        current[0]?.done(score); progress.recordQuizScore(score)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 1 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s2_quiz" -> QaidaQuizScreen(play, stageNo = 2, generate = { QaidaStage2Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 2)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 2)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 2 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s3_quiz" -> QaidaQuizScreen(play, stageNo = 3, generate = { QaidaStage3Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 3)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 3)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 3 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s4_quiz" -> QaidaQuizScreen(play, stageNo = 4, generate = { QaidaStage4Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 4)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 4)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 4 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s5_quiz" -> QaidaQuizScreen(play, stageNo = 5, generate = { QaidaStage5Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 5)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 5)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 5 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s6_quiz" -> QaidaQuizScreen(play, stageNo = 6, generate = { QaidaStage6Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 6)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 6)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 6 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s7_quiz" -> QaidaQuizScreen(play, stageNo = 7, generate = { QaidaStage7Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 7)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 7)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 7 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
                     "s11_quiz" -> QaidaQuizScreen(play, stageNo = 11, generate = { QaidaStage11Quiz.generate(it) }, onFinished = { score ->
-                        progress.recordQuizScore(score, stage = 11)
+                        current[0]?.done(score); progress.recordQuizScore(score, stage = 11)
                         if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage 11 quiz passed")
                         refresh++
                     }, onDone = { page = "home"; refresh++ })
@@ -258,7 +276,7 @@ fun QaidaScreen(
                             "s11_past" to QaidaProgress.S11_PAST, "s11_present" to QaidaProgress.S11_PRESENT,
                             "s11_commands" to QaidaProgress.S11_COMMANDS, "s11_detective" to QaidaProgress.S11_DETECTIVE).getValue(page)
                         val done11: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 11: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 11: $lesson")
                             page = "home"; refresh++
                         }
                         Stage11Lesson(page, play, done11)
@@ -268,7 +286,7 @@ fun QaidaScreen(
                             "s7_iqlab" to QaidaProgress.S7_IQLAB, "s7_ikhfa" to QaidaProgress.S7_IKHFA,
                             "s7_meem" to QaidaProgress.S7_MEEM, "s7_spot" to QaidaProgress.S7_SPOT).getValue(page)
                         val done7: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 7: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 7: $lesson")
                             page = "home"; refresh++
                         }
                         Stage7Lesson(page, play, done7)
@@ -278,7 +296,7 @@ fun QaidaScreen(
                             "s6_kafirun" to QaidaProgress.S6_KAFIRUN, "s6_masad" to QaidaProgress.S6_MASAD,
                             "s6_cards" to QaidaProgress.S6_CARDS).getValue(page)
                         val done6: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 6: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 6: $lesson")
                             page = "home"; refresh++
                         }
                         Stage6Lesson(page, play, done6)
@@ -288,7 +306,7 @@ fun QaidaScreen(
                             "s5_fatiha" to QaidaProgress.S5_FATIHA, "s5_short" to QaidaProgress.S5_SHORT,
                             "s5_falaq" to QaidaProgress.S5_FALAQ).getValue(page)
                         val done5: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 5: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 5: $lesson")
                             page = "home"; refresh++
                         }
                         Stage5Lesson(page, play, done5)
@@ -298,7 +316,7 @@ fun QaidaScreen(
                             "s4_qalqalah" to QaidaProgress.S4_QALQALAH, "s4_kawthar" to QaidaProgress.S4_KAWTHAR,
                             "s4_falaq" to QaidaProgress.S4_FALAQ, "s4_nas" to QaidaProgress.S4_NAS).getValue(page)
                         val done4: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 4: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 4: $lesson")
                             page = "home"; refresh++
                         }
                         Stage4Lesson(page, play, done4)
@@ -308,7 +326,7 @@ fun QaidaScreen(
                             "s3_madd" to QaidaProgress.S3_MADD, "s3_shamsi" to QaidaProgress.S3_SHAMSI,
                             "s3_fatiha" to QaidaProgress.S3_FATIHA, "s3_ikhlas" to QaidaProgress.S3_IKHLAS).getValue(page)
                         val done3: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 3: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 3: $lesson")
                             page = "home"; refresh++
                         }
                         Stage3Lesson(page, play, done3)
@@ -318,7 +336,7 @@ fun QaidaScreen(
                             "s2_tanween" to QaidaProgress.S2_TANWEEN, "s2_khara" to QaidaProgress.S2_KHARA,
                             "s2_madd" to QaidaProgress.S2_MADD, "s2_jazm" to QaidaProgress.S2_JAZM).getValue(page)
                         val done: () -> Unit = {
-                            progress.markLessonDone(lesson); onEarnRewards(5, 20, "Qaida stage 2: $lesson")
+                            markDone(lesson); onEarnRewards(5, 20, "Qaida stage 2: $lesson")
                             page = "home"; refresh++
                         }
                         Stage2Lesson(page, play, done)
@@ -328,7 +346,7 @@ fun QaidaScreen(
                             val n = page.removePrefix("j_").toInt()
                             val s = juz.getValue(n)
                             JuzAmmaLesson(s, play) {
-                                progress.markLessonDone(QaidaJuzAmma.lessonKey(n)); onEarnRewards(5, 20, "Qaida: ${s.urduName}")
+                                markDone(QaidaJuzAmma.lessonKey(n)); onEarnRewards(5, 20, "Qaida: ${s.urduName}")
                                 page = "home"; refresh++
                             }
                         }
@@ -336,7 +354,7 @@ fun QaidaScreen(
                             val st = page.removePrefix("jq_").toInt()
                             val surahs = QaidaJuzAmma.group(st).surahs.mapNotNull { juz[it] }
                             QaidaQuizScreen(play, stageNo = st, generate = { QaidaJuzAmmaQuiz.generate(it, surahs) }, onFinished = { score ->
-                                progress.recordQuizScore(score, stage = st)
+                                current[0]?.done(score); progress.recordQuizScore(score, stage = st)
                                 if (score >= QaidaProgress.PASS_MARK) onEarnRewards(10, 50, "Qaida: Stage $st quiz passed")
                                 refresh++
                             }, onDone = { page = "home"; refresh++ })
@@ -344,6 +362,7 @@ fun QaidaScreen(
                         else -> QaidaHome(progress, refresh, stage, juz, onStage = { stage = it }) { page = it }
                     }
                 }
+              }
             }
         }
     }
@@ -779,7 +798,7 @@ internal fun PlayButton(label: String, modifier: Modifier = Modifier, onClick: (
 // ---------------------------------------------------------------------------------------
 @Composable
 private fun SoundsLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
-    LazyColumn(Modifier.fillMaxSize().testTag("qaida_sounds_list"), contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+    LazyColumn(Modifier.fillMaxSize().testTag("qaida_sounds_list"), state = trackedListState(), contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item {
             UrduText("اردو میں کئی عربی حروف ایک جیسے بولے جاتے ہیں۔ قرآن پڑھتے وقت ہر حرف کو اس کی اپنی جگہ سے ادا کرنا ضروری ہے، ورنہ لفظ کا معنی بدل سکتا ہے۔ ہر حرف اور مثال کو سنیں اور فرق پہچانیں۔",
@@ -829,7 +848,7 @@ private fun SoundsLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
 @Composable
 private fun HarakatLesson(play: (String, String) -> Unit, onDone: () -> Unit) {
     val letters = remember { QaidaData.harakatLetters() }
-    LazyColumn(Modifier.fillMaxSize().testTag("qaida_harakat_list"), contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+    LazyColumn(Modifier.fillMaxSize().testTag("qaida_harakat_list"), state = trackedListState(), contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item { ArabicFlow {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

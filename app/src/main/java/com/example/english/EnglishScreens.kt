@@ -3,6 +3,9 @@ package com.example.english
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.BackHandler
+import com.example.progress.LocalLessonTracker
+import com.example.progress.TrackLesson
+import com.example.progress.trackedListState
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.LinearProgressIndicator
@@ -119,15 +122,15 @@ fun EnglishScreen(
         }
         Box(Modifier.weight(1f)) {
             when {
-                page == "quiz" -> EnglishQuizScreen(stage, onSpeak, onFinished = { score ->
+                page == "quiz" -> TrackLesson(profileId, "English", "quiz$stage", "Level $stage practice") { EnglishQuizScreen(stage, onSpeak, onFinished = { score ->
                     progress.record(stage, score)
                     if (score >= EnglishProgress.PASS_MARK) onEarnRewards(10, 50, "English: Level $stage practice passed")
                     refresh++
-                }, onDone = { page = "home"; refresh++ })
-                lesson != null -> LessonScreen(lesson, progress, onSpeak, nextTitle = st.lessons.getOrNull(st.lessons.indexOf(lesson) + 1)?.title) {
+                }, onDone = { page = "home"; refresh++ }) }
+                lesson != null -> TrackLesson(profileId, "English", lesson.id, "Level $stage · ${lesson.title}") { LessonScreen(lesson, progress, onSpeak, nextTitle = st.lessons.getOrNull(st.lessons.indexOf(lesson) + 1)?.title) {
                     progress.markDone(lesson.id); onEarnRewards(5, 20, "English: ${lesson.title}")
                     page = "home"; refresh++
-                }
+                } }
                 page == "credits" -> CreditsScreen()
                 page == "sounds" -> LetterSoundsScreen()
                 else -> EnglishHome(progress, refresh, stage, onStage = { stage = it }) { page = it }
@@ -250,10 +253,13 @@ private fun LessonCard(tag: String, number: Int, title: String, subtitle: String
 // Lessons
 // ---------------------------------------------------------------------------------------------------
 @Composable
-private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speak: (String) -> Unit, nextTitle: String? = null, onDone: () -> Unit) {
+private fun LessonScreen(l: EnLesson, progress: EnglishProgress, speakIn: (String) -> Unit, nextTitle: String? = null, onDoneIn: () -> Unit) {
+    val tracker = LocalLessonTracker.current
+    val speak: (String) -> Unit = { tracker?.heard(it); speakIn(it) }
+    val onDone: () -> Unit = { tracker?.done(); onDoneIn() }
     if (l.kind == LessonKind.CARDS) { Flashcards(l.tricky, speak, onDone); return }
     var seen by remember { mutableStateOf(progress.seen()) }
-    LazyColumn(Modifier.fillMaxSize().testTag("english_${l.id}_list"), contentPadding = PaddingValues(16.dp),
+    LazyColumn(Modifier.fillMaxSize().testTag("english_${l.id}_list"), state = trackedListState(), contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item { T(l.intro, size = 14.sp, color = Quiet) }
         when (l.kind) {
@@ -426,9 +432,11 @@ private const val CARDS_PER_ROUND = 15
 
 @Composable
 private fun Flashcards(words: List<String>, speak: (String) -> Unit, onDone: () -> Unit) {
+    val tracker = LocalLessonTracker.current
     var seed by rememberSaveable { mutableStateOf(System.currentTimeMillis()) }
     val deck = remember(seed) { words.shuffled(Random(seed)).take(CARDS_PER_ROUND) }
     var index by rememberSaveable(seed) { mutableIntStateOf(0) }
+    LaunchedEffect(index) { tracker?.position(index, deck.size) }
     var known by rememberSaveable(seed) { mutableIntStateOf(0) }
     var heard by rememberSaveable(seed, index) { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -476,6 +484,8 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
     var seed by rememberSaveable { mutableStateOf(System.currentTimeMillis()) }
     val questions = remember(seed) { EnglishQuiz.generate(stage, Random(seed)) }
     var index by rememberSaveable(seed) { mutableIntStateOf(0) }
+    val tracker = LocalLessonTracker.current
+    LaunchedEffect(index) { tracker?.position(index, EnglishProgress.QUIZ_LENGTH) }
     var score by rememberSaveable(seed) { mutableIntStateOf(0) }
     var chosen by rememberSaveable(seed, index) { mutableStateOf<Int?>(null) }
     var finished by rememberSaveable(seed) { mutableStateOf(false) }
@@ -531,7 +541,7 @@ private fun EnglishQuizScreen(stage: Int, speak: (String) -> Unit, onFinished: (
         if (chosen != null) {
             T(if (chosen == q.correctIndex) "Excellent! ✓" else "The correct answer is in green.", size = 15.sp,
                 color = if (chosen == q.correctIndex) Green else Color(0xFFB23B1E), align = TextAlign.Center)
-            Button(onClick = { if (index + 1 >= questions.size) { finished = true; onFinished(score) } else index++ },
+            Button(onClick = { if (index + 1 >= questions.size) { finished = true; tracker?.done(score); onFinished(score) } else index++ },
                 colors = ButtonDefaults.buttonColors(containerColor = Green), modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("english_next")) {
                 T(if (index + 1 >= questions.size) "See the result" else "Next question", color = Color.White, weight = FontWeight.Bold)
             }
@@ -648,6 +658,8 @@ private fun RecordButtons(tag: String, hasRecording: () -> Boolean, start: () ->
 private fun RepeatCard(id: String, lines: List<Line>, speak: (String) -> Unit) {
     val ctx = LocalContext.current
     var i by remember(id) { mutableIntStateOf(0) }
+    val tracker = LocalLessonTracker.current
+    LaunchedEffect(id, i) { tracker?.position(i + 1, lines.size) }
     val ln = lines[i.coerceIn(0, lines.size - 1)]
     LaunchedEffect(id, i) { EnglishAudio.clearMyVoice(ctx) }
     Card(Modifier.fillMaxWidth().testTag("english_repeat_$id"), colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -759,6 +771,8 @@ private fun LetterSoundsScreen() {
 @Composable
 private fun StoryPager(id: String, pages: List<Sentence>, speak: (String) -> Unit) {
     var i by remember(id) { mutableIntStateOf(0) }
+    val tracker = LocalLessonTracker.current
+    LaunchedEffect(id, i) { tracker?.position(i + 1, pages.size) }
     val p = pages[i.coerceIn(0, pages.size - 1)]
     Column(Modifier.fillMaxWidth().testTag("english_story_$id"), horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)) {

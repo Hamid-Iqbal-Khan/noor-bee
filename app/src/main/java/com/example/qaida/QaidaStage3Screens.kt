@@ -54,6 +54,7 @@ internal fun Stage3Lesson(page: String, play: (String, String) -> Unit, onDone: 
     var selected by remember { mutableStateOf("ba" to QaidaStage3.Vowel.ZABAR) }
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_${page}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

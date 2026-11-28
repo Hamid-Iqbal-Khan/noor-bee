@@ -54,6 +54,7 @@ private fun stopColor(s: QaidaStage4.Stop) = when (s) {
 internal fun Stage4Lesson(page: String, play: (String, String) -> Unit, onDone: () -> Unit) {
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_${page}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

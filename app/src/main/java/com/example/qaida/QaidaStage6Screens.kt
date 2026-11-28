@@ -45,6 +45,7 @@ internal fun Stage6Lesson(page: String, play: (String, String) -> Unit, onDone: 
     if (page == "s6_cards") { Flashcards(play, onDone); return }
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_${page}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

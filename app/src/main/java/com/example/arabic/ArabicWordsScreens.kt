@@ -2,6 +2,9 @@ package com.example.arabic
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.LaunchedEffect
+import com.example.progress.LocalLessonTracker
+import com.example.progress.TrackLesson
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -165,15 +168,15 @@ fun ArabicWordsScreen(
             }
             Box(Modifier.weight(1f)) {
                 when {
-                    page == "quiz" -> QuizScreen(level, urdu, onSpeakArabic, onFinished = { score ->
+                    page == "quiz" -> TrackLesson(profileId, "Arabic words", "quiz$level", "Level $level practice") { QuizScreen(level, urdu, onSpeakArabic, onFinished = { score ->
                         progress.record(level, score)
                         if (score >= ArabicWordsProgress.PASS_MARK) onEarnRewards(10, 50, "Arabic words: level $level practice passed")
                         refresh++
-                    }, onDone = { page = "home"; refresh++ })
-                    set != null -> CardsScreen(set, urdu, onSpeakArabic) {
+                    }, onDone = { page = "home"; refresh++ }) }
+                    set != null -> TrackLesson(profileId, "Arabic words", set.id, "Level $level · ${set.title}") { CardsScreen(set, urdu, onSpeakArabic) {
                         progress.markDone(set.id); onEarnRewards(5, 20, "Arabic words: ${set.title}")
                         page = "home"; refresh++
-                    }
+                    } }
                     else -> Home(progress, refresh, level, urdu, onLevel = { level = it }) { page = it }
                 }
             }
@@ -260,6 +263,8 @@ private fun Row_(tag: String, number: Int, title: String, subtitle: String, done
 private fun CardsScreen(set: ArSet, urdu: Boolean, speak: (String) -> Unit, onDone: () -> Unit) {
     val L = { en: String, ur: String -> if (urdu) ur else en }
     var index by rememberSaveable(set.id) { mutableIntStateOf(0) }
+    val tracker = LocalLessonTracker.current
+    LaunchedEffect(index) { tracker?.position(index, set.words.size); if (index >= set.words.size) tracker?.done() }
     var known by rememberSaveable(set.id) { mutableIntStateOf(0) }
     var showEnglish by rememberSaveable(set.id, index) { mutableStateOf(false) }
     var englishFirst by rememberSaveable { mutableStateOf(false) }
@@ -338,6 +343,8 @@ private fun QuizScreen(level: Int, urdu: Boolean, speak: (String) -> Unit, onFin
     var seed by rememberSaveable { mutableStateOf(System.currentTimeMillis()) }
     val questions = remember(seed) { ArabicWordsQuiz.generate(level, Random(seed)) }
     var index by rememberSaveable(seed) { mutableIntStateOf(0) }
+    val tracker = LocalLessonTracker.current
+    LaunchedEffect(index) { tracker?.position(index, ArabicWordsProgress.QUIZ_LENGTH) }
     var score by rememberSaveable(seed) { mutableIntStateOf(0) }
     var chosen by rememberSaveable(seed, index) { mutableStateOf<Int?>(null) }
     var finished by rememberSaveable(seed) { mutableStateOf(false) }
@@ -394,7 +401,7 @@ private fun QuizScreen(level: Int, urdu: Boolean, speak: (String) -> Unit, onFin
         if (chosen != null) {
             T(if (chosen == q.correctIndex) L("Excellent! ✓", "بہت خوب! ✓") else L("The correct answer is in green.", "درست جواب سبز رنگ میں ہے۔"),
                 size = 15.sp, color = if (chosen == q.correctIndex) Green else Color(0xFFB23B1E), urdu = urdu)
-            Button(onClick = { if (index + 1 >= questions.size) { finished = true; onFinished(score) } else index++ },
+            Button(onClick = { if (index + 1 >= questions.size) { finished = true; tracker?.done(score); onFinished(score) } else index++ },
                 colors = ButtonDefaults.buttonColors(containerColor = Green), modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("arabic_next")) {
                 T(if (index + 1 >= questions.size) L("See the result", "نتیجہ دیکھیں") else L("Next question", "اگلا سوال"), color = Color.White, weight = FontWeight.Bold, urdu = urdu)
             }

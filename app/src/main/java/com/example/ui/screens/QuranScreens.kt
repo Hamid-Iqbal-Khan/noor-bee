@@ -453,7 +453,7 @@ fun QuranScreenDeprecated(
     onSoundTrigger: (String) -> Unit
 ) {
     // Dynamically set starting age filter relative to current kid profile level
-    val lessonAge = (profile.level + 2).coerceIn(3, 8)
+    val lessonAge = profile.age.coerceIn(3, 8)
     val startingAge = if (lessonAge in listOf(6, 7, 8)) lessonAge else 6
     var selectedAgeFilter by remember { mutableStateOf(startingAge) }
     

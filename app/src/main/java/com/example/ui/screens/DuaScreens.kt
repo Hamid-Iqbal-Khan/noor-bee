@@ -58,7 +58,7 @@ fun DuaScreens(
     onSoundTrigger: (String) -> Unit
 ) {
     val isArabicLanguage = remember(profile.currentLanguage) { profile.currentLanguage == "Arabic" }
-    val lessonAge = remember(profile.level) { (profile.level + 2).coerceIn(3, 8) }
+    val lessonAge = remember(profile.age) { profile.age.coerceIn(3, 8) }
     var selectedAgeFilter by remember(lessonAge) { mutableStateOf(lessonAge) }
 
     // Dynamic list of supplications based on selected age filter

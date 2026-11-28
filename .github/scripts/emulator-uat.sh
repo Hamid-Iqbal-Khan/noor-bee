@@ -109,6 +109,8 @@ tap_text "The alphabet"; sleep 3; shot 42_english_alphabet; adb shell input keye
 tap_text "2: Blending"; sleep 2; tap_text "Short a"; sleep 3; shot 43_english_blending; adb shell input keyevent 4; sleep 1
 adb shell input keyevent 4; sleep 2
 tap_text "My Stickers"; sleep 2; shot 07_stickers; adb shell input keyevent 4; sleep 2
+for k in 1 2 3 4; do adb shell input swipe 540 900 540 2000 200; sleep 1; done
+tap_text "Today:"; sleep 2; shot 47_today_report; adb shell input keyevent 4; sleep 2
 tap_text "Level 1: First words"; sleep 3; shot 44_arabic_words_level1
 tap_text "Fruits"; sleep 3; shot 45_arabic_card_front
 adb shell input tap 540 1100; sleep 2; shot 46_arabic_card_back

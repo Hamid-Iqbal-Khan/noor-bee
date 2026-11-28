@@ -48,6 +48,7 @@ private val PlumSoft = Color(0xFFF3E5F5)
 internal fun Stage5Lesson(page: String, play: (String, String) -> Unit, onDone: () -> Unit) {
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_${page}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

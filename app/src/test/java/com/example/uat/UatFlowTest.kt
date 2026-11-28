@@ -110,6 +110,9 @@ class UatFlowTest {
       clickTag("save_profile_button"); step(3_000)
     }
     waitTag("home_dashboard_screen"); dismissGuide(); shot("03_dashboard")
+    // the Today card opens the parent report of what was studied today
+    clickTag("today_badge"); waitTag("study_report"); shot("03b_today_report"); clickTag("study_report_close")
+    waitTag("home_dashboard_screen")
 
     clickText("Daily Duas"); waitTag("dua_section_screen"); shot("04_duas"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
@@ -127,8 +130,13 @@ class UatFlowTest {
     clickText("English"); step(1_000); dismissGuide()
     // English mode: only the English course
     assertTrue(rule.onAllNodes(hasTestTag("dashboard_quran_en_title"), useUnmergedTree = true).fetchSemanticsNodes().isEmpty())
-    clickText("Level 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1"); goBack()
+    clickText("Level 1: Sounds"); step(1_500); waitTag("english_root"); shot("07b_english_reading_stage1")
+    clickTag("english_lesson_e1.1"); step(1_000); goBack(); step(500); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
+    // the lesson just opened is now in today's report
+    clickTag("today_badge"); waitTag("study_report")
+    assertTrue(rule.onAllNodes(hasText("The alphabet", substring = true), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty())
+    shot("07e_today_report_after_lesson"); clickTag("study_report_close"); waitTag("home_dashboard_screen")
     clickText("My Stickers"); step(2_000); shot("07c_stickers"); goBack()
     waitTag("home_dashboard_screen"); dismissGuide()
     clickText("Level 1: First words"); step(1_500); waitTag("arabic_words_root"); shot("07d_arabic_words"); goBack()

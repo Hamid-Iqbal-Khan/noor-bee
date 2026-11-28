@@ -47,6 +47,7 @@ internal fun Stage11Lesson(page: String, play: (String, String) -> Unit, onDone:
     var revealed by remember { mutableStateOf(setOf<String>()) }
     LazyColumn(
         Modifier.fillMaxSize().testTag("qaida_${page}_list"),
+        state = com.example.progress.trackedListState(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
